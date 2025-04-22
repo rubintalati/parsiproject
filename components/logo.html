@@ -1,0 +1,20 @@
+<div class="logo-container">
+    <img src="#" alt="The Parsi Project Logo" class="logo-image" id="dynamic-logo">
+</div>
+
+<script>
+    // Determine the correct path to the logo based on the current page location
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoImage = document.getElementById('dynamic-logo');
+        const currentPath = window.location.pathname;
+        
+        // Check if we're in a subdirectory or at the root
+        if (currentPath.includes('/pages/')) {
+            // We're in a pages subdirectory
+            logoImage.src = '../media/logo/black theme.png';
+        } else {
+            // We're at the root or another location
+            logoImage.src = 'media/logo/black theme.png';
+        }
+    });
+</script>

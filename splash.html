@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .loading {
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        
+        .logo-text {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff6b00;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check if user is already authenticated
+        function checkAuth() {
+            try {
+                // Wait for DOM and scripts to be fully loaded
+                setTimeout(function() {
+                    // Check if AUTH module is available
+                    if (typeof AUTH !== 'undefined' && AUTH.isAuthenticated) {
+                        // Use AUTH module to check authentication
+                        if (AUTH.isAuthenticated()) {
+                            // Redirect to home page if authenticated
+                            window.location.href = "home.html";
+                        } else {
+                            // Redirect to login page if not authenticated
+                            window.location.href = "pages/login.html";
+                        }
+                    } else {
+                        // Fallback to localStorage check
+                        const userData = localStorage.getItem('user_data');
+                        if (userData) {
+                            // If user data exists, consider them authenticated
+                            window.location.href = "home.html";
+                        } else {
+                            // Redirect to login page
+                            window.location.href = "pages/login.html";
+                        }
+                    }
+                }, 500); // Small delay to ensure scripts are loaded
+            } catch (e) {
+                console.error('Authentication check failed:', e);
+                // In case of error, default to login page
+                window.location.href = "pages/login.html";
+            }
+        }
+
+        // Run the check on page load
+        window.onload = checkAuth;
+    </script>
+</head>
+<body>
+    <div class="loading">
+        <div class="logo">
+            <div class="logo-text">P</div>
+        </div>
+        <h1>The Parsi Project</h1>
+        <div class="loader"></div>
+        <p>Loading...</p>
+    </div>
+</body>
+</html>

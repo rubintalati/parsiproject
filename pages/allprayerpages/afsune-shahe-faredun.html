@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afsune - Shahe-Faredun's Prayer - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Protection accent styling */
+        .protection-accent {
+            position: relative;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .protection-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        /* Stellar background effect */
+        .stellar-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 1px, transparent 2px), 
+                              radial-gradient(circle at 20% 70%, rgba(255, 255, 255, 0.03) 1px, transparent 2px),
+                              radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.02) 1px, transparent 2px);
+            background-size: 100px 100px, 120px 120px, 80px 80px;
+            background-position: 0 0, 40px 40px, 20px 20px;
+            opacity: 0.6;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Repetition count styling */
+        .repeat-count {
+            display: inline-block;
+            margin-left: 0.4rem;
+            padding: 0.1rem 0.4rem;
+            background-color: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 3px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .protection-accent {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stellar-bg"></div>
+        
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for divine help in health, wealth, fulfilment of wishes and to ward off planetary afflictions</p>
+            <h2 class="prayer-name">afsune - shahe-faredun's prayer</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">Yathā ahū vairyō <span class="repeat-count">5x</span></p>
+            
+            <p class="prayer-paragraph">Ashem vohū <span class="repeat-count">3x</span></p>
+            
+            <p class="prayer-paragraph">Fravarāne māzdayasno zarathushtrish vidāēvo ahura-tkaēsho</p>
+            
+            <p class="prayer-instruction">(recite the appropriate Geh)</p>
+            
+            <p class="prayer-paragraph">thraetonahe āthvyāno ashaono fravashee, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu.</p>
+            
+            <p class="prayer-paragraph">Thraetonahe āthavyāno ashaono fravashim yazamaide. Thraetonahe athavyānahe ashaono fravashee khshnaothra thraetonem āthavyanem ashavanem ashahe ratum yazamaide.</p>
+            
+            <div class="protection-accent">
+                <p class="prayer-paragraph">Gadava kuro kuro taurunahe karapano raethwyanām bukhta mahi. Nām-i yazad nām-i niv khureh-i faredun āthawyān. Bast hom dām dehān in hanāi az ghanā mino va divān va drujan va jāduān va frayān va khrafastrān, ba jor ādar mino-karko ba jor ādarān ātashān ba jor akhtarān avākhtarān, tan darosti bād, neki bād, khub bād, aedun bād.</p>
+            </div>
+            
+            <p class="prayer-paragraph">Yathā ahū vairyō <span class="repeat-count">5x</span></p>
+            
+            <p class="prayer-paragraph">Ashem vohū <span class="repeat-count">3x</span></p>
+            
+            <p class="prayer-paragraph">Yathā Ahū vairyō <span class="repeat-count">2x</span></p>
+            
+            <p class="prayer-paragraph">Yasnemcha vahmemcha aojascha zavarecha āfrināmi, thraetonāhe āthawyāno ashaono fravashee.</p>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph">Ahmāi raeshcha-Hazanghrem-Jasa me avanghe-Kerfeh Mozd.</p>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>We remember and revere Faredun, son of Athawyan and his Fravashi.</p>
+            
+            <p>By the name and glory of Faredun, may all noxious animals and creatures be destroyed. May we be liberated from evil men.</p>
+            
+            <p>May we make ineffective the Evil Spirit, demons, liars and sorcerors by the help of this prayer, the holy fires, planets and constellations.</p>
+        </div>
+    </div>
+</body>
+</html>

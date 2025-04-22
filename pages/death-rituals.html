@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>death rituals - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background-color: #000; color: #fff; min-height: 100vh; overflow: hidden; }
+        .container { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; padding: 1.5rem; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
+        .header { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem; margin-top: 2rem; text-align: center; width: 100%; }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-align: center; text-transform: lowercase; }
+        .welcome-text-container { padding: 0 2rem; margin-bottom: 1.5rem; height: 120px; overflow: hidden; text-align: left; width: 95%; max-width: 1200px; }
+        .welcome-text { text-align: left; color: #ccc; font-size: 0.9rem; line-height: 1.5; width: 100%; max-width: 100%; text-transform: lowercase; }
+        .welcome-text p { margin-bottom: 0.8rem; min-height: 1.5em; text-transform: lowercase; }
+        #text1 { margin-bottom: 0.8rem; }
+        #text2 { margin-bottom: 0.8rem; }
+        #text3 { margin-bottom: 0.8rem; }
+        .typing-cursor { display: inline-block; width: 2px; height: 1em; background-color: #ccc; margin-left: 2px; animation: blink 1s infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        .content-layout { display: flex; gap: 2rem; flex: 1; padding: 0 3rem 1.5rem 3rem; margin-top: 1rem; align-items: stretch; }
+        .left-side, .right-side { width: 32%; display: flex; flex-direction: column; gap: 1rem; justify-content: space-between; }
+        .media-container { width: 25%; aspect-ratio: 9/16; max-height: 270px; background-color: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; align-self: center; }
+        .media-container img { width: 100%; height: 100%; object-fit: cover; }
+        .ritual-card { background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem 1.1rem; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; min-height: 75px; max-height: 130px; text-decoration: none; color: inherit; text-transform: lowercase; }
+        .ritual-card:hover { background-color: rgba(255, 255, 255, 0.05); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .ritual-card h3 { margin-bottom: 0.4rem; font-size: 1rem; font-weight: 600; color: #fff; text-transform: lowercase; }
+        .ritual-card p { color: #999; font-size: 0.85rem; line-height: 1.45; text-transform: lowercase; }
+        @media (max-width: 992px) { .content-layout { flex-direction: column; } .left-side, .right-side { width: 100%; flex-direction: row; flex-wrap: wrap; } .ritual-card { flex: 1; min-width: 45%; } .media-container { aspect-ratio: 16/9; order: -1; } }
+        @media (max-width: 768px) { body { overflow: auto !important; } .welcome-text-container { padding: 0 1rem; height: auto; } .page-title { font-size: 2rem; } .main-content { padding: 1rem; } .left-side, .right-side { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-nav-overlay"></div>
+        <main class="main-content">
+            <div class="header">
+                <h1 class="page-title">death rituals</h1>
+            </div>
+            <div class="welcome-text-container">
+                <div class="welcome-text" id="welcome-text">
+                    <p id="text1"></p>
+                </div>
+            </div>
+            <div class="content-layout">
+                <div class="left-side">
+                    <a href="#philosophy" class="ritual-card"><h3>philosophy & soul</h3><p>beliefs about death, the soul, and the afterlife journey.</p></a>
+                    <a href="#major-rituals" class="ritual-card"><h3>major rituals</h3><p>essential steps from sachkār to uthamnā and prayers for the soul.</p></a>
+                    <a href="#dakhma" class="ritual-card"><h3>tower of silence</h3><p>the dakhma system, construction, and ecological wisdom.</p></a>
+                </div>
+                <div class="media-container">
+                    <img src="../assets/gif-placeholder.jpg" alt="death rituals animation">
+                </div>
+                <div class="right-side">
+                    <a href="#etiquette" class="ritual-card"><h3>etiquette</h3><p>funeral decorum, rules, and community customs.</p></a>
+                    <a href="#special" class="ritual-card"><h3>special rituals</h3><p>geh-sārnā, chinwad pul, dokhmenashini, and more.</p></a>
+                    <a href="#modern" class="ritual-card"><h3>modern challenges</h3><p>contemporary issues, vulture decline, and adaptations.</p></a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Typing animation for welcome text
+        document.addEventListener('DOMContentLoaded', function() {
+            const text1Element = document.getElementById('text1');
+            const texts = [
+                "zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. the physical body is transmuted from one form to another, as the soul departs for the spiritual realm. death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of god’s plan. unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all."
+            ];
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return;
+                }
+                const currentText = texts[currentTextIndex];
+                if (currentCharIndex < currentText.length) {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    currentCharIndex++;
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    // No more lines, so stop
+                }
+            }
+            setTimeout(typeText, 300);
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

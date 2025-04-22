@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>101 Names of Ahura Mazda - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-intro {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .name-box {
+            padding: 1.2rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .name-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 153, 153, 0.2), 
+                rgba(255, 204, 153, 0.2), 
+                rgba(255, 255, 153, 0.2), 
+                rgba(204, 255, 153, 0.2),
+                rgba(153, 255, 153, 0.2),
+                rgba(153, 255, 204, 0.2),
+                rgba(153, 255, 255, 0.2),
+                rgba(153, 204, 255, 0.2),
+                rgba(153, 153, 255, 0.2),
+                rgba(204, 153, 255, 0.2),
+                rgba(255, 153, 255, 0.2),
+                rgba(255, 153, 204, 0.2)
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .name-box:hover::before {
+            opacity: 1;
+        }
+
+        .name-number {
+            font-size: 0.7rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .name-original {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .name-meaning {
+            color: #ccc;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .names-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../home.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <h1 class="prayer-title">101 names of ahura mazda</h1>
+            <p class="prayer-subtitle">the divine attributes and qualities</p>
+        </div>
+
+        <div class="prayer-intro">
+            <p>The 101 Names of Ahura Mazda (Sad-o-yek Nam-e-Khoda) recounts the many attributes and qualities of the Divine. Each name reveals an aspect of Ahura Mazda's nature, from omniscience and omnipotence to compassion and justice. Reciting these names is a way to contemplate the divine qualities and seek connection with the Creator.</p>
+        </div>
+
+        <div class="names-grid">
+            <!-- Names will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // The 101 Names of Ahura Mazda with their meanings
+            const names = [
+                { id: 1, name: "Yazad", meaning: "Worthy of Worship" },
+                { id: 2, name: "Harvesp tavãn", meaning: "Having unlimited powers" },
+                { id: 3, name: "Harvesp âgâh", meaning: "Endless knowledge" },
+                { id: 4, name: "Harvesp khudâ", meaning: "Lord of all" },
+                { id: 5, name: "Abadah", meaning: "Without beginning" },
+                { id: 6, name: "Abî-anjãm", meaning: "Without end" },
+                { id: 7, name: "Bûneshtêh", meaning: "Beginning of Creation" },
+                { id: 8, name: "Frâkhtan-têh", meaning: "Endless bliss" },
+                { id: 9, name: "Jamaga", meaning: "Greatest Cause" },
+                { id: 10, name: "Parjatarah", meaning: "More exalted" },
+                { id: 11, name: "Tum-afik", meaning: "Most innocent" },
+                { id: 12, name: "Abarvand", meaning: "Unique" },
+                { id: 13, name: "Parvandâ", meaning: "In touch with all" },
+                { id: 14, name: "An-aiyâfah", meaning: "Perfection itself" },
+                { id: 15, name: "Ham-aiyâfah", meaning: "Understood by all" },
+                { id: 16, name: "Âdarô", meaning: "Most righteous" },
+                { id: 17, name: "Gîrâ", meaning: "Upholder of all" },
+                { id: 18, name: "A-chem", meaning: "Causeless Cause" },
+                { id: 19, name: "Chamanâ", meaning: "Cause of all causes" },
+                { id: 20, name: "Safnâ", meaning: "Bringer of prosperity" },
+                { id: 21, name: "Afazâ", meaning: "Lord of Plenty" },
+                { id: 22, name: "Nâshâ", meaning: "Reaching all equally" },
+                { id: 23, name: "Parvarâ", meaning: "Nourisher" },
+                { id: 24, name: "Iyânah", meaning: "Protector of the World" },
+                { id: 25, name: "Âin-âênah", meaning: "Never changing" },
+                { id: 26, name: "Ân-âinah", meaning: "Without physical form" },
+                { id: 27, name: "Khrôshîdtum", meaning: "Firmest" },
+                { id: 28, name: "Mînôtum", meaning: "Cannot be seen" },
+                { id: 29, name: "Vâsnâ", meaning: "Present everywhere at the same time" },
+                { id: 30, name: "Harvastum", meaning: "The Most Supreme" },
+                { id: 31, name: "Hu-sepâs", meaning: "Deserving of thanks" },
+                { id: 32, name: "Har-hamîd", meaning: "Of good nature" },
+                { id: 33, name: "Har-nek-farêh", meaning: "The sacred spirit" },
+                { id: 34, name: "Bêsh-tarnâ", meaning: "Reliever of pain" },
+                { id: 35, name: "Tarônîsh", meaning: "Enemy of all evil" },
+                { id: 36, name: "An-aoshak", meaning: "Lives forever" },
+                { id: 37, name: "Farsak", meaning: "Fulfiller of wishes" },
+                { id: 38, name: "Pajôh-dahad", meaning: "Creator of good nature" },
+                { id: 39, name: "Khvâfar", meaning: "Supreme Judge" },
+                { id: 40, name: "Avakshhiâêyâ", meaning: "Merciful" },
+                { id: 41, name: "Abarzâ", meaning: "Most generous" },
+                { id: 42, name: "A-satôh", meaning: "Unconquerable" },
+                { id: 43, name: "Rakhôh", meaning: "Independent" },
+                { id: 44, name: "Varûn", meaning: "Protector from evil" },
+                { id: 45, name: "A-farefah", meaning: "Never deceiving" },
+                { id: 46, name: "Bê-farêfah", meaning: "Never deceived" },
+                { id: 47, name: "A-duî", meaning: "One without a second" },
+                { id: 48, name: "Kãmêrad", meaning: "Lord of wishes" },
+                { id: 49, name: "Farmãn-kãm", meaning: "One who commands as He wishes" },
+                { id: 50, name: "Âekh-tan", meaning: "Without body" },
+                { id: 51, name: "A-farmôsh", meaning: "Unforgetful one" },
+                { id: 52, name: "Hamârnâ", meaning: "Settler of accounts" },
+                { id: 53, name: "Sanâêâ", meaning: "One who knows everything" },
+                { id: 54, name: "A-tars", meaning: "Fearless" },
+                { id: 55, name: "A-bîsh", meaning: "Without pain" },
+                { id: 56, name: "Afrâzdum", meaning: "Most praiseworthy" },
+                { id: 57, name: "Ham-chûn", meaning: "Always the same" },
+                { id: 58, name: "Mînô-stîh-gar", meaning: "Creator of heavenly peace" },
+                { id: 59, name: "Amînô-gar", meaning: "Creator of all that is spiritual" },
+                { id: 60, name: "Mînô nahab", meaning: "Hidden Spirit" },
+                { id: 61, name: "Âdar-bâd-gar", meaning: "One who can change fire into air" },
+                { id: 62, name: "Âdar-nam-gar", meaning: "One who can change fire into water" },
+                { id: 63, name: "Bâd-âdar-gar", meaning: "One who can change air into fire" },
+                { id: 64, name: "Bâd-nam-gar", meaning: "One who can change air into water" },
+                { id: 65, name: "Bâd-gêl-gar", meaning: "One who can change air into ashes" },
+                { id: 66, name: "Bâd-gerad-tum", meaning: "One who can change air to dust" },
+                { id: 67, name: "Âdar-Kîbarît-tum", meaning: "One who can change fire into precious stones" },
+                { id: 68, name: "Bâd-gar-jâê", meaning: "Producer of fresh air everywhere" },
+                { id: 69, name: "Âb-tum", meaning: "Creator of plentiful water" },
+                { id: 70, name: "Gêl-âdar-gar", meaning: "One who can change ashes into fire" },
+                { id: 71, name: "Gêl-vâd-gar", meaning: "One who can change ashes into air" },
+                { id: 72, name: "Gêl-nam-gar", meaning: "One who can change ashes into water" },
+                { id: 73, name: "Gar-gar", meaning: "Master Craftsman" },
+                { id: 74, name: "Gar-ô-gar", meaning: "Artisan of all artisans" },
+                { id: 75, name: "Gar-â-gar", meaning: "Artisan before all artisans" },
+                { id: 76, name: "Gar-â-gar-gar", meaning: "Artisan with the greatest workmanship" },
+                { id: 77, name: "Agarâ gar", meaning: "None in comparison with the highest artisan" },
+                { id: 78, name: "Agarâgar-gar", meaning: "None in comparison with the highest artisan with greatest workmanship." },
+                { id: 79, name: "A-gûmãn", meaning: "Doubtless" },
+                { id: 80, name: "A-zamân", meaning: "Timeless" },
+                { id: 81, name: "A-khuãn", meaning: "Ever-awake" },
+                { id: 82, name: "Âmasht", meaning: "Ever Alert" },
+                { id: 83, name: "Fashûtanâ", meaning: "Ever Protecting" },
+                { id: 84, name: "Padmânî", meaning: "Lord of Moderation" },
+                { id: 85, name: "Fîrôzgar", meaning: "Victorious" },
+                { id: 86, name: "Khudâvand", meaning: "Lord of the Universe" },
+                { id: 87, name: "Ahuramazd", meaning: "Lord of Life and Wisdom" },
+                { id: 88, name: "Abarîn-kuhan tavãn", meaning: "Preserver of the Origin of Creation" },
+                { id: 89, name: "Abarîn-nô-tavãn", meaning: "One that gives fresh life to" },
+                { id: 90, name: "Vaspãn", meaning: "One who reaches the entire Creation" },
+                { id: 91, name: "Vaspâr", meaning: "Lord Beneficient" },
+                { id: 92, name: "Khâwar", meaning: "Merciful" },
+                { id: 93, name: "Ahû", meaning: "Lord of the World" },
+                { id: 94, name: "Awakshîdâr", meaning: "Forgiver of Sins" },
+                { id: 95, name: "Dâdâr", meaning: "Just Creator" },
+                { id: 96, name: "Rayômand", meaning: "Full of 'rae' - lustre/splendour" },
+                { id: 97, name: "Khôremand", meaning: "Full of ‘Khoreh’-glory" },
+                { id: 98, name: "Dâvar", meaning: "Just Judge" },
+                { id: 99, name: "Kêrfêgar", meaning: "Lord of Just Rewards" },
+                { id: 100, name: "Bôkhtâr", meaning: "Saviour" },
+                { id: 101, name: "Frashôgar", meaning: "Restorer from the human to the divine" }
+            ];
+
+            // Get the grid container
+            const namesGrid = document.querySelector('.names-grid');
+            
+            // Populate the grid with name boxes
+            names.forEach(item => {
+                const nameBox = document.createElement('div');
+                nameBox.className = 'name-box';
+                
+                const nameNumber = document.createElement('div');
+                nameNumber.className = 'name-number';
+                nameNumber.textContent = item.id;
+                
+                const nameOriginal = document.createElement('div');
+                nameOriginal.className = 'name-original';
+                nameOriginal.textContent = item.name;
+                
+                const nameMeaning = document.createElement('div');
+                nameMeaning.className = 'name-meaning';
+                nameMeaning.textContent = item.meaning;
+                
+                nameBox.appendChild(nameNumber);
+                nameBox.appendChild(nameOriginal);
+                nameBox.appendChild(nameMeaning);
+                
+                namesGrid.appendChild(nameBox);
+            });
+        });
+    </script>
+</body>
+</html>

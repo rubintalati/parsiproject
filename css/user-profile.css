@@ -1,0 +1,71 @@
+/**
+ * User Profile Styles
+ * 
+ * Consistent styling for the user profile component across all pages
+ */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 0 0 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.user-profile:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #000;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.user-status {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.user-profile:hover .user-name,
+.user-profile:hover .user-status {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}

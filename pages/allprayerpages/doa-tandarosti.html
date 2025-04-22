@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doā Tandarosti - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            margin-top: -1rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Health accent styling */
+        .health-accent {
+            position: relative;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .health-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            background: linear-gradient(to bottom, #4CAF50, #66BB6A, #81C784);
+        }
+
+        .name-placeholder {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 0.2rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .health-accent {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for good health</p>
+            <h2 class="prayer-name">doā tandarosti</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">Ba nāme yazade bakhshāyandehe bakhshāyashgare meherbān. Yathā Ahū Vairyō 2.</p>
+            
+            <div class="health-accent">
+                <p class="prayer-paragraph">Tan-dorostī der-zīvashnī āvāyad; khoreh anghad ashahīdār; yazdāne mīnōān, yazdāne getiān, haft Ameshāspandān myazda roshan hame berasād.</p>
+                
+                <p class="prayer-paragraph">In doāyā bād, in khoāhā bād; hame andar kasarā Zarathushtī dīn shād bād; aedūn bād. Yā bārī khodā! Khodāvande ālamrā, hame anjumanrā <span class="name-placeholder">person's name</span>.</p>
+                
+                <p class="prayer-instruction">(here take the name of a person in whose behest the tandarosti is recited)</p>
+                
+                <p class="prayer-paragraph">Bā farzandān, hazār sāl dēr bedār, shād bedār, tan-dorost bedār; aedūn bedār. Bar sare arzāniā, sālhāe besyār va karanhāe bishumār bāki va pāyandeh dār; hazārān hazār āfrīn bād, sāl-khozasteh bād, roz farrokh bād, māh mubārak bād.</p>
+                
+                <p class="prayer-paragraph">Chand sāl, chand roz, chand māh, besyār sālhā arzānidār, yazashne va niāeshne va rādi va zōr barashne. Ashahīdār avare hamā kāro kerfehā; tandorostī bād, nekī bād, khūb bād; aedūn bād, aedūntaraz bād, pa yazdān va Ameshāspandān kāme bād.</p>
+            </div>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>In the name of the good, kind, forgiving, all-loving Ahura Mazda I begin this prayer. Good health is necessary for a long life. May my prayers be accepted and wishes be fulfilled. May the religion of Zarathushtra prosper.</p>
+            
+            <p>O Lord, the Creator of the Universe may You grant the ruler of the country and all the people and their offspring a thousand years full of blessings, joy, good health, righteousness and all that is best.</p>
+            
+            <p>May the year be promising and the day be auspicious. May all the wishes be as true and just as the will of the Amesha Spentas and the Yazads.</p>
+        </div>
+    </div>
+</body>
+</html>

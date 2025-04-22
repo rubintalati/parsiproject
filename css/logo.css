@@ -1,0 +1,67 @@
+/* 
+ * The Parsi Project Logo Styles
+ * Updated to support larger size, no border, and higher contrast
+ */
+
+.logo-container {
+    width: 90px; /* Updated size */
+    height: 90px; /* Updated size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    background: transparent; /* Ensure no background */
+    border: none; /* Remove any border */
+    padding: 0; /* Remove any padding */
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: contrast(1.2) brightness(1.2); /* Increase contrast and brightness */
+    box-shadow: none; /* Remove any shadow */
+}
+
+/* For backward compatibility with text-based logo */
+.logo-text {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.logo-text::before {
+    content: "";
+    position: absolute;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    bottom: -2px;
+    left: 10%;
+}
+
+/* Animation for the logo */
+@keyframes glow {
+    0% { filter: contrast(1.2) brightness(1.2) drop-shadow(0 0 5px rgba(255, 255, 255, 0.7)); }
+    50% { filter: contrast(1.3) brightness(1.3) drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); }
+    100% { filter: contrast(1.2) brightness(1.2) drop-shadow(0 0 5px rgba(255, 255, 255, 0.7)); }
+}
+
+.logo-container:hover .logo-image {
+    animation: glow 2s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logo-container {
+        width: 90px; /* Increased from 60px */
+        height: 90px; /* Increased from 60px */
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
+}

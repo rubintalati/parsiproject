@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jashan Ceremony - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <script src="../js/load-components.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Content container */
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Welcome Text Styles */
+        .welcome-text-container {
+            padding: 0 4rem;
+            margin-bottom: 2rem;
+            height: 130px;
+            overflow: hidden;
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem;
+            min-height: 1.5em;
+        }
+
+        /* Specific margins for welcome text */
+        #text1 {
+            margin-bottom: 0.8rem;
+        }
+        #text2 {
+            margin-bottom: 0.1rem;
+        }
+        #text3 {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ccc;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Middle section with cards */
+        .middle-section {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10%;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Card Container */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 30%;
+            min-width: 150px;
+            box-sizing: border-box;
+        }
+
+        .info-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .info-card h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .info-card p {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Bottom section - participation and GIF side by side */
+        .bottom-section {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 10%;
+            height: 160px;
+            margin-bottom: 1rem;
+        }
+
+        /* Participation Section */
+        .participation-section {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-width: 50%;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* GIF placeholder */
+        .ceremony-gif {
+            flex: 1;
+            background-color: transparent;
+            max-width: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .ceremony-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+        }
+
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 90%;
+            max-width: 700px;
+            border-radius: 8px;
+            padding: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem auto;
+            overflow-y: auto;
+            max-height: 85vh;
+            
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        
+        /* Custom scrollbar for Webkit browsers */
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: #fff;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-text {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .modal-text p {
+            margin-bottom: 1rem;
+        }
+
+        .modal-text ul, .modal-text ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-text li {
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+
+        .ceremony-list {
+            list-style-type: disc;
+        }
+
+        .ceremony-list li {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ceremony-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ritual-steps {
+            counter-reset: steps;
+            padding-left: 0.5rem;
+        }
+
+        .ritual-steps li {
+            counter-increment: steps;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .ritual-steps strong {
+            color: #fff;
+            display: inline-block;
+            margin-right: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto !important;
+            }
+            .welcome-text-container {
+                padding: 0 1.5rem;
+                height: 140px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .middle-section {
+                padding: 0 1.5rem;
+            }
+
+            .cards-container {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .info-card {
+                padding: 0.8rem;
+                width: 100%;
+                height: 80px;
+            }
+            
+            /* Make bottom section vertical on mobile */
+            .bottom-section {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 0 1.5rem;
+                height: auto;
+                margin-bottom: 0;
+            }
+
+            .participation-section {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+                max-width: 100%;
+                height: 90px;
+            }
+
+            .ceremony-gif {
+                height: 120px;
+                max-width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">jashan ceremony</h1>
+            </div>
+            
+            <div class="content-container">
+                <!-- Welcome Text with Typing Animation -->
+                <div class="welcome-text-container">
+                    <div class="welcome-text">
+                        <p id="text1"></p>
+                        <p id="text2"></p>
+                        <p id="text3"></p>
+                    </div>
+                </div>
+                
+                <div class="middle-section">
+                    <!-- Cards for different sections -->
+                    <div class="cards-container">
+                        <div class="info-card" id="prayersCard">
+                            <h3>prayers in the jashan</h3>
+                            <p>important prayers which will be recited in the jashan</p>
+                        </div>
+                        
+                        <div class="info-card" id="requisitesCard">
+                            <h3>ritual requisites</h3>
+                            <p>requirements for a jashan</p>
+                        </div>
+                        
+                        <div class="info-card" id="actsCard">
+                            <h3>ritual acts</h3>
+                            <p>things you'll probably see during a jashan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom section with participation and GIF side by side -->
+                <div class="bottom-section">
+                    <!-- Participation Section -->
+                    <div class="participation-section">
+                        Participation in a Jashan ritual by Zoroastrians is considered as an act of great merit. Participants receive divine blessings and imbibe teachings by witnessing the ritual acts. Those participating first perform the Kasti ritual and offer sandal-wood to the fire.
+                    </div>
+                    
+                    <!-- GIF Placeholder -->
+                    <div class="ceremony-gif" id="ceremonyGifPlaceholder">
+                        <img src="../media/gifs/jashan-ceremony.gif" alt="Jashan Ceremony Animation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal popups for each section -->
+    <!-- Prayers Modal -->
+    <div id="prayersModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button">&times;</button>
+            <h2 class="modal-title">Prayers in the Jashan</h2>
+            <div class="modal-text">
+                <ul class="ceremony-list">
+                    <li>Atash Nyaishna (Praise to the fire) Doa Nam Setayashne (In praise of Ahura Mazda)</li>
+                    <li>Pazand Dibacheh (Remembering and invoking the departed ones)</li>
+                    <li>3 Kardas (invocations to Ahura Mazda, Dahma Yazad and Sarosh Yazad – other Kardas like Ardafravash, Behram and Spandarmad may be done according to requirement)</li>
+                    <li>3 Pazand Afrins (for exhortation, blessings & Hamazor)</li>
+                    <li>Tandarosti (prayer seeking good health)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requisites Modal -->
+    <div id="requisitesModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button">&times;</button>
+            <h2 class="modal-title">Ritual Requisites</h2>
+            <div class="modal-text">
+                <p>All the seven creations – man, animals, plants, water, metal, earth, and fire – are represented in the Jashan ritual either as a participant, ritual requirement or offering.</p>
+                <p>The priest represents Ahura Mazda, the milk/Malido/Rava represents Bahman Ameshaspand, the fire represents Ardibahesht Ameshaspand, the metallic utensils represent Shahrevar Ameshaspand, the earth demarcated by the mat represents Spandarmad Ameshaspand, the water represents Khordad Ameshaspand and fruits-flowers represent Amardad Ameshaspand.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acts Modal -->
+    <div id="actsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button">&times;</button>
+            <h2 class="modal-title">Ritual Acts</h2>
+            <div class="modal-text">
+                <p>While the Jashan ritual is in progress, the following ritual acts are performed. Each ritual act has a certain meaning and conveys some important religious truth. These ritual acts are:</p>
+                <ol class="ritual-steps">
+                    <li><strong>Paevand:</strong> It is the connection formed by touching the fire censor with a ladle and then joining the hands of other participating priests for drawing divine energy from the fire.</li>
+                    <li><strong>Flower ritual:</strong> 8 flowers are arranged, two horizontally and six vertically, reminding the participants of the 2 worlds and imbibing virtues from six Ameshaspands. The descending and ascending picking up of flowers while saying humatanam hukhtanam and hvarshtanam remind us that we come from the spiritual world return there, taking back with us just our good thoughts, words and deeds.</li>
+                    <li><strong>Karsha ritual:</strong> Touching the ladle or tong to the metallic vessels on the four sides and four corners to fortify the ritual area. It also makes the participants aware of the omnipresence of God.</li>
+                    <li><strong>Hamazor:</strong> A special handshake performed by participating priests to share divine energy.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize typing animation (not duplicated in combined.js)
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            const text3Element = document.getElementById('text3');
+            
+            // Texts to be typed
+            const texts = [
+                "The word Jashan is a latter form of the word Yasna which means veneration. In this ritual Ahura Mazda, the Fravashis, Daham Yazad and Sarosh Yazad are invoked by the recitation of certain prayers accompanied by ritual gestures.",
+                "The Jashan ritual lasts for about an hour and can be performed in any ritually clean place. Jashans are performed as a thanksgiving for happy and auspicious occasions.",
+                "They are also performed to commemorate important historical events."
+            ];
+            
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+            
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    // Ensure last cursor is removed
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return; // All done typing or element missing
+                }
+                
+                const currentText = texts[currentTextIndex];
+                
+                if (currentCharIndex < currentText.length) {
+                    // Remove previous cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Add next character
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    
+                    // Add blinking cursor
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    
+                    currentCharIndex++;
+                    setTimeout(typeText, Math.random() * 5 + 10); // Faster typing speed
+                } else {
+                    // Finished current text, remove cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Move to next text
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    
+                    if (currentTextIndex < texts.length) {
+                        currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                        if(currentElement) currentElement.textContent = ''; // Clear next element
+                        setTimeout(typeText, 300);
+                    } else {
+                        currentElement = null; // Stop processing
+                    }
+                }
+            }
+
+            // Start typing
+            typeText();
+            
+            // Modal functionality
+            const prayersCard = document.getElementById('prayersCard');
+            const requisitesCard = document.getElementById('requisitesCard');
+            const actsCard = document.getElementById('actsCard');
+            
+            const prayersModal = document.getElementById('prayersModal');
+            const requisitesModal = document.getElementById('requisitesModal');
+            const actsModal = document.getElementById('actsModal');
+            
+            const closeButtons = document.querySelectorAll('.close-button');
+            
+            // Open modals
+            prayersCard.addEventListener('click', function() {
+                prayersModal.style.display = 'flex';
+            });
+            
+            requisitesCard.addEventListener('click', function() {
+                requisitesModal.style.display = 'flex';
+            });
+            
+            actsCard.addEventListener('click', function() {
+                actsModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    modal.style.display = 'none';
+                });
+            });
+            
+            // Close when clicking outside
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Close with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modals.forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoroastrian Calendar - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .calendar-header {
+            margin-bottom: 2rem;
+        }
+        .calendar-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        .calendar-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .name-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 1.2rem 1rem 1.1rem 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 120px;
+        }
+        .name-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #b6eaff;
+            margin-bottom: 0.3rem;
+        }
+        .name-original {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+        .name-meaning {
+            font-size: 0.97rem;
+            color: #b9b9b9;
+        }
+        .mah-title {
+            margin-top: 2.5rem;
+            font-size: 1.15rem;
+            color: #b6eaff;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .mah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+        .mah-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 1.1rem 1rem 1rem 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .mah-number {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffe7b6;
+            margin-bottom: 0.2rem;
+        }
+        .mah-original {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+        .mah-meaning {
+            font-size: 0.97rem;
+            color: #b9b9b9;
+        }
+        .gatha-title {
+            margin-top: 2.3rem;
+            font-size: 1.13rem;
+            color: #ffe7b6;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .gatha-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .gatha-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            font-size: 1.07rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .names-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+            .mah-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        <div class="calendar-header">
+            <div class="calendar-title">The Zoroastrian Calendar</div>
+            <div class="calendar-subtitle">A sacred system of days, months, and Gathas</div>
+        </div>
+        <div style="margin-bottom: 1.6rem; color: #b9b9b9;">
+            The Zoroastrian Calendar is of 365 days, with 12 months of 30 days each plus the 5 Gathas. The days and months are named after Ahura Mazda and His Ameshaspands and the Yazads, who look after their own special spheres and hence they are addressed with a special title e.g. Dadar Hormuzd, Behman Ameshspand, Adar Yazd, Mino Ram etc. We can worship Ahura Mazda through them. The last 10 days of the year are the Farvardegan (Muktad) days when special prayers are said for the dear departed.
+            <br><br>
+            The days in a Zoroastrian month with their literal meanings and special domains are listed below.
+        </div>
+        <div class="names-grid" id="roj-grid"></div>
+        <div class="mah-title">Names of Zoroastrian Months (Mah)</div>
+        <div class="mah-grid" id="mah-grid"></div>
+        <div class="gatha-title">The Five Gāthās</div>
+        <div class="gatha-list" id="gatha-list"></div>
+        <div style="color: #b9b9b9; margin-top: 1.2rem;">
+            The last five days in the Zoroastrian calendar after the twelve months of the year are named after the Five Gathas - the Divine Songs (hymns) of Spitama Zarathushtra. The Gathas are holy and the best teachings of Zarathushtra in which there is true wisdom which benefits mankind. They are in the form of poetry and preach peace, progress and perfection. Though they were spoken by Zarathushtra over 3,000 years ago their message is alive even today. They praise Ahura Mazda and also deal with the dual principles of good and evil.
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Days (Roj)
+            const roj = [
+                { id: 1, name: "Dadar Hormazd", meaning: "Lord of the World" },
+                { id: 2, name: "Behman", meaning: "Good Mind (Ameshāspand)" },
+                { id: 3, name: "Ardibehsht", meaning: "Truth / Order (Ameshāspand)" },
+                { id: 4, name: "Shaherevar", meaning: "Spiritual Strength (Ameshāspand)" },
+                { id: 5, name: "Spandarmad", meaning: "Devotion (Ameshāspand)" },
+                { id: 6, name: "Khordād", meaning: "Perfection (Ameshāspand)" },
+                { id: 7, name: "Amāardād", meaning: "Oneness with God (Ameshāspand)" },
+                { id: 8, name: "Dae-pa-Adar", meaning: "Dedicated to God (Dadar)" },
+                { id: 9, name: "Ādar Yazad", meaning: "Fire" },
+                { id: 10, name: "Āvan Ardvi Soor Banoo", meaning: "Water" },
+                { id: 11, name: "Khorshed Yazad", meaning: "Sun" },
+                { id: 12, name: "Mohor Yazad", meaning: "Moon" },
+                { id: 13, name: "Tir Yazad", meaning: "Star" },
+                { id: 14, name: "Gosh Yazad", meaning: "Soul of the Earth" },
+                { id: 15, name: "Dae-pa-Meher", meaning: "Dedicated to God (Dādār)" },
+                { id: 16, name: "Meher Yazad", meaning: "Friendship" },
+                { id: 17, name: "Saroash Yazad", meaning: "Obedience" },
+                { id: 18, name: "Rashne", meaning: "Judge" },
+                { id: 19, name: "Furrokh Farvardin", meaning: "Guardian Spirit" },
+                { id: 20, name: "Behrām Yazad", meaning: "Victory" },
+                { id: 21, name: "Mīno Rām", meaning: "Peace, Joy" },
+                { id: 22, name: "Govād Yazad", meaning: "Wind" },
+                { id: 23, name: "Dae-pa-Din", meaning: "Dedicated to God" },
+                { id: 24, name: "Din Yazad", meaning: "Religion" },
+                { id: 25, name: "Mino Ashishvangh", meaning: "Wealth" },
+                { id: 26, name: "Āshtād Yazad", meaning: "Justice" },
+                { id: 27, name: "Mino Āsmān", meaning: "Sky" },
+                { id: 28, name: "Zamyād Yazad", meaning: "Earth" },
+                { id: 29, name: "Mino Mārespand", meaning: "Holy Words" },
+                { id: 30, name: "Mino Anerān", meaning: "Endless Light" }
+            ];
+            // Months (Mah)
+            const mah = [
+                { id: 1, name: "Furrokh Farvardin", meaning: "" },
+                { id: 2, name: "Adibehsht Ameshāspand", meaning: "" },
+                { id: 3, name: "Khordad Ameshāspand", meaning: "" },
+                { id: 4, name: "Tir Yazad", meaning: "" },
+                { id: 5, name: "Amārdād Ameshāspand", meaning: "" },
+                { id: 6, name: "Shaherevar Ameshāspand", meaning: "" },
+                { id: 7, name: "Meher Yazad", meaning: "" },
+                { id: 8, name: "Āvan Ardvi Soor Banoo", meaning: "" },
+                { id: 9, name: "Ādar Yazad", meaning: "" },
+                { id: 10, name: "Dae Dadaar", meaning: "" },
+                { id: 11, name: "Behman Ameshāspand", meaning: "" },
+                { id: 12, name: "Spandarmad Ameshāspand", meaning: "" }
+            ];
+            // Five Gathas
+            const gathas = [
+                { id: 1, name: "Ahunavad" },
+                { id: 2, name: "Ushtavad" },
+                { id: 3, name: "Spentomad" },
+                { id: 4, name: "Vohukhshathra" },
+                { id: 5, name: "Vahishtōisht" }
+            ];
+            // Populate Roj grid
+            const rojGrid = document.getElementById('roj-grid');
+            roj.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'name-box';
+                const num = document.createElement('div');
+                num.className = 'name-number';
+                num.textContent = item.id;
+                const orig = document.createElement('div');
+                orig.className = 'name-original';
+                orig.textContent = item.name;
+                const meaning = document.createElement('div');
+                meaning.className = 'name-meaning';
+                meaning.textContent = item.meaning;
+                box.appendChild(num);
+                box.appendChild(orig);
+                box.appendChild(meaning);
+                rojGrid.appendChild(box);
+            });
+            // Populate Mah grid
+            const mahGrid = document.getElementById('mah-grid');
+            mah.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'mah-box';
+                const num = document.createElement('div');
+                num.className = 'mah-number';
+                num.textContent = item.id;
+                const orig = document.createElement('div');
+                orig.className = 'mah-original';
+                orig.textContent = item.name;
+                if(item.meaning) {
+                    const meaning = document.createElement('div');
+                    meaning.className = 'mah-meaning';
+                    meaning.textContent = item.meaning;
+                    box.appendChild(meaning);
+                }
+                box.appendChild(num);
+                box.appendChild(orig);
+                mahGrid.appendChild(box);
+            });
+            // Populate Gatha list
+            const gathaList = document.getElementById('gatha-list');
+            gathas.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'gatha-box';
+                box.textContent = item.id + '. ' + item.name;
+                gathaList.appendChild(box);
+            });
+        });
+    </script>
+</body>
+</html>

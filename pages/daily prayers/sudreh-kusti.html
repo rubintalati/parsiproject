@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudreh Kusti Ritual - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Top section GIF layout - 2x2 grid */
+        .gif-grid-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .gif-box {
+            background-color: rgba(40, 40, 40, 0.5);
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .gif-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Middle section GIF - single box */
+        .gif-single {
+            margin-bottom: 2rem;
+        }
+        
+        .gif-single .gif-box {
+            width: 100%;
+            aspect-ratio: 16/4;
+            height: 120px;
+        }
+        
+        /* Bottom section GIF layout */
+        .gif-grid-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Final GIF - single box */
+        .gif-final {
+            margin-bottom: 2rem;
+        }
+        
+        .gif-final .gif-box {
+            width: 100%;
+            aspect-ratio: 16/4;
+            height: 120px;
+        }
+
+        .compass-container {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 120px;
+            height: 120px;
+            z-index: 10;
+        }
+        .compass {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .compass-ring {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+        .compass-needle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+        }
+        .compass-needle svg {
+            width: 75%;
+            height: 75%;
+        }
+        .compass-direction {
+            position: absolute;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0.75;
+            pointer-events: none;
+            z-index: 2;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .compass-direction.active {
+            opacity: 1;
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            background-color: rgba(30, 30, 30, 0.8);
+        }
+        .compass-direction.north {
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .compass-direction.east {
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .compass-direction.south {
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .compass-direction.west {
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        @media (max-width: 768px) {
+            .compass-container {
+                top: 1.5rem;
+                right: 1.5rem;
+                width: 100px;
+                height: 100px;
+            }
+            .compass-direction {
+                font-size: 14px;
+                width: 20px;
+                height: 20px;
+            }
+            .compass-direction.north {
+                top: 10px;
+            }
+            .compass-direction.east {
+                right: 10px;
+            }
+            .compass-direction.south {
+                bottom: 10px;
+            }
+            .compass-direction.west {
+                left: 10px;
+            }
+        }
+        .direction-advice {
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 12px;
+            margin-left: 0;
+            margin-right: auto;
+            letter-spacing: 0.2px;
+            background-color: rgba(255,255,255,0.13);
+            color: #fff;
+            border-radius: 3px;
+            padding: 2px 10px;
+            box-shadow: 0 1px 6px 0 rgba(0,0,0,0.10);
+            display: inline-block;
+            text-align: left;
+            min-width: 0;
+            width: auto;
+            max-width: 100vw;
+        }
+        @media (max-width: 768px) {
+            .direction-advice {
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .prayer-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="compass-container">
+            <div class="compass">
+                <div class="compass-ring"></div>
+                <div class="compass-needle" id="compass-needle">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1"/>
+                        <path d="M50 10 L65 50 L50 90 L35 50 Z" fill="rgba(255,255,255,0.7)"/>
+                        <circle cx="50" cy="50" r="8" fill="#000" stroke="#fff" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="compass-direction north" data-direction="north" data-min="315" data-max="45">N</div>
+                <div class="compass-direction east" data-direction="east" data-min="45" data-max="135">E</div>
+                <div class="compass-direction south" data-direction="south" data-min="135" data-max="225">S</div>
+                <div class="compass-direction west" data-direction="west" data-min="225" data-max="315">W</div>
+            </div>
+        </div>
+        <button id="permission-button" class="permission-button">Enable Compass</button>
+        <div style="height:12px;"></div>
+        <div class="header">
+            <a href="../home.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <div id="direction-advice" class="direction-advice"></div>
+            <h1 class="prayer-title">sudreh kasti ritual</h1>
+            <p class="prayer-subtitle">Khshnaothra ahunahe mazdāo, Ashem Vohū 1</p>
+        </div>
+
+        <!-- Top GIF section - 2 videos side by side -->
+        <div class="gif-grid-top">
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudrehkasti1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudrehkasti2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        
+        <!-- Kem-nā-mazdā Section -->
+        <div class="prayer-section" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <p class="prayer-subtitle">the one for divine protection</p>
+            <h2 class="prayer-name">kem-nā-mazdā</h2>
+            
+            <div class="prayer-text">
+                <p>Kem-nā Mazdā, mavaitē pāyūm dadāt, hyat mā dregvāo didareshatā aēnanghē, anyem thwahmat āthraschā mananghaschā, yayāo shyaothanāish ashem thraoshtā Ahurā, tām mōi dąstvām daēnayāi frāvaocā.</p>
+            </div>
+            
+            <div class="prayer-translation">
+                <p>Ahura Mazda, who will protect me from all evil, but Thyself? Show me a spiritual guide, who with the aid of Good Mind will protect me from evil. May the wicked be destroyed and may the evil one demolish Your Creation. I create Good thoughts and prosperity. I respect and honour.</p>
+            </div>
+        </div>
+        
+        <!-- Middle GIF section - single horizontal box -->
+        <div class="gif-single">
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudrehkasti6.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        
+        <!-- Hormazd Khodāy Section -->
+        <div class="prayer-section">
+            <p class="prayer-subtitle">the one for forgiveness</p>
+            <h2 class="prayer-name">hormazd khodāy</h2>
+            
+            <div class="prayer-text">
+                <p>Hormazd Khodāy ahereman awādashān dūr-awāzāyashnē, zad-shikashtē bād. Ahereman dēwān drūjān awādashān, gunāhgārān dūsh-manashān, dush-gūftārān, dush-kunashān, drūjān, druzān, jādūgārān, grimānigān karino-gān tā-sar-nigūn bād, shikashtē bād.</p>
+                <br>
+                <p>Dushmananshān awazdashān bād, dushmanashān awazdashān bād.</p>
+                <br>
+                <p>Hormazd Khodāy aż hamā gunāh patet pashēmānum. Az harche gunāh wanāh, kerdarē kuneshnē, minishnē kunishnē, bunē gunāh, robnē gunāh, az geti minoi, ōhē awakhsh pashēmānum, pa sē garznē patet hom.</p>
+                <br>
+                <p>Khshnaothra ahunahe mazdāo, tarōidite angrahe mainyēush. Haithy-āvarshtām hyat vasnā frashōtemem. Staomi ashem. Ashem Vohū 1.</p>
+            </div>
+            
+            <div class="prayer-translation">
+                <p>May Dadar Hormazd, Who is the Lord of the Universe, destroy all evil. I ask forgiveness for all sins of thought, word or deed. O Dadar Hormazd, I promise to please Thee by adopting all will and by following this path of righteousness which will bring happiness in the world.</p>
+            </div>
+        </div>
+        
+        <!-- Bottom GIF section - 2x2 grid -->
+        <div class="gif-grid-bottom">
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudrehkasti6.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="gif-box"></div>
+        </div>
+        
+        <!-- Jasa me avanghe Mazda Section -->
+        <div class="prayer-section">
+            <p class="prayer-subtitle">the one for faithful devotion</p>
+            <h2 class="prayer-name">jasa me avanghe mazda</h2>
+            
+            <div class="prayer-text">
+                <p>Jasa me avanghe Mazda (3). Mazdayasnō ahmī, mazdayasnō zarathushtrish. Fravarānē astūtō būtōish astūtō būtōish. Astuye humatem manō, astuye hūkhtem vachō, astuye hvarshtem shyaothnem. Astuye daēnām vanghuhīm māzdayasnīm, fraspāyaokhēdrām, nidhāsnaithrishem, khraozhdishem, khraozhdish-tōishem. Yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yā hāitīm vīspāish ashem stūtōish stūtōish. Aētat dīsh āyesē yesne, haithyāvarshtām hyat vasnā frashōtemen. Staomi ashem. Ashem Vohū 1.</p>
+            </div>
+            
+            <div class="prayer-translation">
+                <p>I ask for divine help and proclaim that I belong to the Mazdayasnan religion and have full faith in it only. My religion teaches me to be good in thought, word and deed and firmly I believe that all good things come from Ahura Mazda.</p>
+            </div>
+        </div>
+        
+        <!-- Final GIF - single horizontal box -->
+        <div class="gif-final">
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudrehkusti10.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // COMPASS FUNCTIONALITY
+            const permissionButton = document.getElementById('permission-button');
+            const directions = document.querySelectorAll('.compass-direction');
+            const compassNeedle = document.getElementById('compass-needle');
+            let currentDirection = null;
+            let permissionGranted = false;
+            function highlightDirection(bearing) {
+                bearing = (bearing + 360) % 360;
+                compassNeedle.style.transform = `rotate(${360 - bearing}deg)`;
+                let newDirection = null;
+                directions.forEach(dir => {
+                    const dirName = dir.dataset.direction;
+                    const minAngle = parseInt(dir.dataset.min);
+                    const maxAngle = parseInt(dir.dataset.max);
+                    if (minAngle > maxAngle) {
+                        if (bearing >= minAngle || bearing < maxAngle) {
+                            newDirection = dirName;
+                        }
+                    } else {
+                        if (bearing >= minAngle && bearing < maxAngle) {
+                            newDirection = dirName;
+                        }
+                    }
+                });
+                if (newDirection !== currentDirection) {
+                    currentDirection = newDirection;
+                    directions.forEach(dir => {
+                        dir.classList.remove('active');
+                    });
+                    if (currentDirection) {
+                        const activeDir = document.querySelector(`.compass-direction[data-direction="${currentDirection}"]`);
+                        if (activeDir) {
+                            activeDir.classList.add('active');
+                        }
+                    }
+                }
+            }
+            function handleOrientation(event) {
+                if (event.alpha !== null) {
+                    permissionGranted = true;
+                    permissionButton.style.display = 'none';
+                    let heading = event.alpha;
+                    if (event.webkitCompassHeading) {
+                        heading = event.webkitCompassHeading;
+                    }
+                    highlightDirection(heading);
+                }
+            }
+            function requestOrientationPermission() {
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission().then(function(permissionState) {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                            permissionButton.style.display = 'none';
+                        }
+                    }).catch(console.error);
+                } else {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            }
+            permissionButton.addEventListener('click', requestOrientationPermission);
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                permissionButton.style.display = 'block';
+            } else {
+                permissionButton.style.display = 'none';
+                function debugWithMouse(e) {
+                    if (!permissionGranted) {
+                        const x = e.clientX;
+                        const y = e.clientY;
+                        const compassRect = compassNeedle.getBoundingClientRect();
+                        const centerX = compassRect.left + compassRect.width / 2;
+                        const centerY = compassRect.top + compassRect.height / 2;
+                        const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
+                        const heading = (angle + 90 + 360) % 360;
+                        highlightDirection(heading);
+                    }
+                }
+                document.addEventListener('mousemove', debugWithMouse);
+            }
+            // DIRECTION ADVICE FUNCTIONALITY (SEPARATE)
+            function pad2(num) { return num < 10 ? '0'+num : num; }
+            function getCurrentTime() { return new Date(); }
+            function getSunTimes(cb) {
+                const date = new Date();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const sunTimes = SunCalc.getTimes(date, lat, lng);
+                        cb(sunTimes);
+                    }, error => {
+                        const sunTimes = SunCalc.getTimes(date, 40, 0);
+                        cb(sunTimes);
+                    });
+                } else {
+                    const sunTimes = SunCalc.getTimes(date, 40, 0);
+                    cb(sunTimes);
+                }
+            }
+            function updateDirectionAdvice(sunTimes) {
+                const now = getCurrentTime();
+                const h = now.getHours();
+                const m = now.getMinutes();
+                const t = h + m/60;
+                const sunrise = sunTimes.sunrise;
+                const sunset = sunTimes.sunset;
+                const sunriseT = sunrise.getHours() + sunrise.getMinutes()/60;
+                const sunsetT = sunset.getHours() + sunset.getMinutes()/60;
+                let advice = '';
+                if (t >= sunriseT && t < 12.667) {
+                    advice = 'Face east';
+                } else if (t >= 12.667 && t < 15.667) {
+                    advice = 'Face south or west';
+                } else if (t >= 15.667 && t < sunsetT) {
+                    advice = 'Face west';
+                } else if (t >= sunsetT || t < sunriseT) {
+                    advice = 'Face a lamp/fire/light (not north)';
+                }
+                document.getElementById('direction-advice').textContent = advice;
+            }
+            getSunTimes(function(sunTimes) {
+                updateDirectionAdvice(sunTimes);
+                setInterval(() => updateDirectionAdvice(sunTimes), 60000);
+            });
+        });
+    </script>
+</body>
+</html>

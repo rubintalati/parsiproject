@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khorshed Neyāyesh - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-note {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Prayer Modal Styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: none;
+            overflow: auto;
+        }
+
+        .modal-content {
+            max-width: 550px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-note">
+            <p>This Neyāyesh is to be recited daily during the three Gehs - Hāvan, Rapithwan and Uzirin</p>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for radiant blessing</p>
+            <h2 class="prayer-name">khorshed neyāyesh</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p>Khshnaothra Ahurahe Mazdāo. Ashem Vohū; Pa nāme yazdān, satāyem zabāem dādār Ahura Mazda rayōmand, khorehmand harvesp-āgāh, kerdegār khodāvandān khodāvand pādashāh bar hame pādashāhān, negehdār, khālek makhluk, ar-razzāk ruzi-dehandeh, kāder o kavī o kadīm; bakhshā-yandeh, bakhshāyeshgar, meherbān, tavānā o dānā o dādār o pāk parvardegār. Ādel pādashāhī.</p>
+            
+            <p>bīzavāl bâshad. Hormazd Khodâe awazûnī gorje khoreh awazâyâd. Khorshed amarg rayômand aurvad-asp be-rasâd.</p>
+            
+            <p>Az hamâ gunâh patet pashemânum; az harvastīn dushmata duzhukhta duzhvarshṭa, mem pa getī manīd, oem goft, oem kard, oem jast, oem bûn bûd ested. Az ân gunâh manashnī gavashnī kunashnī, tanī ravânī getī minoânī, okhe awâkhsh pashemân, pa sê gavashnê pa patet hom.</p>
+            
+            <p class="prayer-instruction">(To recite with a bow)</p>
+            
+            <p>Nemase-te Ahura Mazda, nemase-te Ahura Mazda, nemase-te Ahura Mazda, thrish-chit parō anyâish dâmân. Nemō vê Amesha Spentâ vispe hvare-hazaoshâo. Aêtat jahât Ahurem Mazdâm aêtat Ameshe Spente, aêtat ashaonâm Fravashîsh, aêtat vayâm dareghō-khadhâtem. Khshnaothra Ahurahe Mazdâo, tarôidîte anghrahe mainyêush. Haithyâ-</p>
+            
+            <p>Ferastuye humatōibyaschā huktōibyaschā hvarshtōibyaschā, mānthwōibyaschā vakhedhwōibyaschā varshtwōibyaschā. Aibi-gairyā daithe vispā humatāchā huktāchā hvarshtāchā. Paiti-richyā daithe vispā dushmatāchā duzhuktāchā duzhvarshtāchā. Ferā ve rāhi Amesha Spentā yasnemchā vahmemchā ferā mananghā ferā vachanghā ferā shyaothanā, ferā anghuyā, ferā tanvaschit khvakhyāo ushtanem. Staomi Ashem; Ashem Vohū 1.</p>
+            
+            <p class="prayer-instruction">(To recite bowing the head)</p>
+            
+            <p>Nemō Ahurāi Mazdāi, nemō Ahurāi Mazdāi, nemō Ahurāi Mazdāi; nemō Ameshaeibyō Spentaeibyō, nemō Mithrāi vourugaoyaoiṭee, nemō Hvare-khshaetāi aurvat-aspāi, nemō ābyō dōithrābyō, yāō Ahurahe Mazdāo; nemō geush, nemō gayēhe, nemō Zarathushtrahe Spitāmahe ashaonō fravashee, Nemem vispayāō ashaonō stōish haithyāicha bavānithyāicha būshyānithyāicha.</p>
+            
+            <p class="prayer-instruction">(If the Geh is Hāvan, to recite as under):</p>
+            
+            <p>Vohu ukhshyā mananghā khshathrā ashačhā ushtā tanūm</p>
+            
+            <p class="prayer-instruction">(to be recited three times)</p>
+            
+            <p>Ashem Vohū 3.</p>
+            
+            <p class="prayer-instruction">(During the Geh Rapithwan or Second Hāvan, to recite as under):</p>
+            
+            <p>Imā raochāo barezishtem barezemanām</p>
+            
+            <p class="prayer-instruction">(to be recited three times)</p>
+            
+            <p>Ashem Vohū 3.</p>
+            
+            <p class="prayer-instruction">(If the Geh is Uzīrin, to recite as under):</p>
+            
+            <p>Yahmī Spentā thwā mainyū urvāēse jasō</p>
+            
+            <p class="prayer-instruction">(to be recited three times)</p>
+            
+            <p>Ashem Vohū 3.</p>
+            
+            <p>Hvare-khshaētem ameshem raēm aurvat-aspem yazamaide. Mithrem Vouru-gaoyaoiṭim yazamaide, arsh-vachanghem, vyākhanem, hazanghra-gaoshem, hutāshṭem, baēvare-chashmanem, berezan- tem, perethu -vaēdhayanem sûrem akhvafnem jaghûrvāonghem. Mithrem vîspanām dakhyunām danghu-paitîm yazamaide, yim fradathat Ahurō Mazdāo, khvarenanguhastemem mainyavanām yazatanām, Tat nō jamyāt avanghe Mithra Ahura berezanta. Hvarekshaētem ameshem raēm aurvat-aspem yazamaide.</p>
+            
+            <p>Tishtrīm drvō-chashmanem yazamaide,<br>
+            Tishtrīm drvō-chashmanem yazamaide,<br>
+            Tishtrīm drvō-chashmanem yazamaide.</p>
+            
+            <p>Tistrīm yazamaide, Tistryenyō yazamaide,<br>
+            Tishtryō raēvāo khvarenanguhāo<br>
+            yazamaide, vanantem stārem mazdadhātem<br>
+            yazamaide, Tishtrīm stārem raēvantem.<br>
+            khvarenanguhantem yazamaide, thwāshem<br>
+            khvadhātem yazamaide, zrvānem akaranem<br>
+            yazamaide, zrvanem dareghō-khvadhātem yazamaide.</p>
+            
+            <p>Vātem spentem hudhāonghem yazamaide, razishtām chishtām Mazdadhātām ashaonīm yazamaide. Daenām vanguhīm māzdayasnīm yazamaide. Pathām khvāstāitīm yazamaide, zarenumantem sūrem yazamaide, saokantem gairīm mazdadhātem yazamaide.</p>
+            
+            <p>Vīspemcha ashavanem mainyaom yazatem yazamaide, vīspemcha ashavanem gaēthīm yazatem yazamaide, haom urvānem yazamaide, havām fravashīm yazamaide. Jasa me avanghe Mazda. Ashāunām vanguhīsh sūrāo spentāo fravashayō yazamaide. Hvare-khshaētem ameshem raēm aurvat-aspem yazamaide. Ashem Vohū 3.</p>
+            
+            <p>Fravarāne mazdayasnō zarathushtrish vīdaēvō ahura-tkaēshō (Geh according to the period of the day) frasastayaēcha. Hvare- khshaētahe ameshahe raēvahe aurvat- aspahē, khshnaothra yasnaīcha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahū vairyō zaotā frā me mrūte, athā ratush ashāt- chit hacha, frā ashava vīdhvāo mraotū.</p>
+            
+            <p>Hvare-khshaētem ameshem raēm aurvat-aspem yazamaide. Āat yat hvare-raokhshni tāpayēiti, āat yat hvare-raochō tāpyēiti, hishtenti mainyavāonghō yazataonghō, satemcha hazangremcha; tat khvareō hām-bārayēinti, tat khvarenō nipārayēinti, tat khvarenō bakhshenti, zām paitī ahuradhātām, frādhatica ashahe gaēthāo, frādhatica ashahe tanuyē, frādhatica hvare yat ameshem raēm aurvat-aspem.</p>
+            
+            <p>Āat yat hvare uzukhshyēiti, bvat zām Ahuradhātām yaozdāthrem, āpem tachintām yaodāthrem, āpem khānyām. yaozdāthrem, āpem zrayānām yaozdāthrem, āpem armaēshtām yaozdāthrem, bvat dāma ashava yaozdāthrem, yāo henti spentahe mainyēush.</p>
+            
+            <p>Yedhi zi hvare nōit uz-ukhshyeiti, adha daēva vīspāo merenchinti yāo henti, haptō - karshvōhva nava chish mainyava yazata anghava astvaiti paiti-drām noit paitishtām vidhenti.</p>
+            
+            <p>Yō yazaite hvare yat ameshem raēm aurvat-aspem, paitishtātēe temanghām, paitishtātēe temas-chithranām daēvanām, paitishtātēe tāyunāmcha hazasnāmcha, paitishtātēe yātunamcha pairikanāmcha, paitishtātēe ithyejanghō marshaonahe, yazaite. Ahruem Mazdām, yazaite Ameshe Spente, yazaite haom urvānem, khshnāvayeiti vīspe mainyavacha yazata gaethyācha, yō yazaite hvare yat ameshem raēm aurvat-aspem.</p>
+            
+            <p>Yazāi mithrem vouru-gaoyaoitīm, hazanghragao shem, baēvare-chashmanem, yazāi vazrem hunivikhtem, kameredhe paiti daēvanām, mithrahe vouru-gaoyaoitōish, yazāi hakkhedhremcha, yat asti hakkhedh-ranām vahishtem, antare māonghemcha hvarecha.</p>
+            
+            <p>Ahe raya khvarenanghacha, tem yazāi surunvata yasna, hvare-khshaetem ameshem raem aurvat-aspem. zaothrābyō hvare-khshaētem ameshem raēm aurvat-aspem yazamaide.</p>
+            
+            <p>Haomayō gava baresmana, hizvō-danghangha, mānthracha, vachacha shyaothnacha zaothrā-byascha arshukhdh-aēibyashcha vāghzibyō.</p>
+            
+            <p>Yenghe hātām āt yesne paiti vanghō Mazdāo Ahuro vaēthā ashāt hachā, Yāonghāmachā tānschā tāoschā yazamaide.</p>
+            
+            <p class="prayer-instruction">(To pray in a murmur)</p>
+            
+            <p><strong>Hormazd Khodāe, awazūnie mardum mardum sardagān, hamā sardagān, hambāyaste vehān, oem behedīn māzdayasnān āgāhī āstavānī nekī rasānad aedūn bād</strong></p>
+            
+            <p class="prayer-instruction">(To recite loudly)</p>
+            
+            <p><strong>Yathā Ahū Vairyō 3.</strong></p>
+            
+            <p>Yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, hvare-khshaetātehe ameshahe raēvahe aurvat-aspahe. Ashem Vohū 3.</p>
+            
+            <p>Ahurānīsh ahurahe vahishtābyō zaothrābyō sraēshtābyō zaothrābyō, dahmo-pairi-angharshtābyo zaothrābyo. Ashem Vohū 1.</p>
+            
+            <p>☞ Ahmāi raēshcha; Hazanghrem; Jasa me avanghe Mazda; Kerfeh Mozd.</p>
+            
+            <p>Roz nek nām, roz pāk nām, roz mubārak (falān) māhe mubārak (falān), gāhe (falān), namāz dādāre gehān dāmān. Kshnaothra Ahurahe Mazdāo, tarōidīte anghrahe mainyēush. Haithyāvarshtām hyat vasnā ferashōtemem. Staomi Ashem; Ashem Vohū 1.</p>
+            
+            <p>Gorje khoreh awazāyād khorshed amarg rayōmand aurvad-asp, be-rasād amāvand pirozgar amāvandih pirozgari. Dād dīn beh Māzdayasnān āgāhi ravāi goāfrangānī bād hafte keshvar zamīn aēdun bād. Man āno āwāyad shudan, man āno āwāyad shudan, man āno āwāyad Shudan. Ashaone Ashem Vohū 1.</p>
+            
+            <p class="prayer-instruction">(To be recited facing the south)</p>
+            
+            <p>Dādāre gehān dīne Māzdayasnī dāde Zarthushtī. Nemase-te ashāum sēvishte Aredvi Sūra Anāhite Ashaone Ashem Vohū 1. Nemō urvaire vanguhi mazdadhāte ashaone Ashem Vohū 1.</p>
+            
+            <p>Hvare-khshaetem amêshem raêm aurvat-aspem yazamaide. Ashem Vohū 1. Khorshed amarg rayōmand aurvad-asp be-rasād. Ashem Vohū 1.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>Khorshed Neyāyesh is dedicated to the bright and powerful sun, which gives light. Its rays purify Ahura Mazda's creation and help destroy all evil. I worship the Almighty, the glory and power of Khorshed Yazad, the divinity who presides over the Sun and pray that its power may increase. I repent for all the wrong I've done and promise to do what is good and righteous. I revere all the Amesha Spentas and the Yazads, the brilliant star Sirius, the flowing waters, the plant world and all God's creation. I admire Zarathushtra. May the fame of the Mazdayasni religion spread everywhere. May Khorshed Yazad help me.</p>
+        </div>
+    </div>
+
+    <!-- Prayer Detail Modal (hidden by default) -->
+    <div id="prayer-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closePrayerModal()">×</button>
+            
+            <div class="prayer-header">
+                <p class="prayer-subtitle" id="modal-subtitle"></p>
+                <h3 class="prayer-name" id="modal-name"></h3>
+            </div>
+
+            <div class="prayer-text" id="modal-text"></div>
+
+            <div class="prayer-translation" id="modal-translation"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open prayer modal
+        function openPrayerModal(prayerId) {
+            const modal = document.getElementById('prayer-modal');
+            
+            // Here you would typically load the specific prayer content based on prayerId
+            if (prayerId === 'khorshed-neyayesh') {
+                document.getElementById('modal-subtitle').textContent = 'the one for radiant blessing';
+                document.getElementById('modal-name').textContent = 'khorshed neyāyesh';
+                // Content would be truncated here for brevity in the modal
+                document.getElementById('modal-text').innerHTML = 'Khshnaothra Ahurahe Mazdāo. Ashem Vohū; Pa nāme yazdān, satāyem zabāem dādār Ahura Mazda rayōmand, khorehmand harvesp-āgāh, kerdegār khodāvandān khodāvand pādashāh bar hame pādashāhān, negehdār, khālek makhluk, ar-razzāk ruzi-dehandeh, kāder o kavī o kadīm; bakhshā-yandeh, bakhshāyeshgar, meherbān, tavānā o dānā o dādār o pāk parvardegār. Ādel pādashāhī...';
+                document.getElementById('modal-translation').innerHTML = '<p>Khorshed Neyāyesh is dedicated to the bright and powerful sun, which gives light. Its rays purify Ahura Mazda\'s creation and help destroy all evil. I worship the Almighty, the glory and power of Khorshed Yazad, the divinity who presides over the Sun and pray that its power may increase...</p>';
+            }
+            
+            // Show the modal
+            modal.style.display = 'block';
+        }
+
+        // Function to close prayer modal
+        function closePrayerModal() {
+            document.getElementById('prayer-modal').style.display = 'none';
+        }
+
+        // Close modal if user clicks outside of modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayer-modal');
+            if (event.target == modal) {
+                closePrayerModal();
+            }
+        }
+    </script>
+</body>
+</html>

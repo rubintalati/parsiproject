@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherag-no Namaskar - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Flame accent styling */
+        .flame-accent {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .flame-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #FF9800, #FF5722, rgba(255, 87, 34, 0.3));
+        }
+
+        /* Flame icon */
+        .flame-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            right: -20px;
+            opacity: 0.1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for the sacred fire</p>
+            <h2 class="prayer-name">cherag-no namaskar</h2>
+        </div>
+
+        <div class="prayer-text">
+            <div class="flame-accent">
+                <p class="prayer-paragraph">Pa nāme yazdān Hormazd Khodāe awazūni, gorje khoreh awazāyād; Ātash Dādgāh Ādar farā.</p>
+            </div>
+            
+            <p class="prayer-paragraph">Az hamā gunāh patet pashemānum: az harvastīn dushmata duzhūkhta, duzvarshta mem pa geti manīd, oem goft, oem kard, oem jast, oem būn būd ested.</p>
+            
+            <p class="prayer-paragraph">As ān gunāh, manashnī gavashnī kunashnī, tanī ravānī getī minōānī, okhe awākhsh pashemān pa sē gavashnī pa patet hom.</p>
+            
+            <p class="prayer-instruction">(To recite bowing the head):</p>
+            
+            <div class="flame-accent">
+                <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo nemase-te Ātarsh Mazdāo Ahurahe hudhāo mazishta yazata.</p>
+            </div>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+            
+            <p class="prayer-instruction">(recite three times)</p>
+            
+            <p class="prayer-paragraph">Ahmāi raēshcha: Hazanghrem: Jasa me Avanghe Mazda: Kerfeh Mozd.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>In the name of Ahura Mazda I begin this prayer. May His brilliant light enhance the power of the Fire dedicated to the Dadgah, the household fire.</p>
+            
+            <p>If I have wronged anyone or anything in thought, word or deed I repent and promise never to do so again.</p>
+            
+            <p>May it please the Almighty. I pay homage to and worship thee, O good kindly Fire, the highest amongst the Yazads.</p>
+        </div>
+    </div>
+</body>
+</html>

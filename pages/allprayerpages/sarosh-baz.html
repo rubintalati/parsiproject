@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarosh Baj Prayers - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden; /* To contain colored geh sections */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem 2rem 0 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+            padding: 0 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            padding: 0 2rem;
+        }
+
+        .prayer-note {
+            font-size: 0.9rem;
+            color: #999;
+            margin: 1.5rem 0;
+            font-style: italic;
+            padding: 0 2rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-section {
+            margin-bottom: 2rem;
+        }
+
+        /* Geh Section Colors */
+        .gah-section {
+            padding: 1.5rem 2rem;
+            margin: 0; /* No margins so they touch each other */
+        }
+        
+        /* Morning: Havan Gah */
+        .havan-gah {
+            background-color: #E6D2B5;
+            color: #333;
+        }
+        
+        /* Afternoon: Rapithwan Geh */
+        .rapithwan-geh {
+            background-color: #E8A87C;
+            color: #333;
+        }
+        
+        /* Evening: Uzirin Geh */
+        .uzirin-geh {
+            background-color: #A088B3;
+            color: #333;
+        }
+        
+        /* Night: Aiwisruthrem Geh */
+        .aiwisruthrem-geh {
+            background-color: #333D5C;
+            color: #fff;
+        }
+        
+        /* Midnight: Ushahin Geh */
+        .ushahin-geh {
+            background-color: #1A1E3C;
+            color: #fff;
+        }
+        
+        .gah-time {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-bottom: 0rem;
+            line-height: 1.1;
+        }
+        
+        .gah-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .prayer-text-dark {
+            color: #333;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .prayer-text-light {
+            color: #fff;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .concluding-section {
+            padding: 2rem;
+        }
+
+        .fin {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for divine protection</p>
+            <h2 class="prayer-name">sarosh baj</h2>
+        </div>
+
+        <div class="prayer-section">
+            <p style="padding: 0 2rem; margin-bottom: 1.5rem;">Khshnaothra ahunahe mazdāo, Ashem Vohū 1</p>
+            
+            <div class="prayer-text">
+                <p>Pa name yazdan Hormazd Khodae awazuni, gorje khoreh awazayad. Ahura Mazda Khodae, awazun, mehraban, velayatmand, dadar-o dashtar, haft Ameshaspandan, bem rasad. Az hama gunah patet pashemanum, az harche gvnah vahad, kardare kuneshe, mineshne, kuneshne, goft, goft-o shem, goft-o kam, goft-o khar, az an gunah, maneshne gunashne kunashan, tani ravan geti minou, okhe avakhsh pasheman, pa se garzashe pa patet hom. Yatha Ahu Vairyo 5, Ashem Vohu 3.</p>
+            </div>
+            
+            <div class="prayer-text">
+                <p>Fravarāne Mazdayasno Zarathushtrish vidaēvo Ahura-tkaēsho.</p>
+            </div>
+            
+            <p class="prayer-note">now recite the short geh according to the time of day</p>
+        </div>
+        
+        <!-- Hāvan Gāh Section -->
+        <div class="gah-section havan-gah">
+            <p class="gah-time">sunrise to 12:40</p>
+            <h3 class="gah-title">hāvan gāh short</h3>
+            
+            <div class="prayer-text-dark">
+                <p>Hāvanēe ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Sāvanghēe Vīsyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+        </div>
+        
+        <!-- Rapithwan Geh Section -->
+        <div class="gah-section rapithwan-geh">
+            <p class="gah-time">12:40 to 15:40</p>
+            <h3 class="gah-title">rapithwan geh short</h3>
+            
+            <div class="prayer-text-dark">
+                <p>Rapithwināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-fshawe Zangtumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+        </div>
+        
+        <!-- Uzirin Geh Section -->
+        <div class="gah-section uzirin-geh">
+            <p class="gah-time">15:40 to sunset</p>
+            <h3 class="gah-title">uzirin geh short</h3>
+            
+            <div class="prayer-text-dark">
+                <p>Uzyeirināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-vīrāi dākhyumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+        </div>
+        
+        <!-- Aiwisruthrem Geh Section -->
+        <div class="gah-section aiwisruthrem-geh">
+            <p class="gah-time">sunset to 00:40</p>
+            <h3 class="gah-title">aiwisruthrem geh short</h3>
+            
+            <div class="prayer-text-light">
+                <p>Aiwisrūthremāi aibigayāi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-vispām-hujyāitēe zarathustrōtemāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+        </div>
+        
+        <!-- Ushahin Geh Section -->
+        <div class="gah-section ushahin-geh">
+            <p class="gah-time">00:40 to sunrise</p>
+            <h3 class="gah-title">ushahin geh short</h3>
+            
+            <div class="prayer-text-light">
+                <p>Ushahināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Berejyāi nmānyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+        </div>
+        
+        <!-- Concluding Section -->
+        <div class="concluding-section">
+            <div class="prayer-text" style="padding: 0;">
+                <p>frasastayaēcha Sraoshane ashyehe, takhmahe, tanu-mānthrahe, darshi-draosh, āhuiryehe, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā AHū vairyō zaotā frā mē mrūtē, athā ratush ashātchit hacha frā ashava vīdhvāo mraotū.</p>
+            </div>
+            
+            <div class="prayer-text" style="padding: 0;">
+                <p>Sraoshem, Ashem, hurathem, verethrājinem fradat-gaēthem ashavanem ashahe ratūm yazamaide Ahunem vairīm tanūm pāiti, Ahunem vairim tanum pāiti, Ahunem vairim tanūm pāiti, Yathā Ahū Vairyo 1.</p>
+            </div>
+            
+            <div class="prayer-text" style="padding: 0;">
+                <p>Kem nā Mazdā. Yathā Ahū Vairyō 2.</p>
+                <br>
+                <p>Yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, Sarōshe ashyehe, takhmahe, tanu-mānthra, darshi-draosh, āhūiryehe. Ashem Vohū 1.</p>
+            </div>
+            
+            <div class="prayer-translation">
+                <p>May it please the Almighty! In the name of Ahura Mazda, I start my prayer. May 'Sraosha' the holy, mighty leader of all creations, who protects people, come to my help. I repent for any wrong that I may have done and promise not to do anything that is not right. I am a worshipper of Ahura Mazda and a follower of Zarathushtra. I oppose all evil. I worship the strong victorious "Sraosha".</p>
+            </div>
+            
+            <p class="fin">fin</p>
+        </div>
+    </div>
+</body>
+</html>

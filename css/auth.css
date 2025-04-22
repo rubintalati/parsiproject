@@ -1,0 +1,278 @@
+/**
+ * Authentication styles for The Parsi Project
+ */
+
+.auth-card {
+    background-color: rgba(20, 20, 20, 0.9);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-tab.active {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.auth-form-container {
+    padding: 25px;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #bbb;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.remember-me, .terms-agreement {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input, .terms-agreement input {
+    margin-right: 8px;
+}
+
+.forgot-password {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #4a00e0, #8e2de2);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+    background: linear-gradient(90deg, #5e14f7, #a53cf3);
+    transform: translateY(-2px);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    padding: 0 15px;
+    color: #888;
+    font-size: 14px;
+}
+
+.social-button {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.social-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.google-button {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Password Reset Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 10% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #fff;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.reset-instructions {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Error messages */
+.error-message {
+    color: #f86;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.success-message {
+    color: #7f7;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: rgba(0, 120, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .auth-card {
+        width: 90%;
+    }
+    
+    .modal-content {
+        width: 85%;
+        margin: 15% auto;
+    }
+}
+
+/* Animation for showing error messages */
+@keyframes shakeError {
+    0%, 100% {transform: translateX(0);}
+    25% {transform: translateX(-5px);}
+    75% {transform: translateX(5px);}
+}
+
+.form-error {
+    animation: shakeError 0.3s;
+}
+
+.form-error input {
+    border-color: rgba(255, 102, 102, 0.5);
+}
+
+.form-group .error-text {
+    display: none;
+    color: #f66;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.form-error .error-text {
+    display: block;
+}

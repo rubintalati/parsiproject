@@ -1,0 +1,148 @@
+/**
+ * Onboarding Modal Styles
+ * 
+ * Styling for the first-time user onboarding modal
+ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.onboarding-modal {
+    background-color: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.modal-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.input-group input {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.75rem;
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.avatar-selection {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.avatar-option {
+    width: 3rem;
+    height: 3rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+    opacity: 0.9;
+}
+
+.avatar-option.selected {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.identity-selection {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.identity-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.identity-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.identity-btn.selected {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+.note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0.5rem 0;
+}
+
+#submitBtn {
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Manrope', sans-serif;
+}
+
+#submitBtn:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#submitBtn:disabled {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+}

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Parsi Engagement Ceremonies - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .subsection-title {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        .subsection-subtitle {
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .note {
+            font-style: italic;
+            margin: 1rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            color: #b5b5b5;
+        }
+
+        em {
+            font-style: italic;
+            color: #e0e0e0;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .ceremony-title {
+                font-size: 1.5rem;
+            }
+            
+            .ceremony-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+
+        /* Tab Navigation Styles */
+        .filter-container {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .filter-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            max-width: 180px;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .numbered-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">engagement ceremonies</h1>
+            <p class="ceremony-subtitle">An important milestone in the journey toward marriage</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <button class="filter-button active" data-tab="general">General Preparations</button>
+                <button class="filter-button" data-tab="boys-prep">Boy's Preparations</button>
+                <button class="filter-button" data-tab="boys-ceremony">Boy's Ceremonies</button>
+            </div>
+            <div class="filter-row">
+                <button class="filter-button" data-tab="girls-prep">Girl's Preparations</button>
+                <button class="filter-button" data-tab="girls-ceremony">Girl's Ceremonies</button>
+                <button class="filter-button" data-tab="final">Final Ceremonies</button>
+            </div>
+        </div>
+        
+        <!-- General Preparations Tab -->
+        <div id="general" class="tab-content active">
+            <div class="ceremony-section">
+                <h2 class="section-title">General Preparations (Both Sides)</h2>
+                <p>In both the houses, early in the morning, the house should be decorated with <em>rangoli</em> at the entrance, and <em>torans</em> at the doors. After taking bath, the <em>ghar-ni ses</em> should be kept ready and a <em>divo</em> lighted, either with ghee or coconut oil. They should also keep ready the following:</p>
+                
+                <ul class="custom-list">
+                    <li>Sagan-ni sev, decorated with almonds and kismis</li>
+                    <li>Fried fish</li>
+                    <li>Sweetened curds</li>
+                    <li>Some sweet</li>
+                    <li>Cake and/or sandwiches</li>
+                    <li>Patla with 5 rangolis</li>
+                    <li>Cold drinks, glasses, plates, napkins etc. on a table</li>
+                    <li>Sagan envelopes for giving to the guests (For the Vevan it should be a little more together with a coconut)</li>
+                    <li>Garlands for all the guests</li>
+                </ul>
+                
+                <p>In both the houses, the ses and trays to be taken to the other side, should be kept ready early in the morning.</p>
+            </div>
+        </div>
+        
+        <!-- Boy's Side Preparations Tab -->
+        <div id="boys-prep" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Boy's Side Preparations</h2>
+                
+                <h3 class="subsection-title">Things to be taken to the girl's house</h3>
+                
+                <h4 class="subsection-subtitle">A sés wrapped with garland for the girl</h4>
+                <ul class="custom-list">
+                    <li>A pado with batasa and wrapped with garland</li>
+                    <li>A gulabdani with gulabjal</li>
+                    <li>A pigani with kanku paste</li>
+                    <li>A coconut</li>
+                    <li>A pan with kanku on it</li>
+                    <li>A sopari</li>
+                    <li>A kotlawali badam</li>
+                    <li>Some khadi saakar</li>
+                    <li>A halad ganthia</li>
+                    <li>Rice</li>
+                    <li>A small glass with curds</li>
+                    <li>A big garland for the girl</li>
+                    <li>A few extra garlands for the guests</li>
+                </ul>
+                
+                <h4 class="subsection-subtitle">Clothes to be given to the girl</h4>
+                <ul class="custom-list">
+                    <li>1 saree</li>
+                    <li>1 blouse</li>
+                    <li>1 Petticoat</li>
+                    <li>1 Sadro underwears</li>
+                    <li>1 kasti</li>
+                    <li>1 mathubanu</li>
+                    <li>1 handkerchief</li>
+                    <li>1 box of bangles</li>
+                    <li>Sagan cash</li>
+                </ul>
+                
+                <h4 class="subsection-subtitle">Additional items for the sés</h4>
+                <ul class="custom-list">
+                    <li>1 set of clothes Dahi Machli-na (not as expensive as the above). Instead of this, some jewellery or cash can also be given.</li>
+                    <li>1 silver rupee for keeping in the divo</li>
+                    <li>1 silver ring for Dahi Machali ni Reet</li>
+                    <li>The engagement ring</li>
+                    <li>An envelope with Rs. 51/- or Rs. 101/-. (If possible, they should be silver coins otherwise, notes will do)</li>
+                </ul>
+                
+                <h4 class="subsection-subtitle">Items for Dahi-Machli tray</h4>
+                <ul class="custom-list">
+                    <li>3 or 5 fresh fish or fish made from mavo or chocolate</li>
+                    <li>½ kg. of sagan khadi-saakar</li>
+                    <li>Dry kanku in a glass and a garland</li>
+                    <li>1 bowl of sweetened curds</li>
+                </ul>
+                
+                <h3 class="subsection-title">Things to be kept ready in the boy's house</h3>
+                
+                <h4 class="subsection-subtitle">For achumichu, in a small khumchi</h4>
+                <ul class="custom-list">
+                    <li>1 coconut</li>
+                    <li>1 egg</li>
+                    <li>1 sopari</li>
+                    <li>1 pan</li>
+                    <li>1 kharek</li>
+                    <li>1 kotlawali badam</li>
+                    <li>1 piece of khadi saakar</li>
+                    <li>Some rice</li>
+                    <li>A small glass or Kathli of water</li>
+                </ul>
+                
+                <p>A table should be kept ready for keeping the things that will be brought by the girl's side.</p>
+                <p>The gharni sés with divo should be kept ready on a table.</p>
+            </div>
+        </div>
+        
+        <!-- Boy's Side Ceremonies Tab -->
+        <div id="boys-ceremony" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Ceremonies at Boy's House</h2>
+                
+                <h3 class="subsection-title">Bringing the girl to the boy's house</h3>
+                
+                <p>Now the boy's mother should bring the girl home, taking back the sés she had taken with her, the Dahi Machli tray, the curd bowl, all the coconuts, all the garlands, all the envelopes given to them and the sasu-no-vago.</p>
+                
+                <p>On reaching home, the boy's mother should give the ses in her hands, to someone else to hold, then enter the house, and with achumichu that was kept ready earlier, she should vadhavo the girl and the sés and then take the girl in the house, with her right foot first.</p>
+                
+                <p class="note">(Note: Another achumichu should be kept ready, because the girl's party will soon be coming)</p>
+                
+                <h3 class="subsection-title">Visit of the Girl's Family to Boy's House</h3>
+                
+                <p>Soon after the boy's party leaves, the girl's mother together with 4 or 6 sahovasans or kunvaris should go to the boy's house, taking with them all the sés that have been kept ready.</p>
+                
+                <p>When the girl's party arrives, the boy's mother, who will be ready with achumichu, should do vadhavo. After meeting everyone, the girl's mother should request the boy to come on the patla with his right foot first. Then she should give him cash for the engagement, cash for the engagement vago and cash for Dahi Machli. After this the girl's mother should put a silver ring on the boy's left finger. He should then be given a coconut, a garland, a bouquet, a pan, a sopari, and some rice. Then he should be given sweetened curds to eat, and a little water to drink.</p>
+                
+                <p>After this, the girl should be requested to stand on the same patla. Then the boy should first put the engagement ring on the left hand finger of the girl, and then the girl should put the engagement ring on the left hand finger of the boy. Then everyone should vadhavo them and bless them together.</p>
+                
+                <p>Then the girl's mother should give to the boy's mother the saakar tapka tray, and the dahi Machli khumchi. After this she should put a silver rupee in the divo. Once this is over, the boy's side should give snacks to the girl's party.</p>
+                
+                <h3 class="subsection-title">Doing sagan to the girl's party</h3>
+                
+                <p>Now the boy's mother should request the girl's mother to come on the patla and should give her an envelope of cash and also a garland. Then she should give envelopes of cash, and garlands to all the guests starting with the eldest.</p>
+                
+                <p>The girl's party, before leaving, should invite the boy for dinner at night. Then, keeping in their sés the envelopes of cash given to them, coconuts and garlands, they should come home. They should leave behind in the boy's house, the tray and the khumchi they had brought. The girl should stay back.</p>
+            </div>
+        </div>
+        
+        <!-- Girl's Side Preparations Tab -->
+        <div id="girls-prep" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Girl's Side Preparations</h2>
+                
+                <h3 class="subsection-title">Things to be taken to the boy's house</h3>
+                
+                <h4 class="subsection-subtitle">One sés for the boy, containing</h4>
+                <ul class="custom-list">
+                    <li>Rs. 101/- (Keeping in mind the fact that it should be a little more than what has come from the boy's side)</li>
+                    <li>Rs. 101/- to Rs. 501/- for engagement vago</li>
+                    <li>Rs. 75/- or more for Dahi Machli</li>
+                    <li>1 gold ring with design, for engagement</li>
+                    <li>1 rupee coin for divo</li>
+                    <li>1 big garland</li>
+                    <li>1 bouquet</li>
+                    <li>1 coconut</li>
+                    <li>1 pan</li>
+                    <li>1 Sopari</li>
+                    <li>1 kharek</li>
+                    <li>1 kotlawali badam</li>
+                    <li>Khadi saakar</li>
+                    <li>Rice</li>
+                </ul>
+                
+                <h4 class="subsection-subtitle">For saakar tapka in a new tray</h4>
+                <ul class="custom-list">
+                    <li>2 kilos (roughly) of khadi saakar</li>
+                    <li>1 silver glass or pigani filled with kanku, the girl's horoscope, if there is one</li>
+                    <li>1 garland</li>
+                </ul>
+                
+                <h4 class="subsection-subtitle">For Dahi Machli in a new khumchi</h4>
+                <ul class="custom-list">
+                    <li>5 fresh fish</li>
+                    <li>1 bowl of curds either of german silver, glass or cut glass</li>
+                    <li>1 sagan silver ring</li>
+                    <li>1 garland</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Girl's Side Ceremonies Tab -->
+        <div id="girls-ceremony" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Ceremonies at Girl's House</h2>
+                
+                <h3 class="subsection-title">Welcoming the boy's party</h3>
+                
+                <p>When the boy's party arrives at the girl's house, the girl's mother should welcome them with achumichu as follows:</p>
+                
+                <ul class="numbered-list">
+                    <li>She should first take ovarna with the egg 7 times and break it near the right foot of the boy's mother.</li>
+                    <li>Then she should pick up pan, sopari, kharekh, badam and rice, all together, and take overna 7 times.</li>
+                    <li>Now she should take the coconut and take ovarna with it 7 times; and break it towards the right feet of those who are standing.</li>
+                    <li>Then, taking some rice in her hands from the achumichu, she should put some water in the khumchi, and taking ovarna with it 7 times, she should pour some water, first on the right, the rest of it on the left, and then, showering the rice in her hand on the people in front of her, she should welcome the boy's party with great respect.</li>
+                </ul>
+                
+                <p>After this welcome, the boy's mother should enter the house with her right foot first, and then putting the ses in her hands on the table, she should embrace the girl's mother and others and talk with them for a while.</p>
+                
+                <h3 class="subsection-title">Ceremony for Standing On the Patla</h3>
+                
+                <p>Now the girl should be requested to stand on the patla, which is decorated with 5 chok. She should step on the patla from behind, putting her right foot first.</p>
+                
+                <h4 class="subsection-subtitle">The boy's mother's duties</h4>
+                <ul class="numbered-list">
+                    <li>Apply kanku to the girl first on the right foot, then on the left foot and lastly on the forehead. Then some rice should be stuck on her forehead.</li>
+                    <li>Together with a coconut, the girl should be given all the engagement clothes from the ses except the saree, the handkerchief and the mathubanu.</li>
+                    <li>Now, the boy's mother should put some curds on a piece of khadi saakar and put it in the girl's mouth, and give her some water to drink, and then send her to change the clothes.</li>
+                    <li>When the girl returns, the boy's mother should tie some rice on one end of the saree, after sprinkling some rose water on it.</li>
+                    <li>Then, singing some sagan-na songs, the boy's mother should dress up the girl with the saree, the bangles, the silver ring, and the big garland (gajro).</li>
+                    <li>Now the girl should be given coconut, pan, sopari, and an envelope of cash.</li>
+                    <li>At this time, she should also be given the second set of clothes for Dahi Machli.</li>
+                    <li>After this the boy's mother should make the girl eat some sweetened curds and then do vadhavo. The girl should then be asked to step down from the patla from the front, with her right foot first, but before that she should embrace with affection the boy's mother. It is a sign of living graciously in the sasru.</li>
+                    <li>Then a silver rupee should be kept in the divo.</li>
+                </ul>
+                
+                <p class="note">(Note: The engagement ring should be left in the sés)</p>
+                
+                <p>After this ceremony is over, the girl's side should serve snacks to the guests.</p>
+                
+                <h3 class="subsection-title">Doing sagan to the vevan</h3>
+                
+                <p>The girl's side should serve snacks to the guests and then the girl's mother should request the boy's mother to stand on the patla, and she should be given sasu dakhal-na clothes i.e. a saree, a blouse, and a petticoat. (The last two should be of the girl's size because later in the day, the whole set will be given to the girl, and she will be wearing these clothes).</p>
+                
+                <p>Then, all those who have come from the boy's side starting with the eldest should be asked to stand on the patla and should be given envelopes and also coconuts and garlands.</p>
+                
+                <p>After this is over, sprinkling some plain water or rose water on the patla, it should be removed.</p>
+                
+                <p>Lastly, from the machli tray, the girl's mother should keep aside one fish, and keep some cash in the sés. With this, all the ceremonies in the girl's house, get over.</p>
+            </div>
+        </div>
+        
+        <!-- Final Ceremonies Tab -->
+        <div id="final" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Final Ceremonies</h2>
+                
+                <h3 class="subsection-title">When the Boy Takes the Girl Home at Night</h3>
+                
+                <h4 class="subsection-subtitle">Before sending the Girl home</h4>
+                <p>While sending the girl home at night, the boy's mother should give her the sasu-dakhal clothes which were given to her from the girl's side earlier. The girl should wear these clothes while going home. In a small sés, should be put a box of sweets and the girl's engagement clothes (as she would have changed her clothes now).</p>
+                
+                <p class="note">(Note: The boy should bring back the sés when he comes back at night though sending the sés is not necessary.)</p>
+                
+                <h4 class="subsection-subtitle">When the boy goes to the girl's house for dinner</h4>
+                <p>When the boy and the girl go to the girl's house for dinner, the girl's mother should welcome them with achumichu. After dinner, when the boy goes home, the girl's mother should give him a gold coin or cash - ghar tedya-na. Also, to whatever cash that has come from the boy's side, something should be added (to make it an odd number) and given to the boy together with a garland, a bouquet, and a box of sweets.</p>
+                
+                <p class="note">(Note: If the girl has brought a sés from the boy's house, it should be sent back with the boy. Money given to the girl, is hers. It is not to be returned.)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.filter-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

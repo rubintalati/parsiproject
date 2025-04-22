@@ -1,0 +1,288 @@
+<!-- Sidebar Template -->
+<!-- Include this in all pages -->
+
+<!-- Mobile Navigation Toggle -->
+<button class="mobile-nav-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Navigation Overlay -->
+<div class="mobile-nav-overlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo-container">
+        <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
+    </div>
+
+    <div class="sidebar-section">
+        <a href="home.html" id="nav-daily-prayers">daily prayers</a>
+        <a href="all-prayers.html" id="nav-all-prayers">all prayers</a>
+        <a href="stories.html" id="nav-stories">stories <span class="coming-soon">coming soon</span></a>
+        <a href="glossary.html" id="nav-glossary">glossary</a>
+    </div>
+
+    <div class="sidebar-section">
+        <a href="wedding-rituals.html" id="nav-wedding">wedding rituals</a>
+        <a href="navjote.html" id="nav-navjote">navjote rituals</a>
+        <a href="jashan-ceremony.html" id="nav-jashan">jashan ceremony</a>
+        <a href="death-rituals.html" id="nav-death">death rituals</a>
+    </div>
+
+    <div class="sidebar-section">
+        <a href="peramni-calculator.html" id="nav-peramni">peramni calculator</a>
+        <a href="ppt.html" id="nav-ppt">ppt <span class="coming-soon">coming soon</span></a>
+        <a href="letter-for-you.html" data-link="letter-for-you" id="nav-letter">a letter for you</a>
+    </div>
+
+    <!-- Profile header at the bottom of sidebar -->
+    <div class="sidebar-section sidebar-bottom-section">
+        <div class="profile-header sidebar-profile-header" id="sidebar-profile-header">
+            <div class="profile-avatar sidebar-profile-avatar" id="sidebar-profile-avatar-img">
+                <img src="../media/logo/avatar/cartoon%20dog.png" alt="profile avatar" id="sidebar-profile-avatar-img-tag">
+            </div>
+            <div class="profile-details sidebar-profile-details" id="sidebar-profile-details" style="cursor: pointer;">
+                <div class="profile-name sidebar-profile-name" id="sidebar-profile-name">guest</div>
+                <div class="profile-gender sidebar-profile-gender" id="sidebar-profile-gender">parsi person</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Sidebar and Mobile Navigation -->
+<style>
+    /* Sidebar Styles */
+    .sidebar {
+        width: 230px;
+        height: 100vh;
+        padding: 2rem;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        background-color: #000;
+    }
+
+    .logo-container {
+        border: 1px solid #fff;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .logo-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .sidebar-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar a {
+        display: block;
+        color: #999;
+        text-decoration: none;
+        margin-bottom: 0.6rem;
+        font-size: 14px;
+        transition: color 0.3s ease;
+        position: relative;
+    }
+
+    .sidebar a.active {
+        color: #fff;
+    }
+
+    .sidebar a:hover {
+        color: #fff;
+    }
+
+    .coming-soon {
+        display: inline-block;
+        font-size: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .sidebar-bottom-section {
+        margin-top: auto;
+        padding-bottom: 1.2rem;
+        text-align: left;
+    }
+    .sidebar-bottom-section a {
+        font-weight: 600;
+        color: #ffd54f;
+        font-size: 1.07rem;
+        letter-spacing: 0.01em;
+        display: block;
+        margin-top: 0.7em;
+        margin-bottom: 0.2em;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .sidebar-bottom-section a:hover {
+        color: #fff8e1;
+    }
+
+    /* Sidebar profile header styles (side-by-side, compact) */
+    .sidebar-profile-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.85em;
+        margin-bottom: 1.1em;
+        text-align: left;
+        cursor: pointer;
+    }
+    .sidebar-profile-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #181818;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px 0 rgba(255,213,79,0.13);
+        overflow: hidden;
+    }
+    .sidebar-profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .sidebar-profile-details {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.07em;
+    }
+    .sidebar-profile-name {
+        font-weight: 600;
+        color: #fff;
+        font-size: 0.98rem;
+        text-transform: capitalize;
+        line-height: 1.1;
+    }
+    .sidebar-profile-gender {
+        color: #bdbdbd;
+        font-size: 0.85rem;
+        text-transform: lowercase;
+        line-height: 1.1;
+    }
+
+    .sidebar-profile-details:hover .sidebar-profile-name,
+    .sidebar-profile-details:focus .sidebar-profile-name,
+    .sidebar-profile-details:hover .sidebar-profile-gender,
+    .sidebar-profile-details:focus .sidebar-profile-gender {
+        text-shadow: 0 0 8px #d0d0d0, 0 0 12px #b0b0b0;
+        color: #e0e0e0;
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav-toggle {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1001;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .mobile-nav-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+    }
+
+    /* Media queries for responsive design */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translateX(-100%);
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-toggle {
+            display: block;
+        }
+
+        .mobile-nav-overlay.active {
+            display: block;
+        }
+
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+            padding-top: 4rem;
+        }
+    }
+</style>
+
+<!-- JavaScript for Mobile Navigation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const sidebar = document.querySelector('.sidebar');
+        
+        // Mobile navigation toggle functionality
+        mobileNavToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+        });
+        
+        // Close mobile navigation when clicking outside
+        mobileNavOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+        });
+    });
+</script>

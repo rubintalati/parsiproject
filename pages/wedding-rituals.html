@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Wedding Rituals - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Welcome Text Styles with typing animation */
+        .welcome-text-container {
+            padding: 0 2rem; /* Reduced left/right padding to allow more text width */
+            margin-bottom: 1.5rem;
+            height: 120px;
+            overflow: hidden;
+            text-align: left;
+            width: 95%; /* Increased width to use more page space */
+            max-width: 1200px; /* Added max-width for very large screens */
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            width: 100%;
+            max-width: 100%; /* Allow text to use full container width */
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem; /* Increased space for all paragraphs */
+            min-height: 1.5em;
+        }
+
+        /* Specific margins for welcome text lines */
+        #text1 {
+            margin-bottom: 0.8rem; /* Increased space after the first line */
+        }
+        #text2 {
+            margin-bottom: 0.8rem; /* Increased space after the second line */
+        }
+        #text3 {
+            margin-bottom: 0.8rem; /* Increased space after the last line */
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ccc;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Content layout */
+        .content-layout {
+            display: flex;
+            gap: 2rem;
+            flex: 1;
+            padding: 0 3rem 1.5rem 3rem;
+            margin-top: 1rem;
+            align-items: stretch;
+        }
+
+        /* Left side with ritual cards */
+        .left-side {
+            width: 32%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        /* Media container for video/gif */
+        .media-container {
+            width: 25%;
+            aspect-ratio: 9/16;
+            max-height: 270px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            align-self: center;
+        }
+
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Right side with ritual cards */
+        .right-side {
+            width: 32%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            justify-content: space-between;
+        }
+
+        /* Ritual card styles */
+        .ritual-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 75px;
+            max-height: 130px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .ritual-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .ritual-card h3 {
+            margin-bottom: 0.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .ritual-card p {
+            color: #999;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .content-layout {
+                flex-direction: column;
+            }
+            
+            .left-side, .right-side {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .ritual-card {
+                flex: 1;
+                min-width: 45%;
+            }
+            
+            .media-container {
+                aspect-ratio: 16/9;
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                overflow: auto !important;
+            }
+            .welcome-text-container {
+                padding: 0 1rem;
+                height: auto;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .left-side, .right-side {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-nav-overlay"></div> <!-- Needed for mobile navigation -->
+        
+        <main class="main-content">
+            <div class="header">
+                <h1 class="page-title">wedding rituals</h1>
+            </div>
+            
+            <div class="welcome-text-container">
+                <div class="welcome-text">
+                    <p id="text1"></p>
+                    <p id="text2"></p>
+                    <p id="text3"></p>
+                </div>
+            </div>
+            
+            <div class="content-layout">
+                <!-- Left side ritual cards -->
+                <div class="left-side">
+                    <a href="wedding/engagement.html" class="ritual-card">
+                        <h3>Engagement</h3>
+                        <p>Formal ceremony where families exchange rings, gifts and blessings</p>
+                    </a>
+                    
+                    <a href="wedding/wedding-prep.html" class="ritual-card">
+                        <h3>Wedding Prep</h3>
+                        <p>Traditional preparations and exchange of gifts between the families</p>
+                    </a>
+                    
+                    <a href="wedding/pre-wedding.html" class="ritual-card">
+                        <h3>Pre-Wedding</h3>
+                        <p>Ceremonies and rituals performed in the days before the main wedding</p>
+                    </a>
+                </div>
+                
+                <!-- Media container for GIF/video in center -->
+                <div class="media-container">
+                    <img src="../assets/gif-placeholder.jpg" alt="Wedding rituals animation">
+                </div>
+                
+                <!-- Right side ritual cards -->
+                <div class="right-side">
+                    <a href="wedding/wedding-day.html" class="ritual-card">
+                        <h3>Wedding Day</h3>
+                        <p>Main ceremony including nahan, ashirwad and other sacred wedding rituals</p>
+                    </a>
+                    
+                    <a href="wedding/post-wedding.html" class="ritual-card">
+                        <h3>Post Wedding</h3>
+                        <p>Ceremonies and traditions followed after the wedding day</p>
+                    </a>
+                    
+                    <a href="wedding/pregnancy-first-child.html" class="ritual-card">
+                        <h3>Pregnancy & First Child</h3>
+                        <p>Special ceremonies for pregnancy announcement and first child celebrations</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typing animation for welcome text
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            const text3Element = document.getElementById('text3');
+            
+            // Get user name from localStorage or use default
+            const userProfile = JSON.parse(localStorage.getItem('userProfile')) || {};
+            const userName = userProfile.firstName || 'friend';
+            
+            // Welcome text array with improved descriptions
+            const texts = [
+                // Removed 'hi friend' greeting as requested
+                "when you eventually decide to take the plunge, this should help you get through your big day with a little bit less stress. we have a lot of rituals, so it can get a little overwhelming.",
+                "remember - \"all's well that ends well, but a good start is half the battle.\""
+            ];
+            
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+            
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    // Ensure last cursor is removed
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return; // All done typing or element missing
+                }
+                
+                const currentText = texts[currentTextIndex];
+                
+                if (currentCharIndex < currentText.length) {
+                    // Remove previous cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Add next character
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    
+                    // Add blinking cursor
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    
+                    currentCharIndex++;
+                    // Variable typing speed like home.html
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    // Finished current text, remove cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Move to next text
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    
+                    if (currentTextIndex < texts.length) {
+                        currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                        if(currentElement) currentElement.textContent = ''; // Clear next element
+                        // Match home.html timing between lines
+                        setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
+                    } else {
+                        // Add a persistent cursor at the end
+                        const cursor = document.createElement('span');
+                        cursor.className = 'typing-cursor';
+                        text3Element.appendChild(cursor);
+                    }
+                }
+            }
+            
+            // Start typing with a small initial delay
+            setTimeout(typeText, 300);
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

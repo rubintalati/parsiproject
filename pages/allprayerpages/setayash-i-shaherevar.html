@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setayash-i-Shaherevar - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-note {
+            margin-top: 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Metal accent styling */
+        .metal-accent {
+            position: relative;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .metal-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(135deg, 
+                rgba(192, 192, 192, 0.08) 0%, 
+                rgba(80, 80, 80, 0.04) 30%, 
+                rgba(212, 175, 55, 0.06) 60%, 
+                rgba(192, 192, 192, 0.08) 100%);
+            z-index: -1;
+        }
+
+        /* Special text highlight for Shaherevar mentions */
+        .shaherevar-highlight {
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        /* Date/field placeholders */
+        .field-placeholder {
+            display: inline-block;
+            padding: 0 0.3rem;
+            margin: 0 0.2rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .metal-accent {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for Shaherevar Ameshaspand</p>
+            <h2 class="prayer-name">setayash-i-shaherevar</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">Khshnaothra ahurahe mazdao</p>
+            
+            <p class="prayer-paragraph">Ashem vohū (1)</p>
+            
+            <p class="prayer-paragraph">Pa nāme yazdān ahuramazd khodāe awazuni gurze khoreh awazayād, <span class="shaherevar-highlight">shaherevar ameshāspand</span> beresād. Az hamā gunāh patet pashemanom az harvastin, dushmata duzukhta duzvarshta, mem pa geti manid, oem goft, oem kard, oem jast, oem bun bud ested, azān gunāh, manashni gavashni kunashni, tani ravani geti minoāni, okhe awākhsh pashemān pa se gavashni pa patet hom.</p>
+            
+            <p class="prayer-paragraph">Khshnaothra ahurahe mazdāo, taroidite anghrahe mainyeush, haithyā- varshtām hyat vasnā frasho temem staomi ashem. Ashem vohū (3).</p>
+            
+            <p class="prayer-paragraph">Fravarāne mazdayasno zarathushtrish vidaevo ahura-tkaesho</p>
+            
+            <p class="prayer-instruction">(Recite the appropriate Geh)</p>
+            
+            <p class="prayer-paragraph">Khshathrahe vairyehe ayokhshushtahe marezdikāi thrāyo drigaove, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu. Khshathrem vairim ameshem spentem yazamaide, ayokhshustem yazamaide, marezdikem, thråyo drighum yazamaide.</p>
+            
+            <div class="metal-accent">
+                <p class="prayer-paragraph">Setayam va zabāyam dādār ahuramazd rayomand khorehmand va ameshāspandan sepāsdār hom az dādāre veh awazuni khodāe khāvar neki dādār kash frāz barhenid to <span class="shaherevar-highlight">shaheri var minoe</span> khāste va sud veh-jivashne keta geti hasta ayokhshast āne arjomand jar va sim va dārashne mardumān ke geti padash varjand ānche tij avarkar asin kesh padash varjand jamin, va padash janand doshman va padash harvastin gohar va ayokhshast o kār avorihed zar va sin hucheher vinashne pa sheher āwāyashni frākhnidār ke afzāyashni hu kera nast āshkār va dādastān pa dasta veh raved kesh pa frārune tokhshashni pa vish o khesk kardan va âne osh khishinidan bahere tan va bahere tan va bahere ravân o ravân dehid.</p>
+                
+                <p class="prayer-paragraph">Ku kheshtan râ vehân va arzâniân padash <span class="shaherevar-highlight">shaherevar</span> kunand agesh kard kâme ahuramazd va ameshâ-spandân, osh kheshinid husraove va geti va ashâi pa minoe om kâme kum frârune afzâyashni bed der patâe khâsteh âne zarin va ânach simin âvâris khâsteh sepori berasad pa veh jivashne har rehân va arjanian az man jâvidân sepâsdar hom az to <span class="shaherevar-highlight">sheherivar minoe</span> khâsteh che sud va khoreh va khârih va robâe farmâne va afrigâni andar sheher o vish ke khâsteh tawângar-tar va paj kherad va him va him va hunar va har chish oe vish khâstetar va goftârtar va kâme ravâtar bâd.</p>
+            </div>
+            
+            <p class="prayer-paragraph">Haomayo gava baresmana, hizvo danghangha, mâthracha vachacha shyaothanacha zaothrābyascha arshukhidh-aeibyasca vāghzibyo.</p>
+            
+            <p class="prayer-paragraph">Yenghe hātam āt yesne paitī vangho mazdāo ahuro vaethā ashāt hacha yāonghāmcha tāschā taoschā yazamaide.</p>
+            
+            <p class="prayer-instruction">(Pray in silence)</p>
+            
+            <p class="prayer-paragraph">Ahura-mazda Khodāy awazunie mardum mardum sardagān hamā-sardagān, ham bāyaste vehān, oem behedin māzdayasnān āgāhi āstavāni neki resānad aedun bād.</p>
+            
+            <p class="prayer-instruction">(Pray aloud)</p>
+            
+            <p class="prayer-paragraph">Yatha ahu vairyo (2) Yasnemcha vahmemcha aojascha zavarecha āfrināmi, khshathrahe vairyehe ayokhsh-ustahe marezdi kāi thrāyo drighaove. Ashem Vohū (1) Ahmāi raeshcha-Hazanghrem-Jasa me avanghe-Kerfeh Mozd.</p>
+            
+            <p class="prayer-paragraph">Roj nek nām, roj pāk nām, roj mubārak <span class="field-placeholder">day</span>, mahe mubarak <span class="field-placeholder">month</span>, gāhe <span class="field-placeholder">geh</span> namāz dādāre gehān dāmān. Khshnaothra ahurahe mazdāo taroidite angrahe mainyeush, haithyavarshtām hyat vasnā ferashotemem. staomi ashem. Ashem vohū (1).</p>
+            
+            <p class="prayer-paragraph">Gorje khoreh awazāyād <span class="shaherevar-highlight">Shaherevar ameshāspand</span> beresād, amāvand pirojgar, amāvandi pirojgari, dād din beh māzdayasnān, āgāhi ravāi goafringāni bād, haft keshvar zamin aedun bād. Man āno āwāyad shudān, man āno āwāyad shudān, man āno āwāyad shudan. Ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph">Dādāre gehān dine Māzdayasni dāde zarthosti nemasete ashāum sevishte ardvi sura anāhite Ashaone ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph">Nemo urvaire vanguhi mazdahâte. Ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph">Khshathrem Vairim ameshem spentem yazamaide.</p>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph"><span class="shaherevar-highlight">Shaherevar ameshāspand</span> beresad Ashem Vohū 1.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>We pray to Shaherevar Ameshaspand who is the Lord of spiritual authority.</p>
+            
+            <p>Shaherevar Ameshaspand, Lord of metals and minerals, bestows man with gold and silver, which brings prosperity and is the basis of economy.</p>
+            
+            <p>Shaherevar Ameshaspand helps the soul of a righteous person to get the rightful reward.</p>
+            
+            <p>May our prayers reach Shaherevar Ameshaspand, and may he come to our help.</p>
+        </div>
+        
+        <div class="prayer-note">
+            <p>This prayer was specially recommended by Dasturji Kukadaru, to be prayed after one's daily prayers.</p>
+        </div>
+    </div>
+</body>
+</html>

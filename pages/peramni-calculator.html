@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peramni Calculator - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100vh;
+            overflow: hidden !important;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: none;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .header-text {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Welcome Text Styles */
+        .welcome-text-container {
+            padding: 0 0 0 4rem;
+            margin-bottom: 1rem;
+            height: auto;
+            overflow: visible;
+            width: 100%;
+            max-width: none;
+            margin-left: 0;
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            width: 100%;
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem;
+            min-height: 1.5em;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* Calculator Grid */
+        .calculator-grid {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 0 2rem 0;
+            padding-top: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-section {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: #000 !important;
+            border-radius: 0;
+            padding: 1.5rem;
+            transition: none;
+        }
+
+        .calculator-section:hover {
+            background-color: #000 !important;
+        }
+
+        .calculator-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-transform: lowercase;
+            color: #fff;
+        }
+
+        .calculator-section p {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Editable Amount */
+        .editable-amount {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 5px;
+            border-radius: 3px;
+            min-width: 40px;
+            display: inline-block;
+            text-align: center;
+            cursor: text;
+            outline: none;
+        }
+
+        /* Dropdown styling */
+        .custom-select {
+            position: relative;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .custom-select option {
+            background-color: #121212;
+            color: #ccc;
+        }
+
+        .custom-select:focus {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Calculate Button */
+        .calculate-button-container {
+            width: 70%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        #calculateButton {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #calculateButton:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Results Container */
+        .results-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            padding-left: 4rem;
+            box-sizing: border-box;
+        }
+
+        .results-text {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        #resultsText {
+            text-align: left;
+        }
+        #resultsText p {
+            margin-bottom: 0.2rem;
+            min-height: 1.3em;
+            text-align: left;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header {
+                margin-bottom: 0.5rem;
+                margin-top: 0.5rem;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .welcome-text-container,
+            .calculator-grid,
+            .calculate-button-container,
+            .results-container {
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            body {
+                overflow: auto !important;
+            }
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                min-height: 100vh;
+            }
+            .calculator-grid {
+                display: flex;
+                flex-direction: row;
+                gap: 2.5rem;
+                width: 100%;
+                max-width: 1000px;
+                justify-content: center;
+                align-items: stretch;
+                margin: 0 0 2rem 0;
+            }
+            .calculator-section {
+                flex: 1 1 0;
+                min-width: 180px;
+                max-width: 260px;
+                background: #faf9f7;
+                border-radius: 18px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+                padding: 2rem 1rem 1.5rem 1rem;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+            .calculate-button-container,
+            .results-container {
+                max-width: 1000px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            html, body, .main-content {
+                height: auto !important;
+                overflow: auto !important;
+            }
+        }
+
+        /* Blinking cursor animation */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #ccc;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        body, .main-content, .header, .page-title, .welcome-text, .welcome-text-container, .calculator-section, .calculator-section h3, .calculator-section p, #resultsText, #resultsText p, label, select, button, input, .custom-select {
+            text-transform: lowercase !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">Peramni Calculator</h1>
+            </div>
+
+            <!-- Welcome Text -->
+            <div class="welcome-text-container">
+                <div class="welcome-text" id="welcomeText">
+                    <p id="text1"></p>
+                    <p id="text2"></p>
+                    <p id="text3"></p>
+                </div>
+            </div>
+
+            <!-- Calculator Grid -->
+            <div class="calculator-grid">
+                <!-- Food Caterer Section -->
+                <div class="calculator-section">
+                    <h3>food caterer</h3>
+                    <p>rs.<span id="catererAmount" class="editable-amount" contenteditable="true">3500</span> /paatru</p>
+                    
+                    <div class="custom-select-wrapper">
+                        <select id="foodCatererSelect" class="custom-select">
+                            <option value="godiwala">Godiwala</option>
+                            <option value="kaizad">Kaizad</option>
+                            <option value="gaurav">Gaurav</option>
+                            <option value="hotel-5-star" selected>Hotel (5-Star)</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Venue Section -->
+                <div class="calculator-section">
+                    <h3>venue</h3>
+                    <p id="venueDesc">A hotel venue with premium amenities.</p>
+                    
+                    <div class="custom-select-wrapper">
+                        <select id="venueSelect" class="custom-select">
+                            <option value="hotel" selected>Hotel</option>
+                            <option value="parsi-baugs">Parsi Baugs</option>
+                            <option value="outstation">Outstation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Relation Section -->
+                <div class="calculator-section">
+                    <h3>relation</h3>
+                    <p id="relationDesc">A close family member, someone you care deeply about.</p>
+                    
+                    <div class="custom-select-wrapper">
+                        <select id="relationSelect" class="custom-select">
+                            <option value="immediate-family" selected>Immediate Family</option>
+                            <option value="close-relative">Close Relative</option>
+                            <option value="distant-relative">Distant Relative</option>
+                            <option value="acquaintance">Acquaintance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Financial Situation Section -->
+                <div class="calculator-section">
+                    <h3>your financial situation</h3>
+                    <p id="financialDesc">Comfortable financial status with disposable income.</p>
+                    
+                    <div class="custom-select-wrapper">
+                        <select id="financialSelect" class="custom-select">
+                            <option value="upper-class">bou paisa </option>
+                            <option value="well-off" selected>well offf</option>
+                            <option value="middle-class">middle class</option>
+                            <option value="struggling">struggling</option>
+                            <option value="poor">poor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <div class="calculate-button-container">
+                <button id="calculateButton">calculate</button>
+            </div>
+
+            <!-- Results Area -->
+            <div id="resultsContainer" class="results-container">
+                <div id="resultsText" class="results-text">
+                    <!-- Results will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typing animation for welcome text (copied from home.html)
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            const text3Element = document.getElementById('text3');
+
+            // Static peramni calculator welcome lines
+            const texts = [
+                'probably the most pertaining question of all time amongst parsis!?',
+                'tu kekli peramni aapvanoch. i have been asked this and i’m sure you have been too. bing bap boom boom boom bap bam. problem now solved.',
+                ''
+            ];
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return;
+                }
+                const currentText = texts[currentTextIndex];
+                if (currentCharIndex < currentText.length) {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    currentCharIndex++;
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    if (currentTextIndex < texts.length) {
+                        currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                        if(currentElement) currentElement.textContent = '';
+                        setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
+                    } else {
+                        currentElement = null;
+                    }
+                }
+            }
+            typeText();
+
+            // Update caterer amount when selection changes
+            document.getElementById('foodCatererSelect').addEventListener('change', function() {
+                const catererAmounts = {
+                    'godiwala': 2800,
+                    'kaizad': 2600,
+                    'gaurav': 2700,
+                    'hotel-5-star': 3500,
+                    'other': 1500
+                };
+                
+                document.getElementById('catererAmount').textContent = catererAmounts[this.value] || 3500;
+            });
+            
+            // Financial situation description updates
+            document.getElementById('financialSelect').addEventListener('change', function() {
+                const descriptions = {
+                    'upper-class': 'london shopping, dubai brunch.',
+                    'well-off': 'bill jova ni jaroor nathi',
+                    'middle-class': 'aapre toh nai iiya na nai tau na',
+                    'struggling': 'khisa ma mottu kaanu',
+                    'poor': 'palle pagaar aava de'
+                };
+                
+                document.getElementById('financialDesc').textContent = descriptions[this.value] || '';
+            });
+            
+            // Relation description updates
+            document.getElementById('relationSelect').addEventListener('change', function() {
+                const descriptions = {
+                    'immediate-family': 'dourya dhilla karva parse',
+                    'close-relative': 'mori dikri jevi che',
+                    'distant-relative': 'baapre! baabo ketlo motto thai gayo',
+                    'acquaintance': 'bou joilo laagech',
+                    'other': 'photos pachhi, palle bhona ni line pakar'
+                };
+                
+                document.getElementById('relationDesc').textContent = descriptions[this.value] || '';
+            });
+            
+            // Venue description updates
+            document.getElementById('venueSelect').addEventListener('change', function() {
+                const descriptions = {
+                    'hotel': 'parking valet che su?',
+                    'parsi-baugs': 'full parsi lagan feels',
+                    'outstation': 'flight ticket na kon aapse?'
+                };
+                
+                document.getElementById('venueDesc').textContent = descriptions[this.value] || '';
+            });
+            
+            // Calculate button functionality
+            document.getElementById('calculateButton').addEventListener('click', function() {
+                const foodCaterer = document.getElementById('foodCatererSelect').value;
+                const venue = document.getElementById('venueSelect').value;
+                const relation = document.getElementById('relationSelect').value;
+                const financial = document.getElementById('financialSelect').value;
+                
+                // Get the current caterer amount
+                const catererAmount = parseInt(document.getElementById('catererAmount').textContent) || 3500;
+                
+                // Calculate base amount based on caterer
+                let baseAmount = catererAmount;
+                
+                // Relation multiplier
+                const relationMultiplier = {
+                    'immediate-family': 1.5,
+                    'close-relative': 1.25,
+                    'distant-relative': 0.9,
+                    'acquaintance': 0.7,
+                    'other': 0.6
+                };
+                
+                // Financial situation multiplier
+                const financialMultiplier = {
+                    'upper-class': 1.5,
+                    'well-off': 1.1,
+                    'middle-class': 0.9,
+                    'struggling': 0.6,
+                    'poor': 0.4
+                };
+                
+                // Calculate final amount
+                let finalAmount = Math.round(baseAmount * relationMultiplier[relation] * financialMultiplier[financial]);
+
+                // Add fixed venue amount
+                const venueAdd = {
+                    'hotel': 300,
+                    'parsi-baugs': 100,
+                    'outstation': 500
+                };
+                finalAmount += venueAdd[venue] || 0;
+
+                // Ensure the amount is appropriate
+                finalAmount = Math.max(500, finalAmount);
+                
+                // Round to nearest 500 if above 1000
+                if (finalAmount > 1000) {
+                    finalAmount = Math.round(finalAmount / 500) * 500;
+                } else {
+                    finalAmount = Math.round(finalAmount / 100) * 100;
+                }
+                
+                // Add 1 for good luck
+                finalAmount = finalAmount + 1;
+                
+                document.getElementById('resultsContainer').style.opacity = '1';
+                const resultsTextElement = document.getElementById('resultsText');
+                const resultLines = [
+                    `based on your selections, the recommended peramni amount is: ₹${finalAmount} per person.`,
+                    "remember, whatever you give, do it with a happy heart and good wishes!"
+                ];
+                // Typing animation for results text
+                function typeResultText(lines, element) {
+                    element.innerHTML = '';
+                    let lineIdx = 0;
+                    let charIdx = 0;
+                    let currentP = document.createElement('p');
+                    element.appendChild(currentP);
+                    function typeLine() {
+                        if (lineIdx >= lines.length) {
+                            // Remove cursor at the end
+                            const lastCursor = element.querySelector('.typing-cursor');
+                            if (lastCursor) lastCursor.remove();
+                            return;
+                        }
+                        const line = lines[lineIdx];
+                        if (charIdx < line.length) {
+                            // Remove previous cursor
+                            const existingCursor = currentP.querySelector('.typing-cursor');
+                            if (existingCursor) existingCursor.remove();
+                            currentP.textContent = line.substring(0, charIdx + 1);
+                            // Add blinking cursor
+                            const cursor = document.createElement('span');
+                            cursor.className = 'typing-cursor';
+                            currentP.appendChild(cursor);
+                            charIdx++;
+                            setTimeout(typeLine, Math.random() * 20 + 15);
+                        } else {
+                            // Remove cursor
+                            const existingCursor = currentP.querySelector('.typing-cursor');
+                            if (existingCursor) existingCursor.remove();
+                            lineIdx++;
+                            charIdx = 0;
+                            if (lineIdx < lines.length) {
+                                currentP = document.createElement('p');
+                                element.appendChild(currentP);
+                                setTimeout(typeLine, 400);
+                            }
+                        }
+                    }
+                    typeLine();
+                }
+                typeResultText(resultLines, resultsTextElement);
+
+            });
+            
+            // Make sure editable amount stays numeric
+            document.getElementById('catererAmount').addEventListener('input', function(event) {
+                // Replace any non-numeric characters
+                this.textContent = this.textContent.replace(/[^0-9]/g, '');
+                
+                // Limit to reasonable amount
+                if (this.textContent > 10000) {
+                    this.textContent = '10000';
+                }
+                
+                // Prevent empty value
+                if (!this.textContent) {
+                    this.textContent = '3500';
+                }
+            });
+            
+            // Initialize descriptions
+            document.getElementById('financialSelect').dispatchEvent(new Event('change'));
+            document.getElementById('relationSelect').dispatchEvent(new Event('change'));
+            document.getElementById('venueSelect').dispatchEvent(new Event('change'));
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

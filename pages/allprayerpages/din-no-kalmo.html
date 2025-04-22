@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Din-no Kalamo - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Community accent styling */
+        .community-accent {
+            position: relative;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .community-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            background: linear-gradient(to bottom, #64B5F6, #42A5F5, #2196F3);
+        }
+
+        .repeat-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .community-accent {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for our community</p>
+            <h2 class="prayer-name">din-no kalamo</h2>
+        </div>
+
+        <div class="prayer-text">
+            <div class="community-accent">
+                <p class="prayer-paragraph">Ba name yazade bakhshayandehe bakhshayashgare meherban razishtayāo chistayāo Mazdadhātayāo ashaonyāo daēnayāo vanghuyāo Māzdayasnōish.</p>
+                
+                <p class="prayer-paragraph" style="margin-bottom: 0;">Dīn beh rāst va dorost, ke khodāe bar khalk ferastādeh in hast ke Zartosht āvordeh hast; dīn dīne Zartosht, dīne Ahura Mazda dādeh Zartosht Spitaman ashaone</p>
+            </div>
+            
+            <p class="prayer-paragraph">Ashem Vohū 1. <span class="repeat-badge">recite three times</span></p>
+            
+            <p class="prayer-instruction">(This Zoroastrian Creed should be recited thrice).</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>In the name of the good, kind, all-forgiving, all-loving Ahura Mazda, do I start this prayer. Glory be to our great noble Mazdayasni religion sent to us by Ahura Mazda through Zarathushtra for the benefit of the world.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Auth Test - Parsi Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #d35400;
+        }
+        
+        button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        button img {
+            margin-right: 10px;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Google Authentication Test</h1>
+        <p>This page tests the Google authentication flow for the Parsi Project.</p>
+        
+        <button id="googleAuthButton">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" height="20" alt="Google Logo">
+            Sign in with Google
+        </button>
+        
+        <div id="status" class="status info" style="display: none;"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const googleAuthButton = document.getElementById('googleAuthButton');
+            const statusDiv = document.getElementById('status');
+            
+            // Check if we have auth params in the URL
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                      results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+            
+            // Handle Google Sign In button click
+            googleAuthButton.addEventListener('click', function() {
+                statusDiv.className = 'status info';
+                statusDiv.style.display = 'block';
+                statusDiv.textContent = 'Redirecting to Google authentication...';
+                
+                // Redirect to Google Auth endpoint
+                window.location.href = 'http://127.0.0.1:50272/auth/google';
+            });
+            
+            // Check if we've been redirected back with a token
+            const token = getParameterByName('token');
+            if (token) {
+                // Show success message
+                statusDiv.className = 'status success';
+                statusDiv.style.display = 'block';
+                
+                const firstName = getParameterByName('firstName') || '';
+                const lastName = getParameterByName('lastName') || '';
+                const email = getParameterByName('email') || '';
+                
+                statusDiv.innerHTML = `<strong>Authentication successful!</strong><br>
+                    Welcome ${firstName} ${lastName} (${email})<br>
+                    Token: ${token}`;
+                
+                // Store in localStorage
+                localStorage.setItem('authToken', token);
+                localStorage.setItem('firstName', firstName);
+                localStorage.setItem('lastName', lastName);
+                localStorage.setItem('email', email);
+                localStorage.setItem('isAuthenticated', 'true');
+                
+                // Add a link to go to main page
+                const link = document.createElement('p');
+                link.innerHTML = '<a href="index.html">Continue to Parsi Project &rarr;</a>';
+                statusDiv.appendChild(link);
+            }
+            
+            // Check if there was an error
+            const error = getParameterByName('error');
+            if (error) {
+                statusDiv.className = 'status error';
+                statusDiv.style.display = 'block';
+                statusDiv.textContent = `Authentication failed: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html>

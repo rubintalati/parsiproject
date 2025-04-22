@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Pregnancy & First Child Ceremonies - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Tab Navigation Styles */
+        .filter-container {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .filter-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            max-width: 180px;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .numbered-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">pregnancy & first child ceremonies</h1>
+            <p class="ceremony-subtitle">Celebrating new life and continuing traditions</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <button class="filter-button active" data-tab="pachmasiyu">Pachmasiyu</button>
+                <button class="filter-button" data-tab="agarni">Agarni</button>
+                <button class="filter-button" data-tab="kholo">Kholo Bharva</button>
+            </div>
+            <div class="filter-row">
+                <button class="filter-button" data-tab="vadhavo">Vadhavo</button>
+                <button class="filter-button" data-tab="zoripori">Zoripori</button>
+                <button class="filter-button" data-tab="tips">Modern Tips</button>
+            </div>
+        </div>
+        
+        <!-- Pachmasiyu Tab -->
+        <div id="pachmasiyu" class="tab-content active">
+            <div class="ceremony-section">
+                <h2 class="section-title">Pachmasiyu</h2>
+                
+                <p>Pachmasiyu is a ceremony to declare the coming of the first child. This traditionally takes place when the fifth month of pregnancy begins.</p>
+                
+                <p class="note">Now-a-days, this ceremony is generally not performed. Still, if desired, it can be conducted following traditional customs.</p>
+                
+                <h3 class="subsection-title">When to Perform</h3>
+                <p>After 4 months of pregnancy are over and the fifth month begins, on an auspicious day of the month, the daughter and Jamai should be invited to the maternal home.</p>
+                
+                <h3 class="subsection-title">Ceremony Details</h3>
+                <p>If possible, the daughter should be given a new set of clothes to mark this special occasion. If new clothes are not available, she should be given Rs 51/- or more and a box of pendas when she goes back home.</p>
+                
+                <p class="note">Nothing is to be given to Jamairaj during this ceremony.</p>
+                
+                <h3 class="subsection-title">Significance</h3>
+                <p>This ceremony symbolizes the family's joy and acknowledgment of the new life that will soon join them. It also allows for the pregnant daughter to receive blessings from her parents during this important time.</p>
+            </div>
+        </div>
+        
+        <!-- Agarni Tab -->
+        <div id="agarni" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Agarni</h2>
+                
+                <p>Agarni is a pregnancy ceremony conducted when the woman enters her seventh month of pregnancy.</p>
+                
+                <h3 class="subsection-title">When to Perform</h3>
+                <p>After the seventh month starts, on an auspicious day - Thursday or Sunday - the ceremony should be conducted with family members.</p>
+                
+                <h3 class="subsection-title">Ceremony Details</h3>
+                <p>The daughter-in-law should be dressed in all new clothes, with tili and garland, and the sasu (mother-in-law) or any other lady with children (bacharwal), should do the job of kholo bharvo.</p>
+                
+                <h3 class="subsection-title">Alternatives</h3>
+                <p>If this ceremony cannot be done in the seventh month, it can be performed in the ninth month instead.</p>
+                
+                <h3 class="subsection-title">Significance</h3>
+                <p>Agarni celebrates the advanced stage of pregnancy and is meant to bless both the mother and unborn child. The ceremony helps prepare the expectant mother for the upcoming birth and is believed to bring good fortune.</p>
+            </div>
+        </div>
+        
+        <!-- Kholo Bharva Tab -->
+        <div id="kholo" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Kholo Bharva-ni Reet</h2>
+                
+                <h3 class="subsection-title">The Ceremony Process</h3>
+                <p>Asking the daughter-in-law to hold her sadi-no chedo (the end of her saree), a new mathubanu should be kept in it. Then, the following items are placed in it:</p>
+                
+                <ul class="custom-list">
+                    <li>A bijoru or pomegranate</li>
+                    <li>1 ladvo (of 1¼ pounds)</li>
+                    <li>Some wheat</li>
+                    <li>Some moong</li>
+                    <li>Pan, sopari, kharek, badam</li>
+                    <li>A new coconut</li>
+                </ul>
+                
+                <h3 class="subsection-title">When Performed at Seventh Month</h3>
+                <p>If it is the seventh month, agarni-na 7 ladvas should be arranged in a ses and together with the daughter-in-law, 3 or 5 sahovasans should go to the vevai's house (the pregnant woman's maternal home).</p>
+                
+                <h3 class="subsection-title">When Performed at Ninth Month</h3>
+                <p>If it is the nineth month, then 9 ladvas should be arranged instead of 7.</p>
+                
+                <h3 class="subsection-title">At the Maternal Home</h3>
+                <p>The girl's mother should welcome them with achumichu and then in a new supru, or in the mother's kholo or in the kholo of any other woman with children (bacharwal), the kholo khangaravo should be done.</p>
+                
+                <p>Then the mother should give sweets to all the guests (mo mithu karavshe) and taking out one sagan-no ladvo, she should return the thali.</p>
+                
+                <p class="note">Nobody is to be given any cash during this ceremony.</p>
+                
+                <h3 class="subsection-title">Gifts for the Daughter</h3>
+                <p>At the mother's house, the daughter should be given cash or jewellery. If they want, they can do a new kholo bharvo, or they can use the same again. (Generally it is the new one, but customs vary from family to family).</p>
+                
+                <p>After this, the daughter is sent back with those who have come from her sasru (in-laws' house).</p>
+                
+                <h3 class="subsection-title">Jamairaj-ne-Shangarva</h3>
+                <p>Then, from the girl's side, 3 or 5 sahovasans should go to the boy's house jamairaj-ne-shangarva. He should be given vaga-na Rs. 301/- or more (or less) and a garland. Then, mo-mithu kari-ne, they should come back with their ses.</p>
+                
+                <h3 class="subsection-title">Final Preparations</h3>
+                <p>After this, on an auspicious day, the girl should go to the mother's house (mahire) for delivery. When she goes back to sasre with the child, vadhavo and joripori ceremony will have to be done.</p>
+            </div>
+        </div>
+        
+        <!-- Vadhavo Tab -->
+        <div id="vadhavo" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Vadhavo</h2>
+                
+                <p>Vadhavo is a ceremony where the paternal grandparents celebrate the arrival of their grandchild by sending gifts.</p>
+                
+                <h3 class="subsection-title">When to Perform</h3>
+                <p>In the beginning of the third or the fifth month after the grandchild arrives, the happy paternal grandparents (bapaiji and bapavaji) should send vadhavo.</p>
+                
+                <h3 class="subsection-title">Items to Include</h3>
+                <p>The vadhavo should include:</p>
+                
+                <ul class="custom-list">
+                    <li>5 to 11 pieces of dresses or babasuits (one stitched, others may be unstitched)</li>
+                    <li>1 Knitted woolen set (with cap, socks & coat)</li>
+                    <li>1 rug</li>
+                    <li>1 envelope of Rs. 21/- to Rs. 101/- or some gold jewellery</li>
+                    <li>Any number of bibs, napkins, godris and underwears</li>
+                    <li>5 to 11 yards of cloth for kurta</li>
+                    <li>1 silver rattle or any jewellery, and toys</li>
+                </ul>
+                
+                <p class="note">For the child's mother, sunth and dry fruits used to be sent but now this is more or less discontinued.</p>
+                
+                <h3 class="subsection-title">The Ceremony</h3>
+                <p>The mother-in-law and 4 other sahovasans should go to the daughter-in-law's mother's house (mahire). With the child, the mother should stand on the patla and all the things should be given. Then mo mithu kari-ne they should return.</p>
+                
+                <h3 class="subsection-title">Refreshments</h3>
+                <p>On this occasion, only refreshments should be served. It is not necessary to give any envelopes, not even to Jamai or daughter. Only for the baby, the bapaiji should do everything.</p>
+                
+                <p>If any gifts have come from friends or relatives, they can be given at this time.</p>
+            </div>
+        </div>
+        
+        <!-- Zoripori Tab -->
+        <div id="zoripori" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Zoripori</h2>
+                
+                <p>Zoripori is the ceremony that takes place when the daughter returns to her in-laws' home with the baby.</p>
+                
+                <h3 class="subsection-title">When to Perform</h3>
+                <p>This ceremony takes place when the daughter goes back to her sasre with the baby in the fifth, seventh, or nineth month.</p>
+                
+                <h3 class="subsection-title">Gifts for the Baby</h3>
+                <p>The following should be given to the baby:</p>
+                
+                <ul class="custom-list">
+                    <li>5 or more (or less) sets of clothes either stitched or unstitched</li>
+                    <li>1 cradle or cash for it</li>
+                    <li>2 tapelis for milk</li>
+                    <li>1 tub or bucket</li>
+                    <li>1 silver cup and saucer or small glass</li>
+                    <li>Toys</li>
+                    <li>1 silver rattle</li>
+                    <li>1 small bag and the baby's clothes in use</li>
+                </ul>
+                
+                <p class="note">Instead of the silver items, jewellery or cash can be given.</p>
+                
+                <h3 class="subsection-title">Gift for Mother-in-Law</h3>
+                <p>One set of clothes for bapaiji should be taken in the ses. She can keep them or give them to the daughter-in-law on some future occasion.</p>
+                
+                <h3 class="subsection-title">The Ceremony</h3>
+                <p>The girl's mother or sister, together with 5 (or more or less) others should go with the daughter and give all these things to the bapaiji with respect by making her stand on the patla. After taking refreshments, they should come home.</p>
+                
+                <h3 class="subsection-title">Significance</h3>
+                <p>This ceremony marks the formal return of the new mother and child to the husband's home, and acknowledges the child's place in the paternal family. It also continues the tradition of gift-giving and respect between the two families.</p>
+            </div>
+        </div>
+        
+        <!-- Modern Tips Tab -->
+        <div id="tips" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Modern Adaptations</h2>
+                
+                <p>While traditional ceremonies carry deep cultural significance, many Parsi families today adapt these rituals to fit modern lifestyles while maintaining their essence.</p>
+                
+                <h3 class="subsection-title">Simplified Ceremonies</h3>
+                <p>Many families now combine multiple ceremonies into one event to accommodate busy schedules and geographic distances. For example, Pachmasiyu and Agarni might be combined if family members need to travel from far.</p>
+                
+                <h3 class="subsection-title">Gift Considerations</h3>
+                <p>When selecting gifts for these ceremonies, consider:</p>
+                
+                <ul class="custom-list">
+                    <li>Practical items that the new parents will actually use</li>
+                    <li>Quality over quantity - fewer, well-chosen items may be more appreciated</li>
+                    <li>Consulting with the parents about their needs or preferences</li>
+                    <li>Respecting family traditions while adapting to modern sensibilities</li>
+                </ul>
+                
+                <h3 class="subsection-title">Inclusion of Extended Family</h3>
+                <p>Modern technology allows for including family members who cannot physically attend:</p>
+                
+                <ul class="custom-list">
+                    <li>Video calls to include distant relatives in the ceremonies</li>
+                    <li>Recording of the ceremonies to share with family members</li>
+                    <li>Group chats for sending blessings and well-wishes</li>
+                </ul>
+                
+                <h3 class="subsection-title">Health Considerations</h3>
+                <p>Always prioritize the health and comfort of the mother and baby:</p>
+                
+                <ul class="custom-list">
+                    <li>Consult with healthcare providers about appropriate timing for ceremonies</li>
+                    <li>Keep ceremonies brief if the mother is tired or the baby is fussy</li>
+                    <li>Be flexible with scheduling around the baby's feeding and sleeping patterns</li>
+                    <li>Consider hygiene precautions for all who will interact with the newborn</li>
+                </ul>
+                
+                <p class="note">Remember that the spirit of these ceremonies is to celebrate new life and strengthen family bonds. The specific details can be adapted while keeping the core values intact.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.filter-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

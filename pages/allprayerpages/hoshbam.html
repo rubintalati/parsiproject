@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoshbām - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-note {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Prayer Modal Styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: none;
+            overflow: auto;
+        }
+
+        .modal-content {
+            max-width: 550px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-note">
+            <p>This prayer is recited only at dawn</p>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for a new day</p>
+            <h2 class="prayer-name">hoshbām</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p>Atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish.</p>
+            <p class="prayer-instruction">(Yathā Ahū Vairyō 5)</p>
+            
+            <p>Ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairīm tanūm pāiti.</p>
+            
+            <p>Yathā Ahū Vairyō; Kēm nā Mazdā</p>
+            <p class="prayer-instruction">(to be recited fully)</p>
+            
+            <p>Ashem vohū 1; Yathā Ahū Vairyō 21, Ashem Vohū 12.</p>
+            
+            <p>Nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha. yim ahurem mazdām, snathāi anghrahe mainyeush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām</p>
+            <p class="prayer-instruction">(to be recited in bāz or low tone)</p>
+            
+            <p>shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār</p>
+            <p class="prayer-instruction">(to be recited in a loud tone)</p>
+            
+            <p>Fradathāi Ahurahe Mazdāo raevatō khvarenanghuhatō, fradathāi Ameshanām Spentanām, fradathāi tishtryehe stārō raevatō khvarenanghuhatō, fradathāi narsh ashaonō, fradathāi vispanām Spentahe Mainyeush dāmanām ashaonām. Yathā Ahu Vairyō 2.</p>
+            
+            <p>Vanghucha vanghuyāoscha āfrināmi, vispayāo ashaonō stōish haithyāicha, bavānithyāicha bushyānithyāicha, Ashim rāsentim dareghō-vārethmanem, mishāchim hvō aiwishāchim mishāchim āfrasāonghaitīm. Barentīm vispāo baēshazō, apāmcha gavāmcha urvaranāmcha. Taurvayeintīm vispāo tbaēshāo, daēvanām mashyānāmcha. Areshyantām ahmāicha nmānāi ahmāicha nmānahe nmāno-patēe.</p>
+            
+            <p>Vanghūishcha adhāo vanghūhishcha ashayō, hupaurvāo vahehīsh, aparāo rāsentish, dareghō vāre thmanō, yatha nō mazishtāoscha vahistāoscha sraēshtāoscha ashayō erenvante ameshanām spentanām yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Fradathāi ahe nmānahe, fradathāi vispayāo ashaonō stōish, hamistēe vispayāo dravatō stōish.</p>
+            
+            <p>Stavas asha yē hudāo yōi henti. Vasascha tū Ahura Mazda ushtācha, khshaēsha havanām dāmanām. Vasō. āpō, vasō urvarāo, vasō vīspa vohū asha-chithra; kshayamnnem ashavanem dāyata. Akhshayamnnem dravantem. Vasōkhshathrō khyāt ashava; avavō- khshathrō khyāt dravāo gatō hamishtō, nizberetō hacha spentahē mainyēush dāmabyō, varatō avasō- khshathrō.</p>
+            
+            <p>Hakhshaya azem-chit yō Zarathushtrō fratemān nmānanāmcha, vīsāmcha, zantunāmcha dakhyunāmcha, anghāo daēnayāo anumatayaēcha anukhtayaēcha, a n v a r s h t a y a ē c h a, yāāhuirish Zarathushtrish.</p>
+            
+            <p>Yatha nō āonghām shāto manāo, vahishtō urvānō khvāthravaitish tanvō hentō vahishtō anghush; ākāoschōit āhuire Mazda jasentām.</p>
+            
+            <p>Asha vahishta, asha sraēshta daresāma thwā, pairi thwā jamyāma, hamem thwā, hakhma.</p>
+            <p>Ashem Vohū 1</p>
+            
+            <p>Asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma.</p>
+            <p>Ashem Vohū 1</p>
+            
+            <p>Asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma.</p>
+            <p>Ashem Vohū 1</p>
+            
+            <p>Ahmāi raēscha; Hazanghrem; Jasa me avanghe Mazda; Kerfeh Mozd.</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>Hoshbam is a homage to day-break. I pray to Ahura Mazda to destroy all evil and help protect the people, cattle, water and vegetation. May the good religion of Zarathushtra spread in every home, village, city and country. May the Ameshaspands and Yazads work for the prosperity of God's creation. May my soul progress and be happy to gain peace through righteousness. May I be worthy of Thy everlasting friendship.</p>
+        </div>
+    </div>
+
+    <!-- Prayer Detail Modal (hidden by default) -->
+    <div id="prayer-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closePrayerModal()">×</button>
+            
+            <div class="prayer-header">
+                <p class="prayer-subtitle" id="modal-subtitle"></p>
+                <h3 class="prayer-name" id="modal-name"></h3>
+            </div>
+
+            <div class="prayer-text" id="modal-text"></div>
+
+            <div class="prayer-translation" id="modal-translation"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open prayer modal
+        function openPrayerModal(prayerId) {
+            const modal = document.getElementById('prayer-modal');
+            
+            // Here you would typically load the specific prayer content based on prayerId
+            if (prayerId === 'hoshbam') {
+                document.getElementById('modal-subtitle').textContent = 'the one for a new day';
+                document.getElementById('modal-name').textContent = 'hoshbām';
+                document.getElementById('modal-text').innerHTML = 'Atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish.<p class="prayer-instruction">(Yathā Ahū Vairyō 5)</p><p>Ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairīm tanūm pāiti.</p><p>Yathā Ahū Vairyō; Kēm nā Mazdā</p><p class="prayer-instruction">(to be recited fully)</p><p>Ashem vohū 1; Yathā Ahū Vairyō 21, Ashem Vohū 12.</p><p>Nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha. yim ahurem mazdām, snathāi anghrahe mainyeush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām</p><p class="prayer-instruction">(to be recited in bāz or low tone)</p><p>shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār</p><p class="prayer-instruction">(to be recited in a loud tone)</p>...';
+                document.getElementById('modal-translation').innerHTML = '<p>Hoshbam is a homage to day-break. I pray to Ahura Mazda to destroy all evil and help protect the people, cattle, water and vegetation. May the good religion of Zarathushtra spread in every home, village, city and country. May the Ameshaspands and Yazads work for the prosperity of God\'s creation. May my soul progress and be happy to gain peace through righteousness. May I be worthy of Thy everlasting friendship.</p>';
+            }
+            
+            // Show the modal
+            modal.style.display = 'block';
+        }
+
+        // Function to close prayer modal
+        function closePrayerModal() {
+            document.getElementById('prayer-modal').style.display = 'none';
+        }
+
+        // Close modal if user clicks outside of modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayer-modal');
+            if (event.target == modal) {
+                closePrayerModal();
+            }
+        }
+    </script>
+</body>
+</html>

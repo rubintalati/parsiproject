@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        .account-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2em;
+            margin-bottom: 2.7rem;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8em;
+            box-shadow: 0 4px 24px 0 rgba(255,213,79,0.08);
+        }
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-name {
+            font-size: 2.1em;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .profile-gender {
+            font-size: 1.25em;
+        }
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        .section-title {
+            font-size: 1.08em;
+            font-weight: 600;
+            margin-bottom: 0.6em;
+            color: #fff;
+        }
+        .section-desc {
+            font-size: 1em;
+            color: #bbb;
+            margin-bottom: 1em;
+        }
+        .credit-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+            margin-bottom: 0.7em;
+        }
+        .credit-label {
+            font-size: 1.1em;
+            color: #fff;
+        }
+        .credit-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #fff;
+        }
+        .buy-credits {
+            display: flex;
+            gap: 0.7em;
+            margin-top: 0.7em;
+        }
+        .buy-credits input {
+            background: #181818;
+            color: #fff;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 0.5em 1em;
+            font-size: 1em;
+            width: 100px;
+        }
+        .buy-credits button {
+            background: #fff;
+            color: #111;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5em 1.3em;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .buy-credits button:hover {
+            background: #e5e5e5;
+        }
+        .action-row {
+            display: flex;
+            gap: 1.2em;
+            margin-bottom: 1.7em;
+        }
+        .action-row button {
+            background: #181818;
+            color: #fff;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 0.5em 1.3em;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .action-row button:hover {
+            background: #222;
+        }
+        .action-row .danger {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+        .action-row .danger:hover {
+            background: #ff2222;
+            color: #fff;
+        }
+        .connected-accounts {
+            margin-bottom: 2.5rem;
+        }
+        .connected-account-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.1em;
+        }
+        .connected-label {
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+            font-size: 1.1em;
+        }
+        .connected-label img {
+            width: 28px;
+            height: 28px;
+        }
+        .connected-status {
+            font-size: 0.98em;
+            color: #bbb;
+            margin-left: 0.5em;
+        }
+        .connected-action button {
+            background: #181818;
+            color: #fff;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 0.4em 1.2em;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .connected-action .danger {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+        .connected-action .danger:hover {
+            background: #ff2222;
+            color: #fff;
+        }
+        .connected-action .inactive {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .delete-section {
+            margin-bottom: 2.5rem;
+        }
+        .delete-section .danger {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+        .delete-section .danger:hover {
+            background: #ff2222;
+            color: #fff;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2em;
+            justify-content: center;
+            margin-top: 2.5rem;
+            color: #bbb;
+            font-size: 1em;
+        }
+        .footer-links a {
+            color: #bbb;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        .identity-select-row input[type="radio"]:checked + .identity-choice {
+            background: #ffd54f !important;
+            color: #222 !important;
+            border-color: #ffd54f !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px 0 rgba(255,213,79,0.13);
+        }
+        @media (max-width: 700px) {
+            body {
+                padding: 0 !important;
+            }
+            .account-container {
+                width: 100vw;
+                max-width: 100vw;
+                min-width: 0;
+                margin: 0;
+                padding: 0.7em 0 1.2em 0;
+                border: none !important;
+                border-radius: 0 !important;
+                background-color: rgba(0,0,0,0.95);
+                box-shadow: none !important;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+            .profile-header {
+                gap: 0.7em;
+                padding-top: 0.7em;
+            }
+            .section {
+                padding: 0 0.1em;
+            }
+            .section-title {
+                font-size: 1em !important;
+                text-align: center !important;
+            }
+            .avatar-select-row {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.1em 1.1em !important;
+                justify-items: center;
+                margin: 1em 0 1.5em 0 !important;
+            }
+            .personal-info-form {
+                gap: 0.7em !important;
+                padding: 0 0.1em;
+            }
+            .personal-info-form > div[style*='display:flex'][style*='gap'] {
+                flex-direction: column !important;
+                gap: 0.7em !important;
+                align-items: stretch !important;
+                padding: 0 5vw !important;
+            }
+            .personal-info-form > div > div {
+                width: 90vw !important;
+                max-width: 320px !important;
+                min-width: 0 !important;
+                flex: 1 1 0;
+                margin: 0 auto;
+            }
+            .identity-select-row {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.5em !important;
+                margin-bottom: 0.7em !important;
+            }
+            .identity-select-row label {
+                width: 100% !important;
+                max-width: 340px;
+                margin: 0 auto;
+            }
+            .connected-accounts.section {
+                padding: 0 5vw !important;
+            }
+            .connected-account-row {
+                padding: 0 5vw !important;
+            }
+            #google-account-row button,
+            #google-account-row .google-connect-btn {
+                width: 100%;
+                box-sizing: border-box;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .footer-links {
+                padding: 0.7em 0.1em 0 0.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="back-container" style="margin-bottom:0.7em;">
+            <a href="#" id="back-btn" class="back-symbol" style="display:inline-block;text-decoration:none;color:#fff;font-size:1.7em;vertical-align:middle;">
+                &#8592;
+            </a>
+        </div>
+        <div class="profile-header">
+            <div class="profile-avatar" id="profile-avatar-img" style="overflow:hidden;">
+                <img src="../media/logo/avatar/cartoon%20boy.png" alt="profile avatar" id="profile-avatar-img-tag" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="profile-details">
+                <div class="profile-name" id="profile-name">Guest</div>
+                <div class="profile-gender" id="profile-gender" style="color:#bbb;font-size:1.25em;">parsi person</div>
+            </div>
+        </div>
+        <hr style="border:none;border-top:1.5px solid #222;margin:2.2em 0 1.5em 0;">
+        <div class="section">
+            <div class="section-title" style="font-size:1em;color:#bbb;margin-bottom:0.2em;display:block;text-align:center;">Choose your avatar</div>
+            <form class="personal-info-form" autocomplete="off" style="display:flex;flex-direction:column;gap:1.1em;">
+                <div class="avatar-select-row" style="display:flex;gap:2.5em;justify-content:center;margin:1.5em 0 2em 0;">
+                    <label><input type="radio" name="avatar" value="cartoon boy.png" style="display:none;"><span class="avatar-choice" data-avatar="cartoon boy.png" style="display:inline-block;width:84px;height:84px;border-radius:50%;background:#181818;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid #333;overflow:hidden;transition:border 0.2s;"><img src="../media/logo/avatar/cartoon%20boy.png" alt="boy avatar" style="width:100%;height:100%;object-fit:cover;"></span></label>
+                    <label><input type="radio" name="avatar" value="cartoon girl.png" style="display:none;"><span class="avatar-choice" data-avatar="cartoon girl.png" style="display:inline-block;width:84px;height:84px;border-radius:50%;background:#181818;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid #333;overflow:hidden;transition:border 0.2s;"><img src="../media/logo/avatar/cartoon%20girl.png" alt="girl avatar" style="width:100%;height:100%;object-fit:cover;"></span></label>
+                    <label><input type="radio" name="avatar" value="cartoon dog.png" style="display:none;"><span class="avatar-choice" data-avatar="cartoon dog.png" style="display:inline-block;width:84px;height:84px;border-radius:50%;background:#181818;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid #333;overflow:hidden;transition:border 0.2s;"><img src="../media/logo/avatar/cartoon%20dog.png" alt="dog avatar" style="width:100%;height:100%;object-fit:cover;"></span></label>
+                    <label><input type="radio" name="avatar" value="cartoon cat.png" style="display:none;"><span class="avatar-choice" data-avatar="cartoon cat.png" style="display:inline-block;width:84px;height:84px;border-radius:50%;background:#181818;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid #333;overflow:hidden;transition:border 0.2s;"><img src="../media/logo/avatar/cartoon%20cat.png" alt="cat avatar" style="width:100%;height:100%;object-fit:cover;"></span></label>
+                </div>
+                <div style="display:flex;gap:2.5em;justify-content:center;margin-bottom:0.5em;">
+                    <div style="display:flex;flex-direction:column;width:220px;">
+                        <label for="first-name" style="font-size:1em;color:#bbb;margin-bottom:0.2em;display:block;text-align:left;">First Name</label>
+                        <input type="text" id="first-name" name="first-name" value="" style="width:100%;padding:0.7em 1em;background:#181818;color:#fff;border:1px solid #222;border-radius:6px;font-size:1em;text-align:left;">
+                    </div>
+                    <div style="display:flex;flex-direction:column;width:220px;">
+                        <label for="last-name" style="font-size:1em;color:#bbb;margin-bottom:0.2em;display:block;text-align:left;">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" value="" style="width:100%;padding:0.7em 1em;background:#181818;color:#fff;border:1px solid #222;border-radius:6px;font-size:1em;text-align:left;">
+                    </div>
+                </div>
+                <div class="identity-select-row" style="display:flex;gap:1em;justify-content:center;margin-top:1.4em;">
+                    <label style="flex:1;max-width:120px;">
+                        <input type="radio" name="parsi-identity" value="boy" style="display:none;">
+                        <span class="identity-choice" style="display:inline-block;width:100%;padding:0.6em 0;background:#181818;color:#fff;border:2px solid #555;border-radius:10px;text-align:center;font-size:1em;cursor:pointer;transition:background 0.2s, color 0.2s;">parsi boy</span>
+                    </label>
+                    <label style="flex:1;max-width:120px;">
+                        <input type="radio" name="parsi-identity" value="girl" style="display:none;">
+                        <span class="identity-choice" style="display:inline-block;width:100%;padding:0.6em 0;background:#181818;color:#fff;border:2px solid #555;border-radius:10px;text-align:center;font-size:1em;cursor:pointer;transition:background 0.2s, color 0.2s;">parsi girl</span>
+                    </label>
+                    <label style="flex:1;max-width:120px;">
+                        <input type="radio" name="parsi-identity" value="person" style="display:none;">
+                        <span class="identity-choice" style="display:inline-block;width:100%;padding:0.6em 0;background:#181818;color:#fff;border:2px solid #555;border-radius:10px;text-align:center;font-size:1em;cursor:pointer;transition:background 0.2s, color 0.2s;">parsi person</span>
+                    </label>
+                </div>
+                <div style="margin-top:0.4em;text-align:center;color:#bbb;font-size:1em;font-style:italic;">
+                    even if you are not parsi by birth, you are now parsi by curiosity.
+                </div>
+            </form>
+        </div>
+        <hr style="border:none;border-top:1.5px solid #222;margin:2.5em 0 1.5em 0;">
+        <div class="connected-accounts section">
+            <div class="section-title">Connected accounts</div>
+            <div class="connected-account-row" id="google-account-row">
+                <!-- Content will be set by JS -->
+            </div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:2em;">
+            <button id="logout-btn" style="background:#222;color:#fff;font-weight:600;font-size:1em;padding:0.7em 2em;border:none;border-radius:18px;box-shadow:0 2px 8px 0 rgba(0,0,0,0.10);cursor:pointer;transition:background 0.18s, color 0.18s;letter-spacing:0.5px;">Logout</button>
+        </div>
+        <div class="footer-links">
+            <a href="#">Terms &amp; conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+    </div>
+    <script>
+    // Populate user info from localStorage (set by login)
+    function populateProfileFromStorage() {
+        const user = JSON.parse(localStorage.getItem('parsiUser') || '{}');
+        // Name
+        let displayName = 'Guest';
+        if (user.firstName && user.lastName) displayName = user.firstName + ' ' + user.lastName;
+        else if (user.firstName) displayName = user.firstName;
+        else if (user.lastName) displayName = user.lastName;
+        document.getElementById('profile-name').textContent = displayName;
+
+        // Gender/identity
+        let genderType = user.type || 'person';
+        let genderText = '';
+        if (genderType === 'boy') genderText = 'parsi boy';
+        else if (genderType === 'girl') genderText = 'parsi girl';
+        else genderText = 'parsi person';
+        document.getElementById('profile-gender').textContent = genderText;
+
+        // Avatar
+        if (user.avatar) {
+            document.querySelector('.avatar-select-row input[type="radio"][value="' + user.avatar + '"]').checked = true;
+            document.getElementById('profile-avatar-img-tag').src = '../media/logo/avatar/' + user.avatar;
+        }
+        // Inputs
+        if (user.firstName) document.getElementById('first-name').value = user.firstName;
+        if (user.lastName) document.getElementById('last-name').value = user.lastName;
+        // Identity radio
+        document.querySelector('.identity-select-row input[type="radio"][value="' + genderType + '"]').checked = true;
+        // Set Google account row
+        const googleRow = document.getElementById('google-account-row');
+        googleRow.innerHTML = '';
+        const email = user.email || '';
+        const connected = !!email;
+        let html = `<div class="connected-label"><img src="../media/logo/google%20symbol.png" alt="Google" style="width:40px;height:28px;object-fit:contain;object-position:left;">`;
+        if (connected) {
+            html += `<span class="connected-status">Connected as ${email}</span></div><div class="connected-action"><button class="danger" id="remove-google">Remove</button></div>`;
+        } else {
+            html += `<span class="connected-status">Not connected</span></div><div class="connected-action"><button id="connect-google">Connect</button></div>`;
+        }
+        googleRow.innerHTML = html;
+        // Add event listeners for connect/remove
+        if (connected) {
+            document.getElementById('remove-google').onclick = function() {
+                // Remove Google connection (clear user info and reload)
+                localStorage.clear();
+                window.location.href = 'login.html';
+            };
+        } else {
+            document.getElementById('connect-google').onclick = function() {
+                window.location.href = 'login.html';
+            };
+        }
+    }
+    window.addEventListener('DOMContentLoaded', populateProfileFromStorage);
+
+    // Allow editing only first name, auto-save to backend
+    document.getElementById('first-name').addEventListener('input', function() {
+        saveProfileToBackend();
+        let displayName = 'Guest';
+        if (document.getElementById('first-name').value && document.getElementById('last-name').value) displayName = document.getElementById('first-name').value + ' ' + document.getElementById('last-name').value;
+        else if (document.getElementById('first-name').value) displayName = document.getElementById('first-name').value;
+        else if (document.getElementById('last-name').value) displayName = document.getElementById('last-name').value;
+        document.getElementById('profile-name').textContent = displayName;
+    });
+    document.getElementById('last-name').addEventListener('input', function() {
+        saveProfileToBackend();
+        let displayName = 'Guest';
+        if (document.getElementById('first-name').value && document.getElementById('last-name').value) displayName = document.getElementById('first-name').value + ' ' + document.getElementById('last-name').value;
+        else if (document.getElementById('first-name').value) displayName = document.getElementById('first-name').value;
+        else if (document.getElementById('last-name').value) displayName = document.getElementById('last-name').value;
+        document.getElementById('profile-name').textContent = displayName;
+    });
+    document.querySelectorAll('.avatar-select-row input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.getElementById('profile-avatar-img-tag').src = '../media/logo/avatar/' + this.value;
+            saveProfileToBackend();
+            updateAvatarHighlight();
+        });
+    });
+    document.querySelectorAll('.identity-select-row input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            saveProfileToBackend();
+            // Update gender text live
+            let genderText = '';
+            if (this.value === 'boy') genderText = 'parsi boy';
+            else if (this.value === 'girl') genderText = 'parsi girl';
+            else genderText = 'parsi person';
+            document.getElementById('profile-gender').textContent = genderText;
+        });
+    });
+
+    function saveProfileToBackend() {
+        // Gather current profile data
+        const profile = {
+            firstName: document.getElementById('first-name').value,
+            lastName: document.getElementById('last-name').value,
+            avatar: document.querySelector('.avatar-select-row input[type="radio"]:checked')?.value,
+            type: document.querySelector('.identity-select-row input[type="radio"]:checked')?.value
+        };
+        // Save to localStorage for now
+        localStorage.setItem('parsiUser', JSON.stringify(profile));
+        // TODO: Add AJAX/fetch call to backend (MongoDB integration)
+        // fetch('/api/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(profile) })
+    }
+
+    // Highlight selected avatar
+    function updateAvatarHighlight() {
+        document.querySelectorAll('.avatar-choice').forEach(function(span) {
+            span.style.border = '3px solid #333';
+            span.style.boxShadow = '';
+        });
+        const checked = document.querySelector('.avatar-select-row input[type="radio"]:checked');
+        if (checked) {
+            const val = checked.value;
+            const selected = document.querySelector('.avatar-choice[data-avatar="' + val + '"]');
+            if (selected) {
+                selected.style.border = '3.5px solid #ffd54f';
+                selected.style.boxShadow = '0 0 0 4px rgba(255,213,79,0.18)';
+            }
+        }
+    }
+    document.querySelectorAll('.avatar-select-row input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            updateAvatarHighlight();
+        });
+    });
+    // Call on page load too
+    window.addEventListener('DOMContentLoaded', updateAvatarHighlight);
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    });
+
+    // Back button functionality: go to previous page or fallback to home
+    document.getElementById('back-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'home.html';
+        }
+    });
+    </script>
+</body>
+</html>

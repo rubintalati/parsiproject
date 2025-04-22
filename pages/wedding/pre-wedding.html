@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Pre-Wedding Ceremonies - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Tab Navigation Styles */
+        .filter-container {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .filter-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            max-width: 180px;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .numbered-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">pre-wedding ceremonies</h1>
+            <p class="ceremony-subtitle">Important rituals and customs before a Parsi wedding</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <button class="filter-button active" data-tab="mandavsaro">Mandavsaro</button>
+                <button class="filter-button" data-tab="supra">Supra-ni-Reet</button>
+                <button class="filter-button" data-tab="aragh">Aragh Vadherva</button>
+            </div>
+            <div class="filter-row">
+                <button class="filter-button" data-tab="poli">Poli & Furniture</button>
+                <button class="filter-button" data-tab="varni">Varni Ceremony</button>
+                <button class="filter-button" data-tab="khichdi">Khichdi & Varadh</button>
+            </div>
+        </div>
+        
+        <!-- Mandavsaro Tab -->
+        <div id="mandavsaro" class="tab-content active">
+            <div class="ceremony-section">
+                <h2 class="section-title">Mandavsaro Ropvo and Kharaptu Karvu</h2>
+                
+                <p>In the past, when there were no baags people had to build mandvas for the wedding. Now as a sagan, this practice is still continued. As far as possible, this ceremony should be done in the morning. One can get from the gardner, a decorated pot with a mango branch. One can also get from a goldsmith sona-rupa-nu padiku. Otherwise, one can take out from a saree border, 3 tilis of gold and 4 of silver.</p>
+                
+                <h3 class="subsection-title">Items Required for the Ceremony</h3>
+                <p>In one khumchi should be kept:</p>
+                <ul class="custom-list">
+                    <li>Pan, sopari, kharek, badam, sakar</li>
+                    <li>A small glass of curds</li>
+                    <li>A coconut</li>
+                    <li>An egg</li>
+                    <li>Some wheat, rice, whole adad</li>
+                    <li>A small, fresh, cleaned coconut with a little chotli</li>
+                    <li>A ball of raw cotton thread (sutar dado)</li>
+                    <li>Halad gathia</li>
+                    <li>A fulyu of kanku and kharaptu</li>
+                    <li>A new piece of mulmul (the size of a small handkerchief)</li>
+                </ul>
+                
+                <h3 class="subsection-title">How to Make Kharaptu</h3>
+                <p>Mix the following to form a thick paste:</p>
+                <ul class="custom-list">
+                    <li>1 tablespoon of rice flour</li>
+                    <li>1/2 teaspoon of halad powder</li>
+                    <li>1/4 teaspoon of kanku</li>
+                    <li>Water (as needed)</li>
+                </ul>
+                
+                <h3 class="subsection-title">Ceremony Participants</h3>
+                <p>Four sahovasans should get ready with tili and with heads covered with their sarees. For planting the mandav, if the Mobedsaheb is not there, a boy should be kept ready wearing a pagdee of red saree, a tili and a garland, (For this ceremony he should be given some cash as gift). The bride should also be ready with tili, garland and her head covered with her saree.</p>
+                
+                <h3 class="subsection-title">The Ceremony Process</h3>
+                <ol class="numbered-list">
+                    <li>A rangoli should be done at the entrance of the house and a square crossed in the centre with kharaptu and small dots with kanku should be put on the wall.</li>
+                    <li>The pot should be kept on the rangoli, a pit dug in the middle of the earth in it.</li>
+                    <li>In this pit should be put kharek, pan, sopari, sakar, badam, rice, wheat, halad gathio, some curds, kanku, kharaptu, and sona-rupa packet. (Some people put Rs. 1.25).</li>
+                    <li>While Mobedsaheb, or the boy who has been kept ready, puts in this pit the mango branch, reciting yatha ahuvairyo 7 times, the 4 sahovasans keep their hands on the branch all the time.</li>
+                    <li>The earth should be well pressed and the branch planted.</li>
+                    <li>Then ourna should be taken 7 times with the egg which is then broken and put in the mudpot.</li>
+                    <li>Similarly ovrna should be taken with the coconut 7 times which is then broken and its water poured on the mango branch.</li>
+                    <li>The mulmul piece, well-dipped in kharaptu should be put on the mango branch.</li>
+                    <li>The coconut that has been cleaned should be decorated with kanku and then reciting yatha 7 times, it should be wrapped with raw cotton thread 7 times by one of the sahovasans (without a knot) and then it should be given in the hands of the bride.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Supra-ni-Reet Tab -->
+        <div id="supra" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Supra-ni Reet</h2>
+                
+                <p class="note">Now-a-days, this ceremony is not performed. But if desired, while preparing the mandav-no-thal, the supras should also be prepared.</p>
+                
+                <h3 class="subsection-title">Preparing the Supras</h3>
+                <ol class="numbered-list">
+                    <li>Four new supras should be prepared at the hands of any sahovasan.</li>
+                    <li>On each of them, 5 tilis should be done, 3 of kharaptu and 2 of kanku.</li>
+                    <li>Then they should be wrapped 5 times with raw cotton thread without a knot.</li>
+                    <li>Each of them should be kept ready by placing in them wheat, rice, whole adad, sopari, 1 badam, 2 pieces of sakar, halad gathia and a piece of dry coconut.</li>
+                </ol>
+                
+                <h3 class="subsection-title">Preparing the Khal (Pounding Pot)</h3>
+                <p>Doing a tili to the iron khal (pounding pot) with kharaptu, it should be kept ready with 3 halad gathias in it. The same 4 sahovasans who had sown the mandavsaro, should hold the batto and crush the halad coarse.</p>
+                
+                <p class="note">Some people do this ceremony before mandavsaro.</p>
+            </div>
+        </div>
+        
+        <!-- Aragh Vadherva Tab -->
+        <div id="aragh" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Aragh Vadherva-ni Reet</h2>
+                
+                <h3 class="subsection-title">The Ceremony Process</h3>
+                <ol class="numbered-list">
+                    <li>Making rangoli in the centre, khal should be put on it and then the 4 supras should be placed around it.</li>
+                    <li>From their supras each sahovasan should, put one piece of halad in the khal and all of them holding the batto together should crush the gathia coarse.</li>
+                    <li>After this, keeping the khal there only, the supru should be winnowed 5 times.</li>
+                    <li>Then it should be exchanged with the supru of the sahovasan on the opposite side and it should again be winnowed 5 times.</li>
+                    <li>This way it should be exchanged 5 times.</li>
+                </ol>
+                
+                <p>The contents of the supras should be collected, kept aside and after varovar, should be put into the sea.</p>
+            </div>
+        </div>
+        
+        <!-- Poli & Furniture Tab -->
+        <div id="poli" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Poli-Batasa and Furniture Ceremony</h2>
+                
+                <h3 class="subsection-title">Sending Poli-Batasa</h3>
+                <p>The girl's parents should put 5 polis and 4 big batasas in the garlanded khumcho meant for this and send it to the daughter's sasre where it will remain as a sign of sagan. If the khumcho has not been purchased, cash should be sent for poli-batasa.</p>
+                
+                <h3 class="subsection-title">Sending Furniture</h3>
+                <p>On the same day, all the furniture also should be sent, except the two wedding chairs, teapoy and lamp, which are to be taken to the baag. For the sake of convenience, a separate bag of clothes (like nightie and kimono), which will be required for changing soon after coming home from the baag, should also be packed separately and sent.</p>
+                
+                <h3 class="subsection-title">Timing Considerations</h3>
+                <p>If the mandavsaro is done in the morning, the varni should be finished in the afternoon, so that in the baag, where there will be guests there won't be any confusion. If it cannot be done on the mandavsaro day, these things can be sent to the girl's sasre on the next day or the day after that.</p>
+            </div>
+        </div>
+        
+        <!-- Varni Ceremony Tab -->
+        <div id="varni" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Varni Ceremony</h2>
+                
+                <h3 class="subsection-title">Vaga-ni-Sés to be taken to the Jamai's house</h3>
+                <p>In a new ses should be arranged the Jamai's sopara-no vago and with it adarni-nu watch, diva-na vaga-na buttons, gor-rupiya-na vaga na cash.</p>
+                
+                <p>If 4 tapelis have been purchased, in one should be put wheat, in the second dry sev, in the third coconut vati with jaggery, and in the fourth pan, sopari and kharek. After applying kanku-kharaptu to all the tapelis, they should be put one above the other (one with pan-sopari should be at the top) and garlanded.</p>
+                
+                <p>In another sés should be kept sasuji-no sopara-no vago, nanand-no vago, divo, adarni and gor rupiya-no vago.</p>
+                
+                <h3 class="subsection-title">Varni to the Daughter-in-Law</h3>
+                <p>Now the boy's relatives should come to the girl's house varni chadhavva. They should also bring vevan's sopara-na kapda, divo adarni and gor-rupiya-na clothes.</p>
+                
+                <h3 class="subsection-title">The Ceremony Order</h3>
+                <ol class="numbered-list">
+                    <li>They should first give the girl the vago with adarni-na kapda, shoes and kasti.</li>
+                    <li>After that, she should be given all the jewellery except the earings. (The girl wears this jewellery at the time of the wedding ceremony).</li>
+                    <li>After giving the jewellery and the clothes, she should be given diva-na, gor-rupiya-na, teda-na, pug-ni Janas-na- clothes or cash.</li>
+                    <li>After the bride, the vevan should be given sopara-na kapda. She can keep these clothes by right.</li>
+                    <li>Later, after keeping one rupee in the divo and after having snacks (mo mithu kari-ne) they should return home, taking their own ses.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Khichdi & Varadh Tab -->
+        <div id="khichdi" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Khichdi-ni Reet and Varadh Pattar</h2>
+                
+                <h3 class="subsection-title">Khichdi-ni Reet (Day of Rest)</h3>
+                <p>Next day (second day) is the day for Khichdi-ni Reet i.e. the day of rest. On this day nothing much is done except ukurdi (where they used to play the game of ukurdi lutvi).</p>
+                
+                <p class="note">Now-a-days, this custom is forgotton.</p>
+                
+                <h3 class="subsection-title">Varadh Pattar (Third Day)</h3>
+                <p>The day after this (i.e. the third day after the ceremonies start), is the day of varadh-pattar. At night, Ramyazad and Asho Faroharo are invited by praying the stoom and baj. Vardh-vada or Sagan-na cash should come from the boy's side.</p>
+                
+                <p class="note">On the day of the wedding also, prayers are recited for Asho Faroharo and its explanation is given by the Mobedsaheb.</p>
+                
+                <h3 class="subsection-title">Wedding Day Preparations</h3>
+                <p>This is the fourth day of the celebrations - The Wedding Day.</p>
+                
+                <p>In the morning, after doing chok-chandan, toran should be put on every door. Sagan-ni Sev and dahi should be made. As the bride is to come today, her room should be arranged and kept ready.</p>
+                
+                <p>Both the sides should prepare ses for taking to the baag.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.filter-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
