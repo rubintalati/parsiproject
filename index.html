@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +20,20 @@
             color: #fff;
             height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
         }
 
         .container {
@@ -39,8 +53,8 @@
         }
 
         .logo-container {
-            width: 160px;
-            height: 160px;
+            width: 200px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -49,9 +63,10 @@
         }
 
         .logo {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             object-fit: contain;
+            border: none !important;
         }
         
         .content-container {
@@ -63,6 +78,7 @@
             font-weight: bold;
             line-height: 1.1;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
         }
 
         .subtitle {
@@ -351,6 +367,96 @@
             }
         }
         
+        @media (max-width: 600px) {
+            html, body {
+                overflow: hidden !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                overscroll-behavior: none;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .container {
+                height: 100vh !important;
+                width: 100vw !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .logo-container {
+                display: none !important;
+            }
+            .mobile-logo {
+                display: block !important;
+                position: absolute;
+                top: 50%;
+                left: -30%;
+                width: 420px;
+                height: 420px;
+                z-index: 1;
+                opacity: 0.05;
+                background: none;
+                box-shadow: none;
+                transform: translateY(-50%);
+                pointer-events: none;
+            }
+            .video-background {
+                position: fixed;
+                inset: 0;
+                width: 100vw;
+                height: 53vh;
+                object-fit: cover;
+                z-index: 1;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+            .right-section {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 53vh !important;
+                min-height: unset !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                z-index: 2;
+                border: none !important;
+                outline: none !important;
+            }
+            .left-section {
+                position: absolute;
+                top: 53vh;
+                left: 0;
+                width: 100vw;
+                height: 47vh !important;
+                min-height: unset !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                z-index: 3;
+                overflow: hidden;
+            }
+            .content-container {
+                width: 100vw !important;
+                height: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                z-index: 2;
+            }
+        }
+        
         @media (max-width: 480px) {
             .right-section {
                 height: 65vh;
@@ -362,13 +468,16 @@
             }
             
             .title {
-                font-size: 1.8rem;
+                font-size: 2.6rem;
                 margin-top: 0.5rem;
+                margin-bottom: 2.2rem;
             }
             
             .subtitle {
-                font-size: 0.9rem;
+                font-size: 1.3rem;
                 margin-bottom: 1.2rem;
+                padding-left: 2rem;
+                padding-right: 2rem;
             }
             
             .selection-box, .question-item {
@@ -390,9 +499,30 @@
                 width: 34px;
                 height: 34px;
             }
+            
+            .cta-buttons {
+                width: 100vw !important;
+                box-sizing: border-box;
+                padding-left: 0;
+                padding-right: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cta-button {
+                font-size: 1.15rem !important;
+                width: 100%;
+                flex: none;
+                min-width: 0;
+            }
         }
         
         .mobile-explore-button {
+            display: none;
+        }
+        
+        .mobile-logo {
             display: none;
         }
     </style>
@@ -400,6 +530,7 @@
 <body>
     <div class="container">
         <div class="left-section">
+            <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="mobile-logo" />
             <div>
                 <div class="logo-container">
                     <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="logo" />
@@ -408,7 +539,7 @@
             
             <div class="content-container">
                 <h1 class="title">hi. this is the<br>parsi project</h1>
-                <p class="subtitle">a place to learn more about zoroastrianism</p>
+                <p class="subtitle">a digital prayer book for zoroastrians and more.</p>
                 
                 <div class="cta-buttons">
                     <a href="pages/all-prayers.html" class="cta-button secondary-button">all prayers</a>
