@@ -369,17 +369,20 @@
         
         @media (max-width: 600px) {
             html, body {
-                overflow: hidden !important;
-                height: 100vh !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+                min-height: 100vh !important;
                 width: 100vw !important;
                 overscroll-behavior: none;
                 margin: 0 !important;
                 padding: 0 !important;
             }
             .container {
-                height: 100vh !important;
+                height: auto !important;
+                min-height: 100vh !important;
                 width: 100vw !important;
-                overflow: hidden !important;
+                overflow: visible !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
@@ -505,7 +508,7 @@
                 box-sizing: border-box;
                 padding-left: 0;
                 padding-right: 0;
-                padding-bottom: env(safe-area-inset-bottom, 16px);
+                padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 32px);
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
