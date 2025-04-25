@@ -25,6 +25,19 @@
             scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
         /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
         ::-webkit-scrollbar {
             width: 6px;
@@ -305,30 +318,63 @@
             cursor: pointer;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-            
-            .prayer-title {
-                font-size: 1.5rem;
-            }
-            
-            .prayer-subtitle {
-                font-size: 1rem;
-            }
-            
-            .prayer-name {
-                font-size: 1.3rem;
-            }
+        .calibration-hint {
+            color: #ffecb3;
+            background: rgba(255, 193, 7, 0.08);
+            border-left: 3px solid #ffc107;
+            padding: 0.8rem 1.2rem;
+            margin: 1.2rem 0 0.7rem 0;
+            font-size: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
 
+        @media (max-width: 768px) {
+            /* Remove border and background for mobile */
+            .container {
+                padding: 0;
+                margin: 0;
+                background: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                max-width: 100vw;
+                width: 100vw;
+                border: none !important;
+            }
+            .header {
+                padding-top: 0.7rem;
+                padding-bottom: 0;
+                background: none;
+                box-shadow: none;
+                display: block;
+            }
+            .back-button {
+                display: block;
+                position: static;
+                left: auto;
+                top: auto;
+                margin: 0 0 0.7rem 1.2rem;
+                font-size: 2em;
+                color: #fff;
+                background: none;
+                z-index: 10;
+                text-decoration: none;
+                border: none;
+                outline: none;
+            }
+            .prayer-header {
+                margin-top: 0.2rem;
+                padding-left: 1.2rem;
+            }
+            .prayer-name, .prayer-subtitle {
+                text-align: left;
+            }
             .compass-container {
                 top: 1.5rem;
                 right: 1.5rem;
                 width: 100px; /* Slightly smaller on mobile but still larger than original */
                 height: 100px;
             }
-
             .permission-button {
                 display: block;
             }
@@ -354,34 +400,18 @@
             .compass-direction.west {
                 left: 10px;
             }
+            body {
+                border: none !important;
+            }
         }
     </style>
 </head>
 <body>
+    <a href="../all-prayers.html" class="back-button" aria-label="Back">&#8592;</a>
+    <div class="calibration-hint" id="calibration-hint">
+        If the compass seems inaccurate, move your phone in a "figure 8" motion to calibrate.
+    </div>
     <div class="container">
-        <div class="header">
-            <a href="../all-prayers.html" class="back-button">
-                <span class="back-arrow">←</span>
-            </a>
-        </div>
-        
-        <div class="compass-container">
-            <div class="compass">
-                <div class="compass-ring"></div>
-                <div class="compass-needle" id="compass-needle">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1"/>
-                        <path d="M50 10 L65 50 L50 90 L35 50 Z" fill="rgba(255,255,255,0.7)"/>
-                        <circle cx="50" cy="50" r="8" fill="#000" stroke="#fff" stroke-width="1.5"/>
-                    </svg>
-                </div>
-                <div class="compass-direction north" data-direction="north" data-min="315" data-max="45">N</div>
-                <div class="compass-direction east" data-direction="east" data-min="45" data-max="135">E</div>
-                <div class="compass-direction south" data-direction="south" data-min="135" data-max="225">S</div>
-                <div class="compass-direction west" data-direction="west" data-min="225" data-max="315">W</div>
-            </div>
-        </div>
-        
         <div class="prayer-header">
             <p class="prayer-subtitle">the one for humble repentance</p>
             <h2 class="prayer-name">char-disha no namaskar</h2>
@@ -426,95 +456,100 @@
         </div>
     </div>
 
+    <div class="compass-container">
+        <div class="compass">
+            <div class="compass-ring"></div>
+            <div class="compass-needle" id="compass-needle">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1"/>
+                    <path d="M50 10 L65 50 L50 90 L35 50 Z" fill="rgba(255,255,255,0.7)"/>
+                    <circle cx="50" cy="50" r="8" fill="#000" stroke="#fff" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="compass-direction north" data-direction="north" data-min="315" data-max="45">N</div>
+            <div class="compass-direction east" data-direction="east" data-min="45" data-max="135">E</div>
+            <div class="compass-direction south" data-direction="south" data-min="135" data-max="225">S</div>
+            <div class="compass-direction west" data-direction="west" data-min="225" data-max="315">W</div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const bearingDisplay = document.getElementById('hidden-bearing');
             const permissionButton = document.getElementById('permission-button');
             const directions = document.querySelectorAll('.compass-direction');
             const compassNeedle = document.getElementById('compass-needle');
-            
+            const calibrationHint = document.getElementById('calibration-hint');
+
             let currentDirection = null;
             let permissionGranted = false;
-            
+            let lastHeading = null;
+            let headingStableCount = 0;
+
             // Function to highlight the correct direction based on bearing
             function highlightDirection(bearing) {
                 // Normalize bearing to 0-360
                 bearing = (bearing + 360) % 360;
-                
-                // Update bearing display (hidden)
                 bearingDisplay.textContent = Math.round(bearing) + '°';
-                
-                // Rotate the compass needle to point north
-                // Subtract the bearing from 360 to rotate in the opposite direction
-                // This makes the needle appear to point north as the device rotates
+                // Smooth needle movement
+                compassNeedle.style.transition = 'transform 0.4s cubic-bezier(0.4,1.4,0.4,1)';
                 compassNeedle.style.transform = `rotate(${360 - bearing}deg)`;
-                
-                // Determine which direction we're facing
+                // Direction highlight (unchanged)
                 let newDirection = null;
-                
                 directions.forEach(dir => {
                     const dirName = dir.dataset.direction;
                     const minAngle = parseInt(dir.dataset.min);
                     const maxAngle = parseInt(dir.dataset.max);
-                    
-                    // Check if bearing is within this direction's range
                     if (minAngle > maxAngle) {
-                        // For North which wraps around (315-45)
-                        if (bearing >= minAngle || bearing < maxAngle) {
-                            newDirection = dirName;
-                        }
+                        if (bearing >= minAngle || bearing < maxAngle) newDirection = dirName;
                     } else {
-                        // For other directions
-                        if (bearing >= minAngle && bearing < maxAngle) {
-                            newDirection = dirName;
-                        }
+                        if (bearing >= minAngle && bearing < maxAngle) newDirection = dirName;
                     }
                 });
-                
-                // Only update if direction changed
                 if (newDirection !== currentDirection) {
                     currentDirection = newDirection;
-                    
-                    // Remove active class from all directions
-                    directions.forEach(dir => {
-                        dir.classList.remove('active');
-                    });
-                    
-                    // Add active class to current direction
+                    directions.forEach(dir => dir.classList.remove('active'));
                     if (currentDirection) {
                         const activeDir = document.querySelector(`.compass-direction[data-direction="${currentDirection}"]`);
-                        if (activeDir) {
-                            activeDir.classList.add('active');
-                        }
+                        if (activeDir) activeDir.classList.add('active');
                     }
                 }
             }
-            
-            // Handle device orientation
+
+            // Improved handleOrientation
             function handleOrientation(event) {
-                // Check if we have the event properties we need
-                if (event.alpha !== null) {
+                let heading = null;
+                // iOS
+                if (typeof event.webkitCompassHeading === 'number') {
+                    heading = event.webkitCompassHeading;
+                } else if (typeof event.alpha === 'number') {
+                    // Android: event.absolute true = true north, false = device north
+                    if (event.absolute && typeof event.alpha === 'number') {
+                        heading = 360 - event.alpha;
+                    } else {
+                        heading = 360 - event.alpha; // fallback
+                    }
+                }
+                if (heading !== null) {
                     permissionGranted = true;
                     permissionButton.style.display = 'none';
-                    
-                    // Alpha is the compass direction (in degrees)
-                    let heading = event.alpha;
-                    
-                    // Check if we have webkitCompassHeading (iOS devices)
-                    if (event.webkitCompassHeading) {
-                        heading = event.webkitCompassHeading;
-                    }
-                    
-                    // Update UI with current heading
                     highlightDirection(heading);
+                    // Calibration hint if heading is stuck
+                    if (lastHeading !== null && Math.abs(heading - lastHeading) < 1) {
+                        headingStableCount++;
+                        if (headingStableCount > 50) calibrationHint.style.display = 'block';
+                    } else {
+                        headingStableCount = 0;
+                        calibrationHint.style.display = 'none';
+                    }
+                    lastHeading = heading;
                 }
             }
-            
+
             // Function to request permission for device orientation
             function requestOrientationPermission() {
-                if (typeof DeviceOrientationEvent !== 'undefined' && 
+                if (typeof DeviceOrientationEvent !== 'undefined' &&
                     typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // iOS 13+ devices need permission
                     DeviceOrientationEvent.requestPermission()
                         .then(response => {
                             if (response === 'granted') {
@@ -530,37 +565,37 @@
                     window.addEventListener('deviceorientation', handleOrientation);
                 }
             }
-            
+
             // Add event listener to permission button
             permissionButton.addEventListener('click', requestOrientationPermission);
-            
+
             // Check if we're on a mobile device
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
+
+            // Try to auto-enable on Android/other browsers
             if (isMobile) {
-                // On mobile, we need permission
-                permissionButton.style.display = 'block';
+                if (typeof DeviceOrientationEvent !== 'undefined' &&
+                    typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    // iOS: show permission button, require user interaction
+                    permissionButton.style.display = 'block';
+                } else {
+                    // Android: auto-enable
+                    permissionButton.style.display = 'none';
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
             } else {
                 // On desktop, we use mouse movement
                 permissionButton.style.display = 'none';
-                
-                // Debug function for desktop testing (move mouse to simulate compass)
                 function debugWithMouse(e) {
                     if (!permissionGranted) {
                         const x = e.clientX;
                         const y = e.clientY;
-                        
-                        // Calculate angle based on mouse position relative to center of screen
                         const centerX = window.innerWidth / 2;
                         const centerY = window.innerHeight / 2;
-                        
                         const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
-                        const heading = (angle + 90 + 360) % 360; // Convert to compass heading
-                        
-                        highlightDirection(heading);
+                        highlightDirection((angle + 360) % 360);
                     }
                 }
-                
                 document.addEventListener('mousemove', debugWithMouse);
             }
         });

@@ -16,6 +16,18 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Manrope', sans-serif; background-color: #000; color: #fff; min-height: 100vh; overflow: hidden; }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
         .container { display: flex; min-height: 100vh; }
         .main-content { flex: 1; padding: 1.5rem; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
         .header { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem; margin-top: 2rem; text-align: center; width: 100%; }

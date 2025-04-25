@@ -2,10 +2,12 @@
 <!-- Include this in all pages -->
 
 <!-- Mobile Navigation Toggle -->
-<button class="mobile-nav-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+<button class="mobile-nav-toggle" aria-label="Open navigation">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <rect x="6" y="9" width="20" height="2.5" rx="1.25" fill="#fff"/>
+        <rect x="6" y="15" width="20" height="2.5" rx="1.25" fill="#fff"/>
+        <rect x="6" y="21" width="20" height="2.5" rx="1.25" fill="#fff"/>
+    </svg>
 </button>
 
 <!-- Mobile Navigation Overlay -->
@@ -13,11 +15,11 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <div class="logo-container">
+    <!-- Logo at top for desktop -->
+    <div class="logo-container logo-top-desktop">
         <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
     </div>
-
-    <div class="sidebar-section">
+    <div class="sidebar-section first-sidebar-section">
         <a href="home.html" id="nav-daily-prayers">daily prayers</a>
         <a href="all-prayers.html" id="nav-all-prayers">all prayers</a>
         <a href="stories.html" id="nav-stories">stories <span class="coming-soon">coming soon</span></a>
@@ -36,18 +38,9 @@
         <a href="ppt.html" id="nav-ppt">ppt <span class="coming-soon">coming soon</span></a>
         <a href="letter-for-you.html" data-link="letter-for-you" id="nav-letter">a letter for you</a>
     </div>
-
-    <!-- Profile header at the bottom of sidebar -->
-    <div class="sidebar-section sidebar-bottom-section">
-        <div class="profile-header sidebar-profile-header" id="sidebar-profile-header">
-            <div class="profile-avatar sidebar-profile-avatar" id="sidebar-profile-avatar-img">
-                <img src="../media/logo/avatar/cartoon%20dog.png" alt="profile avatar" id="sidebar-profile-avatar-img-tag">
-            </div>
-            <div class="profile-details sidebar-profile-details" id="sidebar-profile-details" style="cursor: pointer;">
-                <div class="profile-name sidebar-profile-name" id="sidebar-profile-name">guest</div>
-                <div class="profile-gender sidebar-profile-gender" id="sidebar-profile-gender">parsi person</div>
-            </div>
-        </div>
+    <!-- Move logo to bottom for mobile -->
+    <div class="logo-container logo-bottom-mobile">
+        <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
     </div>
 </div>
 
@@ -119,80 +112,8 @@
         vertical-align: middle;
     }
 
-    .sidebar-bottom-section {
-        margin-top: auto;
-        padding-bottom: 1.2rem;
-        text-align: left;
-    }
-    .sidebar-bottom-section a {
-        font-weight: 600;
-        color: #ffd54f;
-        font-size: 1.07rem;
-        letter-spacing: 0.01em;
-        display: block;
-        margin-top: 0.7em;
-        margin-bottom: 0.2em;
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    .sidebar-bottom-section a:hover {
-        color: #fff8e1;
-    }
-
-    /* Sidebar profile header styles (side-by-side, compact) */
-    .sidebar-profile-header {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 0.85em;
-        margin-bottom: 1.1em;
-        text-align: left;
-        cursor: pointer;
-    }
-    .sidebar-profile-avatar {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: #181818;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 8px 0 rgba(255,213,79,0.13);
-        overflow: hidden;
-    }
-    .sidebar-profile-avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .sidebar-profile-details {
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.07em;
-    }
-    .sidebar-profile-name {
-        font-weight: 600;
-        color: #fff;
-        font-size: 0.98rem;
-        text-transform: capitalize;
-        line-height: 1.1;
-    }
-    .sidebar-profile-gender {
-        color: #bdbdbd;
-        font-size: 0.85rem;
-        text-transform: lowercase;
-        line-height: 1.1;
-    }
-
-    .sidebar-profile-details:hover .sidebar-profile-name,
-    .sidebar-profile-details:focus .sidebar-profile-name,
-    .sidebar-profile-details:hover .sidebar-profile-gender,
-    .sidebar-profile-details:focus .sidebar-profile-gender {
-        text-shadow: 0 0 8px #d0d0d0, 0 0 12px #b0b0b0;
-        color: #e0e0e0;
+    .sidebar-section:last-of-type {
+        border-bottom: none;
     }
 
     /* Mobile Navigation */
@@ -209,15 +130,6 @@
         cursor: pointer;
     }
 
-    .mobile-nav-toggle span {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background-color: #fff;
-        margin: 5px 0;
-        transition: all 0.3s ease;
-    }
-
     .mobile-nav-overlay {
         display: none;
         position: fixed;
@@ -227,6 +139,17 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.7);
         z-index: 999;
+    }
+
+    /* Desktop: Logo at top, Mobile: Logo at bottom */
+    .logo-top-desktop { display: flex; }
+    @media (max-width: 768px) {
+      .logo-top-desktop { display: none !important; }
+      .logo-bottom-mobile { display: flex !important; }
+    }
+    @media (min-width: 769px) {
+      .logo-top-desktop { display: flex !important; }
+      .logo-bottom-mobile { display: none !important; }
     }
 
     /* Media queries for responsive design */
@@ -244,6 +167,9 @@
             max-width: 300px;
             height: 100%;
             overflow-y: auto;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 2rem;
         }
 
         .sidebar.active {
@@ -263,6 +189,19 @@
             width: 100%;
             padding-top: 4rem;
         }
+
+        .logo-container {
+            margin-bottom: 0;
+            margin-top: auto;
+            align-self: flex-start;
+        }
+
+        .first-sidebar-section {
+            margin-top: 64px !important;
+        }
+        .sidebar a {
+            font-size: 18px;
+        }
     }
 </style>
 
@@ -272,13 +211,13 @@
         const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
         const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
         const sidebar = document.querySelector('.sidebar');
-        
+
         // Mobile navigation toggle functionality
         mobileNavToggle.addEventListener('click', function() {
             sidebar.classList.toggle('active');
             mobileNavOverlay.classList.toggle('active');
         });
-        
+
         // Close mobile navigation when clicking outside
         mobileNavOverlay.addEventListener('click', function() {
             sidebar.classList.remove('active');

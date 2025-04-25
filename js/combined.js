@@ -726,6 +726,16 @@ document.addEventListener('DOMContentLoaded', function() {
     observeSidebarProfileDetails();
 });
 
+// Make letter spacing for 'ushta te' tighter on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const ushtaTeTitle = document.querySelector('.ushta-te-title');
+    if (ushtaTeTitle) {
+        if (window.innerWidth <= 768) {
+            ushtaTeTitle.style.letterSpacing = '-0.3em';
+        }
+    }
+});
+
 /**************************************
  * INITIALIZATION
  **************************************/

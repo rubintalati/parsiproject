@@ -215,20 +215,26 @@
                 overflow: auto !important;
             }
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Mobile Navigation Toggle -->
-        <button class="mobile-nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <!-- Mobile Navigation Overlay -->
-        <div class="mobile-nav-overlay"></div>
-
+        <!-- Sidebar Include - Add here if not present -->
+        <!--#include file="../templates/sidebar-template.html" -->
+        
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
@@ -302,26 +308,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile navigation functionality
-            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-            
-            // Mobile navigation toggle functionality
-            mobileNavToggle.addEventListener('click', function() {
-                mobileNavOverlay.classList.toggle('active');
-            });
-            
-            // Close mobile navigation when clicking outside
-            mobileNavOverlay.addEventListener('click', function() {
-                mobileNavOverlay.classList.remove('active');
-            });
-            
             // Typing animation for welcome text
             const welcomeText = document.getElementById('welcome-text');
             const textToType = "we're working on collecting zoroastrian stories and legends to share with you soon. since you could not hold your horses, you will now be subjected to my friends' weird faces.";
             let i = 0;
             const typingSpeed = 50; // milliseconds per character
-            
             function typeWriter() {
                 if (i < textToType.length) {
                     welcomeText.innerHTML = textToType.substring(0, i + 1);
@@ -329,8 +320,6 @@
                     setTimeout(typeWriter, typingSpeed);
                 }
             }
-            
-            // Start typing animation
             typeWriter();
         });
     </script>

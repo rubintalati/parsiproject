@@ -52,6 +52,19 @@
             opacity: 1;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
         .container {
             max-width: 650px;
             margin: 0 auto;
@@ -747,7 +760,7 @@
                 </div>
                 
                 <div class="prayer-text">
-                    <p>Thwām Ātarem Ahurahe Mazdāo puthrem ashavanem ashahe ratūm yazamaide, hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; Apām Naptārem yazamaide; Nairīm Sanghem yazamaide; takhməm Dāmōish upamanem yazatem yazamaide, iristanām urvānō yazamaide yāo ashaonām fravashayō. Ratūm berezantem yazamaide yim Ahurem Mazdām, yō ashahe apanotemō, yō ashahe jaghmushtemō; vispa sravāo Zarathushtri yazamaide; vispacha hvarshta shyaothna yazamaide varshtacha vareshyamnancha.</p>
+                    <p>Thwām Ātarem Ahurahe Mazdāo puthrem ashavanem ashahe ratūm yazamaide; hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; Apām Naptārem yazamaide; Nairīm Sanghem yazamaide; takhməm Dāmōish upamanem yazatem yazamaide, iristanām urvānō yazamaide yāo ashaonām fravashayō. Ratūm berezantem yazamaide yim Ahurem Mazdām, yō ashahe apanotemō, yō ashahe jaghmushtemō; vispa sravāo Zarathushtri yazamaide; vispacha hvarshta shyaothna yazamaide varshtacha vareshyamnancha.</p>
                 </div>
                 
                 <div class="prayer-text">

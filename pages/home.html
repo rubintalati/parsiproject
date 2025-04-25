@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="../css/onboarding-modal.css">
     <link rel="stylesheet" href="../css/logo.css">
     <link rel="stylesheet" href="../css/user-profile.css">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
     <style>
         * {
             margin: 0;
@@ -27,6 +33,19 @@
             color: #fff;
             height: 100vh;
             overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
         }
 
         .container {
@@ -68,6 +87,14 @@
             margin-top: 2rem;
             text-align: center;
             width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #000;
+            transition: box-shadow 0.2s;
+        }
+        .header.sticky {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         .page-title {
             font-size: 2.5rem;
@@ -343,6 +370,16 @@
             /* Container adjustments handled by include-sidebar.js */
             /* .container { ... } */
             
+            .header {
+                position: static !important;
+                top: unset !important;
+                z-index: unset !important;
+                box-shadow: none !important;
+                width: 100vw !important;
+                margin-left: calc(-1 * (100vw - 100%) / 2);
+                border-radius: 0 !important;
+                background: #000 !important;
+            }
             .main-content {
                 height: auto; /* Allow content scroll */
                 padding: 1rem;
@@ -355,24 +392,31 @@
              }
 
             .main-prayers {
-                padding: 0 5%;
-                gap: 0.5rem;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                flex-direction: row !important;
+                gap: 1rem !important;
+                padding: 0 0.5rem;
             }
-            
             .main-prayer-card {
-                width: 48%; /* Two cards per row */
-                min-width: 120px;
-                padding: 0.8rem;
+                width: calc(50% - 0.5rem) !important;
+                min-width: 120px !important;
+                margin: 0 0 1rem 0 !important;
+                box-sizing: border-box;
             }
-            
-             .secondary-prayers {
-                 gap: 0.5rem;
-             }
-
-             .secondary-prayer-card {
-                 padding: 0.5rem 0.8rem;
-                 font-size: 0.8rem;
-             }
+            .secondary-prayers {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                flex-direction: row !important;
+                gap: 1rem !important;
+                padding: 0 0.5rem;
+            }
+            .secondary-prayer-card {
+                width: calc(50% - 0.5rem) !important;
+                min-width: 100px !important;
+                margin: 0 0 1rem 0 !important;
+                box-sizing: border-box;
+            }
 
             .welcome-text-container {
                 padding: 0 1rem;
@@ -497,18 +541,11 @@
             const text2Element = document.getElementById('text2');
             const text3Element = document.getElementById('text3');
 
-            // Get first name from localStorage (Google Auth or onboarding)
-            let userData = JSON.parse(localStorage.getItem('parsiUser')) || { firstName: 'guest' };
-            let firstName = userData.firstName || 'guest';
-            if (firstName.toLowerCase() === 'guest') {
-                firstName = '';
-            }
-
-            // Dynamic first line
+            // Custom welcome text for praying on the go
             const texts = [
-                firstName ? `hi ${firstName.toLowerCase()}` : 'welcome!',
-                "looks like you’re interested in knowing more about our faith. the prayers given below are something which might help you go through the day. each have their own significance and purpose. of course none of these are mandatory. so pray whatever you feel like its more like a guide",
-                "if you're using this website in a prayer hall or an agiary please make sure your phone is on silent and the presiding priest approves of phone use"
+                "praying on the go!? , then you have come to the right place.",
+                "the prayers below will help you get through your day. pray whatever you feel like , use me like a guide.",
+                ""
             ];
             let currentTextIndex = 0;
             let currentCharIndex = 0;
@@ -527,6 +564,7 @@
                     currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
                     const cursor = document.createElement('span');
                     cursor.className = 'typing-cursor';
+                    cursor.textContent = '|';
                     currentElement.appendChild(cursor);
                     currentCharIndex++;
                     setTimeout(typeText, Math.random() * 20 + 15);
@@ -535,17 +573,35 @@
                     if (existingCursor) existingCursor.remove();
                     currentTextIndex++;
                     currentCharIndex = 0;
-                    if (currentTextIndex < texts.length) {
-                        currentElement = currentTextIndex === 1 ? text2Element : text3Element;
-                        if(currentElement) currentElement.textContent = '';
-                        setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
-                    } else {
-                        currentElement = null;
-                    }
+                    currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                    if(currentElement) currentElement.textContent = '';
+                    setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
                 }
             }
             typeText();
         });
+
+        // Sticky header scroll logic (desktop only)
+        const header = document.querySelector('.header');
+        function updateStickyHeader() {
+            if (!header) return;
+            if (window.innerWidth > 768) {
+                window.addEventListener('scroll', stickyScrollHandler);
+            } else {
+                window.removeEventListener('scroll', stickyScrollHandler);
+                header.classList.remove('sticky');
+            }
+        }
+        function stickyScrollHandler() {
+            if (!header) return;
+            if (window.scrollY > 20) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        }
+        updateStickyHeader();
+        window.addEventListener('resize', updateStickyHeader);
     </script>
     <script src="../js/combined.js"></script>
 </body>
