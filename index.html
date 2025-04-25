@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
     <title>The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -368,92 +368,85 @@
         }
         
         @media (max-width: 600px) {
-            html, body {
+            html, body, .container {
+                height: 100dvh;
+                height: 100vh; /* fallback for older browsers */
                 overflow: hidden !important;
-                height: 100vh !important;
-                min-height: 100vh !important;
                 width: 100vw !important;
-                overscroll-behavior: none;
                 margin: 0 !important;
                 padding: 0 !important;
             }
-            .container {
-                height: 100vh !important;
-                min-height: 100vh !important;
-                width: 100vw !important;
-                overflow: hidden !important;
+            .logo-container {
+                display: none !important;
+            }
+            .mobile-logo {
+                display: block !important;
+                position: absolute;
+                top: 50%;
+                left: -30%;
+                width: 420px;
+                height: 420px;
+                z-index: 1;
+                opacity: 0.05;
+                background: none;
+                box-shadow: none;
+                transform: translateY(-50%);
+                pointer-events: none;
+            }
+            .video-background {
+                position: fixed;
+                inset: 0;
+                width: 100vw;
+                height: 53vh;
+                object-fit: cover;
+                z-index: 1;
                 margin: 0 !important;
                 padding: 0 !important;
-                display: flex;
-                flex-direction: column-reverse;
-            }
-            .left-section, .right-section {
-                flex: none;
-                width: 100%;
-            }
-            .left-section {
-                border-right: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 0.8rem 0.5rem 0.5rem 0.5rem;
-                min-height: 40vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                justify-content: flex-end;
+                border: none !important;
+                top: 0 !important;
+                left: 0 !important;
             }
             .right-section {
-                height: 60vh;
-                min-height: 350px;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 53vh !important;
+                min-height: unset !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                z-index: 2;
+                border: none !important;
+                outline: none !important;
+            }
+            .left-section {
+                position: absolute;
+                top: 53vh;
+                left: 0;
+                width: 100vw;
+                height: 47vh !important;
+                min-height: unset !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                z-index: 3;
+                overflow: hidden;
             }
             .content-container {
-                margin-top: 0.5rem;
-                width: 100%;
+                width: 100vw !important;
+                height: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 align-items: center;
-                justify-content: flex-end;
-                flex: 1;
-            }
-            .cta-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-                width: 100%;
-                max-width: 300px;
-                align-items: center;
-                margin-bottom: 0.5rem;
-                padding-bottom: env(safe-area-inset-bottom, 8px);
-            }
-            .cta-button {
-                width: 100%;
-                text-align: center;
-                padding: 0.7rem 0.5rem;
-                font-size: 1rem;
-            }
-            .title {
-                font-size: 1.3rem;
-                margin-top: 0.2rem;
-                margin-bottom: 0.5rem;
-            }
-            .subtitle {
-                font-size: 0.95rem;
-                margin-bottom: 0.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .cta-buttons {
-                padding-bottom: env(safe-area-inset-bottom, 8px);
-                gap: 0.5rem;
-            }
-            .cta-button {
-                font-size: 1rem !important;
-                padding: 0.6rem 0.3rem;
+                position: relative;
+                z-index: 2;
             }
         }
         
