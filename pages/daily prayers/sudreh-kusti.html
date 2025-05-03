@@ -790,15 +790,37 @@
                             if (permissionState === 'granted') {
                                 window.addEventListener('deviceorientation', handleDeviceOrientation);
                                 permissionButton.style.display = 'none';
+                                
+                                // Start a timeout to check if we're actually receiving events
+                                setTimeout(() => {
+                                    if (!hasAccurateReading && compassErrorCount === 0) {
+                                        // We got permission but no readings - likely no compass hardware
+                                        compassStatus.textContent = "No compass detected on device";
+                                        compassStatus.className = 'compass-status accuracy-error';
+                                    }
+                                }, 3000);
                             } else {
                                 compassStatus.textContent = "Permission denied";
                                 compassStatus.className = 'compass-status accuracy-error';
                             }
                         })
-                        .catch(console.error);
+                        .catch(error => {
+                            console.error("Error requesting device orientation permission:", error);
+                            compassStatus.textContent = "Error requesting permission";
+                            compassStatus.className = 'compass-status accuracy-error';
+                        });
                 } else {
                     // For devices that don't need permission
                     window.addEventListener('deviceorientation', handleDeviceOrientation);
+                    
+                    // Start a timeout to check if we're actually receiving events
+                    setTimeout(() => {
+                        if (!hasAccurateReading && compassErrorCount === 0) {
+                            // No readings after 3 seconds - likely no compass hardware
+                            compassStatus.textContent = "No compass detected on device";
+                            compassStatus.className = 'compass-status accuracy-error';
+                        }
+                    }, 3000);
                 }
             }
             
