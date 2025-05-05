@@ -301,6 +301,7 @@
                 height: 100dvh; /* Use dynamic viewport height when available */
                 overflow: hidden;
                 width: 100%;
+                position: fixed; /* Prevent refreshing by locking scrolling */
             }
             
             .logo-container {
@@ -321,37 +322,44 @@
             }
             
             .video-background {
-                height: 55vh;
+                height: 40vh; /* Reduced from 55vh to create less empty space */
                 object-position: center;
             }
             
             .right-section {
-                height: 55vh;
-                min-height: 250px;
+                height: 40vh; /* Reduced from 55vh to match video */
+                min-height: unset;
             }
             
             .left-section {
-                height: 45vh;
-                min-height: 250px;
-                padding: 1.5rem;
+                height: 60vh; /* Increased from 45vh to give more space for content */
+                min-height: unset;
+                padding: 1rem;
                 display: flex;
-                align-items: center;
+                align-items: flex-start; /* Changed from center to create less space */
+                justify-content: center;
             }
             
             .content-container {
                 width: 100%;
-                padding: 0 1rem;
+                padding: 0;
                 text-align: center;
+                margin-top: 0.5rem; /* Added to reduce space */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
             }
         }
         
         @media (max-width: 480px) {
             .right-section {
-                height: 50vh;
+                height: 35vh; /* Reduced further for smaller screens */
             }
             
             .left-section {
-                height: 50vh;
+                height: 65vh; /* Increased to create more space for content */
+                padding: 0.5rem 1rem;
             }
             
             .title {
@@ -380,7 +388,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 0.8rem;
-                padding-bottom: env(safe-area-inset-bottom, 16px);
+                padding-bottom: 1rem;
             }
             
             .cta-button {
