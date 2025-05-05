@@ -464,12 +464,24 @@
                 margin-bottom: 0.5rem;
             }
             
-            .main-prayers, .secondary-prayers {
+            .main-prayers {
                 gap: 0.6rem;
                 padding: 0 0.3rem;
             }
             
-            .main-prayer-card, .secondary-prayer-card {
+            /* Custom logic for boxes - first 4 boxes 2-in-a-row, then 1 per row */
+            .main-prayer-card {
+                width: calc(50% - 0.3rem);
+                min-width: unset;
+                margin-bottom: 0.6rem;
+            }
+            
+            /* Target boxes after the 4th one to be full width */
+            .main-prayer-card:nth-child(n+5) {
+                width: 100%;
+            }
+            
+            .secondary-prayer-card {
                 width: 100%;
                 min-width: unset;
                 margin-bottom: 0.6rem;
