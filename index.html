@@ -244,54 +244,121 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                text-align: center;
+            }
+            
             .container {
-                flex-direction: column;
+                flex-direction: column-reverse;
+                height: auto;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .left-section, .right-section {
+                flex: none;
+                width: 100%;
             }
             
             .left-section {
-                flex: none;
-                padding: 1.5rem;
                 border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                min-height: 45vh;
-                order: 2;
-                width: 100%;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1.5rem;
+                min-height: 40vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
             
             .right-section {
-                flex: none;
-                min-height: 55vh;
-                order: 1;
-                width: 100%;
+                height: 60vh;
+                min-height: 350px;
+                margin: 0;
+                padding: 0;
             }
             
             .logo-container {
-                width: 120px;
-                height: 120px;
-                margin-bottom: 1rem;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 5;
+                background-color: rgba(0, 0, 0, 0.5);
+                margin: 0;
+                border-radius: 0;
+                border-top: none;
+                border-left: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             }
             
-            .logo {
-                width: 100px;
-                height: 100px;
+            .content-container {
+                margin-top: 1rem;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
             
             .title {
-                font-size: 2.5rem;
+                font-size: 2rem;
+                margin-top: 1rem;
+                text-align: center;
             }
             
             .subtitle {
-                font-size: 1.1rem;
+                font-size: 1rem;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .cta-buttons {
-                justify-content: center;
+                flex-direction: column;
+                gap: 0.8rem;
+                width: 100%;
+                max-width: 300px;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                text-align: center;
+                padding: 0.8rem 1rem;
             }
             
             /* Hide question picker on mobile */
             .question-picker {
                 display: none;
+            }
+            
+            /* Show mobile explore button instead */
+            .mobile-explore-button {
+                display: block;
+                position: relative;
+                z-index: 2;
+                width: 80%;
+                max-width: 300px;
+                margin: 1.5rem auto 0;
+            }
+            
+            .mobile-explore-button a {
+                display: block;
+                background-color: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: #fff;
+                padding: 1rem;
+                text-align: center;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background-color 0.3s ease;
+            }
+            
+            .mobile-explore-button a:hover {
+                background-color: rgba(30, 30, 30, 0.7);
             }
         }
         
@@ -436,6 +503,21 @@
         
         .mobile-logo {
             display: none;
+        }
+        
+        .mobile-visible-logo {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .mobile-visible-logo {
+                display: block;
+                width: 80px;
+                height: 80px;
+                margin: -20px auto 5px;
+                position: relative;
+                z-index: 5;
+            }
         }
     </style>
 </head>
