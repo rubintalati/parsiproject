@@ -299,9 +299,9 @@
             html, body, .container {
                 height: 100vh;
                 height: 100dvh; /* Use dynamic viewport height when available */
-                overflow: hidden;
+                overflow: auto; /* Changed from hidden to allow scrolling/refreshing */
                 width: 100%;
-                position: fixed; /* Prevent refreshing by locking scrolling */
+                /* position: fixed removed to allow refreshing */
             }
             
             .logo-container {
@@ -321,6 +321,16 @@
                 pointer-events: none;
             }
             
+            /* New visible logo between video and content */
+            .mobile-visible-logo {
+                display: block;
+                width: 80px;
+                height: 80px;
+                margin: -20px auto 5px;
+                position: relative;
+                z-index: 5;
+            }
+            
             .video-background {
                 height: 40vh; /* Reduced from 55vh to create less empty space */
                 object-position: center;
@@ -332,11 +342,11 @@
             }
             
             .left-section {
-                height: 60vh; /* Increased from 45vh to give more space for content */
+                height: auto; /* Changed to auto to allow scrolling */
                 min-height: unset;
                 padding: 1rem;
                 display: flex;
-                align-items: flex-start; /* Changed from center to create less space */
+                align-items: flex-start;
                 justify-content: center;
             }
             
@@ -344,11 +354,12 @@
                 width: 100%;
                 padding: 0;
                 text-align: center;
-                margin-top: 0.5rem; /* Added to reduce space */
+                margin-top: 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: flex-start;
+                padding-bottom: 2rem; /* Add padding at bottom for scrollable content */
             }
         }
         
@@ -439,6 +450,7 @@
             </div>
             
             <div class="content-container">
+                <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="mobile-visible-logo" />
                 <h1 class="title">hi. this is the<br>parsi project</h1>
                 <p class="subtitle">come for the prayers,stay for the vibes</p>
                 
