@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Special Rituals - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../../css/logo.css">
+    <link rel="stylesheet" href="../../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            counter-increment: item;
+        }
+
+        .numbered-list li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        
+        /* Fade effect at the top/bottom of the container */
+        .fade-top, .fade-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .fade-top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        .fade-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span> back to death rituals
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">special rituals</h1>
+            <p class="ceremony-subtitle">geh-sārnā, chinwad pul, dokhmenashini, and more</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Geh-sārnā</h2>
+            <p>The Geh-sārnā is a distinctive ritual with specific temporal requirements:</p>
+            
+            <ul class="custom-list">
+                <li>It can only be performed during daylight hours (Havan, Rapithwin, or Uziran Geh)</li>
+                <li>The ritual cannot be performed after sunset or before sunrise</li>
+                <li>This timing requirement is related to the sacred nature of the sun (Khurshed) in Zoroastrian tradition</li>
+            </ul>
+            
+            <p>During the Geh-sārnā, the body is ritually prepared for its final journey. The ceremony includes recitation of sacred texts, particularly the Ahunavad Gatha, which is the first Gatha composed by Zarathushtra himself.</p>
+            
+            <div class="note">
+                The requirement that the corpse must be exposed to the sun (Khurshed Nagirashni) when laid in the Dakhma is an extension of this solar connection in Zoroastrian death rituals.
+            </div>
+            
+            <p>The sun's rays are believed to have purificatory powers that assist in the separation of the soul from the body. This is why the timing of the funeral is carefully planned to ensure this solar exposure.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Sarosh-no-Kardo or Sarosh-nu-Patru</h2>
+            <p>This specialized ritual is performed on the first, second, and third days after death:</p>
+            
+            <ul class="custom-list">
+                <li>Performed at the beginning of the Aiwisruthrem gāh (evening period)</li>
+                <li>Cannot be performed in the presence of the body</li>
+                <li>Requires two priests to perform a specialized Afrinagan ritual</li>
+                <li>Specifically honors Sarosh Yazad, the divine guardian of souls</li>
+            </ul>
+            
+            <p>Sarosh Yazad is particularly important in Zoroastrian eschatology as the divine being who protects the soul during its vulnerable three-day period in the material world after death. This ritual reinforces that protection.</p>
+            
+            <p>The Afrinagan ritual involves the use of fire, sandalwood, and specific liturgical recitations. The priests sit facing each other with ritual implements between them, creating a sacred space for the invocation.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Chinwad Pul (Bridge)</h2>
+            <p>The Chinwad Pul is not a physical ritual but a crucial spiritual concept that influences several rituals:</p>
+            
+            <p>This allegorical bridge connects the material and spiritual worlds. Souls must cross it on the fourth day after death (Chahrom), and their passage is determined by their deeds in life:</p>
+            
+            <ul class="custom-list">
+                <li>For the righteous soul, the bridge appears wide and easily crossable</li>
+                <li>For the wicked soul, it narrows to the width of a razor's edge</li>
+                <li>Righteous souls are escorted across by their Daenā (conscience) appearing as a beautiful maiden</li>
+                <li>Evil souls are dragged to the abyss by their Daenā appearing as a hideous hag</li>
+            </ul>
+            
+            <p>Multiple rituals during the three days after death are specifically designed to prepare and assist the soul for this crossing. The Uthamnā ceremony performed before dawn on the fourth day is particularly focused on this transition.</p>
+            
+            <div class="note">
+                The concept of the Chinwad Bridge is one of the oldest documented ideas of judgment after death in world religions and has influenced many later religious traditions.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Dokhmenashini System</h2>
+            <p>Dokhmenashini refers to the entire system of exposure of the dead in the Dakhma. This process involves several specialized rituals:</p>
+            
+            <h3 class="subsection-title">Khurshed Nagirashni</h3>
+            <p>This ritual ensures the corpse is properly exposed to the purifying rays of the sun when placed in the Dakhma. The timing of the funeral and the positioning of the body are carefully managed to achieve this solar exposure.</p>
+            
+            <h3 class="subsection-title">The Nasesalars' Ritual</h3>
+            <p>The Nasesalars (corpse-bearers) follow specific ritual procedures:</p>
+            <ul class="custom-list">
+                <li>They recite specific prayers for protection while handling the body</li>
+                <li>They wear ritual clothing and maintain specific states of purity</li>
+                <li>They follow precise protocols for placing the body in the Dakhma</li>
+                <li>After their duties, they undergo extensive purification rituals</li>
+            </ul>
+            
+            <p>The Nasesalars' work is considered both essential and hazardous in a spiritual sense, requiring special training and protective practices.</p>
+            
+            <h3 class="subsection-title">Char Disa</h3>
+            <p>This ritual involves prayers toward the four directions (north, south, east, west) at specific moments in the funeral process, symbolizing the universal nature of the soul's journey and the all-encompassing nature of Ahura Mazda's creation.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Sagdi at Doongerwadi</h2>
+            <p>The Sagdi is a sacred building within the Doongerwadi complex with specific ritual purposes:</p>
+            
+            <ul class="custom-list">
+                <li>Houses an unconsecrated Dadgah fire that provides spiritual comfort</li>
+                <li>Serves as a place for prayer and meditation after funeral ceremonies</li>
+                <li>Allows mourners to offer sandalwood to the fire</li>
+                <li>Provides a transition space between the Dakhma and the outside world</li>
+            </ul>
+            
+            <p>Since the Sagdi fire is not a consecrated fire temple fire, it cannot be desecrated by the presence of mourners who have been in proximity to death. This makes it accessible for prayer immediately after funeral rituals.</p>
+            
+            <h3 class="subsection-title">Sagdi Ceremonies</h3>
+            <p>Special ceremonies are performed at the Sagdi:</p>
+            <ul class="custom-list">
+                <li>Mourners may recite the Sarosh Baj for the deceased</li>
+                <li>Priests may perform specific liturgies on behalf of the family</li>
+                <li>Charitable donations are often pledged in memory of the departed</li>
+                <li>The symbolism of light (the fire) conquering darkness (death) is emphasized</li>
+            </ul>
+            
+            <div class="note">
+                The Sagdi represents an important transitional space in the funeral process, helping mourners begin their return to normal life while maintaining a spiritual connection to the deceased.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Memorial Ceremonies</h2>
+            
+            <h3 class="subsection-title">Monthly Ceremonies</h3>
+            <p>On each monthly anniversary of the death (particularly the first month), special ceremonies may be performed:</p>
+            <ul class="custom-list">
+                <li>Afrinagan ceremonies honor the Fravashi (guardian spirit) of the deceased</li>
+                <li>Baj rituals provide spiritual sustenance for the departed soul</li>
+                <li>Family members gather to reinforce their bonds and remember the deceased</li>
+            </ul>
+            
+            <h3 class="subsection-title">Annual Ceremonies</h3>
+            <p>The anniversary of death (Salroz) is particularly important:</p>
+            <ul class="custom-list">
+                <li>More elaborate ceremonies are performed on this day</li>
+                <li>The Muktad period (the last 10 days of the Zoroastrian year) is especially sacred for remembering all departed souls</li>
+                <li>During Muktad, the Fravashis of the departed are believed to visit their former homes</li>
+                <li>Special meals, prayers, and charitable acts mark these occasions</li>
+            </ul>
+            
+            <p>These memorial ceremonies ensure that the connection between the living and the departed remains strong, providing comfort to both the living and the souls of the deceased.</p>
+        </div>
+    </div>
+
+    <script src="../../js/combined.js"></script>
+</body>
+</html>

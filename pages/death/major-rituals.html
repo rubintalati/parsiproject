@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Major Rituals - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../../css/logo.css">
+    <link rel="stylesheet" href="../../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            counter-increment: item;
+        }
+
+        .numbered-list li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        
+        /* Fade effect at the top/bottom of the container */
+        .fade-top, .fade-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .fade-top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        .fade-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span> back to death rituals
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">major rituals</h1>
+            <p class="ceremony-subtitle">essential steps from sachkār to uthamnā and prayers for the soul</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Sachkār (Final Bath and Preparation)</h2>
+            <p>The Sachkār is the first ritual performed after death and involves the ceremonial preparation of the body. This sacred process must be performed with utmost care and respect:</p>
+            
+            <ul class="numbered-list">
+                <li>A ritual bath is given to the deceased</li>
+                <li>Bull's urine (taro) is applied, followed by washing the body with water</li>
+                <li>The body is dried and dressed in a clean white sudreh (sacred shirt)</li>
+                <li>The kasti (sacred thread) is tied around the waist with appropriate prayers</li>
+                <li>The body is laid on three stone slabs within a pavi (ritually purified area)</li>
+                <li>Seven strips of cloth are tied around the body at specific points</li>
+                <li>The body is wrapped in a white sheet, with the face and ears left uncovered</li>
+            </ul>
+            
+            <div class="note">
+                After the Sachkār, only trained pall-bearers (Nasesalars) may touch the body. Non-Zoroastrians are not permitted to see the body after this ritual.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Sagdid ("Dog's Sight")</h2>
+            <p>The Sagdid is an ancient ritual involving a dog being brought to look at the deceased. This ritual serves multiple purposes:</p>
+            
+            <ul class="custom-list">
+                <li>The dog is believed to have spiritual sensitivity that can detect the presence of evil</li>
+                <li>Its gaze is thought to drive away negative forces from the body</li>
+                <li>The ritual is performed at the start of each geh (time division of the day) until the body is disposed of</li>
+            </ul>
+            
+            <p>Dogs with two markings above the eyes (chathru chasma) are traditionally preferred for this ritual, but any healthy dog may perform the function. The dog is not forced to look at the body but is gently encouraged to do so.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Bhoi agal nu Bhantar</h2>
+            <p>This ritual involves prayers recited near the body:</p>
+            
+            <ul class="custom-list">
+                <li>Prayers from the Khordeh Avesta are recited by a priest or layperson</li>
+                <li>The person sits near a fire while reciting the prayers</li>
+                <li>The stum no Kardo is not recited during this ritual</li>
+            </ul>
+            
+            <p>These prayers help protect the soul during its vulnerable early stage of transition and provide comfort to the bereaved family.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Gāh-sārna (Geh-sarna)</h2>
+            <p>The Gāh-sārna is a crucial ritual performed during daylight hours:</p>
+            
+            <ul class="custom-list">
+                <li>Performed by two priests (or a priest and layperson/dog) during the day</li>
+                <li>Involves the recitation of Sarosh baj and Ahunavad Gatha</li>
+                <li>Midway through the ritual, the corpse is shifted to a metallic bier</li>
+                <li>The Sagdid is performed again after the transfer</li>
+                <li>Family and friends pay their final respects (Sezdo) after the ritual</li>
+            </ul>
+            
+            <div class="note">
+                The Gāh-sārna must be performed during daylight hours (Havan, Rapithwin, or Uziran Geh) and cannot be performed after sunset.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Pāydast (Funeral Procession)</h2>
+            <p>Following the Gāh-sārna, the body is carried in a procession to the Dakhma (Tower of Silence):</p>
+            
+            <ul class="custom-list">
+                <li>The Nasesalars (corpse-bearers) carry the body on the metallic bier</li>
+                <li>Mourners walk in pairs behind the priests, holding a handkerchief (paiwand) between them</li>
+                <li>The Baj of Sarosh is recited for protection during the procession</li>
+                <li>The procession moves at a deliberate pace, observing proper decorum</li>
+            </ul>
+            
+            <p>The paiwand (handkerchief connection) helps create a spiritual chain that protects the mourners from the negative energies believed to be released by the body.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Kardeh of Srosh / Sarosh nu Patru</h2>
+            <p>This ritual is performed for the first three days after death:</p>
+            
+            <ul class="custom-list">
+                <li>Performed in the Aiwisruthrem Geh (afternoon to sunset)</li>
+                <li>Two priests recite Sarosh Yasht Vadi, Afringan of Sarosh, and Patet Ravan-ni</li>
+                <li>Cannot be performed in the presence of the body</li>
+                <li>Helps the soul navigate the initial stages of its journey</li>
+            </ul>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Baj-dharna of Sarosh</h2>
+            <p>Baj-dharna ceremonies are performed repeatedly during the first three days:</p>
+            
+            <ul class="custom-list">
+                <li>Performed in every Geh in an Agyari or Atash Behram until the Chahrom (fourth day)</li>
+                <li>Special prayers invoking Sarosh Yazad, the guardian of souls</li>
+                <li>Provides spiritual sustenance and protection for the departing soul</li>
+            </ul>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Uthamnā (Afternoon and Night)</h2>
+            <p>The Uthamnā consists of two key ceremonies on the third day after death:</p>
+            
+            <h3 class="subsection-title">Afternoon Ceremony</h3>
+            <ul class="custom-list">
+                <li>Friends and relatives gather to offer condolences</li>
+                <li>People may pledge charitable donations in memory of the deceased</li>
+                <li>Special prayers are recited for the soul's journey</li>
+            </ul>
+            
+            <h3 class="subsection-title">Night Ceremony</h3>
+            <ul class="custom-list">
+                <li>Performed before dawn of the fourth day</li>
+                <li>Critical for helping the soul cross the Chinvad Bridge</li>
+                <li>Specific prayers are recited to guide the soul</li>
+            </ul>
+            
+            <div class="note">
+                The night Uthamnā is particularly important as it coincides with the soul's journey to the Chinvad Bridge for judgment.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Four Bāj-dharnas</h2>
+            <p>These special Bāj-dharnas are performed at a crucial moment:</p>
+            
+            <ul class="custom-list">
+                <li>Performed in the Ushain Geh (midnight to dawn) of the 3rd day</li>
+                <li>Takes place in an Agiary (fire temple)</li>
+                <li>Facilitates the soul's passage through the Chinvad Bridge</li>
+                <li>Specific prayers invoke divine protection for the crossing</li>
+            </ul>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Additional Ceremonies</h2>
+            
+            <h3 class="subsection-title">Afringan in Honour of Dahm Yazad</h3>
+            <p>A special Afringan ritual with invocation of Dahm Yazad and Fravashis performed on the fourth day after death. This ceremony honors the divine beings who assist souls in the spiritual realm.</p>
+            
+            <h3 class="subsection-title">Yasna and Vendidad</h3>
+            <p>If possible, these major liturgical ceremonies are performed on the 3rd day and night after death. They involve extensive recitations from the sacred texts and powerful invocations for the protection and guidance of the soul.</p>
+            
+            <h3 class="subsection-title">Machi</h3>
+            <p>If possible, this ritual is performed in the Havan geh (sunrise to midday) of the fourth day at the Sagri or in an Agyari or Atash Behram. It represents the final major ceremony for the soul's journey to the spiritual realm.</p>
+        </div>
+    </div>
+
+    <script src="../../js/combined.js"></script>
+</body>
+</html>

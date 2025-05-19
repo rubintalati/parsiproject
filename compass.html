@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compass - Parsi Project</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+    
+    .compass {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: auto;
+      background-color: transparent;
+    }
+
+
+
+    .compass > .compass-circle,
+    .compass > .my-point {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out;
+      background: url("media/images/compass.png") center no-repeat;
+      background-size: contain;
+    }
+
+    .compass > .my-point {
+      opacity: 0;
+      width: 20%;
+      height: 20%;
+      background: #0ff;
+      border-radius: 50%;
+      transition: opacity 0.5s ease-out;
+      box-shadow: 0 0 15px #0ff;
+    }
+    
+    .start-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: transparent;
+      color: #0ff;
+      border: 2px solid #0ff;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    }
+    
+    .start-btn:hover {
+      background-color: rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    }
+    
+    .demo-controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .demo-info {
+      margin-top: 20px;
+      text-align: center;
+      max-width: 400px;
+      color: #0ff;
+      opacity: 0.8;
+    }
+    
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 200px;
+      height: 10px;
+      background: rgba(0, 255, 255, 0.2);
+      border-radius: 5px;
+      outline: none;
+      margin: 10px 0;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #0ff;
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
+    
+    #rotation-value {
+      color: #0ff;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="compass">
+    <div class="compass-circle"></div>
+    <div class="my-point"></div>
+  </div>
+  <button class="start-btn">Start compass</button>
+  
+  <div class="demo-controls">
+    <p>Demo: Rotate compass manually</p>
+    <input type="range" min="0" max="359" value="0" id="demo-rotation">
+    <span id="rotation-value">0°</span>
+  </div>
+  
+
+
+  <script>
+    const compassCircle = document.querySelector(".compass-circle");
+    const startBtn = document.querySelector(".start-btn");
+    const myPoint = document.querySelector(".my-point");
+    const demoRotation = document.getElementById("demo-rotation");
+    const rotationValue = document.getElementById("rotation-value");
+    
+    // No longer need the isIOS check since we'll use feature detection instead
+    
+    function init() {
+      startBtn.addEventListener("click", startCompass);
+      
+      // Demo functionality for visualization
+      demoRotation.addEventListener("input", function() {
+        const rotationDegree = this.value;
+        rotationValue.textContent = rotationDegree + "°";
+        compassCircle.style.transform = `translate(-50%, -50%) rotate(${-rotationDegree}deg)`;
+      });
+    }
+    
+    function startCompass() {
+      // Check if we need to request permission (iOS 13+)
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(response => {
+            if (response === 'granted') {
+              // Permission granted, add the event listener
+              window.addEventListener("deviceorientation", handler, true);
+              myPoint.style.opacity = 1;
+            } else {
+              // Permission denied
+              alert("Compass needs orientation permission to work properly");
+            }
+          })
+          .catch(error => {
+            // Handle errors (e.g., not triggered by user gesture)
+            alert("Error requesting orientation permission: " + error);
+          });
+      } else {
+        // For non-iOS 13+ devices, try to use the appropriate event
+        if (window.DeviceOrientationEvent) {
+          if ('ondeviceorientationabsolute' in window) {
+            // Android typically uses this
+            window.addEventListener("deviceorientationabsolute", handler, true);
+          } else {
+            // Fall back to regular orientation event
+            window.addEventListener("deviceorientation", handler, true);
+          }
+          myPoint.style.opacity = 1;
+        } else {
+          alert("Device orientation not supported on this device");
+        }
+      }
+    }
+    
+    function handler(e) {
+      // Check what property to use for the compass heading
+      let compassHeading;
+      
+      // iOS provides the compass heading directly
+      if (e.webkitCompassHeading) {
+        compassHeading = e.webkitCompassHeading;
+      } else if (e.absolute === true && e.alpha !== null) {
+        // Android: calculate from alpha angle
+        // Alpha returns 0-360 clockwise from north, so we need to adjust
+        compassHeading = e.alpha;
+      } else if (e.alpha !== null) {
+        // Fallback for other devices
+        compassHeading = 360 - e.alpha;
+      } else {
+        // Use demo slider if real heading is not available
+        return;
+      }
+      
+      // Rotate the compass face to point north
+      compassCircle.style.transform = `translate(-50%, -50%) rotate(${-compassHeading}deg)`;
+      
+      // Update the rotation value display for demo purposes
+      demoRotation.value = Math.round(compassHeading);
+      rotationValue.textContent = Math.round(compassHeading) + "°";
+    }
+    
+    init();
+  </script>
+</body>
+</html>

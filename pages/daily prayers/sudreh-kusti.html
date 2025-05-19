@@ -201,118 +201,6 @@
             height: 120px;
         }
 
-        .compass-container {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            width: 120px;
-            height: 120px;
-            z-index: 10;
-        }
-        .compass {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .compass-ring {
-            position: absolute;
-            width: 70%;
-            height: 70%;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 1;
-        }
-        .compass-needle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform-origin: center center;
-            transition: transform 0.3s ease;
-        }
-        .compass-needle svg {
-            width: 75%;
-            height: 75%;
-        }
-        .compass-direction {
-            position: absolute;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            opacity: 0.75;
-            pointer-events: none;
-            z-index: 2;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .compass-direction.active {
-            opacity: 1;
-            color: white;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
-            font-weight: 700;
-            background-color: rgba(30, 30, 30, 0.8);
-        }
-        .compass-direction.north {
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .compass-direction.east {
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .compass-direction.south {
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .compass-direction.west {
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        @media (max-width: 768px) {
-            .compass-container {
-                top: 1.5rem;
-                right: 1.5rem;
-                width: 100px;
-                height: 100px;
-            }
-            .compass-direction {
-                font-size: 14px;
-                width: 20px;
-                height: 20px;
-            }
-            .compass-direction.north {
-                top: 10px;
-            }
-            .compass-direction.east {
-                right: 10px;
-            }
-            .compass-direction.south {
-                bottom: 10px;
-            }
-            .compass-direction.west {
-                left: 10px;
-            }
-        }
         .direction-advice {
             font-size: 13px;
             font-weight: 600;
@@ -342,6 +230,9 @@
             .container {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
             }
             
             .prayer-title {
@@ -355,140 +246,17 @@
             .prayer-name {
                 font-size: 1.3rem;
             }
+            
+            .prayer-text, .prayer-translation, .prayer-section, .gif-box, .prayer-instruction {
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
         }
         @media (max-width: 768px) {
             .prayer-header {
                 padding: 1.2rem 0 0 0;
             }
-        }
-
-        .compass-container {
-            margin: 2rem auto;
-            width: 200px;
-            position: relative;
-            text-align: center;
-        }
-
-        .compass {
-            width: 200px;
-            height: 200px;
-            position: relative;
-            margin: 0 auto;
-        }
-
-        .compass-ring {
-            width: 100%;
-            height: 100%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-        }
-
-        .compass-needle {
-            width: 90%;
-            height: 90%;
-            position: absolute;
-            top: 5%;
-            left: 5%;
-            transition: transform 0.3s ease-out;
-        }
-
-        .compass-direction {
-            position: absolute;
-            font-size: 14px;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.6);
-            width: 20px;
-            height: 20px;
-            text-align: center;
-            line-height: 20px;
-            transition: color 0.3s;
-        }
-
-        .north {
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .east {
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .south {
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .west {
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .compass-direction.active {
-            color: #fff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-
-        .permission-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            padding: 8px 16px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .compass-status {
-            text-align: center;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .accuracy-high {
-            color: #4CAF50;
-        }
-
-        .accuracy-medium {
-            color: #FFC107;
-        }
-
-        .accuracy-low {
-            color: #FF9800;
-        }
-
-        .accuracy-unreliable,
-        .accuracy-error {
-            color: #F44336;
-        }
-
-        .accuracy-calibrating {
-            color: #2196F3;
-            animation: blink 1s infinite;
-        }
-
-        .compass-button {
-            display: block;
-            margin: 0.5rem auto;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
 
         .hidden {
@@ -498,26 +266,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="compass-container">
-            <div class="compass">
-                <div class="compass-ring"></div>
-                <div class="compass-needle" id="compass-needle">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1"/>
-                        <path d="M50 10 L65 50 L50 90 L35 50 Z" fill="rgba(255,255,255,0.7)"/>
-                        <circle cx="50" cy="50" r="8" fill="#000" stroke="#fff" stroke-width="1.5"/>
-                    </svg>
-                </div>
-                <div class="compass-direction north" data-direction="north" data-min="315" data-max="45">N</div>
-                <div class="compass-direction east" data-direction="east" data-min="45" data-max="135">E</div>
-                <div class="compass-direction south" data-direction="south" data-min="135" data-max="225">S</div>
-                <div class="compass-direction west" data-direction="west" data-min="225" data-max="315">W</div>
-            </div>
-            <div class="compass-status">Waiting for compass...</div>
-            <button id="calibrate-button" class="compass-button">Calibrate Compass</button>
-        </div>
-        <button id="permission-button" class="permission-button">Enable Compass</button>
-        <div style="height:12px;"></div>
         <div class="header">
             <a href="../home.html" class="back-button">
                 <span class="back-arrow">←</span>
@@ -534,13 +282,13 @@
         <div class="gif-grid-top">
             <div class="gif-box">
                 <video autoplay loop muted playsinline>
-                    <source src="../../media/gifs/sudrehkasti1.mp4" type="video/mp4">
+                    <source src="../../media/gifs/sudreh-kusti/above-kem-na-mazda-1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
             <div class="gif-box">
                 <video autoplay loop muted playsinline>
-                    <source src="../../media/gifs/sudrehkasti2.mp4" type="video/mp4">
+                    <source src="../../media/gifs/sudreh-kusti/above-kem-na-mazda-2.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -560,15 +308,7 @@
             </div>
         </div>
         
-        <!-- Middle GIF section - single horizontal box -->
-        <div class="gif-single">
-            <div class="gif-box">
-                <video autoplay loop muted playsinline>
-                    <source src="../../media/gifs/sudrehkasti6.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        </div>
+
         
         <!-- Hormazd Khodāy Section -->
         <div class="prayer-section">
@@ -590,15 +330,42 @@
             </div>
         </div>
         
-        <!-- Bottom GIF section - 2x2 grid -->
+        <!-- Bottom GIF section - Hormazd Khoday GIFs -->
         <div class="gif-grid-bottom">
             <div class="gif-box">
                 <video autoplay loop muted playsinline>
-                    <source src="../../media/gifs/sudrehkasti6.mp4" type="video/mp4">
+                    <source src="../../media/gifs/sudreh-kusti/below-hormazd-khoday-1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
-            <div class="gif-box"></div>
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudreh-kusti/below-hormazd-khoday-2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudreh-kusti/below-hormazd-khoday-3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="gif-box">
+                <video autoplay loop muted playsinline>
+                    <source src="../../media/gifs/sudreh-kusti/below-hormazd-khoday-4.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        
+        <!-- Fifth Hormazd Khoday GIF (full width) -->
+        <div class="gif-single" style="margin-bottom: 20px; margin-top: 20px;">
+            <div class="gif-box" style="height: auto; max-height: 350px; overflow: hidden;">
+                <video autoplay loop muted playsinline style="object-position: center bottom; object-fit: cover; width: 100%; min-height: 100%;">
+                    <source src="../../media/gifs/sudreh-kusti/below-hormazd-khoday-5.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
         </div>
         
         <!-- Jasa me avanghe Mazda Section -->
@@ -611,27 +378,26 @@
             </div>
             
             <div class="prayer-translation">
-                <p>I ask for divine help and proclaim that I belong to the Mazdayasnan religion and have full faith in it only. My religion teaches me to be good in thought, word and deed and firmly I believe that all good things come from Ahura Mazda.</p>
+                <p>O Mazda, come to my help. I am faithful to this religion. I declare myself as the worshipper of Mazda, and a disciple of Zarathushtra. I believe in good thoughts, good words, good deeds. I believe in the good religion of Mazda. May all the creation of Ahura Mazda be trustworthy. Protect us from evil. Ashem Vohū 1.</p>
             </div>
         </div>
         
-        <!-- Final GIF - single horizontal box -->
-        <div class="gif-final">
+        <!-- GIF for Jasa me avanghe mazda (after prayer) -->
+        <div class="gif-single" style="margin-bottom: 20px;">
             <div class="gif-box">
                 <video autoplay loop muted playsinline>
-                    <source src="../../media/gifs/sudrehkusti10.mp4" type="video/mp4">
+                    <source src="../../media/gifs/sudreh-kusti/below-jasa-me-avanghe-mazda.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
         </div>
+        
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // IMPROVED COMPASS FUNCTIONALITY
-            initCompass();
-            
-            // Rest of the functions for menu navigation
+            // Menu navigation functionality
             var sidebar = document.getElementById("sidebar");
             var menuToggle = document.getElementById("menu-toggle");
 
@@ -648,261 +414,6 @@
                 }
             });
         });
-        
-        // Improved compass implementation
-        function initCompass() {
-            const compassNeedle = document.getElementById('compass-needle');
-            const permissionButton = document.getElementById('permission-button');
-            const calibrateButton = document.getElementById('calibrate-button');
-            const compassStatus = document.querySelector('.compass-status');
-            const directions = document.querySelectorAll('.compass-direction');
-            
-            // Track if we have a reliable compass reading
-            let hasAccurateReading = false;
-            let compassErrorCount = 0;
-            
-            // Compass accuracy states
-            const ACCURACY = {
-                HIGH: 'high',
-                MEDIUM: 'medium',
-                LOW: 'low',
-                UNRELIABLE: 'unreliable'
-            };
-            
-            // Variables to track readings
-            let lastHeading = 0;
-            let alphaFilter = new KalmanFilter();
-            let accuracyState = ACCURACY.UNRELIABLE;
-            
-            // Helper function to get compass accuracy
-            function getAccuracyLevel(accuracy) {
-                if (accuracy !== undefined) {
-                    if (accuracy < 15) return ACCURACY.HIGH;
-                    if (accuracy < 30) return ACCURACY.MEDIUM;
-                    if (accuracy < 60) return ACCURACY.LOW;
-                }
-                return ACCURACY.UNRELIABLE;
-            }
-            
-            // Process orientation data with filters
-            function processCompassHeading(heading, accuracy) {
-                // Apply Kalman filter to smooth heading
-                const filteredHeading = alphaFilter.filter(heading);
-                
-                // Update last heading
-                lastHeading = filteredHeading;
-                
-                // Update accuracy state
-                accuracyState = getAccuracyLevel(accuracy);
-                updateCompassUI(filteredHeading);
-                
-                // Track if we have reliable readings
-                hasAccurateReading = (accuracyState !== ACCURACY.UNRELIABLE);
-                
-                // Update UI to reflect accuracy
-                compassStatus.textContent = `Accuracy: ${accuracyState}`;
-                compassStatus.className = `compass-status accuracy-${accuracyState}`;
-                
-                return filteredHeading;
-            }
-            
-            // Update compass UI
-            function updateCompassUI(heading) {
-                // Animate smoothly to new heading
-                compassNeedle.style.transition = 'transform 0.3s ease-out';
-                compassNeedle.style.transform = `rotate(${360 - heading}deg)`;
-                
-                // Update direction highlights
-                updateDirectionHighlight(heading);
-            }
-            
-            // Update the direction highlighting
-            function updateDirectionHighlight(heading) {
-                // Normalize bearing to 0-360
-                heading = (heading + 360) % 360;
-                
-                // Determine which direction we're facing
-                let newDirection = null;
-                
-                directions.forEach(dir => {
-                    const dirName = dir.dataset.direction;
-                    const minAngle = parseInt(dir.dataset.min);
-                    const maxAngle = parseInt(dir.dataset.max);
-                    
-                    // Check if bearing is within this direction's range
-                    if (minAngle > maxAngle) {
-                        // For North which wraps around (315-45)
-                        if (heading >= minAngle || heading < maxAngle) {
-                            newDirection = dirName;
-                        }
-                    } else {
-                        // For other directions
-                        if (heading >= minAngle && heading < maxAngle) {
-                            newDirection = dirName;
-                        }
-                    }
-                });
-                
-                // Update active direction class
-                directions.forEach(dir => {
-                    if (dir.dataset.direction === newDirection) {
-                        dir.classList.add('active');
-                    } else {
-                        dir.classList.remove('active');
-                    }
-                });
-            }
-            
-            // Handle device orientation event
-            function handleDeviceOrientation(event) {
-                let heading = null;
-                let accuracy = undefined;
-                
-                // iOS-specific compass heading
-                if (event.webkitCompassHeading) {
-                    heading = event.webkitCompassHeading;
-                    accuracy = event.webkitCompassAccuracy;
-                } 
-                // Standard orientation API
-                else if (event.absolute && event.alpha !== null) {
-                    heading = 360 - event.alpha;
-                }
-                
-                // Only process valid headings
-                if (heading !== null) {
-                    processCompassHeading(heading, accuracy);
-                } else {
-                    compassErrorCount++;
-                    if (compassErrorCount > 10) {
-                        compassStatus.textContent = "Compass not available";
-                        compassStatus.className = 'compass-status accuracy-error';
-                    }
-                }
-            }
-            
-            // Prompt for permission
-            function requestCompassPermission() {
-                if (typeof DeviceOrientationEvent !== 'undefined' && 
-                    typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    
-                    DeviceOrientationEvent.requestPermission()
-                        .then(permissionState => {
-                            if (permissionState === 'granted') {
-                                window.addEventListener('deviceorientation', handleDeviceOrientation);
-                                permissionButton.style.display = 'none';
-                                
-                                // Start a timeout to check if we're actually receiving events
-                                setTimeout(() => {
-                                    if (!hasAccurateReading && compassErrorCount === 0) {
-                                        // We got permission but no readings - likely no compass hardware
-                                        compassStatus.textContent = "No compass detected on device";
-                                        compassStatus.className = 'compass-status accuracy-error';
-                                    }
-                                }, 3000);
-                            } else {
-                                compassStatus.textContent = "Permission denied";
-                                compassStatus.className = 'compass-status accuracy-error';
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error requesting device orientation permission:", error);
-                            compassStatus.textContent = "Error requesting permission";
-                            compassStatus.className = 'compass-status accuracy-error';
-                        });
-                } else {
-                    // For devices that don't need permission
-                    window.addEventListener('deviceorientation', handleDeviceOrientation);
-                    
-                    // Start a timeout to check if we're actually receiving events
-                    setTimeout(() => {
-                        if (!hasAccurateReading && compassErrorCount === 0) {
-                            // No readings after 3 seconds - likely no compass hardware
-                            compassStatus.textContent = "No compass detected on device";
-                            compassStatus.className = 'compass-status accuracy-error';
-                        }
-                    }, 3000);
-                }
-            }
-            
-            // Calibration function
-            function calibrateCompass() {
-                compassStatus.textContent = "Calibrating... rotate device in figure-8 pattern";
-                compassStatus.className = 'compass-status accuracy-calibrating';
-                
-                // Reset the filter
-                alphaFilter = new KalmanFilter();
-                
-                // After calibration time
-                setTimeout(() => {
-                    compassStatus.textContent = "Calibration complete";
-                    setTimeout(() => {
-                        if (lastHeading) {
-                            updateCompassUI(lastHeading);
-                        }
-                    }, 1000);
-                }, 5000);
-            }
-            
-            // Add event listeners
-            permissionButton.addEventListener('click', requestCompassPermission);
-            calibrateButton.addEventListener('click', calibrateCompass);
-            
-            // Try to detect if it's a mobile device
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            if (isMobile) {
-                permissionButton.style.display = 'block';
-            } else {
-                compassStatus.textContent = "Compass requires mobile device";
-                compassStatus.className = 'compass-status accuracy-error';
-                
-                // Debug function for desktop testing (move mouse to simulate compass)
-                function debugWithMouse(e) {
-                    const x = e.clientX;
-                    const y = e.clientY;
-                    
-                    // Calculate angle based on mouse position relative to center of screen
-                    const centerX = window.innerWidth / 2;
-                    const centerY = window.innerHeight / 2;
-                    
-                    const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
-                    const heading = (angle + 90 + 360) % 360; // Convert to compass heading
-                    
-                    processCompassHeading(heading);
-                }
-                
-                document.addEventListener('mousemove', debugWithMouse);
-            }
-        }
-        
-        // Implement Kalman filter for smoother readings
-        function KalmanFilter() {
-            this.Q = 0.01; // Process noise
-            this.R = 0.1;  // Measurement noise
-            this.x = 0;    // Initial value
-            this.P = 1.0;  // Initial uncertainty
-            
-            this.filter = function(measurement) {
-                // Prediction update
-                // x = x
-                // P = P + Q
-                this.P = this.P + this.Q;
-                
-                // Measurement update
-                const K = this.P / (this.P + this.R);
-                
-                // Handle the discontinuity between 0 and 360 degrees
-                let diff = measurement - this.x;
-                if (diff > 180) diff -= 360;
-                if (diff < -180) diff += 360;
-                
-                this.x = (this.x + K * diff) % 360;
-                if (this.x < 0) this.x += 360;
-                
-                this.P = (1 - K) * this.P;
-                
-                return this.x;
-            };
-        }
         
         // DIRECTION ADVICE FUNCTIONALITY (SEPARATE)
         function pad2(num) { return num < 10 ? '0'+num : num; }
@@ -950,5 +461,8 @@
             setInterval(() => updateDirectionAdvice(sunTimes), 60000);
         });
     </script>
+    
+    <!-- Compass Component -->
+    <script src="../../js/compass.js"></script>
 </body>
 </html>

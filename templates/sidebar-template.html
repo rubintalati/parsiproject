@@ -16,9 +16,11 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <!-- Logo at top for desktop -->
-    <div class="logo-container logo-top-desktop">
-        <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
-    </div>
+    <a href="../index.html" class="logo-link">
+        <div class="logo-container logo-top-desktop">
+            <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
+        </div>
+    </a>
     <div class="sidebar-section first-sidebar-section">
         <a href="home.html" id="nav-daily-prayers">daily prayers</a>
         <a href="all-prayers.html" id="nav-all-prayers">all prayers</a>
@@ -39,9 +41,11 @@
         <a href="letter-for-you.html" data-link="letter-for-you" id="nav-letter">a letter for you</a>
     </div>
     <!-- Move logo to bottom for mobile -->
-    <div class="logo-container logo-bottom-mobile">
-        <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
-    </div>
+    <a href="../index.html" class="logo-link">
+        <div class="logo-container logo-bottom-mobile">
+            <img src="../media/logo/black theme.png" alt="The Parsi Project Logo" class="logo-image">
+        </div>
+    </a>
 </div>
 
 <!-- CSS for Sidebar and Mobile Navigation -->
@@ -114,6 +118,12 @@
 
     .sidebar-section:last-of-type {
         border-bottom: none;
+    }
+
+    .logo-link {
+        text-decoration: none;
+        display: block;
+        width: fit-content;
     }
 
     /* Mobile Navigation */

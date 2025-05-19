@@ -114,6 +114,7 @@
             padding: 0 4rem;
             margin-bottom: 2rem;
             height: 130px;
+            min-height: 130px; /* Added to prevent layout shifts */
             overflow: hidden;
         }
 
@@ -499,6 +500,8 @@
             .welcome-text-container {
                 padding: 0 0.5rem;
                 margin-bottom: 1rem;
+                min-height: 120px; /* Fixed height to prevent layout shifts on mobile */
+                height: 120px;
             }
             
             .welcome-text {
@@ -640,8 +643,8 @@
 
             // Custom welcome text for praying on the go
             const texts = [
-                "praying on the go!? , then you have come to the right place.",
-                "the prayers below will help you get through your day. pray whatever you feel like , use me like a guide.",
+                "looks like you're living on a prayer !?!? what prayer ? what time? here's a guide to your daily parsi prayers.",
+                "ave barabar bhanje haa dikra!",
                 ""
             ];
             let currentTextIndex = 0;

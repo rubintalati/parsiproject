@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Funeral Etiquette - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../../css/logo.css">
+    <link rel="stylesheet" href="../../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            counter-increment: item;
+        }
+
+        .numbered-list li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        
+        /* Fade effect at the top/bottom of the container */
+        .fade-top, .fade-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .fade-top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        .fade-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span> back to death rituals
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">etiquette</h1>
+            <p class="ceremony-subtitle">funeral decorum, rules, and community customs</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Concept of Nasu</h2>
+            <p>Zoroastrian funeral etiquette is deeply influenced by the concept of <em>nasu</em> or <em>druj-i-nasu</em> (the corpse demon). According to Zoroastrian teachings, a corpse is considered a source of powerful contagion that can impact the purity of people, objects, and sacred elements.</p>
+            
+            <p>This contagion is not merely physical but has spiritual implications. Therefore, funeral practices involve strict rules to ensure the seclusion and safe handling of the body while protecting mourners and the environment from contamination.</p>
+            
+            <div class="note">
+                It's important to understand that the concept of nasu is not about fearing the deceased person, but rather about recognizing the natural process of decomposition as spiritually impure and potentially harmful to living beings and sacred elements.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Rules for Handling the Body</h2>
+            
+            <h3 class="subsection-title">After Sachkār</h3>
+            <ul class="custom-list">
+                <li>Only Khandias and Nasesalars (ritually prepared corpse-bearers) may handle the body</li>
+                <li>These corpse-bearers undergo special training and ritual purification</li>
+                <li>They typically wear white clothing and gloves when handling the deceased</li>
+                <li>They recite specific prayers for protection while performing their duties</li>
+            </ul>
+            
+            <h3 class="subsection-title">Non-Zoroastrian Presence</h3>
+            <ul class="custom-list">
+                <li>Non-Parsis are traditionally not allowed to attend or view the body after Sachkār</li>
+                <li>This restriction is not based on exclusivity but on the belief that the presence of those not versed in Zoroastrian prayers may vitiate the power of the rituals</li>
+                <li>The prayers and rituals are considered to create a protective spiritual environment that requires consistency in practice</li>
+            </ul>
+            
+            <div class="note">
+                These rules are not intended to be discriminatory but are based on ancient religious beliefs about maintaining ritual purity during this spiritually sensitive time.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Funeral Procession Etiquette</h2>
+            
+            <p>During the Pāydast (funeral procession), specific customs must be observed:</p>
+            
+            <ul class="custom-list">
+                <li>Mourners walk in pairs, connected by a handkerchief (paiwand)</li>
+                <li>The paiwand creates a spiritual chain that minimizes the risk from druj-i-nasu</li>
+                <li>The procession moves behind the corpse in a specific order</li>
+                <li>The Baj of Sarosh is recited continuously for protection</li>
+                <li>A deliberate pace is maintained throughout the procession</li>
+            </ul>
+            
+            <p>The paired walking arrangement with the paiwand is not merely symbolic but serves a spiritual function of containment and protection, creating a unified field of positive energy during the vulnerable time of transport.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Ritual Purification for Mourners</h2>
+            
+            <p>Those who attend a funeral or come in contact with the deceased must follow specific purification practices:</p>
+            
+            <ul class="numbered-list">
+                <li>Kasti is performed before and after visiting Doongerwadi (the Tower of Silence complex)</li>
+                <li>A ritual bath is recommended after attending the final ceremonies</li>
+                <li>Clothing worn to the funeral should be washed separately</li>
+                <li>Some mourners may abstain from attending other religious ceremonies for a period</li>
+            </ul>
+            
+            <p>These purification rituals are not only hygienically prudent but spiritually significant, helping to restore the mourner's ritual purity after proximity to the deceased.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Behavioral Expectations</h2>
+            
+            <h3 class="subsection-title">General Decorum</h3>
+            <ul class="custom-list">
+                <li>Mourners should maintain a solemn and respectful demeanor</li>
+                <li>Needless talking during ceremonies should be avoided</li>
+                <li>Focus should remain on the prayers and the spiritual needs of the deceased</li>
+                <li>Strong emotional displays are understood but should be moderated if possible</li>
+            </ul>
+            
+            <h3 class="subsection-title">Dress Code</h3>
+            <ul class="custom-list">
+                <li>Traditional white clothing is preferred for family members</li>
+                <li>Other mourners typically wear subdued colors</li>
+                <li>Head covering is customary, especially during prayer ceremonies</li>
+                <li>Shoes may need to be removed in certain sacred areas</li>
+            </ul>
+            
+            <div class="note">
+                While white is the color of mourning in Zoroastrian tradition, the focus is more on the purity and simplicity of attire rather than strict color adherence for all attendees.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Prayer Participation</h2>
+            
+            <p>During various ceremonies (Geh-sārnā, Pāy-dast, Uthamna), there are specific expectations regarding prayer participation:</p>
+            
+            <ul class="custom-list">
+                <li>Those who know the prayers are encouraged to recite them quietly along with the priests</li>
+                <li>Those unfamiliar with the prayers should maintain respectful silence</li>
+                <li>Physical gestures of reverence are performed at specific moments</li>
+                <li>The kusti prayers may be performed at designated times during the ceremonies</li>
+            </ul>
+            
+            <p>Prayer participation creates a supportive spiritual environment for the deceased's soul and demonstrates solidarity with the bereaved family.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Post-Ceremony Customs</h2>
+            
+            <h3 class="subsection-title">After Uthamna</h3>
+            <ul class="custom-list">
+                <li>Rose petals and rose water are traditionally distributed to mourners</li>
+                <li>These symbolize the fragrance of good deeds and the sweetness of remembrance</li>
+                <li>Mourners are encouraged to pledge good deeds or charity in memory of the deceased</li>
+                <li>Light refreshments may be served to attendees</li>
+            </ul>
+            
+            <h3 class="subsection-title">Condolence Visits</h3>
+            <ul class="custom-list">
+                <li>Friends and relatives visit the family home to offer condolences</li>
+                <li>These visits typically begin after the completion of the main funeral rituals</li>
+                <li>Visitors often bring food for the family or contribute to charitable causes in the deceased's name</li>
+                <li>Conversations should focus on positive memories and support rather than dwelling on the circumstances of death</li>
+            </ul>
+            
+            <p>These post-ceremony customs help transition the community from the intense ritualized mourning period to the ongoing process of remembrance and healing.</p>
+            
+            <div class="note">
+                In Zoroastrian tradition, excessive or prolonged grieving is discouraged as it is believed to disturb the soul's peaceful journey. Instead, celebrating the deceased's good life and continuing their legacy through charitable works is emphasized.
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/combined.js"></script>
+</body>
+</html>
