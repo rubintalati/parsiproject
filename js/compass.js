@@ -232,7 +232,8 @@ function initCompass() {
     // If this is the first heading, just set it directly
     if (previousHeading === null) {
       previousHeading = heading;
-      compassCircle.style.transform = `translate(-50%, -50%) rotate(${-heading}deg)`;
+      // Remove the negative sign to make compass behave correctly
+      compassCircle.style.transform = `translate(-50%, -50%) rotate(${heading}deg)`;
       return;
     }
     
@@ -251,8 +252,10 @@ function initCompass() {
     // Calculate the new heading based on the shortest path
     const smoothHeading = previousHeading + delta;
     
-    // Apply the rotation
-    compassCircle.style.transform = `translate(-50%, -50%) rotate(${-smoothHeading}deg)`;
+    // Apply the rotation - FIXED DIRECTION by removing the negative sign
+    // A real compass should rotate WITH the heading (positive) so that north pointing elements
+    // of the compass housing rotate in sync with the device rotation
+    compassCircle.style.transform = `translate(-50%, -50%) rotate(${smoothHeading}deg)`;
     
     // Store the current heading for next time
     previousHeading = heading;
