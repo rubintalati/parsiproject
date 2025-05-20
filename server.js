@@ -79,7 +79,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to inject orientation lock script in all HTML responses
+// Middleware to inject orientation lock script in all HTML responses with highest priority
 app.use((req, res, next) => {
   // Store original send function
   const originalSend = res.send;
@@ -87,10 +87,26 @@ app.use((req, res, next) => {
   // Override send function
   res.send = function(body) {
     // Only process HTML responses
-    if (typeof body === 'string' && body.includes('</head>') && !req.path.includes('.js') && !req.path.includes('.css')) {
-      // Inject orientation lock script before closing head tag
-      const orientationScript = '<script src="/js/orientation-lock.js"></script>';
-      body = body.replace('</head>', orientationScript + '</head>');
+    if (typeof body === 'string' && body.includes('<head>') && !req.path.includes('.js') && !req.path.includes('.css')) {
+      // Add special meta tag to prevent any viewport manipulation after our script
+      const metaViewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">';
+      
+      // Add orientation meta tag
+      const metaOrientation = '<meta http-equiv="ScreenOrientation" content="autoRotate:disabled">';
+      
+      // Inject orientation lock script immediately after opening head tag for highest priority
+      const orientationScript = '<script defer src="/js/orientation-lock.js"></script>';
+      
+      // Combine all elements
+      const injectedContent = metaViewport + metaOrientation + orientationScript;
+      
+      // Place at the beginning of head for highest priority
+      body = body.replace('<head>', '<head>' + injectedContent);
+      
+      // Also add a special orientation meta in the HTML element
+      if (body.includes('<html')) {
+        body = body.replace('<html', '<html class="orientation-locked"');
+      }
     }
     
     // Call original send function
