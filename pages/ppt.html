@@ -14,12 +14,17 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
         body {
             font-family: 'Manrope', sans-serif;
             background-color: #000;
             color: #fff;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrolling */
             
             /* Custom scrollbar styling */
             scrollbar-width: thin;
@@ -130,8 +135,10 @@
 
         /* Media queries for responsive design */
         @media (max-width: 768px) {
-            body {
-                overflow: auto !important;
+            html, body {
+                overflow: hidden;
+                position: fixed;
+                touch-action: manipulation;
             }
             .container {
                 flex-direction: column;
@@ -164,7 +171,7 @@
 </head>
 <body>
     <!-- Numbers animation container (covers the whole page) -->
-    <div id="numbers-container"></div>
+    <div id="numbers-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;"></div>
 
     <div class="container">
         <!-- Main Content -->
@@ -202,12 +209,19 @@
             // Flying Numbers Animation
             // Configuration
             const config = {
-                spawnRate: 200,      // How often to spawn a new number (ms)
-                maxNumbers: 60,      // Maximum number of elements on screen
+                spawnRate: 300,      // How often to spawn a new number (ms) - reduced for better performance
+                maxNumbers: 40,      // Maximum number of elements on screen - reduced for mobile
                 minSize: 15,         // Minimum font size
-                maxSize: 50,         // Maximum font size
-                duration: 6000,      // How long each number stays on screen
+                maxSize: 40,         // Maximum font size - reduced to fit mobile screens better
+                duration: 5000,      // How long each number stays on screen - slightly reduced
             };
+            
+            // Adjust for mobile devices
+            if (window.innerWidth < 768) {
+                config.maxNumbers = 25;
+                config.spawnRate = 400;
+                config.maxSize = 30;
+            }
 
             // DOM Elements
             const body = document.body;
@@ -268,8 +282,8 @@
                 numElement.style.fontSize = `${size}px`;
                 numElement.style.color = `rgba(255, 255, 255, ${opacity})`;
                 
-                // Add to document
-                document.body.appendChild(numElement);
+                // Add to container instead of body
+                numbersContainer.appendChild(numElement);
                 
                 // Start animation
                 setTimeout(() => {

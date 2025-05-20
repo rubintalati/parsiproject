@@ -725,6 +725,9 @@ function observeSidebarProfileDetails() {
 document.addEventListener('DOMContentLoaded', function() {
     observeSidebarProfileDetails();
     
+    // Add standard back button functionality
+    initializeStandardBackButton();
+    
     // Prevent screen orientation changes (disable auto-rotation)
     if (window.screen && window.screen.orientation) {
         try {
@@ -765,4 +768,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add necessary styles
     addRequiredStyles();
+    
+    // Load the standardized back button script if not already loaded
+    loadBackButtonScript();
 });
+
+/**
+ * Load the back button script to provide consistent back buttons across the site
+ */
+function loadBackButtonScript() {
+    if (!document.querySelector('script[src*="back-button.js"]')) {
+        const script = document.createElement('script');
+        
+        // Handle path differently based on the current page location
+        const isInSubdirectory = window.location.pathname.split('/').filter(Boolean).length > 1;
+        script.src = isInSubdirectory ? '../js/back-button.js' : 'js/back-button.js';
+        
+        // Add error handling
+        script.onerror = function() {
+            console.error('Failed to load back-button.js');
+        };
+        
+        document.head.appendChild(script);
+    }
+}
