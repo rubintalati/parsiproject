@@ -79,6 +79,27 @@ app.use((req, res, next) => {
   next();
 });
 
+// Middleware to inject orientation lock script in all HTML responses
+app.use((req, res, next) => {
+  // Store original send function
+  const originalSend = res.send;
+  
+  // Override send function
+  res.send = function(body) {
+    // Only process HTML responses
+    if (typeof body === 'string' && body.includes('</head>') && !req.path.includes('.js') && !req.path.includes('.css')) {
+      // Inject orientation lock script before closing head tag
+      const orientationScript = '<script src="/js/orientation-lock.js"></script>';
+      body = body.replace('</head>', orientationScript + '</head>');
+    }
+    
+    // Call original send function
+    return originalSend.call(this, body);
+  };
+  
+  next();
+});
+
 // Setup Google Auth endpoints
 app.get('/auth/google', (req, res) => {
   console.log('Google Auth request received');

@@ -132,6 +132,9 @@ function initCompass() {
   const startBtn = document.querySelector(".parsi-compass-btn");
   const compassPoint = document.querySelector(".parsi-compass-point");
   
+  // Add CSS transition for smoother rotation
+  compassCircle.style.transition = "transform 0.2s ease-out";
+  
   // Demo mode when no orientation is available
   let demoMode = false;
   let demoAngle = 0;
@@ -219,9 +222,40 @@ function initCompass() {
     updateCompassHeading(compassHeading);
   }
   
+  // Track previous heading to enable smooth transitions across 0/360 boundary
+  let previousHeading = null;
+
   function updateCompassHeading(heading) {
-    // Rotate the compass face to point north
-    compassCircle.style.transform = `translate(-50%, -50%) rotate(${-heading}deg)`;
+    // Normalize heading to ensure it's between 0 and 360
+    heading = ((heading % 360) + 360) % 360;
+    
+    // If this is the first heading, just set it directly
+    if (previousHeading === null) {
+      previousHeading = heading;
+      compassCircle.style.transform = `translate(-50%, -50%) rotate(${-heading}deg)`;
+      return;
+    }
+    
+    // Calculate the shortest rotation direction
+    let delta = heading - previousHeading;
+    
+    // If we're crossing the 0/360 boundary, choose the shorter path
+    if (Math.abs(delta) > 180) {
+      if (delta > 0) {
+        delta -= 360;
+      } else {
+        delta += 360;
+      }
+    }
+    
+    // Calculate the new heading based on the shortest path
+    const smoothHeading = previousHeading + delta;
+    
+    // Apply the rotation
+    compassCircle.style.transform = `translate(-50%, -50%) rotate(${-smoothHeading}deg)`;
+    
+    // Store the current heading for next time
+    previousHeading = heading;
   }
   
   // Set up the button event handler

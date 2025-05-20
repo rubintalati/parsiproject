@@ -190,19 +190,21 @@
             height: 100%;
         }
 
-        /* GIF placeholder */
+        /* Video container */
         .ceremony-gif {
             flex: 1;
-            background-color: transparent;
+            background-color: #111;
             max-width: 50%;
             border: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            height: 100%;
+            position: relative;
+            border-radius: 6px;
         }
 
+        .ceremony-gif video,
         .ceremony-gif img {
             width: 100%;
             height: 100%;
@@ -440,9 +442,12 @@
                         Participation in a Jashan ritual by Zoroastrians is considered as an act of great merit. Participants receive divine blessings and imbibe teachings by witnessing the ritual acts. Those participating first perform the Kasti ritual and offer sandal-wood to the fire.
                     </div>
                     
-                    <!-- GIF Placeholder -->
+                    <!-- Video (GIF-like) -->
                     <div class="ceremony-gif" id="ceremonyGifPlaceholder">
-                        <img src="../media/gifs/jashan-ceremony.gif" alt="Jashan Ceremony Animation">
+                        <video id="jashan-video" autoplay muted loop playsinline preload="metadata" poster="../media/gifs/jashan-ceremony.gif">
+                            <source src="../media/videos/jashan-ceremony.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
             </div>
@@ -602,6 +607,28 @@
                     }
                 });
             });
+            
+            // Progressive video loading implementation
+            const jashanVideo = document.getElementById('jashan-video');
+            if (jashanVideo) {
+                // Set initial loading to metadata only
+                jashanVideo.preload = 'metadata';
+                
+                // Start loading full video when it becomes visible
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Video is visible, start better quality loading
+                            jashanVideo.preload = 'auto';
+                            // Once we've triggered the load, no need to observe anymore
+                            observer.unobserve(jashanVideo);
+                        }
+                    });
+                }, { threshold: 0.1 }); // Start loading when 10% visible
+                
+                // Start observing the video
+                observer.observe(jashanVideo);
+            }
             
             // Close with Escape key
             document.addEventListener('keydown', function(e) {

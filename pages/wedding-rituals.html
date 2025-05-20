@@ -148,18 +148,41 @@
 
         /* Media container for video/gif */
         .media-container {
-            width: 25%;
-            aspect-ratio: 9/16;
-            max-height: 270px;
-            background-color: #fff;
+            width: 32%;
+            aspect-ratio: 16/9;
+            max-height: none;
+            background-color: #111;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             align-self: center;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        /* Style for play button overlay (only shown if autoplay is blocked) */
+        .play-button-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .play-button-overlay span {
+            color: white;
+            font-size: 40px;
+            opacity: 0.8;
         }
 
-        .media-container img {
+        .media-container video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -226,8 +249,10 @@
             }
             
             .media-container {
+                width: 100%;
                 aspect-ratio: 16/9;
                 order: -1;
+                margin-bottom: 1.5rem;
             }
         }
         
@@ -290,9 +315,12 @@
                     </a>
                 </div>
                 
-                <!-- Media container for GIF/video in center -->
+                <!-- Media container for video in center -->
                 <div class="media-container">
-                    <img src="../assets/gif-placeholder.jpg" alt="Wedding rituals animation">
+                    <video id="wedding-video" autoplay muted loop playsinline preload="metadata" poster="../assets/gif-placeholder.jpg">
+                        <source src="../media/videos/wedding-rituals.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
                 
                 <!-- Right side ritual cards -->
@@ -392,5 +420,43 @@
         });
     </script>
     <script src="../js/combined.js"></script>
+    <script>
+        // GIF-like video implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            const weddingVideo = document.getElementById('wedding-video');
+            
+            // Handle autoplay and progressive loading
+            if (weddingVideo) {
+                // Set initial loading to metadata for faster initial load
+                weddingVideo.preload = 'metadata';
+                
+                // Ensure video plays automatically when it can
+                weddingVideo.addEventListener('canplay', function() {
+                    // Try to play automatically (may be blocked by browsers)
+                    weddingVideo.play().catch(error => {
+                        console.log('Auto-play was prevented by the browser');
+                        // Add a play button overlay only if autoplay is blocked
+                        if (error.name === 'NotAllowedError') {
+                            const playButton = document.createElement('div');
+                            playButton.className = 'play-button-overlay';
+                            playButton.innerHTML = '<span>▶</span>';
+                            weddingVideo.parentNode.appendChild(playButton);
+                            
+                            // Play video when overlay is clicked
+                            playButton.addEventListener('click', function() {
+                                weddingVideo.play();
+                                playButton.style.display = 'none';
+                            });
+                        }
+                    });
+                });
+                
+                // Switch to better quality after playing starts
+                weddingVideo.addEventListener('playing', function() {
+                    weddingVideo.preload = 'auto';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

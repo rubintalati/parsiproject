@@ -548,8 +548,8 @@
         </div>
         
         <div class="right-section">
-            <!-- Using placeholder image instead of video for visualization -->
-            <video class="video-background" autoplay muted loop playsinline>
+            <!-- GIF-like background video with progressive download -->
+            <video id="background-video" class="video-background" autoplay muted loop playsinline preload="auto">
                 <source src="media/videos/landing-page.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -747,6 +747,40 @@
             questionItems.forEach(item => {
                 item.addEventListener('click', onItemClick);
             });
+            
+            // Video playback implementation to ensure the full video plays
+            const backgroundVideo = document.getElementById('background-video');
+            if (backgroundVideo) {
+                // Ensure full video loading
+                backgroundVideo.preload = 'auto';
+                
+                // Make sure the video plays completely
+                backgroundVideo.addEventListener('loadedmetadata', () => {
+                    // Start playback when metadata is loaded
+                    backgroundVideo.play().catch(error => {
+                        console.log('Autoplay was prevented by the browser', error);
+                    });
+                });
+                
+                // Add event listener for when video ends to ensure looping works properly
+                backgroundVideo.addEventListener('ended', () => {
+                    // Reset to beginning and play again
+                    backgroundVideo.currentTime = 0;
+                    backgroundVideo.play();
+                });
+                
+                // Handle any errors that might occur during playback
+                backgroundVideo.addEventListener('error', (e) => {
+                    console.error('Video error:', e);
+                });
+                
+                // Force reload if the video stalls
+                backgroundVideo.addEventListener('stalled', () => {
+                    console.log('Video stalled, attempting to restart');
+                    backgroundVideo.load();
+                    backgroundVideo.play();
+                });
+            }
 
             // Add drag event listeners to slider
             questionSlider.addEventListener('touchstart', onDragStart, { passive: false });
