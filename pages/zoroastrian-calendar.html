@@ -22,6 +22,19 @@
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -50,8 +63,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
         .back-button:hover {
             color: #ccc;
@@ -169,15 +184,48 @@
             color: #fff;
             font-weight: 600;
         }
+        .gatha-item strong {
+            color: #e0ad4e;
+        }
+        .calendar-note {
+            margin-bottom: 1.6rem;
+            color: #b9b9b9;
+            line-height: 1.5;
+        }
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
             }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                padding: 0 0.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+                margin-top: 2rem;
+                padding: 0 0.8rem;
+            }
+            
             .names-grid {
                 grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                padding: 0 0.8rem;
             }
+            
             .mah-grid {
                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                padding: 0 0.8rem;
+            }
+            
+            .calendar-note {
+                padding: 0 0.8rem;
             }
         }
     </style>
@@ -193,7 +241,7 @@
             <div class="calendar-title">The Zoroastrian Calendar</div>
             <div class="calendar-subtitle">A sacred system of days, months, and Gathas</div>
         </div>
-        <div style="margin-bottom: 1.6rem; color: #b9b9b9;">
+        <div class="calendar-note">
             The Zoroastrian Calendar is of 365 days, with 12 months of 30 days each plus the 5 Gathas. The days and months are named after Ahura Mazda and His Ameshaspands and the Yazads, who look after their own special spheres and hence they are addressed with a special title e.g. Dadar Hormuzd, Behman Ameshspand, Adar Yazd, Mino Ram etc. We can worship Ahura Mazda through them. The last 10 days of the year are the Farvardegan (Muktad) days when special prayers are said for the dear departed.
             <br><br>
             The days in a Zoroastrian month with their literal meanings and special domains are listed below.
@@ -203,7 +251,7 @@
         <div class="mah-grid" id="mah-grid"></div>
         <div class="gatha-title">The Five Gāthās</div>
         <div class="gatha-list" id="gatha-list"></div>
-        <div style="color: #b9b9b9; margin-top: 1.2rem;">
+        <div class="calendar-note">
             The last five days in the Zoroastrian calendar after the twelve months of the year are named after the Five Gathas - the Divine Songs (hymns) of Spitama Zarathushtra. The Gathas are holy and the best teachings of Zarathushtra in which there is true wisdom which benefits mankind. They are in the form of poetry and preach peace, progress and perfection. Though they were spoken by Zarathushtra over 3,000 years ago their message is alive even today. They praise Ahura Mazda and also deal with the dual principles of good and evil.
         </div>
     </div>

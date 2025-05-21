@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -140,6 +142,21 @@
             padding-left: 1rem;
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
+        }
 
         .prayer-section {
             margin-top: 3rem;
@@ -149,7 +166,13 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -160,8 +183,28 @@
                 font-size: 1rem;
             }
             
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
             }
         }
     </style>
@@ -183,17 +226,19 @@
 
 
         <div class="prayer-text">
-            <p>Bā nāme yazade bakhshāyandehe bakhshāyashgare meherbān. Yathā Ahū Vairyō 2.</p>
+            <p>bā nāme yazade bakhshāyandehe bakhshāyashgare mehērbān. yathā ahū vairyō 2.</p>
             <br>
-            <p>Tan-dorosti der-zivashni āvāyad; khoreh anghad ashahidār; yazdāne minōān, yazdāne getiān, haft Ameshāspandān myazda roshan hame berasād. In doāya bād, in khoāhā bād; hame andar kasarā Zarathushti din shād bād; aedūn bād. Yā bāri khodā! Khodāvande ālamrā, hame anjumanrā (here take the name of a person in whose behest the tandarosti is recited).</p>
+            <p>tan-dorostī der-zīvashnī āvāyad; khoreh anghad ashahīdār; yazdāne mīnōān, yazdāne getīān, haft ameshāspandān myazda roshan hame berasād. in doāyā bād, in khoāhā bād; hame andar kasārā zarathushtī dīn shād bād; aedūn bād. yā bārī khodā! khodāvande ālamrā, hame anjumanrā</p>
             <br>
-            <p>Bā farzandān, hazār sāl der bedār, shād bedār, tan-dorost bedār; aedūn bedār. Bar sare arzāniā, āftābe bevān va karannāe bishumār bāki va pāyandeh dār; hazārān hazār āfrin bād, sāl-khozasteh bād, roz farrokh bād, māh mubārak bād. Chand sāl, chand roz, chand māh, besyār sālhā arzāndār, yazashne va niāeshne va rādi va zarathushti barashne. Ashahidār avare hamā kāro kerfehā; tandarosti bād, neki bād, khūb bād; aedūn bād, aedūntaraz bād, pa yazdān va Ameshāspandān kāme bād.</p>
+            <div class="prayer-note-container">
+                <p class="prayer-note">here insert the name of the person for whom this prayer is being recited</p>
+            </div>
             <br>
-            <p>Ashem Vohū 1.</p>
+            <p>bā farzandān, hazār sāl dēr bedār, shād bedār, tan-dorost bedār; aedūn bedār. bar sare arzānīā, sālhāe besyār va karanhāe bīshumār bāki va pāyandeh dār; hazārān hazār āfrīn bād, sāl-khozasteh bād, roz farrokh bād, māh mubārak bād. chand sāl, chand roz, chand māh, besyār sāl arzānīdār, yazashne va nīāeshne va rādi va zõr barashne. ashahīdār avare hamā kāro kerfehā; tandorostī bād, nekī bād, khūb bād; aedūn bād, aedūntaraz bād, pa yazdān va ameshāspandān kāme bād. ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>In the name of the good, kind, forgiving, all-loving Ahura Mazda I begin this prayer. Good health is necessary for a long life. May my prayers be accepted and wishes be fulfilled. May the religion of Zarathustra prosper. O Lord, the Creator of the Universe may You grant the ruler of the country and all the people and their offspring a thousand years full of blessings, joy, good health, righteousness and all that is best. May the year be promising and the day be auspicious. May all the wishes be as true and just as the will of the Amesha Spentas and the Yazads.</p>
+            <p>in the name of the good, kind, forgiving, all-loving ahura mazda i begin this prayer. good health is necessary for a long life. may my prayers be accepted and wishes be fulfilled. may the religion of zarathushtra prosper. o lord, the creator of the universe may you grant the ruler of the country and all the people and their offspring a thousand years full of blessings, joy, good health, righteousness and all that is best. may the year be promising and the day be auspicious. may all the wishes be as true and just as the will of the amesha spentas and the yazads.</p>
         </div>
 
         <div class="prayer-section">
@@ -203,15 +248,15 @@
 
 
             <div class="prayer-text">
-                <p>Ba name yazade bakhshayandehe bakhshayashgare mehrban razishtayao chishtayao Mazdadhatayao ashaonyao daenayao vanghuyao Mazdayasnoish. Din beh rāst va dorost, ke khodāe bar khalk ferastādeh in hast ke Zartosht āvordeh hast; din dine Zartosht, dine Ahura Mazda dādeh Zartosht Spitaman ashaone.</p>
+                <p>ba name yazade bakhshayandehe bakhshayashgare meherban razishtayāo chistayāo mazdadhātayāo ashaonyāo daēnayāo vanghuyāo māzdayasnōish. dīn beh rāst va dorost, ke khodāe bar khalk ferastādeh in hast ke zartosht āvordeh hast; dīn dīne zartosht, dīne ahura mazda dādeh zartosht spitaman ashaone. ashem vohū 1.</p>
                 <br>
-                <p>Ashem Vohū 1.</p>
-                <br>
-                <p>(This Zoroastrian Creed should be recited thrice).</p>
+                <div class="prayer-note-container">
+                    <p class="prayer-note">this zoroastrian creed should be recited thrice</p>
+                </div>
             </div>
 
             <div class="prayer-translation">
-                <p>In the name of the good, kind, all-forgiving, all-loving Ahura Mazda, do I start this prayer. Glory be to our great noble Mazdayasni religion sent to us by Ahura Mazda through Zarathustra for the benefit of the world.</p>
+                <p>in the name of the good, kind, all-forgiving, all-loving ahura mazda, do i start this prayer. glory be to our great noble mazdayasni religion sent to us by ahura mazda through zarathushtra for the benefit of the world.</p>
             </div>
         </div>
     </div>

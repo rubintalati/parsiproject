@@ -84,8 +84,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -141,12 +143,19 @@
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(0, 0, 0, 0.2);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
         .prayer-note {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-instruction {
@@ -282,16 +291,47 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                padding: 0;
+                border: none;
+                background-color: transparent;
             }
 
             .content {
                 padding: 1.2rem;
             }
 
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
+                padding-top: 1.5rem;
+                padding-right: 140px; /* Space for compass */
+                min-height: 140px; /* Ensure enough height for compass */
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
+            
+            .prayer-instruction {
+                padding: 0 0.8rem;
+            }
             .sidebar {
                 width: 80%;
                 max-width: 300px;
@@ -364,7 +404,9 @@
             
             <p>Ashem Vohū 1.</p>
             
-            <p class="prayer-instruction">(Note: To be recited each time, turning to each direction)</p>
+            <div class="prayer-note-container">
+                <p class="prayer-note">note: to be recited each time, turning to each direction</p>
+            </div>
             
             <p>Ahmāi raēshcha; Hazangrem; Jasa me avanghe mazda Kerfeh Mozd.</p>
         </div>

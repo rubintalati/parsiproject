@@ -86,8 +86,13 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -130,6 +135,10 @@
         .prayer-text {
             margin-bottom: 1.5rem;
             line-height: 1.6;
+        }
+        
+        .prayer-text p {
+            margin-bottom: 1rem;
         }
 
         .prayer-translation {
@@ -247,10 +256,39 @@
                 font-size: 1.3rem;
             }
             
-            .prayer-text, .prayer-translation, .prayer-section, .gif-box, .prayer-instruction {
+            .prayer-text, .gif-box, .prayer-instruction {
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
+            }
+            
+            /* Keep the vertical border for translations in mobile */
+            .prayer-translation {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+                padding-left: 1rem !important;
+            }
+            
+            /* Keep prayer section borders for mobile */
+            .prayer-section {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+                margin-top: 2rem !important;
+                padding-top: 2rem !important;
+            }
+
+            .back-button {
+                display: block;
+                position: static;
+                left: auto;
+                top: auto;
+                margin: 0 0 0.7rem 0;
+                font-size: 2em;
+                background: none;
+                z-index: 10;
+                padding-left: 0;
             }
         }
         @media (max-width: 768px) {
@@ -274,8 +312,8 @@
         
         <div class="prayer-header">
             <div id="direction-advice" class="direction-advice"></div>
-            <h1 class="prayer-title">sudreh kasti ritual</h1>
-            <p class="prayer-subtitle">Khshnaothra ahunahe mazdāo, Ashem Vohū 1</p>
+            <h1 class="prayer-title">sudreh kusti ritual</h1>
+            <p class="prayer-subtitle">khshnaothra ahurahe mazdāo. ashem vohū 1</p>
         </div>
 
         <!-- Top GIF section - 2 videos side by side -->
@@ -300,11 +338,13 @@
             <h2 class="prayer-name">kem-nā-mazdā</h2>
             
             <div class="prayer-text">
-                <p>Kem-nā Mazdā, mavaitē pāyūm dadāt, hyat mā dregvāo didareshatā aēnanghē, anyem thwahmat āthraschā mananghaschā, yayāo shyaothanāish ashem thraoshtā Ahurā, tām mōi dąstvām daēnayāi frāvaocā.</p>
+                <p>kem-nā mazdā, mavaite pāyum dadāt, hyat mā dregvāo didareshatā aenanghe anyem thwahmāt āthraschā mananghaschā, yayāo shyaothnāish ashem thraoshtā ahurā, tām mōi dāstvām daenayāi frāvaochā. ke verethrem - jā thwā pōi senghā yōi henti chithrā mōi dām ahumbish ratum chizhdi, at hōi vohu seraoshō jantu mananghā, mazdā ahmāi yahmāi vashi kahmāi-chit.</p>
+                <p>pāta-nō tbishyantat pairi mazdāoscha ārmatishcha spentascha, nase daēvī drukhsh, nase daēvō-chithre, nase daēvō- frakarshte, nase daēvō-fradāite, apa drukhsh nase, apa drukhsh dvāra, apa drukhsh vīnase, apākhedhre apa-nasyehe, mā merenchaīnish gaēthāo astvaitīsh ashahe. nemaschā yā ārmaitish izhā-chā.</p>
+                <p>ashem vohū 1.</p>
             </div>
             
             <div class="prayer-translation">
-                <p>Ahura Mazda, who will protect me from all evil, but Thyself? Show me a spiritual guide, who with the aid of Good Mind will protect me from evil. May the wicked be destroyed and may the evil one demolish Your Creation. I create Good thoughts and prosperity. I respect and honour.</p>
+                <p>ahura mazda, who will protect me from all evil, but thyself? show me a spiritual guide, who with the help of prayers will protect me from all enemies. may the wicked be destroyed and may the evil never demolish your creation, o lord! good thoughts and prosperity, i respect and honour.</p>
             </div>
         </div>
         
@@ -316,17 +356,17 @@
             <h2 class="prayer-name">hormazd khodāy</h2>
             
             <div class="prayer-text">
-                <p>Hormazd Khodāy ahereman awādashān dūr-awāzāyashnē, zad-shikashtē bād. Ahereman dēwān drūjān awādashān, gunāhgārān dūsh-manashān, dush-gūftārān, dush-kunashān, drūjān, druzān, jādūgārān, grimānigān karino-gān tā-sar-nigūn bād, shikashtē bād.</p>
-                <br>
-                <p>Dushmananshān awazdashān bād, dushmanashān awazdashān bād.</p>
-                <br>
-                <p>Hormazd Khodāy aż hamā gunāh patet pashēmānum. Az harche gunāh wanāh, kerdarē kuneshnē, minishnē kunishnē, bunē gunāh, robnē gunāh, az geti minoi, ōhē awakhsh pashēmānum, pa sē garznē patet hom.</p>
-                <br>
-                <p>Khshnaothra ahunahe mazdāo, tarōidite angrahe mainyēush. Haithy-āvarshtām hyat vasnā frashōtemem. Staomi ashem. Ashem Vohū 1.</p>
+                <p>hormazd khodāy ahereman awādashān dūr avāz-dāshtār; zad shekasteh bād, ahereman, devān darujān, jādūān darvandān kīkān karafān sāstārān, gunehgārān āshmo- ghān darvandān dushmanān frīyān zad shekasteh bād.</p>
+                
+                <p>dushpādashāhān awādashān bād; dushmanān satoh bād; dushmanān awādashān bād. hormazd khodāy az hamā gunāh patet pashemānum, az harvastīn dushmata duzukhta duzvarshta, mem pa getī manid, oim goft oim kard, oim jast, oim būn būd ested, azān gunāh manashni gavashni kunashnī, tanī ravānī, geti mīnoāni, okhe awākhsh pashemān, pa se gavashnī patet hom.</p>
+                
+                <p>khshnaothra ahurahe mazdāo; tarōidīte anghrahe mainyēush. haithyā varshtām hyat vasnā ferashōtemem; staomi ashem.</p>
+                
+                <p>ashem vohū 1. yathā ahū vairyō 2. ashem vohū 1.</p>
             </div>
             
             <div class="prayer-translation">
-                <p>May Dadar Hormazd, Who is the Lord of the Universe, destroy all evil. I ask forgiveness for all sins of thought, word or deed. O Dadar Hormazd, I promise to please Thee by adopting all will and by following this path of righteousness which will bring happiness in the world.</p>
+                <p>may dadar hormazd, who is the lord of the universe, destroy all evil. i ask forgiveness for all sins of thought, word or deed. o dadar hormazd, i promise to please thee by disposing all evil and by following the path of righteousness which will bring happiness and glory to thee.</p>
             </div>
         </div>
         
@@ -374,11 +414,13 @@
             <h2 class="prayer-name">jasa me avanghe mazda</h2>
             
             <div class="prayer-text">
-                <p>Jasa me avanghe Mazda (3). Mazdayasnō ahmī, mazdayasnō zarathushtrish. Fravarānē astūtō būtōish astūtō būtōish. Astuye humatem manō, astuye hūkhtem vachō, astuye hvarshtem shyaothnem. Astuye daēnām vanghuhīm māzdayasnīm, fraspāyaokhēdrām, nidhāsnaithrishem, khraozhdishem, khraozhdish-tōishem. Yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yā hāitīm vīspāish ashem stūtōish stūtōish. Aētat dīsh āyesē yesne, haithyāvarshtām hyat vasnā frashōtemen. Staomi ashem. Ashem Vohū 1.</p>
+                <p>jasa me avanghe mazda (3) mazdayasnō ahmi mazdayasnō zarathushtrish fravarāne āstūtaschā fravaretaschā. āstuye humatem manō, āstuye hūkhtem vachō, āstuye hvarshtem shyaothnem. āstuye daēnām vanguhīm māzdayasnim fras-pāyaokhedhrām, nidhāsnaithishem, khavaētvadathām ashaonīm, yā hāitināmchā, būshyeintināmchā mazishtachā, vahishtachā, srashtachā, yā āhuirish zarathushtrish. ahurāi mazdāi vīspā vohu chinahmi. aeshā asti daēnayāo māzdayasnoish āstūistish.</p>
+                
+                <p>ashem vohū 1.</p>
             </div>
             
             <div class="prayer-translation">
-                <p>O Mazda, come to my help. I am faithful to this religion. I declare myself as the worshipper of Mazda, and a disciple of Zarathushtra. I believe in good thoughts, good words, good deeds. I believe in the good religion of Mazda. May all the creation of Ahura Mazda be trustworthy. Protect us from evil. Ashem Vohū 1.</p>
+                <p>i ask for divine help and proclaim that i belong to the mazdayasni zoroastrian religion and have full faith in it only. my religion teaches me to be good in thought, word and deed. i dedicate myself to my faith and firmly believe that all good things come from ahura mazda.</p>
             </div>
         </div>
         

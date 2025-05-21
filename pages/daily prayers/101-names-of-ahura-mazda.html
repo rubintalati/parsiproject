@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -197,11 +199,25 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
                 font-size: 1.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-intro {
+                padding: 0 0.8rem;
             }
             
             .prayer-subtitle {
@@ -214,6 +230,12 @@
             
             .names-grid {
                 grid-template-columns: 1fr;
+                padding: 0 0.8rem;
+                gap: 0.8rem;
+            }
+            
+            .name-box {
+                padding: 1rem;
             }
         }
     </style>

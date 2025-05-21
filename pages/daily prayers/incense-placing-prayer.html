@@ -69,8 +69,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
         .back-button:hover {
             color: #ccc;
@@ -111,34 +113,33 @@
             padding-left: 1rem;
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
-        .gif-single {
-            margin-bottom: 2rem;
-        }
-        .gif-single .gif-box {
-            width: 100%;
-            aspect-ratio: 16/4;
-            height: 120px;
-            background-color: rgba(40, 40, 40, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        .gif-box img, .gif-box video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
             }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
+            }
+            
             .prayer-title {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
-            .gif-single .gif-box {
-                height: 80px;
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
             }
         }
     </style>
@@ -162,11 +163,7 @@
                 May the Fravashis of the departed souls reach Heaven and experience divine happiness and rest in eternal peace. May all my kith and kin who shall be born in the future and those who have departed get the blessings for their good and righteous acts. May all of them through good thoughts, words and deeds be blessed by the Yazads.
             </div>
         </div>
-        <div class="gif-single">
-            <div class="gif-box">
-                <img src="../assets/loban-placeholder.gif" alt="Loban Placing Video Placeholder">
-            </div>
-        </div>
+
     </div>
 </body>
 </html>

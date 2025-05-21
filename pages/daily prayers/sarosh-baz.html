@@ -84,8 +84,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -156,31 +158,31 @@
         }
         
         /* Morning: Havan Gah */
-        .havan-gah {
+        .havan-gah, .havan-geh {
             background-color: #E6D2B5;
             color: #333;
         }
         
         /* Afternoon: Rapithwan Geh */
-        .rapithwan-geh {
+        .rapithwan-geh, .rapithwan-gah {
             background-color: #E8A87C;
             color: #333;
         }
         
         /* Evening: Uzirin Geh */
-        .uzirin-geh {
+        .uzirin-geh, .uzirin-gah {
             background-color: #A088B3;
             color: #333;
         }
         
         /* Night: Aiwisruthrem Geh */
-        .aiwisruthrem-geh {
+        .aiwisruthrem-geh, .aiwisruthrem-gah {
             background-color: #333D5C;
             color: #fff;
         }
         
         /* Midnight: Ushahin Geh */
-        .ushahin-geh {
+        .ushahin-geh, .ushahin-gah {
             background-color: #1A1E3C;
             color: #fff;
         }
@@ -216,6 +218,21 @@
             padding: 2rem;
         }
 
+        .prayer-note {
+            text-align: center;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .prayer-note-container {
+            margin: 0.5rem 2rem;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .fin {
             text-align: center;
             font-size: 0.8rem;
@@ -224,6 +241,25 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 0;
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+            
+            /* Reset container for mobile */
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: visible;
+            }
+            
             .prayer-title {
                 font-size: 1.5rem;
             }
@@ -234,6 +270,72 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text, .gif-box, .prayer-instruction {
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            
+            /* Keep the vertical border for translations in mobile */
+            .prayer-translation {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+                padding-left: 1rem !important;
+            }
+            
+            /* No prayer section borders for mobile since it's one prayer */
+            .prayer-section {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                margin-top: 1rem !important;
+                padding-top: 1rem !important;
+            }
+
+            .back-button {
+                display: block;
+                position: static;
+                left: auto;
+                top: auto;
+                margin: 0 0 0.7rem 0;
+                font-size: 2em;
+                background: none;
+                z-index: 10;
+                padding-left: 0;
+            }
+            
+            .header {
+                position: relative;
+                padding: 1.2rem 1rem 0 1rem;
+            }
+            
+            /* Reset all paddings for mobile view */
+            .prayer-header,
+            .prayer-text {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .concluding-section {
+                padding: 1rem;
+            }
+            
+            /* Make colored geh sections stretch edge to edge */
+            .gah-section {
+                margin-left: -50vw !important;
+                margin-right: -50vw !important;
+                padding: 1.5rem 1rem !important;
+                position: relative !important;
+                left: 50% !important;
+                width: 100vw !important;
+            }
+            
+            /* Override inline styles */
+            .prayer-text[style*="padding"] {
+                padding: 0 !important;
             }
         }
     </style>
@@ -253,91 +355,89 @@
         </div>
 
         <div class="prayer-section">
-            <p style="padding: 0 2rem; margin-bottom: 1.5rem;">Khshnaothra ahunahe mazdāo, Ashem Vohū 1</p>
+            <p style="padding: 0 2rem; margin-bottom: 1.5rem;">khshnaothra ahurahe mazdāo. ashem vohū 1.</p>
             
             <div class="prayer-text">
-                <p>Pa name yazdan Hormazd Khodae awazuni, gorje khoreh awazayad. Ahura Mazda Khodae, awazun, mehraban, velayatmand, dadar-o dashtar, haft Ameshaspandan, bem rasad. Az hama gunah patet pashemanum, az harche gvnah vahad, kardare kuneshe, mineshne, kuneshne, goft, goft-o shem, goft-o kam, goft-o khar, az an gunah, maneshne gunashne kunashan, tani ravan geti minou, okhe avakhsh pasheman, pa se garzashe pa patet hom. Yatha Ahu Vairyo 5, Ashem Vohu 3.</p>
+                <p>pa nāme yazdān hormazd khodāe awazuni, gorje khoreh awazāyād, sarosh ashō, tagi, tan-farmān, shekaftzin, zin-awazār, sālāre dāmāne ahura mazda be-rasād. az hamā gunāh patet pashemānum; az harvastin dushmata duzhukhta duzhuvarshta, mem pa geti manid oem goft, oem kard, oem jast oem bun bud ested, az ān gunāh manashni gavashni kunashni, tani ravāni geti minoāni, okhe pa nāme yazdān hormazd khodāe awazuni, gorje khoreh awazāyād, sarosh ashō, tagi, tan-farmān, shekaftzin, zin-awazār, sālāre dāmāne ahura mazda be-rasād. az hamā gunāh patet pashemānum; az harvastin dushmata duzhukhta duzhuvarshta, mem pa geti manid oem goft, oem kard, oem jast oem bun bud ested, az ān gunāh manashni gavashni kunashni, tani ravāni geti minoāni, okhe</p>
             </div>
             
             <div class="prayer-text">
-                <p>Fravarāne Mazdayasno Zarathushtrish vidaēvo Ahura-tkaēsho.</p>
+                <p>fravarāne mazdayasnō zarathushtrish vīdaēvō ahura-tkaeshō</p>
             </div>
             
             <p class="prayer-note">now recite the short geh according to the time of day</p>
         </div>
+
         
         <!-- Hāvan Gāh Section -->
         <div class="gah-section havan-gah">
             <p class="gah-time">sunrise to 12:40</p>
-            <h3 class="gah-title">hāvan gāh short</h3>
-            
-            <div class="prayer-text-dark">
-                <p>Hāvanēe ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Sāvanghēe Vīsyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            <h3 class="gah-title">hāvan geh short</h3>
+            <div class="prayer-text">
+                <p>hāvanēe ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. sāvanghēe vīsyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
             </div>
         </div>
         
-        <!-- Rapithwan Geh Section -->
+        <!-- Rapithwan Gāh Section -->
         <div class="gah-section rapithwan-geh">
             <p class="gah-time">12:40 to 15:40</p>
             <h3 class="gah-title">rapithwan geh short</h3>
-            
-            <div class="prayer-text-dark">
-                <p>Rapithwināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-fshawe Zangtumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            <div class="prayer-text">
+                <p>rapithwināi ashaone ashahe rathwe, yasnāicha, vahmāicha khshnaothrāicha frasastayaēcha. frādat-fshave zantumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            </div>
+            <div class="prayer-note-container">
+                <p class="prayer-note">from hormuzd roj of mah avan till vahishtoisht gatha, this geh is not to be prayed. instead, hāvan gah has to be prayed at this time of the day. the reason is that during this period ardibehesht ameshaspand who is the presiding diety over rapithwan geh goes underground to give warmth to god's creation there.</p>
             </div>
         </div>
         
-        <!-- Uzirin Geh Section -->
+        <!-- Uzirin Gāh Section -->
         <div class="gah-section uzirin-geh">
             <p class="gah-time">15:40 to sunset</p>
             <h3 class="gah-title">uzirin geh short</h3>
-            
-            <div class="prayer-text-dark">
-                <p>Uzyeirināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-vīrāi dākhyumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            <div class="prayer-text">
+                <p>uzyerirināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. frādat-vīrāi dakhyumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
             </div>
         </div>
         
-        <!-- Aiwisruthrem Geh Section -->
+        <!-- Aiwisruthrem Gāh Section -->
         <div class="gah-section aiwisruthrem-geh">
             <p class="gah-time">sunset to 00:40</p>
             <h3 class="gah-title">aiwisruthrem geh short</h3>
-            
-            <div class="prayer-text-light">
-                <p>Aiwisrūthremāi aibigayāi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Frādat-vispām-hujyāitēe zarathustrōtemāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            <div class="prayer-text">
+                <p>aiwisrūthremāi aibigayāi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. frādat-vispām hujyāitee zarathushtrotemāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
             </div>
         </div>
         
-        <!-- Ushahin Geh Section -->
+        <!-- Ushahin Gāh Section -->
         <div class="gah-section ushahin-geh">
             <p class="gah-time">00:40 to sunrise</p>
-            <h3 class="gah-title">ushahin geh short</h3>
-            
-            <div class="prayer-text-light">
-                <p>Ushahināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Berejyāi nmānyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
+            <h3 class="gah-title">ushahen geh short</h3>
+            <div class="prayer-text">
+                <p>ushahināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaecha. berejyāi nmānyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha.</p>
             </div>
         </div>
-        
+
         <!-- Concluding Section -->
         <div class="concluding-section">
             <div class="prayer-text" style="padding: 0;">
-                <p>frasastayaēcha Sraoshane ashyehe, takhmahe, tanu-mānthrahe, darshi-draosh, āhuiryehe, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā AHū vairyō zaotā frā mē mrūtē, athā ratush ashātchit hacha frā ashava vīdhvāo mraotū.</p>
+                <p>frasastayaēcha sraoshahe ashyehe, takhmahe, tanu mānthrahe, darshi-draosh, āhūiryehe, kshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahū vairyō zaotā frā-me mrūte, athā ratush ashāt chit hacha frā ashava vīdhvāo mraotū.</p>
             </div>
             
             <div class="prayer-text" style="padding: 0;">
-                <p>Sraoshem, Ashem, hurathem, verethrājinem fradat-gaēthem ashavanem ashahe ratūm yazamaide Ahunem vairīm tanūm pāiti, Ahunem vairim tanum pāiti, Ahunem vairim tanūm pāiti, Yathā Ahū Vairyo 1.</p>
+                <p>sraoshem, ashīm, huraodhem, verethrājanem frādat-gaēthem ashavanem ashahe ratūm yazamaide ahunem vairim tanum pāiti, ahunem vairīm tanūm pāiti, ahunem vairim tanum pāiti. yathā ahū vairyō 1.</p>
             </div>
             
             <div class="prayer-text" style="padding: 0;">
-                <p>Kem nā Mazdā. Yathā Ahū Vairyō 2.</p>
-                <br>
-                <p>Yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, Sarōshe ashyehe, takhmahe, tanu-mānthra, darshi-draosh, āhūiryehe. Ashem Vohū 1.</p>
+                <p>kem nā mazdā. yathā ahū vairyō 2; yasnemacha vahmemcha aojascha zavarecha āfrīnāmi, sraoshahe, ashyehe, takhmahe, tanu-mānthrahe, darshi-draosh, āhūiryehe. ashem vohū 1.</p>
             </div>
             
             <div class="prayer-translation">
-                <p>May it please the Almighty! In the name of Ahura Mazda, I start my prayer. May 'Sraosha' the holy, mighty leader of all creations, who protects people, come to my help. I repent for any wrong that I may have done and promise not to do anything that is not right. I am a worshipper of Ahura Mazda and a follower of Zarathushtra. I oppose all evil. I worship the strong victorious "Sraosha".</p>
+                <p>may it please the almighty! in the name of ahura mazda, i start my prayer. may 'sraosha' the holy, mighty leader of all creations, who protects people, come to my help. i repent for any wrong that i may have done and promise not to do anything that is not right. i am a worshipper of ahura mazda and a follower of zarathushtra. i oppose all evil. i worship the strong victorious "sraosha".</p>
             </div>
             
             <p class="fin">fin</p>
         </div>
     </div>
+</div>
 </body>
 </html>
