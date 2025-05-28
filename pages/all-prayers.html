@@ -164,7 +164,7 @@
             font-family: 'Manrope', sans-serif;
             font-size: 0.9rem;
             text-align: center;
-            border-radius: 4px;
+            /* Removed border-radius for rectangular design */
             flex: 1;
         }
         
@@ -200,7 +200,7 @@
             transition: all 0.2s ease;
             font-family: 'Manrope', sans-serif;
             font-size: 0.9rem;
-            border-radius: 4px;
+            /* Removed border-radius for rectangular design */
             text-align: center;
             flex: 1;
         }
@@ -320,11 +320,24 @@
             .filter-button {
                 padding: 0.5rem 0.6rem;
                 font-size: 0.75rem;
+                /* Remove borders on mobile as per styling preferences */
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
             
             .sticky-filter-button {
                 padding: 0.5rem 0.6rem;
                 font-size: 0.75rem;
+                /* Remove borders on mobile as per styling preferences */
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            /* Adjust prayer cards for mobile */
+            .prayer-card {
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1rem 0;
             }
         }
         
@@ -365,160 +378,182 @@
             <!-- Prayer Grid -->
             <div class="prayer-grid">
                 <!-- Prayer 1 -->
+                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/101-names-of-ahura-mazda.html'">
+                    <h3 class="prayer-title">101 names of ahura mazda</h3>
+                    <p class="prayer-description">The one for divine attributes</p>
+                </div>
+
+                <!-- Prayer 2 -->
                 <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/ashem-vohu-yatha-ahu-vairyo.html'">
                     <h3 class="prayer-title">ashem vohū & yathā ahū vairyō</h3>
                     <p class="prayer-description">Our most sacred prayers</p>
                 </div>
 
-                <!-- Prayer 2 -->
+                <!-- Prayer 3 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/kem-na-mazda.html'">
                     <h3 class="prayer-title">kem-nā-mazdā</h3>
                     <p class="prayer-description">The one for divine protection</p>
                 </div>
 
-                <!-- Prayer 3 -->
+                <!-- Prayer 4 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hormazd-khoday.html'">
                     <h3 class="prayer-title">hormazd khodāy</h3>
                     <p class="prayer-description">The one for forgiveness</p>
                 </div>
 
-                <!-- Prayer 4 -->
+                <!-- Prayer 5 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/jasa-me-avanghe-mazda.html'">
                     <h3 class="prayer-title">jasa me avanghe mazda</h3>
                     <p class="prayer-description">The one for faithful devotion</p>
                 </div>
 
-                <!-- Prayer 5 -->
+                <!-- Prayer 6 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/baz.html'">
                     <h3 class="prayer-title">bāz</h3>
                     <p class="prayer-description">The one for saying grace</p>
                 </div>
 
-                <!-- Prayer 6 -->
+                <!-- Prayer 7 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/sarosh-baz.html'">
                     <h3 class="prayer-title">sraosh bāz</h3>
                     <p class="prayer-description">The one for the mighty leader</p>
                 </div>
 
-                <!-- Prayer 7 -->
+                <!-- Prayer 8 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/ahmai-rascha.html'">
                     <h3 class="prayer-title">ahmāi raēshcha</h3>
                     <p class="prayer-description">The one for divine blessings</p>
                 </div>
 
-                <!-- Prayer 8 -->
+                <!-- Prayer 9 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hazangarem.html'">
                     <h3 class="prayer-title">hazanghrem</h3>
                     <p class="prayer-description">The one for health</p>
                 </div>
 
-                <!-- Prayer 9 -->
-                <div class="prayer-card" data-category="jasa-me-avanghe-mazda-2" onclick="location.href='allprayerpages/jasa-me-avanghe-mazda-2.html'">
+                <!-- Prayer 10 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/jasa-me-avanghe-mazda-2.html'">
                     <h3 class="prayer-title">jasa me avanghe mazda</h3>
                     <p class="prayer-description">The one for divine aid</p>
                 </div>
 
                 <!-- Prayer 11 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/kerfeh-mozd.html'">
+                    <h3 class="prayer-title">kerfeh mozd</h3>
+                    <p class="prayer-description">The one for seeking redemption</p>
+                </div>
+
+                <!-- Prayer 12 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/time-of-day-prayers.html'">
+                    <h3 class="prayer-title">geh's</h3>
+                    <p class="prayer-description">The one according to the time of day</p>
+                </div>
+
+                <!-- Prayer 13 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hoshbam.html'">
                     <h3 class="prayer-title">hoshbām</h3>
                     <p class="prayer-description">The one for a new day</p>
                 </div>
 
-                <!-- Prayer 12 -->
+                <!-- Prayer 14 -->
                 <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/khorshed-neyayesh.html'">
                     <h3 class="prayer-title">khorshed neyāyesh</h3>
                     <p class="prayer-description">The one for radiant blessing</p>
                 </div>
 
-                <!-- Prayer 13 -->
-                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/meher-neyayesh.html'">
+                <!-- Prayer 15 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/meher-nayayesh.html'">
                     <h3 class="prayer-title">meher neyāyesh</h3>
-                    <p class="prayer-description">The one for cosmic aid</p>
+                    <p class="prayer-description">the one for cosmic aid</p>
                 </div>
 
-                <!-- Prayer 14 -->
+                <!-- Atash Neyayesh -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/atash-neyayesh.html'">
+                    <h3 class="prayer-title">ātash neyāyesh</h3>
+                    <p class="prayer-description">the one for sacred fire</p>
+                </div>
+
+                <!-- Cherag-no Namaskar -->
+                <div class="prayer-card" data-category="short" onclick="location.href='allprayerpages/cherag-no-namaskar.html'">
+                    <h3 class="prayer-title">cherag-no namaskar</h3>
+                    <p class="prayer-description">the one for the sacred fire</p>
+                </div>
+
+                <!-- Behram Yazad -->
+                <div class="prayer-card" data-category="short" onclick="location.href='allprayerpages/behram-yazad.html'">
+                    <h3 class="prayer-title">behram yazad</h3>
+                    <p class="prayer-description">the one for strength and victory</p>
+                </div>
+
+                <!-- Prayer 16 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/vuspa-humata.html'">
                     <h3 class="prayer-title">vūspa humata</h3>
                     <p class="prayer-description">The one for righteous path</p>
                 </div>
 
-                <!-- Prayer 15 -->
-                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/doā-nām-setāyeshne.html'">
+                <!-- Prayer 17 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/doa-nam-setayeshne.html'">
                     <h3 class="prayer-title">doā nām setāyeshne</h3>
-                    <p class="prayer-description">The one for gratitude</p>
+                    <p class="prayer-description">the one for gratitude</p>
                 </div>
 
-                <!-- Prayer 16 -->
+                <!-- Prayer 18 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/char-disha-no-namaskar.html'">
                     <h3 class="prayer-title">char-disha no namaskar</h3>
                     <p class="prayer-description">The one for humble repentance</p>
                 </div>
 
-                <!-- Prayer 17 -->
-                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/mah-bokhtyar-neyayesh.html'">
-                    <h3 class="prayer-title">mâh bokhtâr neyâyesh</h3>
-                    <p class="prayer-description">The one for lunar blessings</p>
+                <!-- Prayer 19 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/mah-bokhtar-neyayesh.html'">
+                    <h3 class="prayer-title">māh bokhtār neyāyesh</h3>
+                    <p class="prayer-description">the one for lunar blessings</p>
                 </div>
 
-                <!-- Prayer 18 -->
+                <!-- Prayer 20 -->
                 <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/ardvi-neyayesh.html'">
                     <h3 class="prayer-title">ardvī sūra neyāyesh</h3>
                     <p class="prayer-description">The one for water purification</p>
                 </div>
 
-                <!-- Prayer 19 -->
-                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/atash-nyayesh.html'">
-                    <h3 class="prayer-title">ātash neyāyesh</h3>
-                    <p class="prayer-description">The one for fire reverence</p>
-                </div>
 
-                <!-- Prayer 20 -->
+
+                <!-- Prayer 22 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/cherag-no-namaskar.html'">
                     <h3 class="prayer-title">cherag-no namaskar</h3>
                     <p class="prayer-description">The one for the sacred fire</p>
                 </div>
 
-                <!-- Prayer 21 -->
-                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/din-no-kalamo.html'">
-                    <h3 class="prayer-title">din-no kalamo</h3>
-                    <p class="prayer-description">The one for our community</p>
+                <!-- Prayer 23 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/din-no-kalmo.html'">
+                    <h3 class="prayer-title">din-no kalmo</h3>
+                    <p class="prayer-description">the one for our community</p>
                 </div>
 
-                <!-- Prayer 22 -->
+                <!-- Prayer 24 -->
                 <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/doa-tandarosti.html'">
                     <h3 class="prayer-title">doā tandarosti</h3>
                     <p class="prayer-description">The one for good health</p>
                 </div>
 
-                <!-- Prayer 23 -->
-                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/loban-prayer.html'">
+                <!-- Prayer 25 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/incense-placing-prayer.html'">
                     <h3 class="prayer-title">incense (loban) placing prayer</h3>
                     <p class="prayer-description">The one for all souls</p>
                 </div>
 
-                <!-- Prayer 24 -->
-                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/special-prayer-of-behram-yazad.html'">
-                    <h3 class="prayer-title">special prayer of behram yazad</h3>
-                    <p class="prayer-description">The one for success and victory</p>
-                </div>
-
-                <!-- Prayer 25 -->
+                <!-- Prayer 27 -->
                 <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/afsune-shahe-faredun.html'">
                     <h3 class="prayer-title">afsune-shahe-faredun's prayer</h3>
                     <p class="prayer-description">The one for divine help in health, wealth, fulfillment of wishes and to ward off planetary afflictions</p>
                 </div>
 
-                <!-- Prayer 26 -->
+                <!-- Prayer 28 -->
                 <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/setayash-i-shaherevar.html'">
                     <h3 class="prayer-title">setayash-i-shaherevar</h3>
                     <p class="prayer-description">The one for Shaherevar Ameshaspand</p>
                 </div>
 
-                <!-- Prayer 27 -->
-                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/time-of-day-prayers.html'">
-                    <h3 class="prayer-title">geh's</h3>
-                    <p class="prayer-description">The one according to the time of day</p>
-                </div>
+
             </div>
         </div>
     </div>

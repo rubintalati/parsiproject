@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Din-no Kalamo - The Parsi Project</title>
+    <title>Incense (Loban) Placing Prayer - The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,18 +13,33 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Manrope', sans-serif;
             background-color: #000;
             color: #fff;
             min-height: 100vh;
             padding: 2rem 1rem;
-            /* Custom scrollbar styling */
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
-
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
         body::before {
             content: '';
             position: fixed;
@@ -37,32 +52,6 @@
             opacity: 0.18;
             background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
         }
-
-        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-        }
-
-        /* Hide scrollbar when not in use */
-        ::-webkit-scrollbar-thumb:vertical {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        body:hover::-webkit-scrollbar-thumb:vertical,
-        body:active::-webkit-scrollbar-thumb:vertical {
-            opacity: 1;
-        }
-
         .container {
             max-width: 650px;
             margin: 0 auto;
@@ -70,14 +59,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             background-color: rgba(0, 0, 0, 0.5);
         }
-
         .header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
-
         .back-button {
             color: #fff;
             text-decoration: none;
@@ -88,16 +74,14 @@
             line-height: 1;
             padding: 5px;
         }
-
         .back-button:hover {
             color: #ccc;
         }
-
         .back-arrow {
             margin-right: 0.5rem;
         }
         
-        /* prayer note styling */
+        /* Prayer note styling */
         .prayer-note-container {
             border-left: 3px solid rgba(128, 128, 128, 0.5);
             padding-left: 0.8rem;
@@ -111,48 +95,31 @@
             margin: 0;
             line-height: 1.5;
         }
-
         .prayer-header {
-            margin-bottom: 2rem;
+            margin-bottom: 0.8rem;
         }
-
         .prayer-title {
             font-size: 2rem;
             margin-bottom: 1rem;
             font-weight: bold;
+            line-height: 1.1;
+            color: #fff;
         }
-
         .prayer-subtitle {
             color: #999;
             margin-bottom: 0rem;
             font-size: 1.1rem;
             line-height: 1.1;
         }
-
-        .prayer-name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 0.1rem;
-            margin-bottom: 1rem;
-            line-height: 1.1;
+        .prayer-section {
+            margin-top: 1.2rem;
+            padding-top: 2rem;
+            margin-bottom: 2.5rem;
         }
-
         .prayer-text {
             margin-bottom: 1.5rem;
-            line-height: 1.8;
+            line-height: 1.6;
         }
-
-        .prayer-paragraph {
-            margin-bottom: 1.5rem;
-        }
-
-        .prayer-instruction {
-            font-style: italic;
-            color: #999;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
         .prayer-translation {
             margin-top: 2rem;
             margin-bottom: 2rem;
@@ -160,37 +127,6 @@
             line-height: 1.6;
             padding-left: 1rem;
             border-left: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Community accent styling */
-        .community-accent {
-            position: relative;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .community-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .repeat-badge {
-            display: inline-block;
-            margin-left: 0.5rem;
-            padding: 0.2rem 0.5rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.7);
-            vertical-align: middle;
         }
 
         @media (max-width: 768px) {
@@ -216,22 +152,9 @@
                 font-size: 1rem;
             }
             
-            .prayer-name {
-                font-size: 1.3rem;
-            }
-            
             .prayer-text,
             .prayer-translation {
                 padding: 0 0.8rem;
-            }
-            
-            .prayer-note-container {
-                margin-left: 0.4rem;
-                margin-right: 0.4rem;
-            }
-            
-            .community-accent {
-                padding: 1rem;
             }
         }
     </style>
@@ -243,25 +166,19 @@
                 <span class="back-arrow">←</span>
             </a>
         </div>
-        
         <div class="prayer-header">
-            <p class="prayer-subtitle">the one for our community</p>
-            <h2 class="prayer-name">din-no kalamo</h2>
+            <div class="prayer-title">incense (loban) placing prayer</div>
+            <div class="prayer-subtitle">a prayer recited while placing incense (loban) for the departed</div>
         </div>
-
-        <div class="prayer-text">
-            <div class="community-accent">
-                <p class="prayer-paragraph">ba name yazade bakhshayandehe bakhshayashgare meherban razishtayāo chistayāo mazdadhātayāo ashaonyāo daēnayāo vanghuyāo māzdayasnōish.</p>
-                
-                <p class="prayer-paragraph" style="margin-bottom: 0;">dīn beh rāst va dorost, ke khodāe bar khalk ferastādeh in hast ke zartosht āvordeh hast; dīn dīne zartosht, dīne ahura mazda dādeh zartosht spitaman ashaone ashem vohū 1.</p>
+        <div class="prayer-section">
+            <div class="prayer-text">
+                eshan behesht behereh bād ! anosheh shān ba oe ravan rasād, ba oe behesht roshan ba asayad. pedarān va mādarān; va berādarān va khāharān va khudān va khishān ham dīnāne man ke bed, ūnd, va ke vadordeh ūnd, hama shān behesht behereh bād ! o shan geti behereh bād ! hamā az manashne, va gavashne, va kunashne, pa āne rāst frāroon pa rāhe vehān pasande yazdān bād ! aēdun bād ! aeduntaraj bād ! ashem vohū 1.
             </div>
-            
-            <p class="prayer-instruction">(This Zoroastrian Creed should be recited thrice).</p>
+            <div class="prayer-translation">
+                may the fravashis of the departed souls reach heaven and experience divine happiness and rest in eternal peace. may all my kith and kin who shall be born in the future and those who have departed get the blessings for their good and righteous acts. may all of them through good thoughts, words and deeds be blessed by the yazads.
+            </div>
         </div>
 
-        <div class="prayer-translation">
-            <p>in the name of the good, kind, all-forgiving, all-loving ahura mazda, do i start this prayer. glory be to our great noble mazdayasni religion sent to us by ahura mazda through zarathushtra for the benefit of the world.</p>
-        </div>
     </div>
 </body>
 </html>

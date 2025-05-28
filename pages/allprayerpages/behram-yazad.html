@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special Prayer of Behram Yazad - The Parsi Project</title>
+    <title>Behram Yazad - The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -69,7 +69,6 @@
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background-color: rgba(0, 0, 0, 0.5);
-            position: relative;
         }
 
         .header {
@@ -84,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -96,14 +97,24 @@
             margin-right: 0.5rem;
         }
 
-        .prayer-header {
+        /* Prayer note styling */
+        .prayer-note-container {
             margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
-        .prayer-title {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: bold;
+        .prayer-header {
+            margin-bottom: 2rem;
         }
 
         .prayer-subtitle {
@@ -111,6 +122,7 @@
             margin-bottom: 0rem;
             font-size: 1.1rem;
             line-height: 1.1;
+            text-transform: lowercase;
         }
 
         .prayer-name {
@@ -119,6 +131,7 @@
             margin-top: 0.1rem;
             margin-bottom: 1rem;
             line-height: 1.1;
+            text-transform: lowercase;
         }
 
         .prayer-text {
@@ -136,7 +149,21 @@
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
         }
+        
+        .recitable-paragraph {
+            text-decoration: underline;
+            margin-bottom: 0.5rem;
+        }
+        
+        .prayer-instruction-close {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            margin-top: -0.5rem;
+        }
 
+        /* Translation styling */
         .prayer-translation {
             margin-top: 2rem;
             margin-bottom: 2rem;
@@ -145,59 +172,24 @@
             padding-left: 1rem;
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
-
-        /* Victory accent styling */
-        .victory-accent {
-            position: relative;
-            padding: 1.8rem;
+        
+        .prayer-translation p {
             margin-bottom: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid rgba(128, 0, 0, 0.2);
-        }
-
-        .victory-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            background: radial-gradient(circle at top right, rgba(180, 0, 0, 0.15), transparent 70%);
-            z-index: -1;
-        }
-
-        /* Repeat indicator for Yatha Ahu Vairyo */
-        .repeat-indicator {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 0.5rem;
-            padding: 0.15rem 0.4rem;
-            background-color: rgba(180, 0, 0, 0.2);
-            border: 1px solid rgba(180, 0, 0, 0.3);
-            border-radius: 4px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.8);
-            vertical-align: middle;
-        }
-
-        /* Pointer hand symbol styling */
-        .pointer-hand {
-            display: inline-block;
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
             }
             
-            .prayer-title {
-                font-size: 1.5rem;
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0 0.8rem;
             }
             
             .prayer-subtitle {
@@ -208,8 +200,14 @@
                 font-size: 1.3rem;
             }
             
-            .victory-accent {
-                padding: 1.2rem;
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-paragraph, 
+            .prayer-translation p {
+                font-size: 1rem;
             }
         }
     </style>
@@ -223,48 +221,33 @@
         </div>
         
         <div class="prayer-header">
-            <p class="prayer-subtitle">the one for success and victory</p>
-            <h2 class="prayer-name">special prayer of behram yazad</h2>
+            <p class="prayer-subtitle">special prayer for strength and victory</p>
+            <h2 class="prayer-name">behram yazad</h2>
         </div>
 
         <div class="prayer-text">
-            <p class="prayer-paragraph">Khshnaothra ahurahe Mazdao Ashem Vohū 3.</p>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdao ashem vohū 3.</p>
             
-            <p class="prayer-paragraph">Fravarāne mazdayasno zarathushtrish vídaevo ahura tkaēsho</p>
+            <p class="prayer-paragraph">fravarāne mazdayasno zarathushtrish vīdaevo ahura tkaēsho (recite the appropriate geh) ahurahe mazdāo raēvato kharenanghato ameshanām spentanām; amahe hutāshtahe huraodhahe, verethraghnahe ahuradhātahe, vanain-tyāoscha uparatāto, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vīdhwāo mraotu.</p>
             
-            <p class="prayer-instruction">(Recite the appropriate Geh)</p>
+            <p class="prayer-paragraph">ahurem mazdām raevantem kharenanghantem yazamaide, amesha spenta hukhshathrā hudhāongho yazamaide. amem hutashtem huraodhem yazamaide verethraghnem ahuradhātem yazamaide, vanaintimcha uparatātem yazamaide.</p>
             
-            <p class="prayer-paragraph">Ahurahe mazdāo raēvato kharenanghato ameshanām spentanām; amahe hutāsh¬tahe huraodh¬ahe, vere¬thraghnahe ahuradhātahe, vanain¬tyāoscha uparatāto, kshnaothra yasnāicha vahmāicha kshnaothrāicha frasastayaēcha, yathā ahu vairyo zaotā frā me mrute athā ratush ashat chit hacha frā ashava vīdhwāo mraotu.</p>
+            <p class="prayer-paragraph recitable-paragraph">amemcha verethraghnemcha āfrināmi, dva pātār, dva nipātār, dva nish-haretār dva adhvaozen, dva vidhvaozen, dva fradhvaozen dva amarezen, dva vimarezen, dva framarezen. yathā ahū vairyō (1)</p>
+            <p class="prayer-instruction-close">recite 7 times</p>
             
-            <p class="prayer-paragraph">Ahurem mazdām raeventem kharenan-ghantem yazamaide, amesha spenta hukhshathrā hudhāongho yazamaide. Amem hutash tem huraodhem yazamaide verethraghnem ahuradhātem yazamaide, vanaintimcha uparatātem yazamaide.</p>
+            <p class="prayer-paragraph">yathā ahū vairyō (2)</p>
             
-            <div class="victory-accent">
-                <p class="prayer-paragraph"><span class="pointer-hand">👉</span> Amemcha verethraghnemcha āfrināmi, dva pātār, dva nipātār, dva nish-haretār dva adhvaozen, dva vidhvaozen, dva fradhvaozen, dva amarezen, dva vimarezen, dva framarezen.</p>
-                
-                <p class="prayer-paragraph">Yathā ahū vairyō (1)</p>
-                
-                <p class="prayer-paragraph"><span class="pointer-hand">👉</span> Yathā ahū vairyō <span class="repeat-indicator">7x</span></p>
-                
-                <p class="prayer-instruction">(Please Recite 7 times)</p>
-            </div>
+            <p class="prayer-paragraph">yasnemcha vahmemcha aojascha zavarecha āfrināmi, ahurahe mazdāo raevato kharenanghato ameshanām spentanām, amahe hutāshtahe huraodhahe verethraghnahe ahuradhātahe, vanaintyāoscha uparatāto. ashem vohū 1.</p>
             
-            <p class="prayer-paragraph">Yathā ahū vairyō (2)</p>
-            
-            <p class="prayer-paragraph">Yasnemcha vahmemcha aojascha zavarecha āfrināmi, ahurahe mazdāo raevato kharenanghato ameshanām spentanām, amahe hutāshthahe huraodhahē verethraghnahe ahura-dhātahe, vanaintyāoscha uparatāto.</p>
-            
-            <p class="prayer-paragraph">Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Ahmāi raeshcha - Hazanghrem - Jasa me avanghe - Kerfeh Mozd.</p>
-            
-            <p class="prayer-paragraph">Ashem Vohū (1)</p>
+            <p class="prayer-paragraph">ahmāi raeshcha - hazanghrem - jasa me avanghe - kerfeh mozd. ashem vohū (1)</p>
         </div>
 
         <div class="prayer-translation">
-            <p>We remember and ask the help of Behram Yazad and Ama Yazad, who are the saviours and protectors of men.</p>
+            <p>we remember and ask the help of behram yazad and ama yazad, who are the saviours and protectors of men.</p>
             
-            <p>They help us fight the enemy, they keep the enemy away, they hold the enemy back, they destroy the enemy.</p>
+            <p>they help us fight the enemy, they keep the enemy away, they hold the enemy back, they destroy the enemy.</p>
             
-            <p>We thank and revere these two - Behram Yazad and Ama Yazad.</p>
+            <p>we thank and revere these two - behram yazad and ama yazad.</p>
         </div>
     </div>
 </body>

@@ -262,6 +262,22 @@ app.delete('/api/birthdays/:id', (req, res) => {
 // Serve static files from the root directory
 app.use(express.static(path.join(__dirname)));
 
+// Add specific route for prayer pages
+app.get('/pages/allprayerpages/:prayerPage', (req, res) => {
+  const prayerPage = req.params.prayerPage;
+  const prayerPath = path.join(__dirname, 'pages', 'allprayerpages', prayerPage);
+  
+  console.log('Prayer page requested:', prayerPage);
+  console.log('Full prayer path:', prayerPath);
+  
+  res.sendFile(prayerPath, (err) => {
+    if (err) {
+      console.error('Error serving prayer file:', err);
+      res.status(404).send(`Prayer file not found: ${prayerPage}`);
+    }
+  });
+});
+
 // Catch-all route to serve files from the appropriate directory
 app.get('*', (req, res) => {
   // Check if the requested path exists

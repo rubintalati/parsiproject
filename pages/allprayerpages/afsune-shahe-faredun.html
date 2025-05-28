@@ -84,8 +84,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -94,6 +96,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -200,7 +217,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -213,6 +240,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
             
             .protection-accent {
@@ -237,43 +274,41 @@
         </div>
 
         <div class="prayer-text">
-            <p class="prayer-paragraph">Yathā ahū vairyō <span class="repeat-count">5x</span></p>
+            <p class="prayer-paragraph">yathā ahū vairyō <span class="repeat-count">5x</span> ashem vohū <span class="repeat-count">3x</span></p>
             
-            <p class="prayer-paragraph">Ashem vohū <span class="repeat-count">3x</span></p>
+            <p class="prayer-paragraph">fravarāne māzdayasno zarathushtrish vīdāēvo ahura-tkaēsho</p>
             
-            <p class="prayer-paragraph">Fravarāne māzdayasno zarathushtrish vidāēvo ahura-tkaēsho</p>
+            <p class="prayer-instruction">(recite the appropriate geh)</p>
             
-            <p class="prayer-instruction">(recite the appropriate Geh)</p>
+            <p class="prayer-paragraph">thraetonahe āthwyāno ashaono fravashee, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu.</p>
             
-            <p class="prayer-paragraph">thraetonahe āthvyāno ashaono fravashee, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu.</p>
-            
-            <p class="prayer-paragraph">Thraetonahe āthavyāno ashaono fravashim yazamaide. Thraetonahe athavyānahe ashaono fravashee khshnaothra thraetonem āthavyanem ashavanem ashahe ratum yazamaide.</p>
+            <p class="prayer-paragraph">thraetonahe āthvyāno ashaono fravashim yazamaide. thraetonahe athawyānahe ashaono fravashee khshnaothra thraetonem āthawyanem ashavanem ashahe ratum yazamaide.</p>
             
             <div class="protection-accent">
-                <p class="prayer-paragraph">Gadava kuro kuro taurunahe karapano raethwyanām bukhta mahi. Nām-i yazad nām-i niv khureh-i faredun āthawyān. Bast hom dām dehān in hanāi az ghanā mino va divān va drujan va jāduān va frayān va khrafastrān, ba jor ādar mino-karko ba jor ādarān ātashān ba jor akhtarān avākhtarān, tan darosti bād, neki bād, khub bād, aedun bād.</p>
+                <p class="prayer-paragraph">gadava kuro kuro taurunahe karapano raethwyanām bukhta mahi.</p>
+                
+                <p class="prayer-paragraph">nām-i yazad nām-i niv khureh-i faredun faredun āthawyān. bast hom dām dehān in hanāi az ghanā mino va divān va drujan va jāduān va frayān va khrafastrān, ba jor ādar mino-karko ba jor ādarān ātashān ba jor akhtarān avākhtarān, tan darosti bād, neki bād, khub bād, aedun bād.</p>
             </div>
             
-            <p class="prayer-paragraph">Yathā ahū vairyō <span class="repeat-count">5x</span></p>
+            <p class="prayer-paragraph">yathā ahū vairyō <span class="repeat-count">5x</span> ashem vohū <span class="repeat-count">3x</span></p>
             
-            <p class="prayer-paragraph">Ashem vohū <span class="repeat-count">3x</span></p>
+            <p class="prayer-paragraph">yathā ahū vairyō <span class="repeat-count">2x</span></p>
             
-            <p class="prayer-paragraph">Yathā Ahū vairyō <span class="repeat-count">2x</span></p>
+            <p class="prayer-paragraph">yasnemcha vahmemcha aojascha zavarecha āfrināmi, thraetonahe āthawyāno ashaono fravashee.</p>
             
-            <p class="prayer-paragraph">Yasnemcha vahmemcha aojascha zavarecha āfrināmi, thraetonāhe āthawyāno ashaono fravashee.</p>
+            <p class="prayer-paragraph">ashem vohū <span class="repeat-count">1x</span></p>
             
-            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">ahmāi raeshcha-hazanghrem-jasa me avanghe-kerfeh mozd.</p>
             
-            <p class="prayer-paragraph">Ahmāi raeshcha-Hazanghrem-Jasa me avanghe-Kerfeh Mozd.</p>
-            
-            <p class="prayer-paragraph">Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">ashem vohū <span class="repeat-count">1x</span></p>
         </div>
 
         <div class="prayer-translation">
-            <p>We remember and revere Faredun, son of Athawyan and his Fravashi.</p>
+            <p>we remember and revere faredun, son of athawyan and his fravashi.</p>
             
-            <p>By the name and glory of Faredun, may all noxious animals and creatures be destroyed. May we be liberated from evil men.</p>
+            <p>by the name and glory of faredun, may all noxious animals and creatures be destroyed. may we be liberated from evil men.</p>
             
-            <p>May we make ineffective the Evil Spirit, demons, liars and sorcerors by the help of this prayer, the holy fires, planets and constellations.</p>
+            <p>may we make ineffective the evil spirit, demons, liars and sorcerors by the help of this prayer, the holy fires, planets and constellations.</p>
         </div>
     </div>
 </body>

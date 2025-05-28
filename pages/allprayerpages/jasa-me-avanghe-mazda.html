@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -184,7 +201,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -197,6 +224,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
         }
     </style>
@@ -215,16 +252,13 @@
         </div>
 
         <div class="prayer-text">
-            <p class="prayer-instruction">(Recite "Jasa me avanghe Mazda" three times)</p>
-            <p>Jasa me avanghe Mazda (3)</p>
+            <p class="prayer-paragraph">jasa me avanghe mazda (3) mazdayasnō ahmi mazdayasnō zarathushtrish fravarāne āstūtaschā fravaretaschā. Āstuye humatem manō, āstuye hūkhtem vachō, āstuye hvarshtem shyaothnem. Āstuye daēnām vanghuhīm māzdayasnim fras-pāyaokhedhrām, nidhāsnaithishem, khavaētvadathām ashaonīm, yā hāitināmchā, būshyeintināmchā mazishtāchā, vahishtāchā, sraēshtāchā, yā āhuirish zarathushtrish.</p>
             <br>
-            <p>Mazdayasnō ahmi mazdayasnō Zarathushtrish fravaraṇe āstūtaschā fravaretaschā. Āstuye humatem manō, āstuye hūkhtem vachō, āstuye hvarshtem shyaothnem. Āstuye daēnām vanguhīm māzdayasnīm fras-pāyaokhedhrām, nidhāsnaithishem, Khavaētvadathām ashaonīm, yā hāitināmchā, būshyeitināmchā mazishtāchā, vahishtāchā, sraēshtāchā, yā āhuirish zarathushtrish. Ahurāi Mazdāi vīspā vohu chinahmi. Aeshā asti daēnayāō māzdayasnōish āstūistish.</p>
-            <br>
-            <p>Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">ahurāi mazdāi vīspā vohu chinahmi. aeshā asti daēnayāo māzdayasnoish āstūistish. ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>I ask for divine help and proclaim that I belong to the Mazdayasni Zoroastrian religion and have full faith in it only. My religion teaches me to be good in thought, word and deed. I dedicate myself to my faith and firmly believe that all good things come from Ahura Mazda.</p>
+            <p>i ask for divine help and proclaim that i belong to the mazdayasni zoroastrian religion and have full faith in it only. my religion teaches me to be good in thought, word and deed. i dedicate myself to my faith and firmly believe that all good things come from ahura mazda</p>
         </div>
     </div>
 
@@ -253,8 +287,8 @@
             if (prayerId === 'jasa-me-avanghe-mazda') {
                 document.getElementById('modal-subtitle').textContent = 'the one for faithful devotion';
                 document.getElementById('modal-name').textContent = 'jasa me avanghe mazda';
-                document.getElementById('modal-text').innerHTML = '<p class="prayer-instruction">(Recite "Jasa me avanghe Mazda" three times)</p><p>Jasa me avanghe Mazda (3)</p><br><p>Mazdayasnō ahmi mazdayasnō Zarathushtrish fravaraṇe āstūtaschā fravaretaschā. Āstuye humatem manō, āstuye hūkhtem vachō, āstuye hvarshtem shyaothnem. Āstuye daēnām vanguhīm māzdayasnīm fras-pāyaokhedhrām, nidhāsnaithishem, Khavaētvadathām ashaonīm, yā hāitināmchā, būshyeitināmchā mazishtāchā, vahishtāchā, sraēshtāchā, yā āhuirish zarathushtrish. Ahurāi Mazdāi vīspā vohu chinahmi. Aeshā asti daēnayāō māzdayasnōish āstūistish.</p><br><p>Ashem Vohū 1.</p>';
-                document.getElementById('modal-translation').innerHTML = '<p>I ask for divine help and proclaim that I belong to the Mazdayasni Zoroastrian religion and have full faith in it only. My religion teaches me to be good in thought, word and deed. I dedicate myself to my faith and firmly believe that all good things come from Ahura Mazda.</p>';
+                document.getElementById('modal-text').innerHTML = '<p class="prayer-paragraph">jasa me avanghe mazda (3) mazdayasnō ahmi mazdayasnō zarathushtrish fravarāne āstūtaschā fravaretaschā. Āstuye humatem manō, āstuye hūkhtem vachō, āstuye hvarshtem shyaothnem. Āstuye daēnām vanghuhīm māzdayasnim fras-pāyaokhedhrām, nidhāsnaithishem, khavaētvadathām ashaonīm, yā hāitināmchā, būshyeintināmchā mazishtāchā, vahishtāchā, sraēshtāchā, yā āhuirish zarathushtrish.</p><br><p class="prayer-paragraph">ahurāi mazdāi vīspā vohu chinahmi. aeshā asti daēnayāo māzdayasnoish āstūistish. ashem vohū 1.</p>';
+                document.getElementById('modal-translation').innerHTML = '<p>i ask for divine help and proclaim that i belong to the mazdayasni zoroastrian religion and have full faith in it only. my religion teaches me to be good in thought, word and deed. i dedicate myself to my faith and firmly believe that all good things come from ahura mazda</p>';
             }
             
             // Show the modal

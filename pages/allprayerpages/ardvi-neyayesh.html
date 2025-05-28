@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -154,26 +171,25 @@
             font-size: 0.95rem;
         }
 
-        /* Blue water accent styling */
-        .water-accent {
-            position: relative;
-            padding-top: 1rem;
+        /* Prayer section spacing */
+        .prayer-section {
             margin-top: 1rem;
-        }
-
-        .water-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(to right, #4A90E2, rgba(255, 255, 255, 0.2));
+            padding-top: 1rem;
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -186,6 +202,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
         }
     </style>
@@ -203,100 +229,95 @@
             <h2 class="prayer-name">ardvī sūra neyāyesh</h2>
         </div>
 
-        <div class="prayer-text">
-            <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo; Ashem Vohū 1. Pa nāme yazdān Ahura Mazda Khodāe awazūnī, gorje khoreh awazāyād; Āvān Ardvi Sūr Bānu be-rasād.</p>
-            
-            <p class="prayer-paragraph">Az hamā gunāh patet pashemānum; az harvastin dushmata duzhukhta duzhvarsh¬ta, men pa getī manīd, oem goft oem kard, oem jast, oem būn būd ested. Az ān gunāh manashnī gavashnī kunashnī tanī ravānī getī mīnōānī, okhe awākhsh pashemān pa sê gavashnī pa patet hom.</p>
-            
-            <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo, tarōidīte anghrahe mainyēush; haithyāvarshtām hyat vasnā ferashōtemem. Staomi Ashem; Ashem Vohū 3.</p>
-            
-            <p class="prayer-paragraph">Fravarāne mazdayasnō Zarathushtrish vīdaevō ahura-tkaēshō (Geh according to the period of the day) frasastayaēcha.</p>
-            
-            <p class="prayer-paragraph">Ā hātāmcha, anghushāmcha zātanāmcha azātanāmcha, ashaonām idha jasentu fravashayō, yōi hīsh bawrare paityāpem, nazdishtayāt apat hacha.</p>
-            
-            <p class="prayer-paragraph">Mā nō āpō dushmananghe, mā nō āpō duzvachanghe, mā nō āpō dushshyaothanāi, mā duzdaēnāi, mā hashi-tbishe, mā mōghu-tbishe, mā varezānō-tbishe, mā nāfyō-tbishe.</p>
-            
-            <p class="prayer-paragraph">Mādha nō ahmi frādhāiti āpō vangushish, vahishtāo mazdadhātāo ashaonish, yō nō airirichinām irirkshāiti gaēthanām. Mādha nō ahmi frādhāiti āpō vanghuhish vahishtāo mazdadhātāo ashaonish, yō nō airirichinām iririkhshāiti tanunām.</p>
-            
-            <p class="prayer-paragraph">Yō tāyush, yō hazangha, yō gadhō yō shavaja, yō yātumāo, yō nasuspāo, yō sperezvāo, yō arāitivāo, yō ashemaoghō an-ashava, yō mashyō drvāo sāsta; tem avi tbaeshāo paityantu ithyejāo isha yō i dadha, ithyejāo yantu yō di dadha.</p>
-            
-            <p class="prayer-paragraph">Āpō gātava rāmōdhwem, yavata zaota yazāite. Katha zaota khsāta vacha āpō vangushīsh yazāite. Kuthra bavāt hitō-hizvāō yezi an-arethe yazāite. Kuthra vāchō avi-būta, yān he chakhse aēthra-paitish, kuthra tāo frayō bavān, kuthra tāo ishudō bavān.</p>
-            
-            <p class="prayer-paragraph">Kuthra tāo rātayō bavān, yān Ahurō Mazdāō Zarathushtrāi fravavacha, frā Zarathushtrō gaēthābyō astvaitibyō. Avajastim paurvām āpō jaidhyōish Zarathushtra, paschaētā aiwyō zaothrāō frabarōish yaozdātāō dahmō-pairishtāō, imān vachō framrū.</p>
-            
-            <p class="prayer-paragraph">Āpō yānem vō yāsāmi mazaontem tem me dāyata, yenghe dāiti paiti vanghō nisritā an-aiwi-drukhti. Āpō ishtīm vō jaidhyāmi pouru-saredhām amavitīm, frazantīmcha khvāparām yenghāo paourushcha berejyān. Naēchishcha anghāo yāsāiti jyānāi, nōit snathāi, nōit mahrkāi nōit aēnanghe, nōit apayatē.</p>
-            
-            <div class="water-accent">
-                <p class="prayer-paragraph">Imat vō āpō jaidhyemi, imat zemō, imat urvarāō, imat Ameshā Spentā hukhshathrā hudhâonghô, vanghavascha vanguhishcha vohunâm dâtârô, imat ashâunâm vanguhishcha fravashayô ughrâo aiwithûrâo, imat Mithra Vouru-gaoyaoite, imat Sraosha ashya huraodha imat Rashnavô razishta, imat Âtare Mazdâo puthra, imat bereza Ahura, khshathraya apâm napô aurvat-aspa, imat vispe yazatâonghô yôi vanghazdâo ashavano.</p>
-            </div>
-            
-            <p class="prayer-paragraph">Imat me âpô dâyata, imat zemô, imat urvarâo, imat Ameshâ Spentâ hukshathrâ hudhâonghô, vanghavascha vanguhishcha vohunâm dâtârô imat ashaonâm vanguhishcha fravashayô ughrâo aiwithûrâo, imat Mithra Vouru-gaoyaoite, imat Sraosha Ashya huraodha, imat Rashnavô razishta, imat Âtare Ahurahe Mazdâo puthra, imat bereza Ahura khshathraya apâm napô aurvat-aspa, imat vispe yazatâongho yôi vanghazdâo ashavanô.</p>
-            
-            <p class="prayer-paragraph">Yatcha ahmât asti mazyô, yatcha ahmât asti vanghô, yatcha ahmât asti srayô, yatcha ahmât asti paô-arejastarem; tat nô dāyata yūzem, yazata ashavanō khshayamnā isāna, mōhucha āsuyācha, hathra ana gāthwya vacha. Haithyāvarshtām hyat vasnā ferashōtemem.</p>
-            
-            <p class="prayer-instruction">(Hā of ā Hātāmacha ends here)</p>
-            
-            <p class="prayer-paragraph">Yām azem yō Ahurō Mazdāo huzvārena uzbaire, fradathāi nmānahecha vīsascha zantēushcha danghēushcha.</p>
-            
-            <p class="prayer-paragraph">Yā ahmāt staota yasnya srāvayeni, Ahunemcha Vairīm srāvayeni Ashemcha Vahishtem husravāni apascha vanguhīsh yaozdathāne; hathra ana gāthwya vacha garō-nmāne Ahurahe Mazdāo jasat paoiryō. Dathat ahmāt tat avat āyaptem.</p>
-            
-            <p class="prayer-paragraph">Ahe raya khvarenanghacha, tā yazāi surunvata yasna, tām yazāi hu-yashta yasna. Ana buyāo zavanō-sāsta, ana buyāo huyashtara. Aredvīm Sūrām Ahāhitām ashaonīm; zaothrābyō Aredvīm Sūrām Ahāitām ashaonīm ashahe ratūm yazamaide.</p>
-            
-            <p class="prayer-paragraph">Haomayō gava baresmana hizvō-danghangha, mānthracha vachacha shyaothnacha, zaothrābyascha, arshukhdh-aēibyasca vāghzibyō.</p>
-            
-            <p class="prayer-paragraph">Yenghe hātām āt yesne paitivanghō, Mazdāo Ahurō vaēthā ashāt hachā, Yāonghāmachā tānschā tāoschā yazamaide</p>
-            
-            <p class="prayer-instruction">(To recite in Baz)</p>
-            
-            <p class="prayer-paragraph">Hormazd Khodāe, awazūnie mardum, mardum sardagān, hamā sardagān, hambāyaste vehān, oem behedin māzdayasnān āgāhī āstvānī nekī rasānad aēdun bād.</p>
-            
-            <p class="prayer-instruction">(To recite loudly)</p>
-            
-            <p class="prayer-paragraph">Yathā Ahu Vairyō 2.</p>
-            
-            <p class="prayer-paragraph">Yasnemacha vahmemcha aojascha zavarecha āfrīnāmi, apām vanguhinām mazdadhātanām, Areduyāo Āpo Anāhitayāo ashaonyāo, vīspanāmcha apām mazda-dhātanām, vīspanāmcha urvaranām mazdadhātanām. Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Ahmāi raēshcha; Hazanghrem; Jasa me avanghe Mazda; Kerfeh Mozd.</p>
-            
-            <p class="prayer-paragraph">Roz nek nām, roz pāk nām, roz mubārak (falān), māhe mubārak (falān), gāhe (falān), namāz dādāre gehān dāmān, khshnaothra Ahurahe Mazdāo, tarōidite anghrahe mainyēush. Haithyāvarshtām hyat vasnā ferashōtemem. Staomi Ashem, Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Gorje khoreh awzāyād Āvān Ardvī Sūr Bānu berasād amāvand pirozgar amāvandī pirozgarīh. Dād Dīn beh Māzdayasnān, āgāhi ravāi goāfarangānī bād hafte keshvar zamīn, aedūn bād. Man āno āwāyad shudan, man āno āwāyad shudan, man āno āwāyad shudan. Ashaone Ashem Vohū 1.</p>
-            
-            <p class="prayer-instruction">(Recite facing the south)</p>
-            
-            <p class="prayer-paragraph">Dādāre gehān dīnē Māzdayasni dāde Zarthushtī. Nemasete ashaūm sēvishte Aredvi Sūra Anāhite Ashaone Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Nemo urvaire vanguhī mazdadhāte ashaone Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Aredvīm Sūrām Anāhitām, ashaonīm ashahe ratūm yazamaide. Ashem Vohū 1. Āvān Ardvī Sūr Bānu be-rasād Ashem Vohū 1</p>
-            
-            <div class="water-accent">
-                <p class="prayer-paragraph">Apām vanghuhēnām mazdadhātanām, areduyāo āpo anāhitayāo ashaonyāo, vīspanāmcha apām mazdadhātanām, vīspanāmcha urvanranām Mazdadhātanām, khshnaothra yasnaīcha vahmāicha khshnaothrāicha frasastayaēcha yathā Ahū Vairyō zaotā frā me mrūte, athā ratush ashātchit hacha frā ashava vīdhvāo mraotū. Yathā Ahu Vairyō 10.</p>
-            </div>
-            
-            <p class="prayer-paragraph">Mraot Ahurō Mazdāo Spitamāi Zarathushtrāi, yazaēsha me him, Spitama Zarathushtra, yām Aredvīm Sūrām anāhitām perethū-frākām baēshazyām, vidaevām ahurō-tkaeshām, yesnyām anguhe astvaite, vahmyām anguhe astvaite. Ādhuū-frādhanām ashaonim, vānthvō-frādhanām ashaonim, gaēthō-frādhanām ashaonim shaētō-frādhanām ashaonim, danghu-frādhanām ashaonim.</p>
-            
-            <p class="prayer-paragraph">Yā vīspanām arshnām Khshudrāo yaozdadhāiti. Yā vīspanām hāirishinām zānthāi garewān yaozdadhāiti. Yā vīspāo hāirishish huzāmito dadhāiti. Yā vīspanām hāirishinām dāitim rathwim paēma ava-baraiti.</p>
-            
-            <p class="prayer-paragraph">Masitām dūrāt frasrūtām; yā asti avavaitī masō, yatha vīspāo imāo āpō yāo zemā paiti fratacahanti; yā amavaitī fratacahiti, hukairyāt hacha bareanghat, avi zrayō vouru-kashem.</p>
-            
-            <p class="prayer-paragraph">Yaozenti vispe karanō zrayā Vouru- kashayā ā, vispō maidhyō yaozaiti. Yat hīsh avi fratacaiti yat hīsh avi frazgaraiti, Aredvi Sūra Anāhita. Yenghe hazangrem, vairyanām, hazangrem apaghzāranām. Kaschitcha aēshām vairyanām, kaschitcha aēshām apaghzāranām, chathwaresatem ayare-baranām hvaspāi naire baremnāi.</p>
-            
-            <p class="prayer-paragraph">Anghāoscha me aēvanghāo āpō apaghzārō vijasāiti, vispāish avi karshvān yāish hapta. Anghāoscha me aēvanghāo āpō hamatha avabaraiti hāminemcha zayanemcha.</p>
-            
-            <p class="prayer-paragraph">Hā me āpō yaozdadhāiti, hā arshnām khshudrāo, hā khshathrinām garewān, hā khshathrinām paēma.</p>
+        <div class="prayer-note-container">
+            <p class="prayer-note">this neyāyesh should be recited everyday if possible and especially on the following five days of every month, viz spandarmad, avan, din, ashisvangh and marespand</p>
         </div>
 
+        <div class="prayer-text">
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo; ashem vohū 1. pa nāme yazdān ahura mazda khodāe awazūnī, gorje khoreh awazāyād; āvān ardvi sūr bānu be-rasād.</p>
+            
+            <p class="prayer-paragraph">az hamā gunāh patet pashemānum; az harvastin dushmata duzhukhta duzhvarshta, men pa getī manīd, oem goft oem kard, oem jast, oem būn būd ested. az ān gunāh manashnī gavashnī kunashnī tanī ravānī getī mīnōānī, okhe awākhsh pashemān pa sē gavashnī pa patet hom. khshnaothra ahurahe mazdāo, tarōidīte anghrahe mainyēush; haithyāvarshtām hyat vasnā ferashōtemem. staomi ashem; ashem vohū 3. fravarāne mazdayasnō zarathushtrish vīdaevō ahura-tkaēshō (geh according to the period of the day) frasastayaēcha.</p>
+            
+            <p class="prayer-paragraph">apām vanghuhēnām mazdadhātanām, areduyāo āpo anāhitayāo ashaonyāo, vīspanāmcha apām mazdadhātanām, vispanāmcha urvanranām mazdadhātanām, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha yathā ahū vairyō zaotā frā me mrūte, athā ratush ashātchit hacha frā ashava vīdhvāo mraotū. yathā ahu vairyō 10.</p>
+            
+            <p class="prayer-paragraph">mraot ahurō mazdāo spitamāi zarathushtrāi, yazaēsha me him, spitama zarathushtra, yām aredvīm sūrām anāhitām perethū-frākām baēshazyām, vīdaevām ahurō-tkaeshām, yesnyām anghuhe astvaite, vahmyām anghuhe astvaite. ādhuū-frādhanām ashonim, vānthvō-frādhanām ashaonim, gaēthō-frādhanām ashaonīm shaētō-frādhanām ashaonīm, danghu-frādhanām ashaonīm.</p>
+            
+            <p class="prayer-paragraph">yā vīspanām arshnām khshudrāo yaozdadhāiti. yā vīspanām hāirishinām zānthāi garewān yaozdadhāiti. yā vīspāo hāirishish huzāmito dadhāiti. yā vīspanām hāirishinām dāitim rathwim paēma avabaraiti.</p>
+            
+            <p class="prayer-paragraph">masitām dūrāt frasrūtām; yā asti avavaiti masō, yatha vīspāo imāo āpō yāo zemā paiti fratachanti; yā amavaiti fratachaiti, hukairyāt hacha bareanghat, avi zrayō vouru-kashem.</p>
+            
+            <p class="prayer-paragraph">yaozenti vīspe karanō zrayā vouru-kashayā ā, vīspō maidhyō yaozaiti. yat hīsh avi fratachaiti yat hīsh avi frazgaraiti, aredvi sūra anāhita. yenghe hazangrem, vairyanām, hazangrem apaghzāranām. kaschitcha aēshām vairyanām, kaschitcha aēshām apaghzāranām, chathwaresatem ayare-baranām hvaspāi naire baremnāi.</p>
+            
+            <p class="prayer-paragraph">anghāoscha me aēvanghāo āpō apaghzārō vījasāiti, vīspāish avi karshvān yāish hapta. anghāoscha me aēvanghāo āpō hamatha avabaraiti hāminemcha zayanemcha. hā me āpō yaozdadhāiti, hā arshnām khshudrāo, hā khshathrinām garewān, hā khshathrinām paēma.</p>
+            
+            <p class="prayer-paragraph">mādha nō ahmi frādhāiti āpō vangushish, vahishtāo mazdadhātāo ashaonish, yō nō airirichinām irirkshāiti gaēthanām. mādha nō ahmi frādhāiti āpō vanghuhish vahishtāo mazdadhātāo ashaonish, yō nō airirichinām iririkhshāiti tanunām.</p>
+            
+            <p class="prayer-paragraph">yō tāyush, yō hazangha, yō gadhō yō ashavaja, yō yātumāo, yō nasushāo, yō sperezvāo, yō arāitivāo, yō ashemaoghō an-ashava, yō mashyō drvāo sāsta; tem avi tbaeshāo paityantu ithyejāo isha yō i dadha, ithyejāo yantu yō di dadha.</p>
+            
+            <p class="prayer-paragraph">āpo gātava rāmōdhwem, yavata zaota yazāite. katha zaota khsāta vacha āpō vangushīsh yazāite. kuthra bavāt hitō-hizvāo yezi an-arethe yazāite. kuthra vāchō avi -būta, yān he chakhse aēthra-paitish, kuthra tāo frayō bavān, kuthra tāo ishudō bavān. kuthra tāo rātayō bavān, yān ahurō mazdāo zarathushtrāi fravavac-ha, frā zarathushtrō gaēthābyō astvaitibyō.</p>
+            
+            <p class="prayer-paragraph">avajastim paurvām āpō jaidhyōish zarathushtra, paschaēta aiwyō zaothrāo frabarōish yaozdhātāo dahmō-pairishtāo, imān vachō framrū. āpō yānem vō yāsāmi mazāontem tem me dāyata, yenghe dāiti paiti vanghō nisrīta an-aiwi-drukhti. āpo ishtīm vō jaidhyāmi pouru-saredhām amavitīm, frazantīmcha khvāparām yenghāo paourushcha berejyān. naēchishcha anghāo yāsāiti jyānāi, nōit snathāi, nōit mahrkāi nōit aēnanghe, nōit apayatēe.</p>
+            
+            <p class="prayer-paragraph">imat vō āpō jaidhyemi, imat zemō, imat urvarāo, imat ameshā spentā hukhshathrā hudh-āonghō, vanghavascha vanguhīscha vohunām dātārō, imat ashāunām vanguhīsh fravashayō ughrāo aiwithūrāo, imat mithra vouru-gaoyaoite, imat sraosha ashya huraodha imat rashnavō razishta, imat ātare mazdāo puthra, imat bereza ahura, khshathraya apām napō aurvat-aspa, imat vīspe yazatāonghō yōi vanghazdāo ashavano.</p>
+
+            <p class="prayer-paragraph">imat me āpō dāyata, imat zemō, imat urvarāo, imat ameshā spentā hukhshathrā hudhāonghō, vanghavascha vanguhishcha vohunām dātārō imat ashaonām vanguhish fravashayō ughrāo aiwithūrāo, imat mithra vouru-gaoyaoite, imat sraosha ashya huraodha, imat rashnavō razishta, imat ātare ahurahe mazdāo puthra, imat bereza ahura khshathraya apām napō aurvat-aspa, imat vīspe yazatāongho yōi vanghazdāo ashavanō. yatcha ahmāt asti mazyō, yatcha ahmāt asti vanghō, yatcha ahmāt asti srayō, yatcha ahmāt asti paō-arejastarem; tat nō dāyata yūzem, yazata ashavanō khshayamna isāna, mōhucha āsuyācha, hathra ana gāthwya vacha. haithyāvarshtām hyat vasnā ferashōtemem.</p>
+
+            <p class="prayer-paragraph">yām azem yō ahurō mazdāo huzvārena uzbaire, fradathāi nmānahecha vīsascha zantēushcha danghēushcha.</p>
+
+            <div class="prayer-note-container">
+                <p class="prayer-note">if any person desires to recite ardvi sura niāesh without the hā of ā hātām, one should leave the portion from here up to ferashotemem</p>
+            </div>
+            
+            <div style="text-decoration: underline;">
+                <p class="prayer-paragraph">ā hātāmcha, anghushāmcha zātanāmacha azātanāmcha, ashaonām idha jasentu fravashayō, yōi hīsh bawrare paityāpem, nazdishtayāt apat hacha. mā nō āpō dushmananghe, mā nō āpō duzvachanghe, mā nō āpō dushshyaothanāi, mā duzdaēnāi, mā hashi-tbishe, mā mōghu-tbishe, mā varezānō-tbishe, mā nāfyō-tbishe. mādha nō ahmi frādhāiti āpō vangushish, vahishtāo mazdadhātāo ashaonish, yō nō airirichinām irirkshāiti gaēthanām. mādha nō ahmi frādhāiti āpō vanguhīsh vahishtāo mazdadhātāo ashaonish, yō nō airirichinām iririkhshāiti tanunām. yō tāyush, yō hazangha, yō gadhō yō ashavaja, yō yātumāo, yō nasushāo, yō sperezvāo, yō arāitivāo, yō ashemaoghō an-ashava, yō mashyō drvāo sāsta; tem avi tbaeshāo paityantu ithyejāo isha yō i dadha, ithyejāo yantu yō di dadha. āpo gātava rāmōdhwem, yavata zaota yazāite. katha zaota khsāta vacha āpō vangushīsh yazāite. kuthra bavāt hitō-hizvāo yezi an-arethe yazāite. kuthra vāchō avi -būta, yān he chakhse aēthra-paitish, kuthra tāo frayō bavān, kuthra tāo ishudō bavān. kuthra tāo rātayō bavān, yān ahurō mazdāo zarathushtrāi fravavacha, frā zarathushtrō gaēthābyō astvaitibyō. avajastim paurvām āpō jaidhyōish zarathushtra, paschaēta aiwyō zaothrāo frabarōish yaozdhātāo dahmō-pairishtāo, imān vachō framrū. āpō yānem vō yāsāmi mazāontem tem me dāyata, yenghe dāiti paiti vanghō nisrīta an-aiwi-drukhti. āpo ishtīm vō jaidhyāmi pouru-saredhām amavitīm, frazantīmcha khvāparām yenghāo paourushcha berejyān. naēchishcha anghāo yāsāiti jyānāi, nōit snathāi, nōit mahrkāi nōit aēnanghe, nōit apayatēe.</p>
+
+                <p class="prayer-paragraph">imat vō āpō jaidhyemi, imat zemō, imat urvarāo, imat ameshā spentā hukhshathrā hudh-āonghō, vanghavascha vanguhīscha vohunām dātārō, imat ashāunām vanguhīsh fravashayō ughrāo aiwithūrāo, imat mithra vouru - gaoyaoite, imat sraosha ashya huraodha imat rashnavō razishta, imat ātare mazdāo puthra, imat bereza ahura, khshathraya apām napō aurvat-aspa, imat vīspe yazatāonghō yōi vanghazdāo ashavano. imat me āpō dāyata, imat zemō, imat urvarāo, imat ameshā spentā hukhshathrā hudhāonghō, vanghavascha vanguhishcha vohunām dātārō imat ashaonām vanguhish fravashayō ughrāo aiwithūrāo, imat mithra vouru - gaoyaoite, imat sraosha ashya huraodha, imat rashnavō razishta, imat ātare ahurahe mazdāo puthra, imat bereza ahura khshathraya apām napō aurvat-aspa, imat vīspe yazatāongho yōi vanghazdāo ashavanō. yatcha ahmāt asti mazyō, yatcha ahmāt asti vanghō, yatcha ahmāt asti srayō, yatcha ahmāt asti paō-arejastarem; tat nō dāyata yūzem, yazata ashavanō khshayamna isāna, mōhucha āsuyācha, hathra ana gāthwya vacha. haithyāvarshtām hyat vasnā ferashōtemem.</p>
+            </div>
+
+            <p class="prayer-paragraph">yām azem yō ahurō mazdāo huzvārena uzbaire, fradathāi nmānahecha vīsascha zantēushcha danghēushcha.</p>
+
+            <p class="prayer-paragraph">yā ahmāt staota yasnya srāvayeni, ahunemcha vairīm srāvayeni ashemcha vahishtem husravāni apascha vanguhīsh yaozdathāne; hathra ana gāthwya vacha garō-nmāne ahurahe mazdāo jasat paoiryō. dathat ahmāt tat avat āyaptem.</p>
+            
+            <p class="prayer-paragraph">ahe raya khvarenanghacha, tā yazāi surunvata yasna, tām yazāi hu-yashta yasna. ana buyāo zavanō-sāsta, ana buyāo huyashtara. aredvīm sūrām ahāhitām ashaonīm; zaothrābyō aredvīm sūrām ahāhitām ashaonīm ashahe ratūm yazamaide.</p>
+            
+            <p class="prayer-paragraph">haomayō gava baresmana hizvō-danghangha, mānthracha vachacha shyaothnacha, zaothrābyascha, arshukhdh-aēibyascha vāghzibyō.</p>
+            
+            <p class="prayer-paragraph">yenghe hātām āat yesne paiti vanghō, mazdāo ahurō vaēthā ashāt hachā, yāonghāmachā tānschā tāoschā yazamaide</p>
+            
+            <p class="prayer-instruction">(to recite in baz)</p>
+            
+            <p class="prayer-paragraph">hormazd khodāe, awazūnie mardum, mardum sardagān hamā sardagān, hambāyaste vehān, oem behedin māzdayasnān āgāhī āstvānī nekī rasānad aēdun bād.</p>
+            
+            <p class="prayer-instruction">(to recite loudly)</p>
+            
+            <p class="prayer-paragraph">yathā ahu vairyō 2.</p>
+
+
+
+            <p class="prayer-paragraph">ahmāi raēshcha; hazanghrem; jasa me avanghe mazda; kerfeh mozd.</p>
+
+            <p class="prayer-paragraph">roz nek nām, roz pāk nām, roz mubārak (falān), māhe mubārak (falān), gāhe (falān), namāz dādāre gehān dāmān, khshnaothra ahurahe mazdāo, tarōidite anghrahe mainyēush. haithyāvarshtām hyat vasnā ferashōtemem. staomi ashem, ashem vohō 1.</p>
+
+            <p class="prayer-paragraph">gorje khoreh awzāyād āvān ardvī sūr bānu berasād amāvand pirozgar amāvandī pirozgarīh. dād dīn beh māzdayasnān, āgāhi ravāi goāfarangānī bād hafte keshvar zamīn, aedūn bād. man āno āwāyad shudan, man āno āwāyad shudan, man āno āwāyad shudan. ashaone ashem vohū 1.</p>
+
+            <p class="prayer-instruction">(recite facing the south)</p>
+            
+            <p class="prayer-paragraph">dādāre gehān dīne māzdayasni dāde zarthushtī. nemasete ashāum sēvishte aredvi sūra anāhite ashaone ashem vohū 1.</p>
+
+            <p class="prayer-paragraph">nemo urvaire vanguhi mazdadhāte ashaone ashem vohū 1.</p>
+
+            <p class="prayer-paragraph">aredvīm sūrām anāhitām, ashaonīm ashahe ratūm yazamaide. ashem vohū 1. āvān ardvī sūr bānu be-rasād ashem vohū 1.</p>
+
         <div class="prayer-translation">
-            <p>May Avan Ardivsur Banu come to my help. If I have been a wrong doer in thought, word or deed I repent and promise never to do so again for I despise evil and praise righteousness.</p>
+            <p>may avan ardivsur banu come to my help. if i have been a wrong doer in thought, word or deed i repent and promise never to do so again for i despise evil and praise righteousness.</p>
             
-            <p>Ahura Mazda has said that the mighty flowing waters - Ardivsur will spread around the earth in plenty throughout the year. Avan Ardivisur also purifies the reproductive organs of men and women as well as mother's milk.</p>
+            <p>ahura mazda has said that the mighty flowing waters - ardivsur will spread around the earth in plenty throughout the year. avan ardivisur also purifies the reproductive organs of men and women as well as mother's milk.</p>
             
-            <p>The flowing waters will bring prosperity to all homes, towns, cities, and the whole country.</p>
+            <p>the flowing waters will bring prosperity to all homes, towns, cities, and the whole country.</p>
             
-            <p>May the flowing waters, the earth, the plants, the Amesha Spentas, the Yazads, the Fravashis and the Fire grant me offsprings that are good, self-supporting and those that would never harm anyone in the whole world.</p>
+            <p>may the flowing waters, the earth, the plants, the amesha spentas, the yazads, the fravashis and the fire grant me offsprings that are good, self-supporting and those that would never harm anyone in the whole world.</p>
             
-            <p>I praise the glory and the power of the clear, clean, flowing waters and worship them with due ceremonies, prayers, good words, deeds and offerings. May, the knowledge of Zarathushtra's Mazdayasni religion spread all over the world. May the splendid Avan Ardivisur Banu help me.</p>
+            <p>i praise the glory and the power of the clear, clean, flowing waters and worship them with due ceremonies, prayers, good words, deeds and offerings. may the knowledge of zarathushtra's mazdayasni religion spread all over the world. may the splendid avan ardivisur banu help me.</p>
         </div>
     </div>
 </body>

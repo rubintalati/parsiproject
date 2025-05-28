@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -177,7 +194,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -190,6 +217,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
         }
     </style>
@@ -204,21 +241,19 @@
         
         <div class="prayer-header">
             <p class="prayer-subtitle">the one for forgiveness</p>
-            <h2 class="prayer-name">hormazd khodây</h2>
+            <h2 class="prayer-name">hormazd khodāy</h2>
         </div>
 
         <div class="prayer-text">
-            <p>Hormazd Khodây ahereman awâdashân dûr avâz-dâshtâr; zad shekasteh bâd, ahereman, devân darujân, jâduân darvandân kikân karafân sâstârân, gunehgârân âshmo-ghân darvandân dushmanân frîyân zad shekasteh bâd.</p>
+            <p class="prayer-paragraph">hormazd khodāy ahereman awādashān dūr avāz-dāshtār; zad shekasteh bād, ahereman, devān darujān, jādūān darvandān kīkān karafān sāstārān, gunehgārān āshmo-ghān darvandān dushmanān frīyān zad shekasteh bād. dushpādashāhān awādashān bād; dushmanān satoh bād; dushmanān awādashān bād.</p>
             <br>
-            <p>Dushpâdashâhân awâdashân bâd; dushmanân satoh bâd; dushmanân awâdashân bâd.</p>
+            <p class="prayer-paragraph">hormazd khodāy az hamā gunāh patet pashemānum, az harvastīn dushmata duzukhta duzvarshta, mem pa getī manid, oim goft oim kard, oim jast, oim būn būd ested, azān gunāh manashni gavashni kunashnī, tanī ravānī, geti mīnoāni, okhe awākhsh pashemān, pa se gavashnī patet hom.</p>
             <br>
-            <p>Hormazd Khodây az hamâ gunâh patet pashemânum, az harvastîn dushmata duzukhta duzvarshta, mem pa getî manid, oim goft oim kard, oim jast, oim bûn bûd ested, azân gunâh. manashni gavashni kunashni, tanī ravānī, geti mīnoānī, okhe awākhsh pashemān, pa se gavashnī patet hom.</p>
-            <br>
-            <p>Khshnaothra ahurahe mazdāo; tarōidīte anghrahe mainyēush. Haithyā varshtām hyat vasnā ferashōtemem; staomi Ashem. Ashem Vohū 1. Yathā Ahū Vairyō 2. Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo; tarōidīte anghrahe mainyēush. haithyā varshtām hyat vasnā ferashōtemem; staomi ashem. ashem vohū 1. yathā ahū vairyō 2. ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>May Dadar Hormazd, Who is the Lord of the Universe, destroy all evil. I ask forgiveness for all sins of thought, word or deed. O Dadar Hormazd, I promise to please Thee by disposing all evil and by following the path of righteousness which will bring happiness and glory to Thee.</p>
+            <p>may dadar hormazd, who is the lord of the universe, destroy all evil. i ask forgiveness for all sins of thought, word or deed. o dadar hormazd, i promise to please thee by disposing all evil and by following the path of righteousness which will bring happiness and glory to thee</p>
         </div>
     </div>
 
@@ -246,9 +281,9 @@
             // Here you would typically load the specific prayer content based on prayerId
             if (prayerId === 'hormazd-khoday') {
                 document.getElementById('modal-subtitle').textContent = 'the one for forgiveness';
-                document.getElementById('modal-name').textContent = 'hormazd khodây';
-                document.getElementById('modal-text').innerHTML = 'Hormazd Khodây ahereman awâdashân dûr avâz-dâshtâr; zad shekasteh bâd, ahereman, devân darujân, jâduân darvandân kikân karafân sâstârân, gunehgârân âshmo-ghân darvandân dushmanân frîyân zad shekasteh bâd.<br><br>Dushpâdashâhân awâdashân bâd; dushmanân satoh bâd; dushmanân awâdashân bâd.<br><br>Hormazd Khodây az hamâ gunâh patet pashemânum, az harvastîn dushmata duzukhta duzvarshta, mem pa getî manid, oim goft oim kard, oim jast, oim bûn bûd ested, azân gunâh. manashni gavashni kunashni, tanī ravānī, geti mīnoānī, okhe awākhsh pashemān, pa se gavashnī patet hom.<br><br>Khshnaothra ahurahe mazdāo; tarōidīte anghrahe mainyēush. Haithyā varshtām hyat vasnā ferashōtemem; staomi Ashem. Ashem Vohū 1. Yathā Ahū Vairyō 2. Ashem Vohū 1.';
-                document.getElementById('modal-translation').innerHTML = '<p>May Dadar Hormazd, Who is the Lord of the Universe, destroy all evil. I ask forgiveness for all sins of thought, word or deed. O Dadar Hormazd, I promise to please Thee by disposing all evil and by following the path of righteousness which will bring happiness and glory to Thee.</p>';
+                document.getElementById('modal-name').textContent = 'hormazd khodāy';
+                document.getElementById('modal-text').innerHTML = 'hormazd khodāy ahereman awādashān dūr avāz-dāshtār; zad shekasteh bād, ahereman, devān darujān, jādūān darvandān kīkān karafān sāstārān, gunehgārān āshmo-ghān darvandān dushmanān frīyān zad shekasteh bād. dushpādashāhān awādashān bād; dushmanān satoh bād; dushmanān awādashān bād.<br><br>hormazd khodāy az hamā gunāh patet pashemānum, az harvastīn dushmata duzukhta duzvarshta, mem pa getī manid, oim goft oim kard, oim jast, oim būn būd ested, azān gunāh manashni gavashni kunashnī, tanī ravānī, geti mīnoāni, okhe awākhsh pashemān, pa se gavashnī patet hom.<br><br>khshnaothra ahurahe mazdāo; tarōidīte anghrahe mainyēush. haithyā varshtām hyat vasnā ferashōtemem; staomi ashem. ashem vohū 1. yathā ahū vairyō 2. ashem vohū 1.';
+                document.getElementById('modal-translation').innerHTML = '<p>may dadar hormazd, who is the lord of the universe, destroy all evil. i ask forgiveness for all sins of thought, word or deed. o dadar hormazd, i promise to please thee by disposing all evil and by following the path of righteousness which will bring happiness and glory to thee</p>';
             }
             
             // Show the modal

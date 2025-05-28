@@ -84,8 +84,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -94,6 +96,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -155,52 +172,36 @@
             font-size: 0.95rem;
         }
 
-        /* Metal accent styling */
-        .metal-accent {
-            position: relative;
-            padding: 1.8rem;
-            margin-bottom: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            overflow: hidden;
-        }
-
-        .metal-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            background: linear-gradient(135deg, 
-                rgba(192, 192, 192, 0.08) 0%, 
-                rgba(80, 80, 80, 0.04) 30%, 
-                rgba(212, 175, 55, 0.06) 60%, 
-                rgba(192, 192, 192, 0.08) 100%);
-            z-index: -1;
-        }
-
-        /* Special text highlight for Shaherevar mentions */
+        /* Highlight for Shaherevar mentions */
         .shaherevar-highlight {
-            color: #d4af37;
+            color: rgba(255, 235, 205, 0.9);
             font-weight: 500;
         }
 
-        /* Date/field placeholders */
+        /* Field placeholder styling */
         .field-placeholder {
             display: inline-block;
-            padding: 0 0.3rem;
-            margin: 0 0.2rem;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -209,6 +210,20 @@
             
             .prayer-subtitle {
                 font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
             
             .prayer-name {
@@ -235,65 +250,62 @@
         </div>
 
         <div class="prayer-text">
-            <p class="prayer-paragraph">Khshnaothra ahurahe mazdao</p>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdao</p>
             
-            <p class="prayer-paragraph">Ashem vohū (1)</p>
+            <p class="prayer-paragraph">ashem vohū (1)</p>
             
-            <p class="prayer-paragraph">Pa nāme yazdān ahuramazd khodāe awazuni gurze khoreh awazayād, <span class="shaherevar-highlight">shaherevar ameshāspand</span> beresād. Az hamā gunāh patet pashemanom az harvastin, dushmata duzukhta duzvarshta, mem pa geti manid, oem goft, oem kard, oem jast, oem bun bud ested, azān gunāh, manashni gavashni kunashni, tani ravani geti minoāni, okhe awākhsh pashemān pa se gavashni pa patet hom.</p>
+            <p class="prayer-paragraph">pa nāme yazdān ahuramazd khodāe awazuni gurze khoreh awazayād, <span class="shaherevar-highlight">shaherevar ameshāspand</span> beresād. az hamā gunāh patet pashemanom az harvastin dushmata duzukhta duzvarshta, mem pa geti manid, oem goft, oem kard, oem jast, oem bun bud ested, azān gunāh, manashni gavashni kunashni, tani ravani geti minoāni, okhe awākhsh pashemān pa se gavashni pa patet hom.</p>
             
-            <p class="prayer-paragraph">Khshnaothra ahurahe mazdāo, taroidite anghrahe mainyeush, haithyā- varshtām hyat vasnā frasho temem staomi ashem. Ashem vohū (3).</p>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo, taroidite anghrahe mainyeush, haithyāvarshtām hyat vasnā frasho temem staomi ashem. ashem vohū (3).</p>
             
-            <p class="prayer-paragraph">Fravarāne mazdayasno zarathushtrish vidaevo ahura-tkaesho</p>
+            <p class="prayer-paragraph">fravarāne mazdayasno zarathushtrish vidaevo ahura-tkaesho</p>
             
-            <p class="prayer-instruction">(Recite the appropriate Geh)</p>
+            <p class="prayer-instruction">(recite the appropriate geh)</p>
             
-            <p class="prayer-paragraph">Khshathrahe vairyehe ayokhshushtahe marezdikāi thrāyo drigaove, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu. Khshathrem vairim ameshem spentem yazamaide, ayokhshustem yazamaide, marezdikem, thråyo drighum yazamaide.</p>
+            <p class="prayer-paragraph">khshathrahe vairyehe ayokhshustahe marezdikāi thrāyo drigaove, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaecha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vidhvāo mraotu. khshathrem vairim ameshem spentem yazamaide, ayokhshustem yazamaide, marezdikem, thrāyo drighum yazamaide.</p>
             
-            <div class="metal-accent">
-                <p class="prayer-paragraph">Setayam va zabāyam dādār ahuramazd rayomand khorehmand va ameshāspandan sepāsdār hom az dādāre veh awazuni khodāe khāvar neki dādār kash frāz barhenid to <span class="shaherevar-highlight">shaheri var minoe</span> khāste va sud veh-jivashne keta geti hasta ayokhshast āne arjomand jar va sim va dārashne mardumān ke geti padash varjand ānche tij avarkar asin kesh padash varjand jamin, va padash janand doshman va padash harvastin gohar va ayokhshast o kār avorihed zar va sin hucheher vinashne pa sheher āwāyashni frākhnidār ke afzāyashni hu kera nast āshkār va dādastān pa dasta veh raved kesh pa frārune tokhshashni pa vish o khesk kardan va âne osh khishinidan bahere tan va bahere tan va bahere ravân o ravân dehid.</p>
-                
-                <p class="prayer-paragraph">Ku kheshtan râ vehân va arzâniân padash <span class="shaherevar-highlight">shaherevar</span> kunand agesh kard kâme ahuramazd va ameshâ-spandân, osh kheshinid husraove va geti va ashâi pa minoe om kâme kum frârune afzâyashni bed der patâe khâsteh âne zarin va ânach simin âvâris khâsteh sepori berasad pa veh jivashne har rehân va arjanian az man jâvidân sepâsdar hom az to <span class="shaherevar-highlight">sheherivar minoe</span> khâsteh che sud va khoreh va khârih va robâe farmâne va afrigâni andar sheher o vish ke khâsteh tawângar-tar va paj kherad va him va him va hunar va har chish oe vish khâstetar va goftârtar va kâme ravâtar bâd.</p>
-            </div>
+            <p class="prayer-paragraph">setayam va zabāyam dādār ahuramazd rayomand khorehmand va ameshāspandan sepāsdār hom az dādāre veh awazuni khodāe khāvar neki dādār kash frāz barhenid to <span class="shaherevar-highlight">shaheri var minoe</span> khāste va sud veh-jivashne keta geti hasta ayokhshast āne arjomand jar va sim va dārashne mardumān ke geti padash varjand ānche tij avarkar asin kesh padash varjand jamin, va padash janand doshman va padash harvastin gohar va ayokhshast o kār avorihed zar va sin hucheher vinashne pa sheher āwāyashni frākhnidār ke afzāyashni hu kera nast āshkār va dādastān pa dasta veh raved kesh pa frārune tokhshashni pa vish o khesh kardan va āne osh khishinidan bahere tan va bahere ravān o ravān dehid.</p>
+            <br>
+            <p class="prayer-paragraph">ku kheshtan rā vehān va arzāniān padash <span class="shaherevar-highlight">shaherevar</span> kunand agesh kard kāme ahuramazd va ameshā-spandān, osh kheshinid husraove va geti va ashāi pa minoe om kāme kum frārune afzāyashni bed der patāe khāste āne zarin va ānach simin āvāris khāste sepori berasad pa veh jivashne har rehān vā arjanian az man jāvidān sepāsdar hom az to <span class="shaherevar-highlight">sheherivar minoe</span> khāsteh che sud va khoreh va khārih va robāe farmāne va afrigāni andar sheher o vish ke khāsteh tawāngar-tar va paj kherad va him va him va hunar va har chish oe vish khāstetar va goftārtar va kāme ravātar bād.</p>
+            <br>
             
-            <p class="prayer-paragraph">Haomayo gava baresmana, hizvo danghangha, mâthracha vachacha shyaothanacha zaothrābyascha arshukhidh-aeibyasca vāghzibyo.</p>
-            
-            <p class="prayer-paragraph">Yenghe hātam āt yesne paitī vangho mazdāo ahuro vaethā ashāt hacha yāonghāmcha tāschā taoschā yazamaide.</p>
-            
-            <p class="prayer-instruction">(Pray in silence)</p>
-            
-            <p class="prayer-paragraph">Ahura-mazda Khodāy awazunie mardum mardum sardagān hamā-sardagān, ham bāyaste vehān, oem behedin māzdayasnān āgāhi āstavāni neki resānad aedun bād.</p>
-            
-            <p class="prayer-instruction">(Pray aloud)</p>
-            
-            <p class="prayer-paragraph">Yatha ahu vairyo (2) Yasnemcha vahmemcha aojascha zavarecha āfrināmi, khshathrahe vairyehe ayokhsh-ustahe marezdi kāi thrāyo drighaove. Ashem Vohū (1) Ahmāi raeshcha-Hazanghrem-Jasa me avanghe-Kerfeh Mozd.</p>
-            
-            <p class="prayer-paragraph">Roj nek nām, roj pāk nām, roj mubārak <span class="field-placeholder">day</span>, mahe mubarak <span class="field-placeholder">month</span>, gāhe <span class="field-placeholder">geh</span> namāz dādāre gehān dāmān. Khshnaothra ahurahe mazdāo taroidite angrahe mainyeush, haithyavarshtām hyat vasnā ferashotemem. staomi ashem. Ashem vohū (1).</p>
-            
-            <p class="prayer-paragraph">Gorje khoreh awazāyād <span class="shaherevar-highlight">Shaherevar ameshāspand</span> beresād, amāvand pirojgar, amāvandi pirojgari, dād din beh māzdayasnān, āgāhi ravāi goafringāni bād, haft keshvar zamin aedun bād. Man āno āwāyad shudān, man āno āwāyad shudān, man āno āwāyad shudan. Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Dādāre gehān dine Māzdayasni dāde zarthosti nemasete ashāum sevishte ardvi sura anāhite Ashaone ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Nemo urvaire vanguhi mazdahâte. Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph">Khshathrem Vairim ameshem spentem yazamaide.</p>
-            
-            <p class="prayer-paragraph">Ashem Vohū 1.</p>
-            
-            <p class="prayer-paragraph"><span class="shaherevar-highlight">Shaherevar ameshāspand</span> beresad Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">haomayo gava baresmana, hizvo danghangha, māthracha vachacha shyaothanacha zaothrābyascha arshukhdh-aeibyascha vāghzibyo.</p>
+            <br>
+            <p class="prayer-paragraph">yenghe hātam āat yesne paiti vangho mazdāo ahuro vaethā ashāt hacha yāonghāmcha tāschā taoschā yazamaide.</p>
+            <br>
+            <p class="prayer-instruction">(pray in silence)</p>
+            <br>
+            <p class="prayer-paragraph">ahura-mazda khodāy awazunie mardum mardum sardagān hamā-sardagān, ham bāyaste vehān, oem behdin māzdayasnān āgāhi āstavāni neki resānad aedun bād.</p>
+            <br>
+            <p class="prayer-instruction">(pray aloud)</p>
+            <br>
+            <p class="prayer-paragraph">yatha ahu vairyo (2) yasnemcha vahmemcha aojascha zavarecha āfrināmi, khshathrahe vairyehe ayokhsh-ustahe marezdi kāi thrāyo drighaove. ashem vohū (1) ahmāi raeshcha-hazanghrem-jasa me avanghe-kerfeh mozd.</p>
+            <br>
+            <p class="prayer-paragraph">roj nek nām, roj pāk nām, roj mubārak <span class="field-placeholder">day</span>, mahe mubārak <span class="field-placeholder">month</span>, gāhe <span class="field-placeholder">geh</span> namāz dādāre gehān dāmān. khshnaothra ahurahe mazdāo taroidite angrahe mainyeush, haithyavarshtām hyat vasnā ferashotemem. staomi ashem. ashem vohū (1).</p>
+            <br>
+            <p class="prayer-paragraph">gorje khoreh awazāyād <span class="shaherevar-highlight">shaherevar ameshāspand</span> beresād, amāvand pirojgar, amāvandi pirojgari, dād din beh māzdayasnān, āgāhi ravāi goafringāni bād, haft keshvar zamin aedun bād. man āno āwāyad shudān, man āno āwāyad shudān, man āno āwāyad shudan. ashem vohū 1.</p>
+            <br>
+            <p class="prayer-paragraph">dādāre gehān dine māzdayasni dāde zarthosti nemasete ashāum sevishte ardvi sura anāhite ashaone ashem vohū 1.</p>
+            <br>
+            <p class="prayer-paragraph">nemo urvaire vanguhi mazdadhāte. ashem vohū 1.</p>
+            <br>
+            <p class="prayer-paragraph">khshathrem vairim ameshem spentem yazamaide. ashem vohū 1.</p>
+            <br>
+            <p class="prayer-paragraph"><span class="shaherevar-highlight">shaherevar ameshāspand</span> beresad ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>We pray to Shaherevar Ameshaspand who is the Lord of spiritual authority.</p>
+            <p>we pray to shaherevar ameshaspand who is the lord of spiritual authority.</p>
             
-            <p>Shaherevar Ameshaspand, Lord of metals and minerals, bestows man with gold and silver, which brings prosperity and is the basis of economy.</p>
+            <p>shaherevar ameshaspand, lord of metals and minerals, bestows man with gold and silver, which brings prosperity and is the basis of economy.</p>
             
-            <p>Shaherevar Ameshaspand helps the soul of a righteous person to get the rightful reward.</p>
+            <p>shaherevar ameshaspand helps the soul of a righteous person to get the rightful reward.</p>
             
-            <p>May our prayers reach Shaherevar Ameshaspand, and may he come to our help.</p>
+            <p>may our prayers reach shaherevar ameshaspand, and may he come to our help.</p>
         </div>
         
         <div class="prayer-note">
-            <p>This prayer was specially recommended by Dasturji Kukadaru, to be prayed after one's daily prayers.</p>
+            <p>this prayer was specially recommended by dasturji kukadaru, to be prayed after one's daily prayers.</p>
         </div>
     </div>
 </body>

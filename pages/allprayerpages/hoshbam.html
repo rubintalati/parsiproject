@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -184,7 +201,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -198,6 +225,16 @@
             .prayer-name {
                 font-size: 1.3rem;
             }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
         }
     </style>
 </head>
@@ -209,8 +246,8 @@
             </a>
         </div>
         
-        <div class="prayer-note">
-            <p>This prayer is recited only at dawn</p>
+        <div class="prayer-note-container">
+            <p class="prayer-note">this prayer is recited only at dawn</p>
         </div>
         
         <div class="prayer-header">
@@ -219,48 +256,25 @@
         </div>
 
         <div class="prayer-text">
-            <p>Atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish.</p>
-            <p class="prayer-instruction">(Yathā Ahū Vairyō 5)</p>
-            
-            <p>Ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairīm tanūm pāiti.</p>
-            
-            <p>Yathā Ahū Vairyō; Kēm nā Mazdā</p>
-            <p class="prayer-instruction">(to be recited fully)</p>
-            
-            <p>Ashem vohū 1; Yathā Ahū Vairyō 21, Ashem Vohū 12.</p>
-            
-            <p>Nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha. yim ahurem mazdām, snathāi anghrahe mainyeush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām</p>
-            <p class="prayer-instruction">(to be recited in bāz or low tone)</p>
-            
-            <p>shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār</p>
-            <p class="prayer-instruction">(to be recited in a loud tone)</p>
-            
-            <p>Fradathāi Ahurahe Mazdāo raevatō khvarenanghuhatō, fradathāi Ameshanām Spentanām, fradathāi tishtryehe stārō raevatō khvarenanghuhatō, fradathāi narsh ashaonō, fradathāi vispanām Spentahe Mainyeush dāmanām ashaonām. Yathā Ahu Vairyō 2.</p>
-            
-            <p>Vanghucha vanghuyāoscha āfrināmi, vispayāo ashaonō stōish haithyāicha, bavānithyāicha bushyānithyāicha, Ashim rāsentim dareghō-vārethmanem, mishāchim hvō aiwishāchim mishāchim āfrasāonghaitīm. Barentīm vispāo baēshazō, apāmcha gavāmcha urvaranāmcha. Taurvayeintīm vispāo tbaēshāo, daēvanām mashyānāmcha. Areshyantām ahmāicha nmānāi ahmāicha nmānahe nmāno-patēe.</p>
-            
-            <p>Vanghūishcha adhāo vanghūhishcha ashayō, hupaurvāo vahehīsh, aparāo rāsentish, dareghō vāre thmanō, yatha nō mazishtāoscha vahistāoscha sraēshtāoscha ashayō erenvante ameshanām spentanām yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. Fradathāi ahe nmānahe, fradathāi vispayāo ashaonō stōish, hamistēe vispayāo dravatō stōish.</p>
-            
-            <p>Stavas asha yē hudāo yōi henti. Vasascha tū Ahura Mazda ushtācha, khshaēsha havanām dāmanām. Vasō. āpō, vasō urvarāo, vasō vīspa vohū asha-chithra; kshayamnnem ashavanem dāyata. Akhshayamnnem dravantem. Vasōkhshathrō khyāt ashava; avavō- khshathrō khyāt dravāo gatō hamishtō, nizberetō hacha spentahē mainyēush dāmabyō, varatō avasō- khshathrō.</p>
-            
-            <p>Hakhshaya azem-chit yō Zarathushtrō fratemān nmānanāmcha, vīsāmcha, zantunāmcha dakhyunāmcha, anghāo daēnayāo anumatayaēcha anukhtayaēcha, a n v a r s h t a y a ē c h a, yāāhuirish Zarathushtrish.</p>
-            
-            <p>Yatha nō āonghām shāto manāo, vahishtō urvānō khvāthravaitish tanvō hentō vahishtō anghush; ākāoschōit āhuire Mazda jasentām.</p>
-            
-            <p>Asha vahishta, asha sraēshta daresāma thwā, pairi thwā jamyāma, hamem thwā, hakhma.</p>
-            <p>Ashem Vohū 1</p>
-            
-            <p>Asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma.</p>
-            <p>Ashem Vohū 1</p>
-            
-            <p>Asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma.</p>
-            <p>Ashem Vohū 1</p>
-            
-            <p>Ahmāi raēscha; Hazanghrem; Jasa me avanghe Mazda; Kerfeh Mozd.</p>
+            <p class="prayer-paragraph">atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish. yathā ahū vairyō 5. ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairim tanum pāiti. yathā ahū vairyō; kēm nā mazdā (to be recited fully); ashem vohū 1; yathā ahū vairyō 21, ashem vohū 12.</p>
+            <br>
+            <p class="prayer-paragraph">nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha yim ahurem mazdām, snathāi anghrahe mainyēush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām (to be recited in bāz or low tone) shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār (to be recited in a loud tone) fradathāi ahurahe mazdāo raevatō khvarenan-ghuhatō, fradathāi ameshanām spentanām, fradathāi tishtryehe stārō raevatō khvarenanghuhatō, fradathāi narsh ashaonō, fradathāi vispanām spentahe mainyēush dāmanām ashaonām. yathā ahu vairyō 2.</p>
+            <br>
+            <p class="prayer-paragraph">vanghucha vanghuyāoscha āfrināmi, vispayāo ashaonō stōish haithyāicha bavānithyaīcha bushyānithyaīcha, ashim rāsentim daregħō-vārethmanem, mishāchim hvō aiwishāchim mishāchim āfrasāonghaitīm. barentīm vīspāo baēshazāo, apāmcha gavāmcha urvarananamcha. taurvayeintīm vīspāo tbaēshāo, daēvanām mashyānāmcha. areshyantām ahmāicha nmānāi ahmāicha nmānahe nmāno-patēe.</p>
+            <br>
+            <p class="prayer-paragraph">vanghūishcha adhāo vanghūhishcha ashayō, hupaurvāo vahehīsh, aparāo rāsentish, daregħō vāre thmanō, yatha nō mazishtāoscha vahistāoscha sraēshtāoscha ashayō erenvante ameshanām spentanām yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. fradathāi ahe nmānahe, fradathāi vīspayāo ashaonō stōish, hamistēe vīspayāo dravatō stōish. stavas ashā yē hudāo yōi henti.</p>
+            <br>
+            <p class="prayer-paragraph">vasascha tū ahura mazda ushtācha, khshaēsha havanām dāmanām. vasō āpō, vasō urvarāo, vasō vīspa vohū asha-chithra; khshayamnem ashavanem dāyata. akhshayamnem dravantem. vasōkhshathrō khyāt ashava; avavōkhshathrō khyāt dravāo gatō hamishtō, nizberetō hacha spentahe mainyēush dāmabyō, varatō avasō- khshathrō.</p>
+            <br>
+            <p class="prayer-paragraph">hakhshaya azem-chit yō zarathushtrō fratemān nmānanāmcha, vīsāmcha, zantunāmcha dakhyunāmcha, anghāo daēnayāo anumatayaēcha anukhtayaēcha, anvarshtayaēcha, yā āhuirish zarathushtrish.</p>
+            <br>
+            <p class="prayer-paragraph">yatha nō āonghām shāto manāo, vahishtō urvānō khvāthravaitish tanvō hentō vahishtō anghush; ākāoschōit āhuire mazda jasentām. asha vahishta, asha sraēshta daresāma thwā, pairi thwā jamyāma, hamem thwā, hakhma. ashem vohū 1; asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma. ashem vohū 1; asha vahishta, asha sraēshta, daresāma thwā, pairi thwā jamyāma, hamem thwā hakhma. ashem vohū 1.</p>
+            <br>
+            <p class="prayer-paragraph">ahmāi raēscha; hazanghrem; jasa me avanghe mazda; kerfeh mozd.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>Hoshbam is a homage to day-break. I pray to Ahura Mazda to destroy all evil and help protect the people, cattle, water and vegetation. May the good religion of Zarathushtra spread in every home, village, city and country. May the Ameshaspands and Yazads work for the prosperity of God's creation. May my soul progress and be happy to gain peace through righteousness. May I be worthy of Thy everlasting friendship.</p>
+            <p>hoshbam is a homage to day-break. i pray to ahura mazda to destroy all evil and help protect the people, cattle, water and vegetation. may the good religion of zarathushtra spread in every home, village, city and country. may the ameshaspands and yazads work for the prosperity of god's creation. may my soul progress and be happy to gain peace through righteousness. may i be worthy of thy everlasting friendship.</p>
         </div>
     </div>
 
@@ -289,8 +303,8 @@
             if (prayerId === 'hoshbam') {
                 document.getElementById('modal-subtitle').textContent = 'the one for a new day';
                 document.getElementById('modal-name').textContent = 'hoshbām';
-                document.getElementById('modal-text').innerHTML = 'Atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish.<p class="prayer-instruction">(Yathā Ahū Vairyō 5)</p><p>Ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairīm tanūm pāiti.</p><p>Yathā Ahū Vairyō; Kēm nā Mazdā</p><p class="prayer-instruction">(to be recited fully)</p><p>Ashem vohū 1; Yathā Ahū Vairyō 21, Ashem Vohū 12.</p><p>Nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha. yim ahurem mazdām, snathāi anghrahe mainyeush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām</p><p class="prayer-instruction">(to be recited in bāz or low tone)</p><p>shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār</p><p class="prayer-instruction">(to be recited in a loud tone)</p>...';
-                document.getElementById('modal-translation').innerHTML = '<p>Hoshbam is a homage to day-break. I pray to Ahura Mazda to destroy all evil and help protect the people, cattle, water and vegetation. May the good religion of Zarathushtra spread in every home, village, city and country. May the Ameshaspands and Yazads work for the prosperity of God\'s creation. May my soul progress and be happy to gain peace through righteousness. May I be worthy of Thy everlasting friendship.</p>';
+                document.getElementById('modal-text').innerHTML = '<div class="prayer-note-container"><p class="prayer-note">this prayer is recited only at dawn</p></div><p class="prayer-paragraph">atha imān vachō drenjayōish; yōi anghen vārethraghnyōtemacha baēshazyōtemacha; pancha ahuna vairya frasrāvayōish. yathā ahū vairyō 5. ahunem vairīm tanūm pāiti. ahunem-vairīm tanūm pāiti; ahunem-vairim tanum pāiti. yathā ahū vairyō; kēm nā mazdā (to be recited fully); ashem vohū 1; yathā ahū vairyō 21, ashem vohū 12.</p><br><p class="prayer-paragraph">nemase-te hushbāmī; nemase-te hushbāmī nemase-te hushbāmī, aētat dim vīspanām mazishtem dazdyāi, ahumcha ratumcha yim ahurem mazdām, snathāi anghrahe mainyēush dravatō, snathāi aeshmahe khravidraosh, snathāi māzainyanām daevanām, snathāi vispanām daevanām, varenyanāmcha dravatām (to be recited in bāz or low tone) shekasteh ghanāmenyo, bar ahreman leānat sad hazār bār (to be recited in a loud tone) fradathāi ahurahe mazdāo raevatō khvarenan-ghuhatō, fradathāi ameshanām spentanām, fradathāi tishtryehe stārō raevatō khvarenanghuhatō, fradathāi narsh ashaonō, fradathāi vispanām spentahe mainyēush dāmanām ashaonām. yathā ahu vairyō 2.</p>';
+                document.getElementById('modal-translation').innerHTML = '<p>hoshbam is a homage to day-break. i pray to ahura mazda to destroy all evil and help protect the people, cattle, water and vegetation. may the good religion of zarathushtra spread in every home, village, city and country. may the ameshaspands and yazads work for the prosperity of god\'s creation. may my soul progress and be happy to gain peace through righteousness. may i be worthy of thy everlasting friendship.</p>';
             }
             
             // Show the modal

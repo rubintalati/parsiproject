@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -177,7 +194,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -190,6 +217,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
         }
     </style>
@@ -208,17 +245,15 @@
         </div>
 
         <div class="prayer-text">
-            <p>Kem-nā Mazdā, mavaite pāyum dadāt, hyat mā dregvāo didareshatā aenanghe anyem thwahmāt āthraschā mananghaschā, yayāo shyaothnāish ashem thraoshtā Ahurā, tām mōi dāstvām daenayāi frāvaoachā.</p>
+            <p class="prayer-paragraph">kem-nā mazdā, mavaite pāyum dadāt, hyat mā dregvāo didareshatā aenanghe anyem thwahmāt āthraschā mananghaschā, yayāo shyaothnāish ashem thraoshtā ahurā, tām mōi dāstvām daenayāi frāvaochā. ke verethrem - jā thwā pōi senghā yōi henti chithrā mōi dām ahumbish ratum chizhdi, at hōi vohu seraoshō jantu mananghā, mazdā ahmāi yahmāi vashi kahmāi-chit.</p>
             <br>
-            <p>Ke verethrem - Jā thwā pōi senghā yōi henti chithrā mōi dām ahumbish ratum chizhdi, at hōi vohu seraoshō jantu mananghā, Mazdā ahmāi yahmāi vashi kahmāi-chit.</p>
+            <p class="prayer-paragraph">pāta-nō tbishyantat pairi mazdāoscha ārmatishcha spentascha, nase daēvī drukhsh, nase daēvō-chithre, nase daēvō-frakarshte, nase daēvō-fradāite, apa drukhsh nase, apa drukhsh dvāra, apa drukhsh vīnase, apākhedhre apa-nasyehe, mā merenchaīnish gaēthāo astvaitīsh ashahe. nemaschā yā ārmaitish izhāchā.</p>
             <br>
-            <p>Pāta-nō tbishyantat pairi Mazdāoscha Ārmatishcha spentascha, nase daēvī-druksh, nase daēvō-chithre, nase daēvō-frakarshte, nase daēvō-fradāite, apa druksh nase, apa druksh dvāra, apa druksh vīnāse, apākhedhre apa-nasyehe, mā merenchaīnish gaēthāo astvaitīsh ashahe.</p>
-            <br>
-            <p>Nemaschā yā Ārmaitish izhā-chā. Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>Ahura Mazda, who will protect me from all evil, but Thyself? Show me a spiritual guide, who with the help of prayers will protect me from all enemies. May the wicked be destroyed and may the evil never demolish Your Creation, O Lord! Good thoughts and prosperity, I respect and honour.</p>
+            <p>ahura mazda, who will protect me from all evil, but thyself? show me a spiritual guide, who with the help of prayers will protect me from all enemies. may the wicked be destroyed and may the evil never demolish your creation, o lord ! good thoughts and prosperity, i respect and honour.</p>
         </div>
     </div>
 
@@ -247,8 +282,8 @@
             if (prayerId === 'kem-na-mazda') {
                 document.getElementById('modal-subtitle').textContent = 'the one for divine protection';
                 document.getElementById('modal-name').textContent = 'kem-nā-mazdā';
-                document.getElementById('modal-text').innerHTML = 'Kem-nā Mazdā, mavaite pāyum dadāt, hyat mā dregvāo didareshatā aenanghe anyem thwahmāt āthraschā mananghaschā, yayāo shyaothnāish ashem thraoshtā Ahurā, tām mōi dāstvām daenayāi frāvaoachā.<br><br>Ke verethrem - Jā thwā pōi senghā yōi henti chithrā mōi dām ahumbish ratum chizhdi, at hōi vohu seraoshō jantu mananghā, Mazdā ahmāi yahmāi vashi kahmāi-chit.<br><br>Pāta-nō tbishyantat pairi Mazdāoscha Ārmatishcha spentascha, nase daēvī-druksh, nase daēvō-chithre, nase daēvō-frakarshte, nase daēvō-fradāite, apa druksh nase, apa druksh dvāra, apa druksh vīnāse, apākhedhre apa-nasyehe, mā merenchaīnish gaēthāo astvaitīsh ashahe.<br><br>Nemaschā yā Ārmaitish izhā-chā. Ashem Vohū 1.';
-                document.getElementById('modal-translation').innerHTML = '<p>Ahura Mazda, who will protect me from all evil, but Thyself? Show me a spiritual guide, who with the help of prayers will protect me from all enemies. May the wicked be destroyed and may the evil never demolish Your Creation, O Lord! Good thoughts and prosperity, I respect and honour.</p>';
+                document.getElementById('modal-text').innerHTML = 'kem-nā mazdā, mavaite pāyum dadāt, hyat mā dregvāo didareshatā aenanghe anyem thwahmāt āthraschā mananghaschā, yayāo shyaothnāish ashem thraoshtā ahurā, tām mōi dāstvām daenayāi frāvaochā. ke verethrem - jā thwā pōi senghā yōi henti chithrā mōi dām ahumbish ratum chizhdi, at hōi vohu seraoshō jantu mananghā, mazdā ahmāi yahmāi vashi kahmāi-chit.<br><br>pāta-nō tbishyantat pairi mazdāoscha ārmatishcha spentascha, nase daēvī drukhsh, nase daēvō-chithre, nase daēvō-frakarshte, nase daēvō-fradāite, apa drukhsh nase, apa drukhsh dvāra, apa drukhsh vīnase, apākhedhre apa-nasyehe, mā merenchaīnish gaēthāo astvaitīsh ashahe. nemaschā yā ārmaitish izhāchā.<br><br>ashem vohū 1.';
+                document.getElementById('modal-translation').innerHTML = '<p>ahura mazda, who will protect me from all evil, but thyself? show me a spiritual guide, who with the help of prayers will protect me from all enemies. may the wicked be destroyed and may the evil never demolish your creation, o lord ! good thoughts and prosperity, i respect and honour.</p>';
             }
             
             // Show the modal

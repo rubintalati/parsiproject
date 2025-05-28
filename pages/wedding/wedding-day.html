@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Wedding Day Ceremonies - The Parsi Project</title>
+    <title>wedding day ceremonies - the parsi project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -68,8 +68,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
         .back-button:hover {
             color: #ccc;
@@ -163,7 +165,7 @@
             margin: 0 0.5rem;
             cursor: pointer;
             font-size: 0.95rem;
-            border-radius: 5px;
+            /* Removed border-radius for rectangular design */
             transition: all 0.3s ease;
             flex: 1;
             text-align: center;
@@ -249,6 +251,11 @@
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            .header {
+                padding: 0.5rem;
             }
             .ceremony-header {
                 padding: 1.2rem 0 0 0;
@@ -272,21 +279,21 @@
         <!-- Tab Navigation -->
         <div class="filter-container">
             <div class="filter-row">
-                <button class="filter-button active" data-tab="preparations">Preparations</button>
-                <button class="filter-button" data-tab="bride-ceremony">Bride's Ceremony</button>
-                <button class="filter-button" data-tab="groom-ceremony">Groom's Ceremony</button>
+                <button class="filter-button active" data-tab="preparations">preparations</button>
+                <button class="filter-button" data-tab="bride-ceremony">bride's ceremony</button>
+                <button class="filter-button" data-tab="groom-ceremony">groom's ceremony</button>
             </div>
             <div class="filter-row">
-                <button class="filter-button" data-tab="gifts">Gifts & Shawls</button>
-                <button class="filter-button" data-tab="ashirwad">Ashirwad</button>
-                <button class="filter-button" data-tab="after-wedding">After Wedding</button>
+                <button class="filter-button" data-tab="gifts">gifts & shawls</button>
+                <button class="filter-button" data-tab="ashirwad">ashirwad</button>
+                <button class="filter-button" data-tab="after-wedding">after wedding</button>
             </div>
         </div>
         
         <!-- Wedding Preparations Tab -->
         <div id="preparations" class="tab-content active">
             <div class="ceremony-section">
-                <h2 class="section-title">Preparations For The Wedding Day</h2>
+                <h2 class="section-title">preparations for the wedding day</h2>
                 
                 <p>This is the fourth day of the celebrations - The Wedding Day.</p>
                 
@@ -294,7 +301,7 @@
                 
                 <p>Both the sides should prepare ses for taking to the baag.</p>
                 
-                <h3 class="subsection-title">Items To Be Taken To The Baag</h3>
+                <h3 class="subsection-title">items to be taken to the baag</h3>
                 
                 <p>If everything is done at the time of varni, only the following needs to be taken to the baag by the girl's parents:</p>
                 <ul class="custom-list">
@@ -308,7 +315,7 @@
                 
                 <p>If nahan is to be done at home, there is no problem. But if nahan is to be done in the baag, everything should be taken carefully.</p>
                 
-                <h3 class="subsection-title">Additional Items To Remember</h3>
+                <h3 class="subsection-title">additional items to remember</h3>
                 
                 <p>While going to the baag, they should remember to take:</p>
                 <ul class="custom-list">

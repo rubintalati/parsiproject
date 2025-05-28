@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -105,24 +122,13 @@
             font-weight: bold;
         }
 
-        .prayer-subtitle {
-            color: #999;
-            margin-bottom: 0rem;
-            font-size: 1.1rem;
-            line-height: 1.1;
-        }
-
-        .prayer-name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 0.1rem;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-        }
-
         .prayer-text {
             margin-bottom: 1.5rem;
             line-height: 1.6;
+        }
+        
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
         }
 
         .prayer-translation {
@@ -134,25 +140,11 @@
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .prayer-note {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-        }
-
         .prayer-instruction {
             font-style: italic;
             color: #999;
             font-size: 0.9rem;
             margin: 0.5rem 0;
-        }
-
-        .special-mark {
-            display: inline-block;
-            margin-right: 0.5rem;
-            color: #999;
         }
 
         /* Prayer Modal Styling */
@@ -188,21 +180,19 @@
             cursor: pointer;
         }
 
+        /* Media Queries for Responsive Design */
         @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
             .container {
                 padding: 1.5rem;
+                border: none;
             }
             
             .prayer-title {
-                font-size: 1.5rem;
-            }
-            
-            .prayer-subtitle {
-                font-size: 1rem;
-            }
-            
-            .prayer-name {
-                font-size: 1.3rem;
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -221,31 +211,29 @@
         </div>
 
         <div class="prayer-text">
-            <p>Khshnaothra Ahurahe Mazdāo. Ashem Vohū 1.</p>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo. ashem vohū 1.</p>
             
-            <p>Ba nāme yazade bakhshāyendehe bakhshāyesh- gare meherbān.</p>
+            <p class="prayer-paragraph">ba nāme yazade bakhshāyendehe bakhshāyesh-gare meherbān. nām setāeshne ahura mazda, hamābūd hamāhast o hamābed. nāme yazade spenā-minō andarach mīnoān mīnō. azash khudash yak nām ahuramazdach. khodāe mehest, o tavānā o dānā o dādār, o parvartār o pānā o khvāvar, o kerfehgar o avakshīdār avīzeh veh dādastāni hamā-zōr</p>
             
-            <p>Nām setāeshne Ahura Mazda, hamābūd hamāhast o hamābēd. Nāme yazade Spenā-Mīnō andarach mīnoān mīnō. Azash khudash yak nām Ahuramazdach. Khodāe mehest, o tavānā o dānā o dādār, o parvartār o pānā o khvāvar, o kerfehgar o avakshidār avīzeh veh dādastānī hamā-zōr.</p>
+            <p class="prayer-paragraph">sepās oe buzorg hasīān, ke āfrid avanīd, o pa khesh angāmbati zor dānāi, avartar shash ameshāspandān, avad vesh yazdān, roshan behesht garothmān, o gerd āsmān, o khur tāvā o māh bāmī, o satare vash-tokhm, o bād, o andarvāe, o āv, o ātash, o zamīn o orvar, o gospand o ayokhshast, o mardum.</p>
             
-            <p>Sepās oe buzorg hasān, ke āfrid avanīd, o pa khesh angāmbati zor dānāi, avartar shash ameshāspandān, avad vesh yazdān, roshan behesht garothmān, o gerd āsmān, o khur tāvā o māh bāmī, o satare vash-tokhm, o bād, o andarvāe, o āv, o ātrash, o zamīn o orvar, o gospand o ayokhshast, o mardum.</p>
+            <p class="prayer-paragraph">yazishne o niāeshne az oe khodāe kerfehgar ke meh kard az har getīhā desheshnān mardum pa gavāesh, mādān dād o sheherīāreshe angām rāenīdāresh dāmān, pa rakhma angezashne parhez devān.</p>
             
-            <p>Yazishne o niāeshne az oe Khodāe Kerfehgar ke meh kard az har getīhā desheshnān mardum pa gavāesh, mādān dād o sheherīāreshe angām rāenīdāresh dāmān, pa rakhma angezashne parhez devān.</p>
+            <p class="prayer-paragraph">namāz oe vīspa-āgāh ash khvāvar, kesh farestīd pa zartosht spetamān asho farohar, ashtash oe dāmān din-dāneshne varoeshne, āsne-kheradī gosho-sruteh-kheradī. dānāesh o rāenīdāresh, vīspa hastān o būdān o bedān, farhangān farhang mānthra spenta, ku bed ravān hu-pul bokhtāresh, az dozakhv, vadārdār oe āne pehelum akhvān ashoān, roshan hand hu-boe hamā-nekash.</p>
             
-            <p>Namāz oe vīspa-āgāh ash khvāvar, kesh farestīd pa Zartosht Spetamān asho. farohar, ashtash oe dāmān din-dāneshne varoeshne, āsne-kheradī gosho-sruteh-kheradī. Dānāesh o rāenīdāresh, vispa hastān o būdān o bedān, farhangān farhang mānthra Spenta, ku bed ravān hu - pul bokhtāresh, az dozakhv, vadārdār oe āne pehelum akhvān ashoān, roshan hand hu-boe hamā-nekash.</p>
+            <p class="prayer-paragraph">pa farmāne to khvāvar, pa farmāne to khvāvar pa farmāne to khvāvar, padīram o mīnam o goyam o varzam dīn avīzeh, āstuān hom pa har kerfeh, awākhsh az vīspa bazeh. avīzeh dār hom khudash āsnīdeh-kunashne, parhezashne, o pāk shash zorāne jān, manashne gavashne kunashne o vīr o hosh o kherad.</p>
             
-            <p>Pa farmāne to khvāvar, pa farmāne to khvāvar pa farmāne to khvāvar, padīram o mīnam o goyam o varzam dīn avīzeh, āstuān hom pa har kerfeh, awākhsh az vīspa bazeh. Avīzeh dār hom khudash āsnīdeh-kunashe, parhezashne, o pāk shash zorāne jān, manashe gavashne kunashe o vīr o hosh o kherad.</p>
+            <p class="prayer-paragraph">pa kāme to kerfehgar tavānam kard āne to parastashne, pa beh-manashne, beh-gavashne, beh-varzashne, vashāem rāhe roshan, ke om na-rasād gerān pazd dozakh, vadīram pa cheshandarg, rasam āne behesht pur-boe harvesp-pesīdeh hama-khvāresh.</p>
             
-            <p>Pa kāme to kerfehgar tavānam kard āne to parastashne, pa beh-manashe, beh-gavashne, beh-varzashne, vashāem rāhe roshan, ke om na-rasād gerān pazd dozakh, vadīram pa cheshandarg, rasam. ãne behesht pur-boe harvesp-pesîdeh hama-khvâresh.</p>
+            <p class="prayer-paragraph">setāeshne oe avakhshidār khodāe, ku kāmeh kerfeh pādāeshne kunand farmān-rāenīdārān, avdum buzed darvandānach az dozakh, o avīzehā vīnāred vīspa.</p>
             
-            <p>Setâeshne oe avakhshidâr khodâe, ku kâmeh kerfeh pâdâeshne kunand farmân-râenîdârân, avdum buzed darvandânach az dozakh, o avîzehâ vînâred vispa.</p>
+            <p class="prayer-instruction">(recite the below three times)</p>
             
-            <p><span class="special-mark">☞</span> Setâeshne dâdâr Ahuramazda, harvesp-âgâh, tavânâ o tavângar, haft Ameshâspand Bahrâm yazad pirozgar dushman-zadâr, amahe hutâshtahe be-rasâd. Ashem Vohû 1.</p>
-            
-            <p><span class="special-mark">☞</span> <span class="prayer-instruction">(to recite three times)</span>.</p>
+            <p class="prayer-paragraph">setāeshne dādār ahuramazda, harvesp-āgāh, tavānā o tavāngar, haft ameshāspand bahrām yazad pirozgar dushman-zadār, amahe hutāshtahe be-rasād. ashem vohū 1.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>I praise Ahura Mazda who is the greatest, all powerful, all knowing, the bestower of good things, the forgiver of sins and the giver of justice. I thank Him gratefully for creating the Ameshaspands, the Yazads, Heaven, the stars, the moon, the winds, the water, fire, trees, cattle, metals and mankind. I pay homage to Him through Spitama Zarathushtra whose holy prayers will help me to cross the Bridge of Separation (Chinvat). I promise to do good and keep away from all evil. I respect Ahura Mazda, the Amesha Spentas, Behram Yazad and the angel Ama who instils courage. May all of them come to my aid.</p>
+            <p>i praise ahura mazda who is the greatest, all powerful, all knowing, the bestower of good things, the forgiver of sins and the giver of justice. i thank him gratefully for creating the ameshaspands, the yazads, heaven, the stars, the moon, the winds, the water, fire, trees, cattle, metals and mankind. i pay homage to him through spitama zarathushtra whose holy prayers will help me to cross the bridge of separation (chinvat). i promise to do good and keep away from all evil. i respect ahura mazda, the amesha spentas, behram yazad and the angel ama who instils courage. may all of them come to my aid.</p>
         </div>
     </div>
 
@@ -255,8 +243,7 @@
             <button class="close-button" onclick="closePrayerModal()">×</button>
             
             <div class="prayer-header">
-                <p class="prayer-subtitle" id="modal-subtitle"></p>
-                <h3 class="prayer-name" id="modal-name"></h3>
+                <h3 class="prayer-title" id="modal-name"></h3>
             </div>
 
             <div class="prayer-text" id="modal-text"></div>
@@ -269,28 +256,26 @@
         // Function to open prayer modal
         function openPrayerModal(prayerId) {
             const modal = document.getElementById('prayer-modal');
+            const modalName = document.getElementById('modal-name');
+            const modalText = document.getElementById('modal-text');
+            const modalTranslation = document.getElementById('modal-translation');
             
-            // Here you would typically load the specific prayer content based on prayerId
-            if (prayerId === 'doa-nam-setayeshne') {
-                document.getElementById('modal-subtitle').textContent = 'the one for gratitude';
-                document.getElementById('modal-name').textContent = 'doā nām setāyeshne';
-                document.getElementById('modal-text').innerHTML = 'Khshnaothra Ahurahe Mazdāo. Ashem Vohū 1.<br><br>Ba nāme yazade bakhshāyendehe bakhshāyesh- gare meherbān.<br><br>Nām setāeshne Ahura Mazda, hamābūd hamāhast o hamābēd. Nāme yazade Spenā-Mīnō andarach mīnoān mīnō. Azash khudash yak nām Ahuramazdach. Khodāe mehest, o tavānā o dānā o dādār, o parvartār o pānā o khvāvar, o kerfehgar o avakshidār avīzeh veh dādastānī hamā-zōr...';
-                document.getElementById('modal-translation').innerHTML = '<p>I praise Ahura Mazda who is the greatest, all powerful, all knowing, the bestower of good things, the forgiver of sins and the giver of justice. I thank Him gratefully for creating the Ameshaspands, the Yazads, Heaven, the stars, the moon, the winds, the water, fire, trees, cattle, metals and mankind...</p>';
-            }
+            // Set modal content based on prayer ID
+            // (This can be expanded with more prayers as needed)
             
-            // Show the modal
             modal.style.display = 'block';
         }
-
+        
         // Function to close prayer modal
         function closePrayerModal() {
-            document.getElementById('prayer-modal').style.display = 'none';
+            const modal = document.getElementById('prayer-modal');
+            modal.style.display = 'none';
         }
-
+        
         // Close modal if user clicks outside of modal content
         window.onclick = function(event) {
             const modal = document.getElementById('prayer-modal');
-            if (event.target == modal) {
+            if (event.target === modal) {
                 closePrayerModal();
             }
         }

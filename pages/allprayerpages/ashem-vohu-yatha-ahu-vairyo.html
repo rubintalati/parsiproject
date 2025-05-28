@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -95,12 +97,19 @@
             margin-right: 0.5rem;
         }
 
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
         .prayer-note {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-subtitle {
@@ -130,6 +139,45 @@
             line-height: 1.6;
             padding-left: 1rem;
             border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
         }
 
         .prayer-section {
@@ -161,8 +209,8 @@
             </a>
         </div>
         
-        <div class="prayer-note">
-            <p>ashem vohū and yathā ahū vairyō are our most important and sacred prayers. they are the words of ahura mazda as told to zarathushtra. when you hear some good news pray two yathā ahū vairyō. on hearing some sad news pray one ashem vohū.</p>
+        <div class="prayer-note-container">
+            <p class="prayer-note">ashem vohū and yathā ahū vairyō are our most important and sacred prayers. they are the words of ahura mazda as told to zarathushtra. when you hear some good news pray two yathā ahū vairyō. on hearing some sad news pray one ashem vohū.</p>
         </div>
         
         <div>

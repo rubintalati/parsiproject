@@ -84,8 +84,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -94,6 +96,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -141,12 +158,19 @@
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(0, 0, 0, 0.2);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
         .prayer-note {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-instruction {
@@ -156,291 +180,258 @@
             margin: 0.5rem 0;
         }
 
-        /* Updated Compass Styles */
-        .compass-container {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            width: 120px; /* Increased from 60px to 120px */
-            height: 120px; /* Increased from 60px to 120px */
-            z-index: 10;
+        /* prayer Card Styling */
+        .prayer-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
         }
 
-        .compass {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .compass-direction {
-            position: absolute;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            opacity: 0.75;
-            pointer-events: none;
-            z-index: 2;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+        .prayer-card {
             background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .compass-direction.active {
-            opacity: 1;
-            color: white;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
-            font-weight: 700;
-            background-color: rgba(30, 30, 30, 0.8);
-        }
-
-        .compass-direction.north {
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .compass-direction.east {
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .compass-direction.south {
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .compass-direction.west {
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .compass-ring {
-            position: absolute;
-            width: 70%; /* Reduced to provide more space for labels */
-            height: 70%;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 1;
-        }
-
-        .compass-needle {
-            position: absolute;
-            top: 0;
-            left: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
             width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform-origin: center center;
-            transition: transform 0.3s ease;
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .compass-needle svg {
-            width: 75%;
-            height: 75%;
+        .prayer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-            overflow: hidden;
+        .prayer-card h3 {
+            margin-top: 0;
+            color: #e0ad4e;
         }
 
-        /* Permission Button (hidden by default for desktop) */
-        .permission-button {
-            display: none;
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 0.75rem 1.5rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
+        .prayer-card p {
+            margin-bottom: 1rem;
+        }
+
+        .prayer-btn {
+            display: inline-block;
+            background-color: #e0ad4e;
+            color: #000;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .prayer-btn:hover {
+            background-color: #fff;
             cursor: pointer;
-            font-family: 'Manrope', sans-serif;
-            transition: all 0.3s ease;
-            z-index: 100;
         }
 
-        .permission-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Prayer Modal Styling */
+        /* Modal Styling */
         .modal {
+            display: none;
             position: fixed;
-            top: 0;
+            z-index: 100;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background-color: #000;
-            z-index: 1000;
-            display: none;
             overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            max-width: 550px;
-            margin: 2rem auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin: 10% auto;
             padding: 2rem;
-            position: relative;
-            background-color: #000;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
 
-        .close-button {
+        .close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
+            top: 10px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .calibration-hint {
-            color: #ffecb3;
-            background: rgba(255, 193, 7, 0.08);
-            border-left: 3px solid #ffc107;
-            padding: 0.8rem 1.2rem;
-            margin: 1.2rem 0 0.7rem 0;
+        .close:hover {
+            color: #fff;
+        }
+
+        .modal-content h2 {
+            color: #e0ad4e;
+            margin-top: 0;
+        }
+
+        .modal-content h3 {
+            color: #ddd;
+            margin-top: 0;
+            font-style: italic;
+            font-weight: normal;
             font-size: 1rem;
-            border-radius: 4px;
-            display: none;
+        }
+
+        .prayer-text {
+            font-family: 'Avestan', sans-serif;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .prayer-translation {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            color: #bbb;
+            font-style: italic;
+        }
+
+        .prayer-instruction {
+            color: #e0ad4e;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 1rem;
         }
 
         @media (max-width: 768px) {
-            /* Remove border and background for mobile */
             .container {
                 padding: 0;
-                margin: 0;
-                background: none !important;
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                max-width: 100vw;
-                width: 100vw;
-                border: none !important;
-            }
-            .header {
-                padding-top: 0.7rem;
-                padding-bottom: 0;
-                background: none;
-                box-shadow: none;
-                display: block;
-            }
-            .back-button {
-                display: block;
-                position: static;
-                left: auto;
-                top: auto;
-                margin: 0 0 0.7rem 1.2rem;
-                font-size: 2em;
-                color: #fff;
-                background: none;
-                z-index: 10;
-                text-decoration: none;
                 border: none;
-                outline: none;
+                background-color: transparent;
             }
+
+            .content {
+                padding: 1.2rem;
+            }
+
+            .header {
+                padding: 0.5rem;
+            }
+            
             .prayer-header {
-                margin-top: 0.2rem;
-                padding-left: 1.2rem;
+                padding: 0.5rem;
+                padding-top: 1.5rem;
+                padding-right: 140px; /* Space for compass */
+                min-height: 140px; /* Ensure enough height for compass */
             }
-            .prayer-name, .prayer-subtitle {
-                text-align: left;
+            
+            .prayer-title {
+                font-size: 1.5rem;
             }
-            .compass-container {
-                top: 1.5rem;
-                right: 1.5rem;
-                width: 100px; /* Slightly smaller on mobile but still larger than original */
-                height: 100px;
+            
+            .prayer-subtitle {
+                font-size: 1rem;
             }
-            .permission-button {
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
+            
+            .prayer-instruction {
+                padding: 0 0.8rem;
+            }
+            .sidebar {
+                width: 80%;
+                max-width: 300px;
+                transform: translateX(-100%);
+            }
+
+            .sidebar-open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
                 display: block;
             }
-            
-            .compass-direction {
-                font-size: 14px;
-                width: 20px;
-                height: 20px;
-            }
-            
-            .compass-direction.north {
-                top: 10px;
-            }
 
-            .compass-direction.east {
-                right: 10px;
-            }
-
-            .compass-direction.south {
-                bottom: 10px;
-            }
-
-            .compass-direction.west {
-                left: 10px;
-            }
-            body {
+            .prayer-card {
+                max-width: 100%;
+                background-color: transparent !important;
                 border: none !important;
+                box-shadow: none !important;
             }
+            
+            .prayer-text, .prayer-translation, .prayer-instruction {
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+                padding: 1.2rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                padding-left: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            footer {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <a href="../all-prayers.html" class="back-button" aria-label="Back">&#8592;</a>
-    <div class="calibration-hint" id="calibration-hint">
-        If the compass seems inaccurate, move your phone in a "figure 8" motion to calibrate.
-    </div>
     <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
         <div class="prayer-header">
             <p class="prayer-subtitle">the one for humble repentance</p>
             <h2 class="prayer-name">char-disha no namaskar</h2>
         </div>
 
         <div class="prayer-text">
-            <p>Az hamā gunāh patet pashemānum; Ashem Vohū 1.</p>
+            <p>az hamā gunāh patet pashemānum; ashem vohū 1.</p>
             
-            <p>Nemō āonghām asanghāmcha, shōithranāmcha, gayoaoitināmcha, maēthananāmcha, avō-khvarenanāmcha, apāmcha, zemāmcha, urvaranāmcha, anghāoscha zemō, avanghecha ashnō vātahecha ashaonō strām, māonghō hūrō, anaghranām raochanghām khvadhātanām, vispanāmcha spentahe mainyēush dāmanām, ashaonām ashaonināmcha ashahe rathwām.</p>
+            <p>nemō āonghām asanghāmcha, shōithranāmcha, gayoaoitināmcha, maēthananāmcha, avō-khvarenanāmcha, apāmcha, zemāmcha, urvaranāmcha, anghāoscha zemō, avanghecha ashnō vātahecha ashaonō strām, māonghō hūrō, anaghranām raochanghām khvadhātanām, vispanāmcha spentahe mainyēush dāmanām, ashaonām ashaonināmcha ashahe rathwām.</p>
             
-            <p>Ashem Vohū 1.</p>
+            <p>ashem vohū 1.</p>
             
-            <p class="prayer-instruction">(Note: To be recited each time, turning to each direction)</p>
+            <div class="prayer-note-container">
+                <p class="prayer-note">note: to be recited each time, turning to each direction</p>
+            </div>
             
-            <p>Ahmāi raēshcha; Hazangrem; Jasa me avanghe mazda Kerfeh Mozd.</p>
+            <p>ahmāi raēshcha; hazangrem; jasa me avanghe mazda kerfeh mozd.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>I repent for all my sins. I humbly bow my head to all the cities, open fields, the earth, the flowing waters, the sky, the trees, the sun, the moon, the stars and to all the people who follow the path of righteousness.</p>
+            <p>i repent for all my sins. i humbly bow my head to all the cities, open fields, the earth, the flowing waters, the sky, the trees, the sun, the moon, the stars and to all the people who follow the path of righteousness.</p>
         </div>
     </div>
 
-    <!-- Mobile permission button (only visible on mobile) -->
-    <button id="permission-button" class="permission-button">Enable Compass</button>
-
-    <!-- Hidden elements for compass functionality -->
-    <div id="hidden-bearing" class="hidden">0°</div>
-
-    <!-- Prayer Detail Modal (hidden by default) -->
+    <!-- prayer Detail Modal (hidden by default) -->
     <div id="prayer-modal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closePrayerModal()">×</button>
@@ -456,176 +447,38 @@
         </div>
     </div>
 
-    <div class="compass-container">
-        <div class="compass">
-            <div class="compass-ring"></div>
-            <div class="compass-needle" id="compass-needle">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1"/>
-                    <path d="M50 10 L65 50 L50 90 L35 50 Z" fill="rgba(255,255,255,0.7)"/>
-                    <circle cx="50" cy="50" r="8" fill="#000" stroke="#fff" stroke-width="1.5"/>
-                </svg>
-            </div>
-            <div class="compass-direction north" data-direction="north" data-min="315" data-max="45">N</div>
-            <div class="compass-direction east" data-direction="east" data-min="45" data-max="135">E</div>
-            <div class="compass-direction south" data-direction="south" data-min="135" data-max="225">S</div>
-            <div class="compass-direction west" data-direction="west" data-min="225" data-max="315">W</div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const bearingDisplay = document.getElementById('hidden-bearing');
-            const permissionButton = document.getElementById('permission-button');
-            const directions = document.querySelectorAll('.compass-direction');
-            const compassNeedle = document.getElementById('compass-needle');
-            const calibrationHint = document.getElementById('calibration-hint');
-
-            let currentDirection = null;
-            let permissionGranted = false;
-            let lastHeading = null;
-            let headingStableCount = 0;
-
-            // Function to highlight the correct direction based on bearing
-            function highlightDirection(bearing) {
-                // Normalize bearing to 0-360
-                bearing = (bearing + 360) % 360;
-                bearingDisplay.textContent = Math.round(bearing) + '°';
-                // Smooth needle movement
-                compassNeedle.style.transition = 'transform 0.4s cubic-bezier(0.4,1.4,0.4,1)';
-                compassNeedle.style.transform = `rotate(${360 - bearing}deg)`;
-                // Direction highlight (unchanged)
-                let newDirection = null;
-                directions.forEach(dir => {
-                    const dirName = dir.dataset.direction;
-                    const minAngle = parseInt(dir.dataset.min);
-                    const maxAngle = parseInt(dir.dataset.max);
-                    if (minAngle > maxAngle) {
-                        if (bearing >= minAngle || bearing < maxAngle) newDirection = dirName;
-                    } else {
-                        if (bearing >= minAngle && bearing < maxAngle) newDirection = dirName;
-                    }
-                });
-                if (newDirection !== currentDirection) {
-                    currentDirection = newDirection;
-                    directions.forEach(dir => dir.classList.remove('active'));
-                    if (currentDirection) {
-                        const activeDir = document.querySelector(`.compass-direction[data-direction="${currentDirection}"]`);
-                        if (activeDir) activeDir.classList.add('active');
-                    }
+            // prayer Modal Functions remain unchanged
+            function openPrayerModal(prayerId) {
+                const modal = document.getElementById('prayer-modal');
+                
+                // Here you would typically load the specific prayer content based on prayerId
+                if (prayerId === 'char-disha-no-namaskar') {
+                    document.getElementById('modal-subtitle').textContent = 'the one for humble repentance';
+                    document.getElementById('modal-name').textContent = 'char-disha no namaskar';
+                    document.getElementById('modal-text').innerHTML = '<p>Az hamā gunāh patet pashemānum; Ashem Vohū 1.</p><p>Nemō āonghām asanghāmcha, shōithranāmcha, gayoaoitināmcha, maēthananāmcha, avō-khvarenanāmcha, apāmcha, zemāmcha, urvaranāmcha, anghāoscha zemō, avanghecha ashnō vātahecha ashaonō strām, māonghō hūrō, anaghranām raochanghām khvadhātanām, vispanāmcha spentahe mainyēush dāmanām, ashaonām ashaonināmcha ashahe rathwām.</p><p>Ashem Vohū 1.</p><p class="prayer-instruction">(Note: To be recited each time, turning to each direction)</p>';
+                    document.getElementById('modal-translation').innerHTML = '<p>I repent for all my sins. I humbly bow my head to all the cities, open fields, the earth, the flowing waters, the sky, the trees, the sun, the moon, the stars and to all the people who follow the path of righteousness.</p>';
                 }
+                
+                // Show the modal
+                modal.style.display = 'block';
             }
 
-            // Improved handleOrientation
-            function handleOrientation(event) {
-                let heading = null;
-                // iOS
-                if (typeof event.webkitCompassHeading === 'number') {
-                    heading = event.webkitCompassHeading;
-                } else if (typeof event.alpha === 'number') {
-                    // Android: event.absolute true = true north, false = device north
-                    if (event.absolute && typeof event.alpha === 'number') {
-                        heading = 360 - event.alpha;
-                    } else {
-                        heading = 360 - event.alpha; // fallback
-                    }
-                }
-                if (heading !== null) {
-                    permissionGranted = true;
-                    permissionButton.style.display = 'none';
-                    highlightDirection(heading);
-                    // Calibration hint if heading is stuck
-                    if (lastHeading !== null && Math.abs(heading - lastHeading) < 1) {
-                        headingStableCount++;
-                        if (headingStableCount > 50) calibrationHint.style.display = 'block';
-                    } else {
-                        headingStableCount = 0;
-                        calibrationHint.style.display = 'none';
-                    }
-                    lastHeading = heading;
-                }
+            function closePrayerModal() {
+                document.getElementById('prayer-modal').style.display = 'none';
             }
 
-            // Function to request permission for device orientation
-            function requestOrientationPermission() {
-                if (typeof DeviceOrientationEvent !== 'undefined' &&
-                    typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    DeviceOrientationEvent.requestPermission()
-                        .then(response => {
-                            if (response === 'granted') {
-                                window.addEventListener('deviceorientation', handleOrientation);
-                                permissionButton.style.display = 'none';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error requesting orientation permission:', error);
-                        });
-                } else {
-                    // Other devices that support deviceorientation without permission
-                    window.addEventListener('deviceorientation', handleOrientation);
+            window.onclick = function(event) {
+                const modal = document.getElementById('prayer-modal');
+                if (event.target == modal) {
+                    closePrayerModal();
                 }
-            }
-
-            // Add event listener to permission button
-            permissionButton.addEventListener('click', requestOrientationPermission);
-
-            // Check if we're on a mobile device
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-            // Try to auto-enable on Android/other browsers
-            if (isMobile) {
-                if (typeof DeviceOrientationEvent !== 'undefined' &&
-                    typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // iOS: show permission button, require user interaction
-                    permissionButton.style.display = 'block';
-                } else {
-                    // Android: auto-enable
-                    permissionButton.style.display = 'none';
-                    window.addEventListener('deviceorientation', handleOrientation);
-                }
-            } else {
-                // On desktop, we use mouse movement
-                permissionButton.style.display = 'none';
-                function debugWithMouse(e) {
-                    if (!permissionGranted) {
-                        const x = e.clientX;
-                        const y = e.clientY;
-                        const centerX = window.innerWidth / 2;
-                        const centerY = window.innerHeight / 2;
-                        const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
-                        highlightDirection((angle + 360) % 360);
-                    }
-                }
-                document.addEventListener('mousemove', debugWithMouse);
             }
         });
-
-        // Prayer Modal Functions
-        function openPrayerModal(prayerId) {
-            const modal = document.getElementById('prayer-modal');
-            
-            // Here you would typically load the specific prayer content based on prayerId
-            if (prayerId === 'char-disha-no-namaskar') {
-                document.getElementById('modal-subtitle').textContent = 'the one for humble repentance';
-                document.getElementById('modal-name').textContent = 'char-disha no namaskar';
-                document.getElementById('modal-text').innerHTML = '<p>Az hamā gunāh patet pashemānum; Ashem Vohū 1.</p><p>Nemō āonghām asanghāmcha, shōithranāmcha, gayoaoitināmcha, maēthananāmcha, avō-khvarenanāmcha, apāmcha, zemāmcha, urvaranāmcha, anghāoscha zemō, avanghecha ashnō vātahecha ashaonō strām, māonghō hūrō, anaghranām raochanghām khvadhātanām, vispanāmcha spentahe mainyēush dāmanām, ashaonām ashaonināmcha ashahe rathwām.</p><p>Ashem Vohū 1.</p><p class="prayer-instruction">(Note: To be recited each time, turning to each direction)</p>';
-                document.getElementById('modal-translation').innerHTML = '<p>I repent for all my sins. I humbly bow my head to all the cities, open fields, the earth, the flowing waters, the sky, the trees, the sun, the moon, the stars and to all the people who follow the path of righteousness.</p>';
-            }
-            
-            // Show the modal
-            modal.style.display = 'block';
-        }
-
-        function closePrayerModal() {
-            document.getElementById('prayer-modal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('prayer-modal');
-            if (event.target == modal) {
-                closePrayerModal();
-            }
-        }
     </script>
+    
+    <!-- Compass Component -->
+    <script src="../../js/compass.js"></script>
 </body>
 </html>

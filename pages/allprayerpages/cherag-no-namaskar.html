@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -145,23 +162,6 @@
             border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Flame accent styling */
-        .flame-accent {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .flame-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, #FF9800, #FF5722, rgba(255, 87, 34, 0.3));
-        }
-
         /* Flame icon */
         .flame-icon {
             position: absolute;
@@ -174,7 +174,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -187,6 +197,16 @@
             
             .prayer-name {
                 font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
             }
         }
     </style>
@@ -205,33 +225,29 @@
         </div>
 
         <div class="prayer-text">
-            <div class="flame-accent">
-                <p class="prayer-paragraph">Pa nāme yazdān Hormazd Khodāe awazūni, gorje khoreh awazāyād; Ātash Dādgāh Ādar farā.</p>
-            </div>
-            
-            <p class="prayer-paragraph">Az hamā gunāh patet pashemānum: az harvastīn dushmata duzhūkhta, duzvarshta mem pa geti manīd, oem goft, oem kard, oem jast, oem būn būd ested.</p>
-            
-            <p class="prayer-paragraph">As ān gunāh, manashnī gavashnī kunashnī, tanī ravānī getī minōānī, okhe awākhsh pashemān pa sē gavashnī pa patet hom.</p>
-            
-            <p class="prayer-instruction">(To recite bowing the head):</p>
-            
-            <div class="flame-accent">
-                <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo nemase-te Ātarsh Mazdāo Ahurahe hudhāo mazishta yazata.</p>
-            </div>
-            
-            <p class="prayer-paragraph">Ashem Vohū 1.</p>
-            
+            <p class="prayer-paragraph">pa nāme yazdān hormazd khodāe awazūni, gorje khoreh awazāyād; ātash dādgāh ādar farā.</p>
+            <br>
+            <p class="prayer-paragraph">az hamā gunāh patet pashemānum: az harvastīn dushmata duzhūkhta, duzvarshta mem pa geti manīd, oem goft, oem kard, oem jast, oem būn būd ested.</p>
+            <br>
+            <p class="prayer-paragraph">as ān gunāh, manashnī gavashnī kunashnī, tanī ravānī getī minōānī, okhe awākhsh pashemān pa sē gavashnī pa patet hom.</p>
+            <br>
+            <p class="prayer-instruction">(to recite bowing the head):</p>
+            <br>
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo nemase-te ātarsh mazdāo ahurahe hudhāo mazishta yazata.</p>
+            <br>
+            <p class="prayer-paragraph">ashem vohū 1.</p>
+            <br>
             <p class="prayer-instruction">(recite three times)</p>
-            
-            <p class="prayer-paragraph">Ahmāi raēshcha: Hazanghrem: Jasa me Avanghe Mazda: Kerfeh Mozd.</p>
+            <br>
+            <p class="prayer-paragraph">ahmāi raēshcha: hazanghrem: jasa me avanghe mazda: kerfeh mozd.</p>
         </div>
 
         <div class="prayer-translation">
-            <p>In the name of Ahura Mazda I begin this prayer. May His brilliant light enhance the power of the Fire dedicated to the Dadgah, the household fire.</p>
-            
-            <p>If I have wronged anyone or anything in thought, word or deed I repent and promise never to do so again.</p>
-            
-            <p>May it please the Almighty. I pay homage to and worship thee, O good kindly Fire, the highest amongst the Yazads.</p>
+            <p>in the name of ahura mazda i begin this prayer. may his brilliant light enhance the power of the fire dedicated to the dadgah, the household fire.</p>
+            <br>
+            <p>if i have wronged anyone or anything in thought, word or deed i repent and promise never to do so again.</p>
+            <br>
+            <p>may it please the almighty. i pay homage to and worship thee, o good kindly fire, the highest amongst the yazads.</p>
         </div>
     </div>
 </body>

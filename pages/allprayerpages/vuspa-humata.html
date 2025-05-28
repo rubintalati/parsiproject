@@ -83,8 +83,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -93,6 +95,21 @@
 
         .back-arrow {
             margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .prayer-header {
@@ -123,6 +140,10 @@
         .prayer-text {
             margin-bottom: 1.5rem;
             line-height: 1.6;
+        }
+        
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
         }
 
         .prayer-translation {
@@ -184,7 +205,17 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
             }
             
             .prayer-title {
@@ -198,6 +229,16 @@
             .prayer-name {
                 font-size: 1.3rem;
             }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
         }
     </style>
 </head>
@@ -210,26 +251,27 @@
         </div>
         
         <div class="prayer-header">
-            <p class="prayer-subtitle">the one for righteous path</p>
-            <h2 class="prayer-name">vūspa humata</h2>
+            <h2 class="prayer-title">vīspa humata</h2>
+        </div>
+        
+        <div class="prayer-note-container">
+            <p class="prayer-note">this prayer emphasizes the importance of good thoughts, words, and deeds.</p>
         </div>
 
         <div class="prayer-text">
-            <p>Vīspa humata, vīspa hukhta, vīspa hvarshta, baodhō-var¬shta; vīspa dushmata, vīspa duzhukhta, vīspa duzhvar¬shta, nōit baodhō-var¬shta.</p>
+            <p class="prayer-paragraph">vīspa humata, vīspa hukhta, vīspa hvarshta, baodhō-varshta; vīspa dushmata, vīspa duzhukhta, vīspa duzhvarshta, nōit baodhō-varshta.</p>
             
-            <p>Vīspa humata, vīspa hukhta, vīspa hvarshta vahishtem anghuim ashaēta.</p>
+            <p class="prayer-paragraph">vīspa humata, vīspa hukhta, vīspa hvarshta vahishtem anghuim ashaēta.</p>
             
-            <p>Vīspa dushmata, vīspa duzhukhta, vīspa duzhvar¬shta, achishtem anghuim ashaēta.</p>
+            <p class="prayer-paragraph">vīspa dushmata, vīspa duzhukhta, vīspa duzhvarshta, achishtem anghuim ashaēta.</p>
             
-            <p>Vīspanāmcha humatanām hūkhtanām hvarshtanām vahishta anghui; āt hacha chithrem ashaone.</p>
+            <p class="prayer-paragraph">vīspanāmcha humatanām hūkhtanām hvarshtanām vahishta anghui; āat hacha chithrem ashaone. ashem vohū 1.</p>
             
-            <p>Ashem Vohū 1.</p>
-            
-            <p class="prayer-instruction">(To recite three times)</p>
+            <p class="prayer-instruction">(to recite three times)</p>
         </div>
 
         <div class="prayer-translation">
-            <p>All good thoughts, words and deeds come from a wise mind and lead one to heaven. All evil thoughts, words and deeds lead to hell, so believe the people who follow the righteous path.</p>
+            <p>all good thoughts, words and deeds come from a wise mind and lead one to heaven. all evil thoughts, words and deeds lead to hell, so believe the people who follow the righteous path.</p>
         </div>
     </div>
 

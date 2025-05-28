@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Parsi Engagement Ceremonies - The Parsi Project</title>
+    <title>parsi engagement ceremonies - the parsi project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -90,8 +90,10 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
 
         .back-button:hover {
@@ -192,6 +194,8 @@
             .container {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
+                border: none;
+                background-color: transparent;
             }
             
             .ceremony-title {
@@ -204,6 +208,33 @@
             
             .section-title {
                 font-size: 1.3rem;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .filter-container {
+                margin: 1.5rem 0;
+                width: 100%;
+                overflow-x: hidden;
+            }
+            
+            .filter-row {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+                justify-content: flex-start;
+            }
+            
+            .filter-button {
+                margin: 0.2rem;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+                flex: 0 0 auto;
+                min-width: auto;
+                max-width: none;
+                width: calc(50% - 0.4rem);
             }
         }
         
@@ -234,7 +265,7 @@
             margin: 0 0.5rem;
             cursor: pointer;
             font-size: 0.95rem;
-            border-radius: 5px;
+            /* Removed border-radius for rectangular design */
             transition: all 0.3s ease;
             flex: 1;
             text-align: center;
@@ -328,27 +359,27 @@
         
         <div class="ceremony-header">
             <h1 class="ceremony-title">engagement ceremonies</h1>
-            <p class="ceremony-subtitle">An important milestone in the journey toward marriage</p>
+            <p class="ceremony-subtitle">an important milestone in the journey toward marriage</p>
         </div>
 
         <!-- Tab Navigation -->
         <div class="filter-container">
             <div class="filter-row">
-                <button class="filter-button active" data-tab="general">General Preparations</button>
-                <button class="filter-button" data-tab="boys-prep">Boy's Preparations</button>
-                <button class="filter-button" data-tab="boys-ceremony">Boy's Ceremonies</button>
+                <button class="filter-button active" data-tab="general">general preparations</button>
+                <button class="filter-button" data-tab="boys-prep">boy's preparations</button>
+                <button class="filter-button" data-tab="boys-ceremony">boy's ceremonies</button>
             </div>
             <div class="filter-row">
-                <button class="filter-button" data-tab="girls-prep">Girl's Preparations</button>
-                <button class="filter-button" data-tab="girls-ceremony">Girl's Ceremonies</button>
-                <button class="filter-button" data-tab="final">Final Ceremonies</button>
+                <button class="filter-button" data-tab="girls-prep">girl's preparations</button>
+                <button class="filter-button" data-tab="girls-ceremony">girl's ceremonies</button>
+                <button class="filter-button" data-tab="final">final ceremonies</button>
             </div>
         </div>
         
         <!-- General Preparations Tab -->
         <div id="general" class="tab-content active">
             <div class="ceremony-section">
-                <h2 class="section-title">General Preparations (Both Sides)</h2>
+                <h2 class="section-title">general preparations (both sides)</h2>
                 <p>In both the houses, early in the morning, the house should be decorated with <em>rangoli</em> at the entrance, and <em>torans</em> at the doors. After taking bath, the <em>ghar-ni ses</em> should be kept ready and a <em>divo</em> lighted, either with ghee or coconut oil. They should also keep ready the following:</p>
                 
                 <ul class="custom-list">
@@ -370,11 +401,11 @@
         <!-- Boy's Side Preparations Tab -->
         <div id="boys-prep" class="tab-content">
             <div class="ceremony-section">
-                <h2 class="section-title">Boy's Side Preparations</h2>
+                <h2 class="section-title">boy's side preparations</h2>
                 
-                <h3 class="subsection-title">Things to be taken to the girl's house</h3>
+                <h3 class="subsection-title">things to be taken to the girl's house</h3>
                 
-                <h4 class="subsection-subtitle">A sés wrapped with garland for the girl</h4>
+                <h4 class="subsection-subtitle">a sés wrapped with garland for the girl</h4>
                 <ul class="custom-list">
                     <li>A pado with batasa and wrapped with garland</li>
                     <li>A gulabdani with gulabjal</li>
@@ -391,7 +422,7 @@
                     <li>A few extra garlands for the guests</li>
                 </ul>
                 
-                <h4 class="subsection-subtitle">Clothes to be given to the girl</h4>
+                <h4 class="subsection-subtitle">clothes to be given to the girl</h4>
                 <ul class="custom-list">
                     <li>1 saree</li>
                     <li>1 blouse</li>
@@ -404,7 +435,7 @@
                     <li>Sagan cash</li>
                 </ul>
                 
-                <h4 class="subsection-subtitle">Additional items for the sés</h4>
+                <h4 class="subsection-subtitle">additional items for the sés</h4>
                 <ul class="custom-list">
                     <li>1 set of clothes Dahi Machli-na (not as expensive as the above). Instead of this, some jewellery or cash can also be given.</li>
                     <li>1 silver rupee for keeping in the divo</li>
@@ -413,7 +444,7 @@
                     <li>An envelope with Rs. 51/- or Rs. 101/-. (If possible, they should be silver coins otherwise, notes will do)</li>
                 </ul>
                 
-                <h4 class="subsection-subtitle">Items for Dahi-Machli tray</h4>
+                <h4 class="subsection-subtitle">items for dahi-machli tray</h4>
                 <ul class="custom-list">
                     <li>3 or 5 fresh fish or fish made from mavo or chocolate</li>
                     <li>½ kg. of sagan khadi-saakar</li>
