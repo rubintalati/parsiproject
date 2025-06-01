@@ -465,10 +465,14 @@
                     
                     <!-- Video playing as GIF -->
                     <div class="ceremony-gif" id="ceremonyGifPlaceholder">
-                        <video autoplay loop muted playsinline preload="auto" class="navjote-video">
+                        <video id="navjoteVideo" autoplay loop muted playsinline preload="auto" class="navjote-video">
+                            <!-- iOS-specific format first for better iPhone compatibility -->
+                            <source src="../media/videos/navjote_video.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
+                            <!-- Fallback to standard format -->
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
                         </video>
+                        <!-- Fallback image for browsers that don't support video -->
+                        <img id="navjoteFallbackImg" src="../media/images/ahuramazda_book.jpeg" alt="Navjote ceremony" class="navjote-video" style="display: none;">
                     </div>
                 </div>
             </div>
@@ -589,6 +593,44 @@
                 mobileNavOverlay.addEventListener('click', function(e) {
                     if (e.target === mobileNavOverlay) {
                         mobileNavOverlay.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Handle video for better iPhone compatibility
+            const navjoteVideo = document.getElementById('navjoteVideo');
+            const fallbackImg = document.getElementById('navjoteFallbackImg');
+            
+            if (navjoteVideo) {
+                // Check if this is iOS device
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                
+                if (isIOS) {
+                    // Force video to load properly on iOS
+                    navjoteVideo.setAttribute('playsinline', '');
+                    navjoteVideo.setAttribute('webkit-playsinline', '');
+                    
+                    // iOS sometimes requires user interaction to play videos
+                    // This attempts to start it anyway
+                    setTimeout(function() {
+                        navjoteVideo.play().catch(function(error) {
+                            console.log('iOS autoplay failed:', error);
+                            // Show fallback image if video fails to play
+                            if (fallbackImg) {
+                                fallbackImg.style.display = 'block';
+                                navjoteVideo.style.display = 'none';
+                            }
+                        });
+                    }, 1000);
+                }
+                
+                // Handle video loading errors
+                navjoteVideo.addEventListener('error', function(e) {
+                    console.error('Video loading error:', e);
+                    // Show fallback image if video fails to load
+                    if (fallbackImg) {
+                        fallbackImg.style.display = 'block';
+                        navjoteVideo.style.display = 'none';
                     }
                 });
             }
