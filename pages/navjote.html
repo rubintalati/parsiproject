@@ -466,8 +466,17 @@
                     </div>
                     
                     <!-- Video playing as GIF -->
-                    <div class="ceremony-gif" id="ceremonyGifPlaceholder">
-                        <video autoplay muted loop playsinline webkit-playsinline="true" controls="false" class="navjote-video">
+                    <div class="ceremony-gif" id="ceremonyGifPlaceholder" style="overflow: hidden; position: relative;">
+                        <video 
+                            autoplay 
+                            muted 
+                            loop 
+                            playsinline 
+                            webkit-playsinline="true" 
+                            class="navjote-video" 
+                            id="navjoteVideo"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; top: 0; left: 0;"
+                        >
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
                             your browser does not support the video tag.
                         </video>
@@ -595,25 +604,45 @@
                 });
             }
             
-            // Simple iOS video helper
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            const navjoteVideo = document.querySelector('.navjote-video');
-            
-            if (isIOS && navjoteVideo) {
-                // Force attributes for iOS
-                navjoteVideo.setAttribute('webkit-playsinline', 'true');
-                navjoteVideo.setAttribute('playsinline', 'true');
+            // Enhanced iOS video handling
+            document.addEventListener('DOMContentLoaded', function() {
+                const videoElement = document.getElementById('navjoteVideo');
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 
-                // iOS often needs a user interaction, but we can try to start playback anyway
-                document.addEventListener('touchstart', function() {
-                    navjoteVideo.play();
-                }, {once: true});
+                function attemptPlay() {
+                    if (videoElement && videoElement.paused) {
+                        videoElement.play().catch(function(error) {
+                            console.log('Video play attempt failed:', error);
+                        });
+                    }
+                }
                 
-                // Try playing after a delay
-                setTimeout(function() {
-                    navjoteVideo.play();
-                }, 500);
-            }
+                if (videoElement) {
+                    // Set both versions of playsinline attribute for maximum compatibility
+                    videoElement.setAttribute('playsinline', 'true');
+                    videoElement.setAttribute('webkit-playsinline', 'true');
+                    
+                    if (isIOS) {
+                        // iOS often requires user interaction
+                        document.body.addEventListener('touchstart', attemptPlay, {passive: true});
+                        document.body.addEventListener('click', attemptPlay, {passive: true});
+                        
+                        // Try multiple times with increasing delays
+                        setTimeout(attemptPlay, 100);
+                        setTimeout(attemptPlay, 500);
+                        setTimeout(attemptPlay, 1000);
+                        setTimeout(attemptPlay, 2000);
+                        
+                        // Add poster image for immediate visual feedback while video loads
+                        videoElement.setAttribute('poster', '../media/videos/navjote_video.mp4');
+                    }
+                    
+                    // Add error handling
+                    videoElement.addEventListener('error', function(e) {
+                        console.error('Video error:', e);
+                    });
+                }
+            });
 
             // Typing animation with pause similar to home.html
             const text1Element = document.getElementById('text1');
