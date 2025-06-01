@@ -6,24 +6,25 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Special Rituals - The Parsi Project</title>
+    <title>special rituals - the parsi project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/onboarding-modal.css">
     <link rel="stylesheet" href="../../css/logo.css">
-    <link rel="stylesheet" href="../../css/user-profile.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            text-transform: lowercase;
         }
         body {
             font-family: 'Manrope', sans-serif;
             background-color: #000;
             color: #fff;
             min-height: 100vh;
+            padding: 2rem 1rem;
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
@@ -40,27 +41,26 @@
         .container {
             max-width: 650px;
             margin: 0 auto;
+            padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background-color: rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            padding-left: 1.2rem;
-            padding-right: 1.2rem;
-            position: relative;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            margin-top: 2rem;
+            padding: 2rem 2rem 0 2rem;
         }
         .back-button {
             color: #fff;
             text-decoration: none;
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 24px;
             transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
         }
         .back-button:hover {
             color: #ccc;
@@ -182,6 +182,31 @@
             font-weight: 500;
         }
         
+        /* Mobile responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
         /* Fade effect at the top/bottom of the container */
         .fade-top, .fade-bottom {
             position: absolute;
@@ -220,7 +245,7 @@
     <div class="container">
         <div class="header">
             <a href="../death-rituals.html" class="back-button">
-                <span class="back-arrow">←</span> back to death rituals
+                <span class="back-arrow">←</span>
             </a>
         </div>
         
@@ -357,6 +382,6 @@
         </div>
     </div>
 
-    <script src="../../js/combined.js"></script>
+
 </body>
 </html>

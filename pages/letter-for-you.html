@@ -148,7 +148,109 @@
             color: #222;
             text-decoration: underline;
         }
+
+        /* Book popup styling */
+        .book-link {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #111;
+        }
+        .book-link:hover {
+            color: #222;
+        }
+        .book-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow: auto;
+            padding: 20px;
+        }
+        .book-popup-content {
+            background-color: #fff;
+            color: #222;
+            margin: 10% auto;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 15px 0 rgba(0,0,0,0.08);
+            max-width: 250px;
+            position: relative;
+        }
+        .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #222;
+        }
+        .book-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .book-info {
+            text-align: center;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #333;
+        }
+        @media (max-width: 800px) {
+            .book-popup {
+                padding: 15px;
+            }
+            .book-popup-content {
+                margin: 30% auto;
+                max-width: 85%;
+                width: 280px;
+                left: 0;
+                right: 0;
+            }
+        }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FKS Book popup
+            const fksTrigger = document.getElementById('book-popup-trigger');
+            const fksPopup = document.getElementById('book-popup');
+            const fksCloseBtn = fksPopup.querySelector('.close-popup');
+            
+            fksTrigger.addEventListener('click', function() {
+                fksPopup.style.display = 'block';
+            });
+            
+            fksCloseBtn.addEventListener('click', function() {
+                fksPopup.style.display = 'none';
+            });
+            
+            // Ahuramazda Book popup
+            const ahuramazdaTrigger = document.getElementById('ahuramazda-popup-trigger');
+            const ahuramazdaPopup = document.getElementById('ahuramazda-popup');
+            const ahuramazdaCloseBtn = ahuramazdaPopup.querySelector('.close-popup');
+            
+            ahuramazdaTrigger.addEventListener('click', function() {
+                ahuramazdaPopup.style.display = 'block';
+            });
+            
+            ahuramazdaCloseBtn.addEventListener('click', function() {
+                ahuramazdaPopup.style.display = 'none';
+            });
+            
+            // Close popups when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target == fksPopup) {
+                    fksPopup.style.display = 'none';
+                }
+                if (event.target == ahuramazdaPopup) {
+                    ahuramazdaPopup.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="letter-container" style="position: relative;">
@@ -179,7 +281,23 @@
         <div class="letter-content">
             <p>sometimes, after a long day, i wonder if anyone will actually read all this or if it’ll just float around the internet like a digital dakhma. but then, someone sends a message, shares a memory, or asks about a prayer, and suddenly it’s all worth it. it’s these little sparks that keep us going.</p>
             <p>everything you see in this project—and everything you’ll probably see—is something we’ve gone through. the eventual goal is to get the community together around experiences each one of us has had, so that eventually, when there are no parsis left and ai sifts through its databases, it’ll be like <i>awwww, elokone toh bachhava parse boss!</i> and probably get us out of extinction. (yes, the ai has chosen transliterated gujarati as its speaking language).</p>
-            <p>of course, this journey hasn’t been alone. when i began, i had a rough idea but didn’t know where to start. then i landed on a website made by <a href="https://ramiyarkaranjia.com/" target="_blank" rel="noopener">ramiyar sir</a>. let me tell you, it’s a treasure trove and will probably answer most of your questions—so shoutout to sir. then there are friends who have helped me make this a reality. the marriage and navjote traditions have been taken from a cute little book sold by the fks foundation. <a href="https://www.instagram.com/pashang_d/" target="_blank" rel="noopener">pashang dadyburjor</a> for the logo and opening video. <a href="https://www.instagram.com/rehandphotography/" target="_blank" rel="noopener">rehan daruwalla</a> for images and videos for navjote and wedding ceremonies. ayesha mehta for the content. the <a href="https://instagram.com/zenobia_davar/" target="_blank" rel="noopener">davars</a> with their lovely garas, which portray the peak of our culture, and the numerous people who gave their bits and time to complete this project. if a community comes together, many great things are possible.</p>
+            <p>of course, this journey hasn't been alone. when i began, i had a rough idea but didn't know where to start. then i landed on a website made by <a href="https://ramiyarkaranjia.com/" target="_blank" rel="noopener">ramiyar sir</a>. let me tell you, it's a treasure trove and will probably answer most of your questions—so shoutout to sir. then there are friends who have helped me make this a reality. the marriage and navjote traditions have been taken from a <span class="book-link" id="book-popup-trigger">cute little book</span> sold by the fks foundation. <a href="https://www.instagram.com/pashang_d/" target="_blank" rel="noopener">pashang dadyburjor</a> for the logo and opening video. <a href="https://www.instagram.com/rehandphotography/" target="_blank" rel="noopener">rehan daruwalla</a> for images and videos for navjote and wedding ceremonies. <a href="https://www.instagram.com/a.z.m_23897/" target="_blank" rel="noopener">ayesha mehta</a> for the content. the <a href="https://instagram.com/zenobia_davar/" target="_blank" rel="noopener">davars</a> with their lovely garas, which portray the peak of our culture, mrs. shernaz talati for the <span class="book-link" id="ahuramazda-popup-trigger">avestan prayers</span>, and the numerous people who gave their bits and time to complete this project. if a community comes together, many great things are possible.</p>
+
+<div id="book-popup" class="book-popup">
+    <div class="book-popup-content">
+        <span class="close-popup">&times;</span>
+        <img src="../media/images/fks_book.jpeg" alt="FKS Foundation Book" class="book-image">
+        <p class="book-info">book available in bombay. contact info - +91 9820585971</p>
+    </div>
+</div>
+
+<div id="ahuramazda-popup" class="book-popup">
+    <div class="book-popup-content">
+        <span class="close-popup">&times;</span>
+        <img src="../media/images/ahuramazda_book.jpeg" alt="Ahuramazda Book" class="book-image">
+        <p class="book-info">available across india with contact info - +91 9769851549, +91 9967137037</p>
+    </div>
+</div>
             <p>obvs, the project is not over—it’s just the start. there’s a lot we want to add. if you have ideas or want to help with research, marketing, tech, feedback, or anything, feel free to reach out to us on email and we’ll get in touch.</p>
             <p>and if you’re reading this and smiling, or even rolling your eyes a little, that’s okay too. this is as much your project as it is ours. so, <i>su karvaanu?</i> just explore, share, and maybe—just maybe—add your own story to the mix.</p>
         </div>
