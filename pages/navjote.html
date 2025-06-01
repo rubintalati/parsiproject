@@ -204,10 +204,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            position: relative;
             height: 100%;
+            overflow: hidden;
         }
-
+        
+        .navjote-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @media (min-width: 769px) {
+            .ceremony-gif {
+                max-width: 40%;
+                margin: 0 auto;
+            }
+            
+            .navjote-video {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                max-height: 160px;
+            }
+        }
+        
         .ceremony-gif img {
             width: 100%;
             height: 100%;
@@ -444,7 +465,7 @@
                     
                     <!-- Video playing as GIF -->
                     <div class="ceremony-gif" id="ceremonyGifPlaceholder">
-                        <video autoplay loop muted playsinline preload="auto" style="width:100%; height:100%; object-fit:cover;">
+                        <video autoplay loop muted playsinline preload="auto" class="navjote-video">
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
