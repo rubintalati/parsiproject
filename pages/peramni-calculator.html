@@ -221,6 +221,9 @@
             width: 100%;
             padding-left: 4rem;
             box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            min-height: 120px; /* Reserve space for the results */
         }
 
         .results-text {
@@ -265,6 +268,11 @@
             .results-container {
                 width: 100%;
                 padding: 0 1rem;
+            }
+            
+            .results-container {
+                min-height: 160px; /* More space on mobile */
+                margin-bottom: 30px; /* Ensure space at bottom */
             }
 
             .calculator-grid {
@@ -600,6 +608,13 @@
                 // Add 1 for good luck
                 finalAmount = finalAmount + 1;
                 
+                // Scroll to results container on mobile before showing results
+                if(window.innerWidth <= 768) {
+                    // Make sure the results container is fully visible by scrolling to it
+                    document.getElementById('resultsContainer').scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+                
+                // Show the results container
                 document.getElementById('resultsContainer').style.opacity = '1';
                 const resultsTextElement = document.getElementById('resultsText');
                 const resultLines = [
@@ -651,19 +666,62 @@
 
             });
             
-            // Make sure editable amount stays numeric
-            document.getElementById('catererAmount').addEventListener('input', function(event) {
-                // Replace any non-numeric characters
-                this.textContent = this.textContent.replace(/[^0-9]/g, '');
+            // Handle the editable amount field
+            const catererAmountField = document.getElementById('catererAmount');
+            
+            // Store original value to restore if needed
+            let originalValue = catererAmountField.textContent;
+            
+            // Better input handling to maintain cursor position
+            catererAmountField.addEventListener('input', function(event) {
+                // Get current cursor position
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                const position = range.startOffset;
                 
-                // Limit to reasonable amount
-                if (this.textContent > 10000) {
-                    this.textContent = '10000';
+                // Get the current value and filter to numbers only
+                const currentValue = this.textContent;
+                const filteredValue = currentValue.replace(/[^0-9]/g, '');
+                
+                // Only update if something changed to prevent cursor jumping
+                if (currentValue !== filteredValue) {
+                    // Check maximum value
+                    const finalValue = (parseInt(filteredValue) > 10000) ? '10000' : filteredValue;
+                    
+                    // Update content
+                    this.textContent = finalValue;
+                    
+                    // Restore cursor position as best as possible
+                    try {
+                        const newPosition = Math.min(position, finalValue.length);
+                        range.setStart(this.firstChild || this, newPosition);
+                        range.setEnd(this.firstChild || this, newPosition);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    } catch (e) {
+                        // If there's an error positioning cursor, it's usually because
+                        // there's no text node yet, so we don't need to do anything
+                    }
                 }
                 
-                // Prevent empty value
-                if (!this.textContent) {
-                    this.textContent = '3500';
+                // Store valid value
+                if (this.textContent) {
+                    originalValue = this.textContent;
+                }
+            });
+            
+            // Handle when field loses focus
+            catererAmountField.addEventListener('blur', function() {
+                if (!this.textContent || this.textContent.trim() === '') {
+                    this.textContent = originalValue || '3500';
+                }
+            });
+            
+            // Prevent unwanted characters
+            catererAmountField.addEventListener('keypress', function(e) {
+                const char = String.fromCharCode(e.which);
+                if (!/[0-9]/.test(char)) {
+                    e.preventDefault();
                 }
             });
             
