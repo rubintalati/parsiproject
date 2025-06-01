@@ -482,14 +482,14 @@
                     <div class="ceremony-gif" style="overflow: hidden; position: relative; background: #000;">
                         <video
                             id="navjote-video"
-                            autoplay
-                            muted
-                            loop
-                            playsinline
-                            webkit-playsinline
+                            autoplay="autoplay"
+                            muted="muted"
+                            loop="loop"
+                            playsinline="playsinline"
+                            webkit-playsinline="webkit-playsinline"
                             disableremoteplayback
                             class="navjote-video"
-                            preload="metadata"
+                            preload="auto"
                             style="width: 100%; height: 100%; object-fit: cover; display: block;"
                         >
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
@@ -607,20 +607,61 @@
         // Function to force autoplay videos on iOS
         function forceAutoplayVideos() {
             document.querySelectorAll('video').forEach(function(video) {
-                // Make sure video is muted for autoplay
+                // Make sure video is muted for autoplay (required for iOS)
                 video.muted = true;
+                video.defaultMuted = true;
+                video.setAttribute('muted', 'muted');
                 
-                // Play the video
-                video.play().catch(function(error) {
-                    console.log('Autoplay failed:', error);
-                    
-                    // If autoplay fails, set up touch/interaction event to play on first interaction
-                    document.body.addEventListener('touchstart', function() {
-                        video.play().catch(function(e) {
-                            console.log('Play on interaction failed:', e);
+                // Ensure all required attributes are set
+                video.setAttribute('autoplay', 'autoplay');
+                video.setAttribute('playsinline', 'playsinline');
+                video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+                video.setAttribute('disableremoteplayback', '');
+                
+                // Force low quality initially for faster start
+                if (video.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')) {
+                    // Force low quality initially for faster start
+                    video.setAttribute('preload', 'auto');
+                }
+                
+                // Explicitly load the video
+                try {
+                    video.load();
+                } catch (e) {
+                    console.log('Video load failed:', e);
+                }
+                
+                // Play the video with multiple fallbacks
+                const playAttempt = setInterval(() => {
+                    // iOS sometimes needs multiple play attempts
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Video started playing successfully
+                            clearInterval(playAttempt);
+                            console.log('Video started playing successfully');
+                        }).catch(error => {
+                            console.log('Autoplay attempt failed:', error);
+                            // Continue trying via the interval
                         });
-                    }, {once: true});
-                });
+                    }
+                }, 300);
+                
+                // Clear interval after 3 seconds to avoid excessive attempts
+                setTimeout(() => {
+                    clearInterval(playAttempt);
+                    
+                    // If video is not playing by now, try one more time with user interaction
+                    if (video.paused) {
+                        console.log('Setting up interaction handlers');
+                        // Set up multiple interaction events
+                        ['touchstart', 'touchend', 'click', 'scroll'].forEach(event => {
+                            document.addEventListener(event, function() {
+                                video.play().catch(() => {});
+                            }, {once: true});
+                        });
+                    }
+                }, 3000);
             });
         }
         
