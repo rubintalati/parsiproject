@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -44,26 +46,7 @@
         .left-side, .right-side { width: 32%; display: flex; flex-direction: column; gap: 1rem; justify-content: space-between; }
         .media-container { width: 32%; aspect-ratio: 16/9; max-height: none; background-color: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; align-self: center; border-radius: 8px; position: relative; }
         .media-container video { width: 100%; height: 100%; object-fit: cover; }
-        /* Style for play button overlay (only shown if autoplay is blocked) */
-        .play-button-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 2;
-        }
-        
-        .play-button-overlay span {
-            color: white;
-            font-size: 40px;
-            opacity: 0.8;
-        }
+        /* Video styling is now handled inline for better iOS compatibility */
         .ritual-card { background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem 1.1rem; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; min-height: 75px; max-height: 130px; text-decoration: none; color: inherit; text-transform: lowercase; }
         .ritual-card:hover { background-color: rgba(255, 255, 255, 0.05); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .ritual-card h3 { margin-bottom: 0.4rem; font-size: 1rem; font-weight: 600; color: #fff; text-transform: lowercase; }
@@ -90,8 +73,8 @@
                     <a href="death/major-rituals.html" class="ritual-card"><h3>major rituals</h3><p>essential steps from sachkār to uthamnā and prayers for the soul.</p></a>
                     <a href="death/tower-of-silence.html" class="ritual-card"><h3>tower of silence</h3><p>the dakhma system, construction, and ecological wisdom.</p></a>
                 </div>
-                <div class="media-container">
-                    <video id="death-video" autoplay muted loop playsinline preload="metadata" poster="../assets/gif-placeholder.jpg">
+                <div class="media-container" style="overflow: hidden; position: relative; background: #000;">
+                    <video id="death-video" autoplay muted loop playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         <source src="../media/videos/death-rituals.mp4" type="video/mp4">
                         your browser does not support the video tag.
                     </video>
@@ -142,43 +125,6 @@
         });
     </script>
     <script src="../js/combined.js"></script>
-    <script>
-        // GIF-like video implementation
-        document.addEventListener('DOMContentLoaded', function() {
-            const deathVideo = document.getElementById('death-video');
-            
-            // Handle autoplay and progressive loading
-            if (deathVideo) {
-                // Set initial loading to metadata for faster initial load
-                deathVideo.preload = 'metadata';
-                
-                // Ensure video plays automatically when it can
-                deathVideo.addEventListener('canplay', function() {
-                    // Try to play automatically (may be blocked by browsers)
-                    deathVideo.play().catch(error => {
-                        console.log('Auto-play was prevented by the browser');
-                        // Add a play button overlay only if autoplay is blocked
-                        if (error.name === 'NotAllowedError') {
-                            const playButton = document.createElement('div');
-                            playButton.className = 'play-button-overlay';
-                            playButton.innerHTML = '<span>▶</span>';
-                            deathVideo.parentNode.appendChild(playButton);
-                            
-                            // Play video when overlay is clicked
-                            playButton.addEventListener('click', function() {
-                                deathVideo.play();
-                                playButton.style.display = 'none';
-                            });
-                        }
-                    });
-                });
-                
-                // Switch to better quality after playing starts
-                deathVideo.addEventListener('playing', function() {
-                    deathVideo.preload = 'auto';
-                });
-            }
-        });
-    </script>
+    <!-- Video autoplay handling is now handled by the video tag attributes for better iOS compatibility -->
 </body>
 </html>
