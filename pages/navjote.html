@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Navjote Ceremony - The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -465,7 +467,7 @@
                     
                     <!-- Video playing as GIF -->
                     <div class="ceremony-gif" id="ceremonyGifPlaceholder">
-                        <video autoplay muted loop playsinline preload="metadata" class="navjote-video">
+                        <video autoplay muted loop playsinline webkit-playsinline="true" controls="false" class="navjote-video">
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
                             your browser does not support the video tag.
                         </video>
@@ -593,7 +595,25 @@
                 });
             }
             
-            // No special handling for video needed - using the same approach as wedding-rituals.html
+            // Simple iOS video helper
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const navjoteVideo = document.querySelector('.navjote-video');
+            
+            if (isIOS && navjoteVideo) {
+                // Force attributes for iOS
+                navjoteVideo.setAttribute('webkit-playsinline', 'true');
+                navjoteVideo.setAttribute('playsinline', 'true');
+                
+                // iOS often needs a user interaction, but we can try to start playback anyway
+                document.addEventListener('touchstart', function() {
+                    navjoteVideo.play();
+                }, {once: true});
+                
+                // Try playing after a delay
+                setTimeout(function() {
+                    navjoteVideo.play();
+                }, 500);
+            }
 
             // Typing animation with pause similar to home.html
             const text1Element = document.getElementById('text1');
