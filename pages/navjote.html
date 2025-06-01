@@ -481,6 +481,7 @@
                     <!-- Video container -->
                     <div class="ceremony-gif" style="overflow: hidden; position: relative; background: #000;">
                         <video
+                            id="navjote-video"
                             autoplay
                             muted
                             loop
@@ -488,6 +489,7 @@
                             webkit-playsinline
                             disableremoteplayback
                             class="navjote-video"
+                            preload="metadata"
                             style="width: 100%; height: 100%; object-fit: cover; display: block;"
                         >
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
@@ -602,7 +604,49 @@
     </div>
 
     <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                
+                // Play the video
+                video.play().catch(function(error) {
+                    console.log('Autoplay failed:', error);
+                    
+                    // If autoplay fails, set up touch/interaction event to play on first interaction
+                    document.body.addEventListener('touchstart', function() {
+                        video.play().catch(function(e) {
+                            console.log('Play on interaction failed:', e);
+                        });
+                    }, {once: true});
+                });
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the autoplay forcing code
         document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
+            
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
             const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
             if (mobileNavToggle && mobileNavOverlay) {

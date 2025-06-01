@@ -338,5 +338,68 @@
             your browser does not support the video tag.
         </video>
     </div>
+    
+    <!-- iOS Video Autoplay Fix -->
+    <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                video.setAttribute('muted', '');
+                
+                // Force playsInline and other attributes
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.setAttribute('disableremoteplayback', '');
+                
+                // Play the video
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.log('Autoplay failed:', error);
+                        
+                        // Setup touchstart listener to play on first interaction
+                        document.body.addEventListener('touchstart', function() {
+                            video.play().catch(function(e) {
+                                console.log('Play on interaction failed:', e);
+                            });
+                        }, {once: true});
+                    });
+                }
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the function when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay immediately
+            forceAutoplayVideos();
+            
+            // For iOS, set up additional event handlers
+            if (isIOS) {
+                // Listen for page visibility changes
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Try when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Try on user interaction with the page
+                document.addEventListener('touchstart', forceAutoplayVideos, {once: true});
+                
+                // Also try playing videos after delays (for slower devices or network conditions)
+                setTimeout(forceAutoplayVideos, 500);
+                setTimeout(forceAutoplayVideos, 1000);
+                setTimeout(forceAutoplayVideos, 2000);
+            }
+        });
+    </script>
 </body>
 </html>

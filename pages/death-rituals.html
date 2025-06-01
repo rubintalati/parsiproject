@@ -88,8 +88,49 @@
         </main>
     </div>
     <script>
-        // Typing animation for welcome text
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                
+                // Play the video
+                video.play().catch(function(error) {
+                    console.log('Autoplay failed:', error);
+                    
+                    // If autoplay fails, set up touch/interaction event to play on first interaction
+                    document.body.addEventListener('touchstart', function() {
+                        video.play().catch(function(e) {
+                            console.log('Play on interaction failed:', e);
+                        });
+                    }, {once: true});
+                });
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the autoplay forcing code
         document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
+
             const text1Element = document.getElementById('text1');
             const texts = [
                 "zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. the physical body is transmuted from one form to another, as the soul departs for the spiritual realm. death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of god’s plan. unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all."

@@ -465,6 +465,47 @@
                     weddingVideo.preload = 'auto';
                 });
             }
+            
+            // Force autoplay videos on iOS
+            function forceAutoplayVideos() {
+                document.querySelectorAll('video').forEach(function(video) {
+                    // Make sure video is muted for autoplay
+                    video.muted = true;
+                    
+                    // Play the video
+                    video.play().catch(function(error) {
+                        console.log('Autoplay failed:', error);
+                        
+                        // If autoplay fails, set up touch/interaction event to play on first interaction
+                        document.body.addEventListener('touchstart', function() {
+                            video.play().catch(function(e) {
+                                console.log('Play on interaction failed:', e);
+                            });
+                        }, {once: true});
+                    });
+                });
+            }
+            
+            // Check if this is iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            // Force autoplay immediately
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
         });
     </script>
 </body>
