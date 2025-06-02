@@ -485,14 +485,18 @@
                             autoplay="autoplay"
                             muted="muted"
                             loop="loop"
-                            playsinline="playsinline"
-                            webkit-playsinline="webkit-playsinline"
+                            playsinline
+                            webkit-playsinline
                             disableremoteplayback
                             class="navjote-video"
                             preload="auto"
+                            poster="../media/videos/navjote_video_poster.jpg"
                             style="width: 100%; height: 100%; object-fit: cover; display: block;"
                         >
+                            <!-- Multiple source formats for better compatibility -->
                             <source src="../media/videos/navjote_video.mp4" type="video/mp4">
+                            <!-- Fallback content for when video can't play -->
+                            Your browser does not support the video tag.
                         </video>
                     </div>
                 </div>
@@ -604,88 +608,152 @@
     </div>
 
     <script>
-        // Function to force autoplay videos on iOS
+        // Enhanced function to force autoplay videos on iOS
         function forceAutoplayVideos() {
             document.querySelectorAll('video').forEach(function(video) {
-                // Make sure video is muted for autoplay (required for iOS)
+                // Reset the video element to clear any possible stuck state
+                if (video.src) {
+                    const currentSrc = video.src;
+                    video.src = '';
+                    setTimeout(() => { video.src = currentSrc; }, 10);
+                }
+                
+                // Set essential iOS playback attributes
                 video.muted = true;
                 video.defaultMuted = true;
-                video.setAttribute('muted', 'muted');
-                
-                // Ensure all required attributes are set
-                video.setAttribute('autoplay', 'autoplay');
-                video.setAttribute('playsinline', 'playsinline');
-                video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+                video.playsInline = true;
+                video.autoplay = true;
+                video.loop = true;
+
+                // Explicitly set attributes (some browsers need this in addition to properties)
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.setAttribute('autoplay', '');
+                video.setAttribute('loop', '');
                 video.setAttribute('disableremoteplayback', '');
                 
-                // Force low quality initially for faster start
-                if (video.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')) {
-                    // Force low quality initially for faster start
-                    video.setAttribute('preload', 'auto');
+                // iOS-specific workarounds
+                if (isIOS) {
+                    // Lower resolution for quicker loading on iOS
+                    if (!video.hasAttribute('poster')) {
+                        // Only apply if no poster is already set
+                        video.setAttribute('preload', 'metadata');
+                    }
+                    
+                    // Force video display
+                    video.style.display = 'block';
+                    video.style.opacity = '1';
+                    
+                    // Make sure the video size is correctly set
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    
+                    // Some versions of iOS need explicit reload
+                    setTimeout(() => {
+                        try {
+                            video.load();
+                        } catch (e) {
+                            console.log('Video load failed:', e);
+                        }
+                    }, 50);
                 }
                 
-                // Explicitly load the video
-                try {
-                    video.load();
-                } catch (e) {
-                    console.log('Video load failed:', e);
-                }
+                // Play with multiple attempts - critical for iOS
+                const maxAttempts = 5;
+                let attempts = 0;
                 
-                // Play the video with multiple fallbacks
                 const playAttempt = setInterval(() => {
-                    // iOS sometimes needs multiple play attempts
+                    if (attempts >= maxAttempts) {
+                        clearInterval(playAttempt);
+                        return;
+                    }
+                    
+                    attempts++;
+                    console.log(`Play attempt ${attempts} for video`);
+                    
                     const playPromise = video.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
-                            // Video started playing successfully
                             clearInterval(playAttempt);
                             console.log('Video started playing successfully');
+                            
+                            // Fix for iOS 14+ - need to keep trying since videos sometimes stop
+                            setInterval(() => {
+                                if (video.paused) {
+                                    console.log('Video paused unexpectedly, attempting restart');
+                                    video.play().catch(() => {});
+                                }
+                            }, 2000);
+                            
                         }).catch(error => {
-                            console.log('Autoplay attempt failed:', error);
-                            // Continue trying via the interval
+                            console.log(`Autoplay attempt ${attempts} failed:`, error);
                         });
                     }
-                }, 300);
+                }, 400);
                 
-                // Clear interval after 3 seconds to avoid excessive attempts
-                setTimeout(() => {
-                    clearInterval(playAttempt);
-                    
-                    // If video is not playing by now, try one more time with user interaction
-                    if (video.paused) {
-                        console.log('Setting up interaction handlers');
-                        // Set up multiple interaction events
-                        ['touchstart', 'touchend', 'click', 'scroll'].forEach(event => {
-                            document.addEventListener(event, function() {
-                                video.play().catch(() => {});
-                            }, {once: true});
-                        });
-                    }
-                }, 3000);
+                // Set up interaction-based play triggers for iOS restrictions
+                const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'focus', 'mousedown'];
+                
+                interactionEvents.forEach(event => {
+                    document.addEventListener(event, function() {
+                        if (video.paused) {
+                            console.log(`Trying to play video after user ${event}`);
+                            video.play().catch(() => {});
+                        }
+                    }, {passive: true});
+                });
             });
         }
         
-        // Check if this is iOS
+        // Check if this is iOS or Safari
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
-        // Run the autoplay forcing code
+        // Run the autoplay forcing code - ensure it works with iOS and Safari
         document.addEventListener('DOMContentLoaded', function() {
-            // Force autoplay
+            // Force autoplay immediately
             forceAutoplayVideos();
             
-            // For iOS, also try to play videos on page visibility change
-            if (isIOS) {
+            // For iOS, use multiple strategies to ensure video plays
+            if (isIOS || isSafari) {
+                // Try on page visibility change (when returning to the page)
                 document.addEventListener('visibilitychange', function() {
                     if (!document.hidden) {
                         forceAutoplayVideos();
                     }
                 });
                 
-                // Also try playing when window gets focus
+                // Try on window focus
                 window.addEventListener('focus', forceAutoplayVideos);
                 
-                // Attempt to play videos again after a short delay (for slower devices)
-                setTimeout(forceAutoplayVideos, 1000);
+                // Try after page has fully loaded (for all resources)
+                window.addEventListener('load', forceAutoplayVideos);
+                
+                // Multiple timed attempts for slower devices or delayed loading
+                setTimeout(forceAutoplayVideos, 500);
+                setTimeout(forceAutoplayVideos, 1500);
+                setTimeout(forceAutoplayVideos, 3000);
+                
+                // Handle iOS orientation change which can affect video playback
+                window.addEventListener('orientationchange', function() {
+                    setTimeout(forceAutoplayVideos, 300);
+                });
+                
+                // Get reference to the specific navjote video
+                const navjoteVideo = document.getElementById('navjote-video');
+                if (navjoteVideo) {
+                    // Force display properties specifically for this video
+                    navjoteVideo.style.display = 'block';
+                    navjoteVideo.style.visibility = 'visible';
+                    navjoteVideo.style.opacity = '1';
+                    
+                    // Create a direct touch handler on the video element
+                    navjoteVideo.addEventListener('touchstart', function() {
+                        navjoteVideo.play().catch(() => {});
+                    }, {passive: true});
+                }
             }
             
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
