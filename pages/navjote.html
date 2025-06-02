@@ -642,7 +642,10 @@
             // Attempt to play videos again after a short delay (for slower devices)
             setTimeout(forceAutoplayVideos, 1000);
         }
-            
+        
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile navigation functionality
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
             const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
             if (mobileNavToggle && mobileNavOverlay) {
@@ -656,53 +659,63 @@
                 });
             }
             
-            // No special video handling needed - clean approach
-
-            // Typing animation with pause similar to home.html
+            // Typing animation initialization
             const text1Element = document.getElementById('text1');
             const text2Element = document.getElementById('text2');
-            const texts = [
-                "The Navjote is your spiritual initiation - it's the ceremony where you officially join the Zoroastrian community. Usually happening between ages 7-15, it's when you receive your Sudreh (sacred shirt) and Kusti (sacred cord).",
-                "During the ceremony, you'll recite prayers, make important promises, and transition from simply being born Zoroastrian to actively choosing the faith. It marks a significant milestone in your spiritual journey. The word Navjote literally means \"new follower\" - and after this ceremony, you're expected to live by the core Zoroastrian values: good thoughts, good words, and good deeds."
-            ];
-            let currentTextIndex = 0;
-            let currentCharIndex = 0;
-            let currentElement = text1Element;
-            function typeText() {
-                if (!currentElement || currentTextIndex >= texts.length) {
-                    const lastCursor = document.querySelector('.typing-cursor');
-                    if(lastCursor) lastCursor.remove();
-                    return;
-                }
-                const currentText = texts[currentTextIndex];
-                if (currentCharIndex < currentText.length) {
-                    const existingCursor = currentElement.querySelector('.typing-cursor');
-                    if (existingCursor) existingCursor.remove();
-                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
-                    const cursor = document.createElement('span');
-                    cursor.className = 'typing-cursor';
-                    currentElement.appendChild(cursor);
-                    currentCharIndex++;
-                    setTimeout(typeText, Math.random() * 20 + 15); // slower, more natural typing
-                } else {
-                    const existingCursor = currentElement.querySelector('.typing-cursor');
-                    if (existingCursor) existingCursor.remove();
-                    currentTextIndex++;
-                    currentCharIndex = 0;
-                    if (currentTextIndex < texts.length) {
-                        currentElement = text2Element;
-                        if(currentElement) currentElement.textContent = '';
-                        setTimeout(typeText, 600); // pause before next paragraph
+            
+            if (text1Element && text2Element) {
+                const texts = [
+                    "The Navjote is your spiritual initiation - it's the ceremony where you officially join the Zoroastrian community. Usually happening between ages 7-15, it's when you receive your Sudreh (sacred shirt) and Kusti (sacred cord).",
+                    "During the ceremony, you'll recite prayers, make important promises, and transition from simply being born Zoroastrian to actively choosing the faith. It marks a significant milestone in your spiritual journey. The word Navjote literally means \"new follower\" - and after this ceremony, you're expected to live by the core Zoroastrian values: good thoughts, good words, and good deeds."
+                ];
+                
+                let currentTextIndex = 0;
+                let currentCharIndex = 0;
+                let currentElement = text1Element;
+                
+                function typeText() {
+                    if (!currentElement || currentTextIndex >= texts.length) {
+                        const lastCursor = document.querySelector('.typing-cursor');
+                        if(lastCursor) lastCursor.remove();
+                        return;
+                    }
+                    
+                    const currentText = texts[currentTextIndex];
+                    
+                    if (currentCharIndex < currentText.length) {
+                        const existingCursor = currentElement.querySelector('.typing-cursor');
+                        if (existingCursor) existingCursor.remove();
+                        
+                        currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                        
+                        const cursor = document.createElement('span');
+                        cursor.className = 'typing-cursor';
+                        currentElement.appendChild(cursor);
+                        
+                        currentCharIndex++;
+                        setTimeout(typeText, Math.random() * 20 + 15); // slower, more natural typing
                     } else {
-                        currentElement = null;
+                        const existingCursor = currentElement.querySelector('.typing-cursor');
+                        if (existingCursor) existingCursor.remove();
+                        
+                        currentTextIndex++;
+                        currentCharIndex = 0;
+                        
+                        if (currentTextIndex < texts.length) {
+                            currentElement = text2Element;
+                            if(currentElement) currentElement.textContent = '';
+                            setTimeout(typeText, 600); // pause before next paragraph
+                        } else {
+                            currentElement = null;
+                        }
                     }
                 }
+                
+                // Start the typing animation
+                setTimeout(typeText, 500);
             }
-            typeText();
-        });
-
-        // Modal functionality
-        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Modal functionality
             // Modal open/close logic
             const preparationsCard = document.getElementById('preparationsCard');
             const ceremonyCard = document.getElementById('ceremonyCard');
