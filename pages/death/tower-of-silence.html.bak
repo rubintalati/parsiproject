@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>tower of silence - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../../css/logo.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-transform: lowercase;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem 2rem 0 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        /* Note styling */
+        .note-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .note-box p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-box p:last-child {
+            margin-bottom: 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            counter-increment: item;
+        }
+
+        .numbered-list li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        
+        /* Mobile responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Fade effect at the top/bottom of the container */
+        .fade-top, .fade-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .fade-top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        .fade-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">tower of silence</h1>
+            <p class="ceremony-subtitle">the dakhma system, construction, and ecological wisdom</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Importance and Purpose</h2>
+            <p>The Dakhma, commonly known as the Tower of Silence, is almost as important as a fire temple in Zoroastrian tradition. When Zoroastrians settle in a new place, a Dakhma is built and consecrated as soon as possible.</p>
+            
+            <p>The purpose of the Tower of Silence is to dispose of the dead in accordance with Zoroastrian beliefs about purity and ecological responsibility. It reflects the community's commitment to not polluting the sacred elements of fire, water, earth, and air.</p>
+            
+            <div class="note">
+                The English term "Tower of Silence" was coined in the 19th century by Robert Murphy, a British colonial translator. In traditional Zoroastrian texts, it is known as a Dakhma.
+            </div>
+            
+            <p>The practice of exposing corpses to scavenging birds dates back to at least the 5th century BCE, as recorded by Herodotus, and possibly earlier. It represents one of the oldest continuous funeral customs still practiced today.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Construction Process</h2>
+            
+            <h3 class="subsection-title">Site Selection</h3>
+            <ul class="custom-list">
+                <li>The site is chosen on elevated ground, away from human habitation</li>
+                <li>A well is dug 300 paces from the site for ritual purposes and later use</li>
+                <li>The ground is first cleaned by letting cows graze on it</li>
+                <li>The area is then sprinkled with consecrated water and surrounded by a cloth curtain</li>
+            </ul>
+            
+            <h3 class="subsection-title">Preliminary Rituals</h3>
+            <ul class="custom-list">
+                <li>Baj-dharna rituals are performed to prepare the site spiritually</li>
+                <li>A Jashan ceremony is conducted to bless the ground</li>
+                <li>The senior priest recites the Baj of Sarosh and performs the Kodali Marvani Kriya (first digging)</li>
+            </ul>
+            
+            <h3 class="subsection-title">Foundation and Construction</h3>
+            <p>The foundation is dug about 8 feet deep to ensure stability and isolation. The Tāno purvāni kriyā is then performed, which involves:</p>
+            <ul class="custom-list">
+                <li>101 cotton threads are wound around 301 nails (totaling about 100kg)</li>
+                <li>This Tana ceremony controls nasā (contagion) and thousands may attend and contribute</li>
+                <li>The structure is built in a circular form with specific dimensions</li>
+                <li>Pavis (ritual spaces) are created inside the structure</li>
+                <li>A central pit (bhandar) is constructed according to specific proportional requirements</li>
+            </ul>
+            
+            <p>The ratio of the overall structure to the central bhandar is typically 3:1, ensuring proper balance and functionality.</p>
+            
+            <h3 class="subsection-title">Consecration</h3>
+            <p>The consecration of a Dakhma is a four-day process:</p>
+            <ul class="numbered-list">
+                <li>Baj-dharna rituals are performed</li>
+                <li>Yazashne ceremonies honor the divine beings</li>
+                <li>Vendidad rituals purify and protect the structure</li>
+                <li>On the fourth day, a Jashan is performed and Tandarosti is recited for the sponsor</li>
+            </ul>
+            
+            <p>Traditionally, the first body laid in a new Dakhma should be that of a child or a pious individual, establishing the sacred nature of the space.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Structure and Arrangement</h2>
+            <p>A Tower of Silence is a raised, circular structure with specific internal divisions:</p>
+            
+            <ul class="custom-list">
+                <li><em>Outer circle</em> - Reserved for men</li>
+                <li><em>Middle circle</em> - Reserved for women</li>
+                <li><em>Inner circle</em> - Reserved for children</li>
+            </ul>
+            
+            <p>Bodies are arranged according to these divisions, with the head toward the center and the feet pointing outward. The circular design symbolizes the cyclical nature of existence and the return of all elements to their source.</p>
+            
+            <p>After exposure, the flesh is consumed by vultures, often within half an hour if the vulture population is healthy. This process is considered a final act of charity (giving one's body to nourish other creatures) and ensures rapid return of bodily elements to nature.</p>
+            
+            <p>After defleshing, bones are left to dry and bleach in the sun, considered a purification process by the power of the sun (Khorshed). Skeletal remains are then either placed in an ossuary or in a central well, where they eventually disintegrate into powder.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Dokhmenashini System</h2>
+            <p>Dokhmenashini is the process of exposing the corpse in a ritually prepared Dakhma to the sun and birds of prey. This system is based on four fundamental principles:</p>
+            
+            <ul class="numbered-list">
+                <li>Disposal must occur away from human habitation</li>
+                <li>The body should be placed on an elevated structure</li>
+                <li>It must be exposed to the sun</li>
+                <li>It should be accessible to birds of prey</li>
+            </ul>
+            
+            <p>These principles ensure the most ecological and spiritual method for Zoroastrians to dispose of their dead. The system ensures:</p>
+            
+            <ul class="custom-list">
+                <li>Speedy release of the soul and semi-spiritual constituents</li>
+                <li>No pollution of the sacred elements (fire, water, earth, air)</li>
+                <li>Rapid return of physical matter to the natural cycle</li>
+            </ul>
+            
+            <div class="note">
+                Cremation and burial are traditionally discouraged in Zoroastrianism as they are believed to pollute natural elements and slow down the soul's evolution.
+            </div>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Sagdi at Doongerwadi</h2>
+            <p>The Sagdi is a building at Doongerwadi (the complex housing the Towers of Silence) that contains an unconsecrated Dadgah fire. After funerals:</p>
+            
+            <ul class="custom-list">
+                <li>Zoroastrians are encouraged to offer prayers at the Sagdi</li>
+                <li>Sandalwood may be offered to the fire as a symbol of purity</li>
+                <li>The fire provides spiritual comfort to the mourners</li>
+            </ul>
+            
+            <p>Since the Sagdi fire is not a consecrated fire, it cannot be desecrated by the presence of mourners who have been in contact with the deceased. This makes it accessible for prayer and contemplation after funeral ceremonies.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Symbolism and Environmental Wisdom</h2>
+            <p>The Dakhma system reflects Zoroastrian reverence for nature and ecological responsibility:</p>
+            
+            <ul class="custom-list">
+                <li>It returns the body to nature in the most harmless and beneficial way</li>
+                <li>It preserves the purity of the four elements (fire, water, earth, air)</li>
+                <li>It creates a sustainable cycle where death contributes to new life</li>
+                <li>It acknowledges humans as part of the natural world, not separate from it</li>
+            </ul>
+            
+            <p>This ancient practice demonstrates remarkable ecological wisdom that resonates with modern environmental ethics. By ensuring that human remains contribute to the sustenance of other creatures and return rapidly to the elements, Zoroastrians practice a form of ecological funeral that minimizes environmental impact.</p>
+            
+            <div class="note">
+                The Dakhma system represents one of humanity's oldest examples of ecological thinking applied to funeral practices, demonstrating a sophisticated understanding of natural cycles and human impact on the environment.
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

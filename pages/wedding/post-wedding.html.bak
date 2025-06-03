@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>post-wedding ceremonies - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">post-wedding ceremonies</h1>
+            <p class="ceremony-subtitle">traditions that follow after the wedding day</p>
+        </div>
+
+        <div class="ceremony-section">
+            <h2 class="section-title">varovar (8th day anniversary)</h2>
+            
+            <p>Varovar is the 8th day anniversary celebration after the wedding. It is an important post-wedding ritual in Parsi tradition where the bride visits her parents' home after spending the first week at her in-laws' house.</p>
+            
+            <h3 class="subsection-title">the bride's preparations</h3>
+            <p>On the Varovar day, when the daughter comes to her parents' house from Sasru, if there is a new set of clothes, she should wear them. This symbolizes prosperity and her new status as a married woman.</p>
+            
+            <h3 class="subsection-title">dinner and return to in-laws</h3>
+            <p>The girl's family should send the daughter and the Jamai home, after dinner. If convenient, Vevai and Vevan should also be invited to this special dinner.</p>
+            
+            <p>When they go back after the dinner, pendas should be put in varovar-ni tamdi on which a red cloth (enough for a small baby dress) and a coconut are put, and is decorated with a garland.</p>
+            
+            <p class="note">If they don't want this, a box of sweets and cash should be given instead.</p>
+            
+            <h3 class="subsection-title">mandavsara ritual</h3>
+            <p>After Varovar, the mandavsara-nu plant and other flowers/garlands etc. of the wedding day, should be put into the sea. This marks the formal conclusion of the wedding ceremonies.</p>
+            
+            <h3 class="subsection-title">significance of varovar</h3>
+            <p>Varovar symbolizes the continuing bond between the bride and her maternal family. It reassures the bride that while she now belongs to her husband's family, she still has a place in her parents' home.</p>
+            
+            <p>This ceremony also helps strengthen the relationship between the two families as they share a meal together and exchange gifts of sweets and blessings.</p>
+        </div>
+    </div>
+</body>
+</html>

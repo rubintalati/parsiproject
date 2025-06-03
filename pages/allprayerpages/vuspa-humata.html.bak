@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vūspa Humata - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-note {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Prayer Modal Styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: none;
+            overflow: auto;
+        }
+
+        .modal-content {
+            max-width: 550px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-note-container {
+                margin-left: 0.4rem;
+                margin-right: 0.4rem;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <h2 class="prayer-title">vīspa humata</h2>
+        </div>
+        
+        <div class="prayer-note-container">
+            <p class="prayer-note">this prayer emphasizes the importance of good thoughts, words, and deeds.</p>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">vīspa humata, vīspa hukhta, vīspa hvarshta, baodhō-varshta; vīspa dushmata, vīspa duzhukhta, vīspa duzhvarshta, nōit baodhō-varshta.</p>
+            
+            <p class="prayer-paragraph">vīspa humata, vīspa hukhta, vīspa hvarshta vahishtem anghuim ashaēta.</p>
+            
+            <p class="prayer-paragraph">vīspa dushmata, vīspa duzhukhta, vīspa duzhvarshta, achishtem anghuim ashaēta.</p>
+            
+            <p class="prayer-paragraph">vīspanāmcha humatanām hūkhtanām hvarshtanām vahishta anghui; āat hacha chithrem ashaone. ashem vohū 1.</p>
+            
+            <p class="prayer-instruction">(to recite three times)</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>all good thoughts, words and deeds come from a wise mind and lead one to heaven. all evil thoughts, words and deeds lead to hell, so believe the people who follow the righteous path.</p>
+        </div>
+    </div>
+
+    <!-- Prayer Detail Modal (hidden by default) -->
+    <div id="prayer-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closePrayerModal()">×</button>
+            
+            <div class="prayer-header">
+                <p class="prayer-subtitle" id="modal-subtitle"></p>
+                <h3 class="prayer-name" id="modal-name"></h3>
+            </div>
+
+            <div class="prayer-text" id="modal-text"></div>
+
+            <div class="prayer-translation" id="modal-translation"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open prayer modal
+        function openPrayerModal(prayerId) {
+            const modal = document.getElementById('prayer-modal');
+            
+            // Here you would typically load the specific prayer content based on prayerId
+            if (prayerId === 'vuspa-humata') {
+                document.getElementById('modal-subtitle').textContent = 'the one for righteous path';
+                document.getElementById('modal-name').textContent = 'vūspa humata';
+                document.getElementById('modal-text').innerHTML = '<p>Vīspa humata, vīspa hukhta, vīspa hvarshta, baodhō-var¬shta; vīspa dushmata, vīspa duzhukhta, vīspa duzhvar¬shta, nōit baodhō-var¬shta.</p><p>Vīspa humata, vīspa hukhta, vīspa hvarshta vahishtem anghuim ashaēta.</p><p>Vīspa dushmata, vīspa duzhukhta, vīspa duzhvar¬shta, achishtem anghuim ashaēta.</p><p>Vīspanāmcha humatanām hūkhtanām hvarshtanām vahishta anghui; āt hacha chithrem ashaone.</p><p>Ashem Vohū 1.</p><p class="prayer-instruction">(To recite three times)</p>';
+                document.getElementById('modal-translation').innerHTML = '<p>All good thoughts, words and deeds come from a wise mind and lead one to heaven. All evil thoughts, words and deeds lead to hell, so believe the people who follow the righteous path.</p>';
+            }
+            
+            // Show the modal
+            modal.style.display = 'block';
+        }
+
+        // Function to close prayer modal
+        function closePrayerModal() {
+            document.getElementById('prayer-modal').style.display = 'none';
+        }
+
+        // Close modal if user clicks outside of modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayer-modal');
+            if (event.target == modal) {
+                closePrayerModal();
+            }
+        }
+    </script>
+</body>
+</html>

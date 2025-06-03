@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>death rituals - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background-color: #000; color: #fff; min-height: 100vh; overflow: hidden; }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        .container { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; padding: 1.5rem; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
+        .header { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem; margin-top: 2rem; text-align: center; width: 100%; }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-align: center; text-transform: lowercase; }
+        .welcome-text-container { padding: 0 2rem; margin-bottom: 1.5rem; min-height: 160px; overflow: hidden; text-align: left; width: 95%; max-width: 1200px; /* Fixed min-height to prevent content shifting */ }
+        .welcome-text { text-align: left; color: #ccc; font-size: 0.9rem; line-height: 1.5; width: 100%; max-width: 100%; text-transform: lowercase; }
+        .welcome-text p { margin-bottom: 0.8rem; min-height: 1.5em; text-transform: lowercase; }
+        #text1 { margin-bottom: 0.8rem; min-height: 120px; /* Fixed height based on text content */ }
+        #text2 { margin-bottom: 0.8rem; }
+        #text3 { margin-bottom: 0.8rem; }
+        .typing-cursor { display: inline-block; width: 2px; height: 1em; background-color: #ccc; margin-left: 2px; animation: blink 1s infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        .content-layout { display: flex; gap: 2rem; flex: 1; padding: 0 3rem 1.5rem 3rem; margin-top: 1rem; align-items: stretch; }
+        .left-side, .right-side { width: 32%; display: flex; flex-direction: column; gap: 1rem; justify-content: space-between; }
+        .media-container { width: 32%; aspect-ratio: 16/9; max-height: none; background-color: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; align-self: center; border-radius: 8px; position: relative; }
+        .media-container video { width: 100%; height: 100%; object-fit: cover; }
+        /* Video styling is now handled inline for better iOS compatibility */
+        .ritual-card { background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem 1.1rem; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; min-height: 75px; max-height: 130px; text-decoration: none; color: inherit; text-transform: lowercase; }
+        .ritual-card:hover { background-color: rgba(255, 255, 255, 0.05); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .ritual-card h3 { margin-bottom: 0.4rem; font-size: 1rem; font-weight: 600; color: #fff; text-transform: lowercase; }
+        .ritual-card p { color: #999; font-size: 0.85rem; line-height: 1.45; text-transform: lowercase; }
+        @media (max-width: 992px) { .content-layout { flex-direction: column; } .left-side, .right-side { width: 100%; flex-direction: row; flex-wrap: wrap; } .ritual-card { flex: 1; min-width: 45%; } .media-container { width: 100%; aspect-ratio: 16/9; order: -1; margin-bottom: 1.5rem; } }
+        @media (max-width: 768px) { body { overflow: auto !important; } .welcome-text-container { padding: 0 1rem; min-height: 200px; /* Increased height for mobile */ } .page-title { font-size: 2rem; } .main-content { padding: 1rem; } .left-side, .right-side { flex-direction: column; } .content-layout { padding: 0 1rem; gap: 1rem; } .media-container { width: 100%; aspect-ratio: 16/9; margin-bottom: 1.2rem; height: auto; min-height: 200px; } }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-nav-overlay"></div>
+        <main class="main-content">
+            <div class="header">
+                <h1 class="page-title">death rituals</h1>
+            </div>
+            <div class="welcome-text-container">
+                <div class="welcome-text" id="welcome-text">
+                    <p id="text1"></p>
+                </div>
+            </div>
+            <div class="content-layout">
+                <div class="left-side">
+                    <a href="death/philosophy-soul.html" class="ritual-card"><h3>philosophy & soul</h3><p>beliefs about death, the soul, and the afterlife journey.</p></a>
+                    <a href="death/major-rituals.html" class="ritual-card"><h3>major rituals</h3><p>essential steps from sachkār to uthamnā and prayers for the soul.</p></a>
+                    <a href="death/tower-of-silence.html" class="ritual-card"><h3>tower of silence</h3><p>the dakhma system, construction, and ecological wisdom.</p></a>
+                </div>
+                <div class="media-container" style="overflow: hidden; position: relative; background: #000;">
+                    <video id="death-video" autoplay muted loop playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        <source src="../media/videos/death-rituals.mp4" type="video/mp4">
+                        your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="right-side">
+                    <a href="death/etiquette.html" class="ritual-card"><h3>etiquette</h3><p>funeral decorum, rules, and community customs.</p></a>
+                    <a href="death/special-rituals.html" class="ritual-card"><h3>special rituals</h3><p>geh-sārnā, chinwad pul, dokhmenashini, and more.</p></a>
+                    <a href="death/modern-challenges.html" class="ritual-card"><h3>modern challenges</h3><p>contemporary issues, vulture decline, and adaptations.</p></a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                
+                // Play the video
+                video.play().catch(function(error) {
+                    console.log('Autoplay failed:', error);
+                    
+                    // If autoplay fails, set up touch/interaction event to play on first interaction
+                    document.body.addEventListener('touchstart', function() {
+                        video.play().catch(function(e) {
+                            console.log('Play on interaction failed:', e);
+                        });
+                    }, {once: true});
+                });
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the autoplay forcing code
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
+
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.createElement('p');
+            text2Element.id = 'text2';
+            text1Element.parentNode.appendChild(text2Element);
+            
+            const texts = [
+                {
+                    element: text1Element,
+                    content: "zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. the physical body is transmuted from one form to another, as the soul departs for the spiritual realm. death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of god's plan. unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all.",
+                    isHTML: false
+                },
+                {
+                    element: text2Element,
+                    content: "if you want to dive deeper into this topic hop on to <a href=\"https://ramiyarkaranjia.com/death-rituals/\" target=\"_blank\" rel=\"noopener\" style=\"color: #fff; text-decoration: underline;\">ramiyar sir's website</a>.",
+                    isHTML: true
+                }
+            ];
+            
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            
+            function typeText() {
+                if (currentTextIndex >= texts.length) {
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return;
+                }
+                
+                const currentTextObj = texts[currentTextIndex];
+                const currentElement = currentTextObj.element;
+                const currentText = currentTextObj.content;
+                
+                if (currentCharIndex < currentText.length) {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    if (currentTextObj.isHTML) {
+                        // For HTML content (like links), we need to use innerHTML
+                        currentElement.innerHTML = currentText.substring(0, currentCharIndex + 1);
+                    } else {
+                        currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    }
+                    
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    currentCharIndex++;
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    setTimeout(typeText, 500); // Delay before starting the next paragraph
+                }
+            }
+            setTimeout(typeText, 300);
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+    <!-- Video autoplay handling is now handled by the video tag attributes for better iOS compatibility -->
+</body>
+</html>

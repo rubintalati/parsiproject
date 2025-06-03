@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Mobile video playback support -->
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <title>Navjote Ceremony - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <script src="../js/load-components.js"></script>
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Content container */
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Welcome Text Styles */
+        .welcome-text-container {
+            width: 100%;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            /* Fixed height to prevent content shifting */
+            min-height: 180px;
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem;
+            min-height: 1.5em;
+        }
+
+        /* Specific heights for welcome text paragraphs */
+        #text1 {
+            margin-bottom: 0.8rem;
+            min-height: 70px; /* Fixed height based on text content */
+        }
+        #text2 {
+            margin-bottom: 0.1rem;
+            min-height: 90px; /* Fixed height based on text content */
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ccc;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Middle section with cards */
+        .middle-section {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10%;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Card Container */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 30%;
+            min-width: 150px;
+            box-sizing: border-box;
+        }
+
+        .info-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .info-card h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .info-card p {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Bottom section - participation and GIF side by side */
+        .bottom-section {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 10%;
+            height: 160px;
+            margin-bottom: 1rem;
+        }
+
+        /* Participation Section */
+        .participation-section {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-width: 50%;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* GIF placeholder */
+        .ceremony-gif {
+            flex: 1;
+            background-color: transparent;
+            max-width: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Video styling - clean approach that works across devices */
+        .ceremony-gif {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+        
+        .navjote-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        @media (min-width: 769px) {
+            .ceremony-gif {
+                max-width: 40%;
+                margin: 0 auto;
+            }
+            
+            .navjote-video {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                max-height: 160px;
+            }
+        }
+        
+        .ceremony-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 90%;
+            max-width: 700px;
+            border-radius: 8px;
+            padding: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem auto;
+            overflow-y: auto;
+            max-height: 85vh;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .close-button {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-button:hover {
+            color: #fff;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .modal-text {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .modal-text p {
+            margin-bottom: 1rem;
+        }
+        .modal-text ul, .modal-text ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-text li {
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+        .ceremony-list {
+            list-style-type: disc;
+        }
+        .ceremony-list li {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .ceremony-list li:last-child {
+            border-bottom: none;
+        }
+        .ritual-steps {
+            counter-reset: steps;
+            padding-left: 0.5rem;
+        }
+        .ritual-steps li {
+            counter-increment: steps;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        .ritual-steps strong {
+            color: #fff;
+            display: inline-block;
+            margin-right: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.2rem;
+            margin-bottom: 0.4rem;
+        }
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+            .modal-title {
+                font-size: 1.15rem;
+                margin-bottom: 1rem;
+            }
+            .close-button {
+                font-size: 1.2rem;
+                top: 0.7rem;
+                right: 0.7rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-text-container {
+                padding: 0 1.5rem;
+                height: auto;
+                min-height: 220px; /* Increased for mobile to accommodate text */
+                margin-bottom: 1.2rem;
+            }
+
+            .header {
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .middle-section {
+                padding: 0 1.5rem;
+            }
+
+            .cards-container {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .info-card {
+                padding: 0.8rem;
+                width: 100%;
+                height: 80px;
+            }
+            
+            /* Make bottom section vertical on mobile */
+            .bottom-section {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 0 1.5rem;
+                height: auto;
+                margin-bottom: 0;
+            }
+
+            .participation-section {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+                max-width: 100%;
+                height: 90px;
+            }
+
+            .ceremony-gif {
+                height: 120px;
+                max-width: 100%;
+            }
+            
+            body, .main-content {
+                overflow-y: auto !important;
+                height: auto;
+            }
+            
+            .container {
+                height: auto;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">navjote ceremony</h1>
+            </div>
+            
+            <div class="content-container">
+                <!-- Welcome Text with Typing Animation -->
+                <div class="welcome-text-container">
+                    <div class="welcome-text">
+                        <p id="text1"></p>
+                        <p id="text2"></p>
+                    </div>
+                </div>
+                
+                <div class="middle-section">
+                    <!-- Cards for different sections -->
+                    <div class="cards-container">
+                        <div class="info-card" id="preparationsCard">
+                            <h3>preparations</h3>
+                            <p>what you'll need for your navjote ceremony</p>
+                        </div>
+                        
+                        <div class="info-card" id="ceremonyCard">
+                            <h3>the ceremony</h3>
+                            <p>what happens during a navjote</p>
+                        </div>
+                        
+                        <div class="info-card" id="sigPrayersCard">
+                            <h3>significance & prayers</h3>
+                            <p>the meaning behind the ritual</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom section with participation and GIF side by side -->
+                <div class="bottom-section">
+                    <!-- Participation Section -->
+                    <div class="participation-section">
+                        Think of Navjote as your official welcome party to the Zoroastrian community. It's that meaningful moment when you transition from just being born into the faith to actively choosing it. It's definitely a big deal!
+                    </div>
+                    
+                    <!-- Video container with simpler implementation -->
+                    <div class="ceremony-gif" style="overflow: hidden; position: relative; background: #000;">
+                        <video 
+                            id="navjote-video"
+                            autoplay 
+                            muted 
+                            loop 
+                            playsinline 
+                            webkit-playsinline 
+                            disableremoteplayback 
+                            class="navjote-video" 
+                            style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <source src="../media/videos/navjote_video.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal popups for each section -->
+    <!-- Preparations Modal -->
+    <div id="preparationsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <h2 class="modal-title">Preparations</h2>
+            <div class="modal-text">
+                <p>Let's talk about the attire for your big day. Each piece has deep meaning and significance for the ceremony.</p>
+                
+                <h3>The Sacred Essentials:</h3>
+                <ul class="ceremony-list">
+                    <li><strong>2 Sadras</strong> - Sacred shirts with a special pocket (gireban) for collecting good deeds. One for the ceremony, one for everyday wear.</li>
+                    <li><strong>2 Kastis</strong> - Sacred threads worn around the waist. The thin one for the ceremony, and the thick one for daily use.</li>
+                    <li><strong>1 Long lengho</strong> - The ceremonial silk or cotton garment that completes the traditional look.</li>
+                    <li><strong>Personal items</strong> - Fresh towel, soap, comb, and slippers (sapat) for cleanliness and ritual purification.</li>
+                </ul>
+                
+                <p><strong>For the girls:</strong> Traditional dress with accessories — jewelry, cap, ribbon. The outfit represents the connection to Zoroastrian heritage while marking this important occasion.</p>
+                
+                <p><strong>For the boys:</strong> The classic Dagli (traditional jacket) with matching pants, accessories, and cap. It's formal attire that connects to ancestral traditions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ceremony Modal -->
+    <div id="ceremonyModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <h2 class="modal-title">The Ceremony</h2>
+            <div class="modal-text">
+                <p>the navjot ceremony is a significant ritual in a young parsi's life, traditionally performed in the morning during the havan geh. here's the detailed process of this sacred initiation:</p>
+                
+                <h3>preparation and nahan ritual</h3>
+                <p>according to tradition, the child should not eat or drink anything before the ceremony, as they must be on an empty stomach for the nahan (ritual bath). a priest brings nirang (consecrated bull's urine), gaomez (unconsecrated bull's urine), and pomegranate leaves to the ceremony location.</p>
+                
+                <div class="ceremony-section">
+                    <h3>the purification process</h3>
+                    <ol class="ritual-steps">
+                        <li><strong>initial prayers:</strong> the priest performs padyab kasti and prepares small amounts of nirang and gaomez in metal cups (fulyu).</li>
+                        
+                        <li><strong>cleansing ritual:</strong> the child washes their hands and face before reciting kasti prayers. a white handkerchief is placed on the child's right hand with pomegranate leaves.</li>
+                        
+                        <li><strong>sacred consumption:</strong> after reciting grace for meals, the child chews the pomegranate leaves and spits out the residue. they then sip a few drops of nirang three times while mentally reciting "in khuram in pāki-e tan yaozdāthri-e ravān rā."</li>
+                        
+                        <li><strong>prayers:</strong> traditionally, the child would recite the patet pashemāni, but nowadays they often recite yatha ahu vairyo while the priest recites the full patet pashemani on their behalf.</li>
+                        
+                        <li><strong>the bath:</strong> after prayers, the child is taken for a bath where taro (gaomez) is applied to their body. once dry, the child bathes and then wears a pyjama and cap with a white cloth draped over the shoulders.</li>
+                    </ol>
+                </div>
+                
+                <div class="ceremony-section">
+                    <h3>the navjot ceremony proper</h3>
+                    <ol class="ritual-steps">
+                        <li><strong>ceremonial entrance:</strong> the child is led in procession to the ceremony area. before stepping onto the stage, a senior lady performs the traditional āchu-michu ritual. the child then sits facing east on a wooden stool (pātlo) covered with a white cloth.</li>
+                        
+                        <li><strong>priestly assembly:</strong> 4, 6, or 8 priests sit around the child (creating an odd number of people on the mat). the senior priest begins the patet pashemani prayer while others join in.</li>
+                        
+                        <li><strong>sudreh investiture:</strong> the child stands facing east while the priest helps them hold the right and left sleeves of the sadra. after reciting yatha ahu vairyos and the din no kalmo, the priest helps the child wear the sadra.</li>
+                        
+                        <li><strong>kusti ritual:</strong> the child faces the sun (east in havan gah, west in uzirin gah). the priest stands behind holding the kasti, and the child holds the priest's little finger while they recite the initial part of the <em>hormazd yasht</em>. then together they recite the <em>ahura mazda khodae</em> and <em>jasa me avanghe mazda</em> prayers, symbolizing the transfer of divine energy from priest to child.</li>
+                        
+                        <li><strong>blessings:</strong> the priest applies a red tika (vermilion paste) to the child's forehead with rice grains, places a flower garland around them, and gives them symbolic items including a coconut, betel leaf, and sopari.</li>
+                        
+                        <li><strong>final blessing:</strong> the priest recites the doa tandarosti while showering the child with a mixture of rice, nuts, rose petals, and pomegranate seeds.</li>
+                    </ol>
+                </div>
+                
+                <p>after the ceremony, the child changes into new clothes and visits a nearby fire temple (agyari or atash behram) to offer sandalwood to the sacred fire and receive its blessings. this completes their initiation into the zoroastrian faith.</p>
+                <p>if you want to dive deeper into this topic hop on to <a href="https://ramiyarkaranjia.com/navjot-ritual/" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">ramiyar sir's website</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prayers Modal -->
+    <div id="sigPrayersModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <h2 class="modal-title">Significance & Prayers</h2>
+            <div class="modal-text">
+                <p>Let's explore what these prayers and symbols actually mean and why they matter:</p>
+                
+                <h3>The Kusti Knots & Wraps:</h3>
+                <ul class="ceremony-list">
+                    <li><strong>The 3 Wraps:</strong> Represent "Good Thoughts, Good Words, Good Deeds" - the core Zoroastrian life values.</li>
+                    
+                    <li><strong>The 72 Threads:</strong> Symbolize the 72 chapters of the Yasna, one of our most sacred texts.</li>
+                    
+                    <li><strong>The 4 Knots:</strong> When you tie those 4 knots, you're promising to remember: the oneness of God, the truth of Zarathustra's teachings, the importance of doing good, and choosing the right path.</li>
+                </ul>
+                
+                <h3>The Key Prayers You'll Say:</h3>
+                <ul class="ceremony-list">
+                    <li><strong>Hormazd Khoday:</strong> A prayer for forgiveness of sins and following the path of righteousness</li>
+                    
+                    <li><strong>Jasa Me Avanghe Mazda:</strong> Calling on divine help to be your best self</li>
+                    
+                    <li><strong>Din No Kalmo:</strong> The Zoroastrian declaration of faith that connects you to the community</li>
+                </ul>
+                
+                <p>Don't stress about memorizing everything perfectly. What matters most is understanding the meaning behind these traditions - you're joining a community that has championed good thoughts, good words, and good deeds for thousands of years.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                
+                // Play the video
+                video.play().catch(function(error) {
+                    console.log('Autoplay failed:', error);
+                    
+                    // If autoplay fails, set up touch/interaction event to play on first interaction
+                    document.body.addEventListener('touchstart', function() {
+                        video.play().catch(function(e) {
+                            console.log('Play on interaction failed:', e);
+                        });
+                    }, {once: true});
+                });
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Force autoplay immediately
+        forceAutoplayVideos();
+        
+        // For iOS, also try to play videos on page visibility change
+        if (isIOS) {
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    forceAutoplayVideos();
+                }
+            });
+            
+            // Also try playing when window gets focus
+            window.addEventListener('focus', forceAutoplayVideos);
+            
+            // Attempt to play videos again after a short delay (for slower devices)
+            setTimeout(forceAutoplayVideos, 1000);
+        }
+        
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile navigation functionality
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            if (mobileNavToggle && mobileNavOverlay) {
+                mobileNavToggle.addEventListener('click', function() {
+                    mobileNavOverlay.style.display = 'block';
+                });
+                mobileNavOverlay.addEventListener('click', function(e) {
+                    if (e.target === mobileNavOverlay) {
+                        mobileNavOverlay.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Typing animation initialization
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            
+            if (text1Element && text2Element) {
+                const texts = [
+                    "The Navjote is your spiritual initiation - it's the ceremony where you officially join the Zoroastrian community. Usually happening between ages 7-15, it's when you receive your Sudreh (sacred shirt) and Kusti (sacred cord).",
+                    "During the ceremony, you'll recite prayers, make important promises, and transition from simply being born Zoroastrian to actively choosing the faith. It marks a significant milestone in your spiritual journey. The word Navjote literally means \"new follower\" - and after this ceremony, you're expected to live by the core Zoroastrian values: good thoughts, good words, and good deeds."
+                ];
+                
+                let currentTextIndex = 0;
+                let currentCharIndex = 0;
+                let currentElement = text1Element;
+                
+                function typeText() {
+                    if (!currentElement || currentTextIndex >= texts.length) {
+                        const lastCursor = document.querySelector('.typing-cursor');
+                        if(lastCursor) lastCursor.remove();
+                        return;
+                    }
+                    
+                    const currentText = texts[currentTextIndex];
+                    
+                    if (currentCharIndex < currentText.length) {
+                        const existingCursor = currentElement.querySelector('.typing-cursor');
+                        if (existingCursor) existingCursor.remove();
+                        
+                        currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                        
+                        const cursor = document.createElement('span');
+                        cursor.className = 'typing-cursor';
+                        currentElement.appendChild(cursor);
+                        
+                        currentCharIndex++;
+                        setTimeout(typeText, Math.random() * 20 + 15); // slower, more natural typing
+                    } else {
+                        const existingCursor = currentElement.querySelector('.typing-cursor');
+                        if (existingCursor) existingCursor.remove();
+                        
+                        currentTextIndex++;
+                        currentCharIndex = 0;
+                        
+                        if (currentTextIndex < texts.length) {
+                            currentElement = text2Element;
+                            if(currentElement) currentElement.textContent = '';
+                            setTimeout(typeText, 600); // pause before next paragraph
+                        } else {
+                            currentElement = null;
+                        }
+                    }
+                }
+                
+                // Start the typing animation
+                setTimeout(typeText, 500);
+            }
+            
+            // Modal functionality
+            // Modal open/close logic
+            const preparationsCard = document.getElementById('preparationsCard');
+            const ceremonyCard = document.getElementById('ceremonyCard');
+            const sigPrayersCard = document.getElementById('sigPrayersCard');
+            const preparationsModal = document.getElementById('preparationsModal');
+            const ceremonyModal = document.getElementById('ceremonyModal');
+            const sigPrayersModal = document.getElementById('sigPrayersModal');
+            const closeButtons = document.querySelectorAll('.close-button');
+
+            preparationsCard.addEventListener('click', function() {
+                preparationsModal.style.display = 'flex';
+            });
+            ceremonyCard.addEventListener('click', function() {
+                ceremonyModal.style.display = 'flex';
+            });
+            sigPrayersCard.addEventListener('click', function() {
+                sigPrayersModal.style.display = 'flex';
+            });
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

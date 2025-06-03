@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>wedding rituals - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Welcome Text Styles with typing animation */
+        .welcome-text-container {
+            padding: 0 2rem; /* Reduced left/right padding to allow more text width */
+            margin-bottom: 1.5rem;
+            min-height: 200px; /* Fixed minimum height to prevent content shifting */
+            overflow: hidden;
+            text-align: left;
+            width: 95%; /* Increased width to use more page space */
+            max-width: 1200px; /* Added max-width for very large screens */
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            width: 100%;
+            max-width: 100%; /* Allow text to use full container width */
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem; /* Increased space for all paragraphs */
+            min-height: 1.5em;
+        }
+
+        /* Specific heights for welcome text paragraphs to prevent shifting */
+        #text1 {
+            margin-bottom: 0.8rem; /* Increased space after the first line */
+            min-height: 60px; /* Fixed height based on text content */
+        }
+        #text2 {
+            margin-bottom: 0.8rem; /* Increased space after the second line */
+            min-height: 60px; /* Fixed height based on text content */
+        }
+        #text3 {
+            margin-bottom: 0.8rem; /* Increased space after the last line */
+            min-height: 60px; /* Fixed height based on text content */
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ccc;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Content layout */
+        .content-layout {
+            display: flex;
+            gap: 2rem;
+            flex: 1;
+            padding: 0 3rem 1.5rem 3rem;
+            margin-top: 1rem;
+            align-items: stretch;
+        }
+
+        /* Left side with ritual cards */
+        .left-side {
+            width: 32%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        /* Media container for video/gif */
+        .media-container {
+            width: 32%;
+            aspect-ratio: 16/9;
+            max-height: none;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            align-self: center;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        /* Style for play button overlay (only shown if autoplay is blocked) */
+        .play-button-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .play-button-overlay span {
+            color: white;
+            font-size: 40px;
+            opacity: 0.8;
+        }
+
+        .media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Right side with ritual cards */
+        .right-side {
+            width: 32%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            justify-content: space-between;
+        }
+
+        /* Ritual card styles */
+        .ritual-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 75px;
+            max-height: 130px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .ritual-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .ritual-card h3 {
+            margin-bottom: 0.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .ritual-card p {
+            color: #999;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .content-layout {
+                flex-direction: column;
+            }
+            
+            .left-side, .right-side {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .ritual-card {
+                flex: 1;
+                min-width: 45%;
+            }
+            
+            .media-container {
+                width: 100%;
+                aspect-ratio: 16/9;
+                order: -1;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                overflow: auto !important;
+            }
+            .welcome-text-container {
+                padding: 0 1rem;
+                height: auto;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .left-side, .right-side {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-nav-overlay"></div> <!-- Needed for mobile navigation -->
+        
+        <main class="main-content">
+            <div class="header">
+                <h1 class="page-title">wedding rituals</h1>
+            </div>
+            
+            <div class="welcome-text-container">
+                <div class="welcome-text">
+                    <p id="text1"></p>
+                    <p id="text2"></p>
+                    <p id="text3"></p>
+                </div>
+            </div>
+            
+            <div class="content-layout">
+                <!-- Left side ritual cards -->
+                <div class="left-side">
+                    <a href="wedding/engagement.html" class="ritual-card">
+                        <h3>engagement</h3>
+                        <p>formal ceremony where families exchange rings, gifts and blessings</p>
+                    </a>
+                    
+                    <a href="wedding/wedding-prep.html" class="ritual-card">
+                        <h3>wedding prep</h3>
+                        <p>traditional preparations and exchange of gifts between the families</p>
+                    </a>
+                    
+                    <a href="wedding/pre-wedding.html" class="ritual-card">
+                        <h3>pre-wedding</h3>
+                        <p>ceremonies and rituals performed in the days before the main wedding</p>
+                    </a>
+                </div>
+                
+                <!-- Media container for video in center -->
+                <div class="media-container" style="overflow: hidden; position: relative; background: #000;">
+                    <video 
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline 
+                        webkit-playsinline 
+                        disableremoteplayback 
+                        class="video-element" 
+                        style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        <source src="../media/videos/wedding-rituals.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+                <!-- Right side ritual cards -->
+                <div class="right-side">
+                    <a href="wedding/wedding-day.html" class="ritual-card">
+                        <h3>wedding day</h3>
+                        <p>main ceremony including nahan, ashirwad and other sacred wedding rituals</p>
+                    </a>
+                    
+                    <a href="wedding/post-wedding.html" class="ritual-card">
+                        <h3>post wedding</h3>
+                        <p>ceremonies and traditions followed after the wedding day</p>
+                    </a>
+                    
+                    <a href="wedding/pregnancy-first-child.html" class="ritual-card">
+                        <h3>pregnancy & first child</h3>
+                        <p>special ceremonies for pregnancy announcement and first child celebrations</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typing animation for welcome text
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            const text3Element = document.getElementById('text3');
+            
+            // Get user name from localStorage or use default
+            const userProfile = JSON.parse(localStorage.getItem('userProfile')) || {};
+            const userName = userProfile.firstName || 'friend';
+            
+            // Welcome text array with improved descriptions
+            const texts = [
+                // Removed 'hi friend' greeting as requested
+                "so you're getting hitched! here's your survival guide to our delightfully complex rituals. it's only one day, but the photos are forever.",
+                "remember - \"all's well that ends well, but a good start is half the battle.\""
+            ];
+            
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+            
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    // Ensure last cursor is removed
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return; // All done typing or element missing
+                }
+                
+                const currentText = texts[currentTextIndex];
+                
+                if (currentCharIndex < currentText.length) {
+                    // Remove previous cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Add next character
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    
+                    // Add blinking cursor
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    currentElement.appendChild(cursor);
+                    
+                    currentCharIndex++;
+                    // Variable typing speed like home.html
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    // Finished current text, remove cursor
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    
+                    // Move to next text
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    
+                    if (currentTextIndex < texts.length) {
+                        currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                        if(currentElement) currentElement.textContent = ''; // Clear next element
+                        // Match home.html timing between lines
+                        setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
+                    } else {
+                        // Add a persistent cursor at the end
+                        const cursor = document.createElement('span');
+                        cursor.className = 'typing-cursor';
+                        text3Element.appendChild(cursor);
+                    }
+                }
+            }
+            
+            // Start typing with a small initial delay
+            setTimeout(typeText, 300);
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+    <script>
+        // GIF-like video implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            const weddingVideo = document.getElementById('wedding-video');
+            
+            // Handle autoplay and progressive loading
+            if (weddingVideo) {
+                // Set initial loading to metadata for faster initial load
+                weddingVideo.preload = 'metadata';
+                
+                // Ensure video plays automatically when it can
+                weddingVideo.addEventListener('canplay', function() {
+                    // Try to play automatically (may be blocked by browsers)
+                    weddingVideo.play().catch(error => {
+                        console.log('Auto-play was prevented by the browser');
+                        // Add a play button overlay only if autoplay is blocked
+                        if (error.name === 'NotAllowedError') {
+                            const playButton = document.createElement('div');
+                            playButton.className = 'play-button-overlay';
+                            playButton.innerHTML = '<span>▶</span>';
+                            weddingVideo.parentNode.appendChild(playButton);
+                            
+                            // Play video when overlay is clicked
+                            playButton.addEventListener('click', function() {
+                                weddingVideo.play();
+                                playButton.style.display = 'none';
+                            });
+                        }
+                    });
+                });
+                
+                // Switch to better quality after playing starts
+                weddingVideo.addEventListener('playing', function() {
+                    weddingVideo.preload = 'auto';
+                });
+            }
+            
+            // Force autoplay videos on iOS
+            function forceAutoplayVideos() {
+                document.querySelectorAll('video').forEach(function(video) {
+                    // Make sure video is muted for autoplay
+                    video.muted = true;
+                    
+                    // Play the video
+                    video.play().catch(function(error) {
+                        console.log('Autoplay failed:', error);
+                        
+                        // If autoplay fails, set up touch/interaction event to play on first interaction
+                        document.body.addEventListener('touchstart', function() {
+                            video.play().catch(function(e) {
+                                console.log('Play on interaction failed:', e);
+                            });
+                        }, {once: true});
+                    });
+                });
+            }
+            
+            // Check if this is iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            // Force autoplay immediately
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            min-height: 4.8rem;
+        }
+
+        .welcome-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .gif-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Friends grid styles */
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 1rem auto 0;
+        }
+        
+        @media (max-width: 992px) {
+            .friends-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .friends-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .friend-box {
+            aspect-ratio: 1/1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .friend-box:hover {
+            transform: scale(1.03);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .friend-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .friend-box.placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 4rem 1.5rem 1.5rem 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            body {
+                overflow: auto !important;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Include - Add here if not present -->
+        <!--#include file="../templates/sidebar-template.html" -->
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">stories</h1>
+                <div id="welcome-text" class="welcome-text"></div>
+            </div>
+            
+            <div class="gif-container">
+                <img src="../media/images/stories-placeholder.gif" alt="Stories Coming Soon">
+            </div>
+            
+            <div class="friends-grid">
+                <!-- Existing friends -->
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend1.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend3.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend4.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+                <!-- New friend 5 -->
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend5.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+                <!-- New friends 6 and 7 -->
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend6.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend7.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+                <!-- New friends 8 and 9 -->
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend8.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="friend-box">
+                    <video autoplay loop muted playsinline disableremoteplayback>
+                        <source src="../media/gifs/friend9.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+                <!-- Placeholder friend -->
+                <div class="friend-box placeholder">Friend 10<br>Coming Soon</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typing animation for welcome text
+            const welcomeText = document.getElementById('welcome-text');
+            const textToType = "we're working on collecting zoroastrian stories and legends to share with you soon. since you could not hold your horses, you will now be subjected to my friends' weird faces.";
+            let i = 0;
+            const typingSpeed = 50; // milliseconds per character
+            function typeWriter() {
+                if (i < textToType.length) {
+                    welcomeText.innerHTML = textToType.substring(0, i + 1);
+                    i++;
+                    setTimeout(typeWriter, typingSpeed);
+                }
+            }
+            typeWriter();
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

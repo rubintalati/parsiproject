@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6DT5E4V7SQ');
+
+      // Track page load time
+      window.addEventListener('load', function() {
+        // Calculate page load time
+        if(window.performance) {
+          const perfData = window.performance.timing;
+          const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+          // Send to Google Analytics
+          if(pageLoadTime > 0) {
+            gtag('event', 'timing_complete', {
+              'name': 'page_load',
+              'value': pageLoadTime,
+              'event_category': 'Page Timing'
+            });
+            console.log('Page load time: ' + pageLoadTime + 'ms');
+          }
+        }
+      });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-section {
+            flex: 0.35;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-container {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            align-self: flex-start;
+        }
+
+        .logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border: none !important;
+        }
+        
+        .content-container {
+            margin-top: auto;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: bold;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+        }
+
+        .right-section {
+            flex: 0.65;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button {
+            background-color: #fff;
+            color: #000;
+            border: none;
+        }
+
+        .primary-button:hover {
+            background-color: #e6e6e6;
+        }
+
+        .secondary-button {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        /* Date picker style question selector */
+        .question-picker {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .question-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        /* Box is positioned absolutely in the center */
+        .selection-box-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .selection-box {
+            width: 100%;
+            max-width: 90%;
+            height: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .selection-box:hover {
+            background-color: rgba(30, 30, 30, 0.7);
+        }
+
+        .selection-box .arrow {
+            margin-left: 1rem;
+        }
+
+        /* Text container for consistent alignment */
+        .text-container {
+            width: 100%;
+            text-align: left;
+            padding-left: 0;
+        }
+
+        /* Ensure the questions do not overlap with the selection box */
+        .question-slider {
+            position: absolute;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .question-item {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        .question-item:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .question-item.active {
+            color: transparent; /* Hide text when in active position */
+        }
+
+        .question-item span {
+            pointer-events: none; /* Ensure clicks go to the question-item */
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                text-align: center;
+            }
+            
+            .container {
+                flex-direction: column-reverse;
+                height: auto;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .left-section, .right-section {
+                flex: none;
+                width: 100%;
+            }
+            
+            .left-section {
+                border-right: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1.5rem;
+                min-height: 40vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .right-section {
+                height: 60vh;
+                min-height: 350px;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .logo-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 5;
+                background-color: rgba(0, 0, 0, 0.5);
+                margin: 0;
+                border-radius: 0;
+                border-top: none;
+                border-left: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            
+            .content-container {
+                margin-top: 1rem;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .title {
+                font-size: 2rem;
+                margin-top: 1rem;
+                text-align: center;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 0.8rem;
+                width: 100%;
+                max-width: 300px;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            
+            /* Hide question picker on mobile */
+            .question-picker {
+                display: none;
+            }
+            
+            /* Show mobile explore button instead */
+            .mobile-explore-button {
+                display: block;
+                position: relative;
+                z-index: 2;
+                width: 80%;
+                max-width: 300px;
+                margin: 1.5rem auto 0;
+            }
+            
+            .mobile-explore-button a {
+                display: block;
+                background-color: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: #fff;
+                padding: 1rem;
+                text-align: center;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background-color 0.3s ease;
+            }
+            
+            .mobile-explore-button a:hover {
+                background-color: rgba(30, 30, 30, 0.7);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            html, body, .container {
+                height: 100vh;
+                height: 100dvh; /* Use dynamic viewport height when available */
+                overflow: auto; /* Changed from hidden to allow scrolling/refreshing */
+                width: 100%;
+                /* position: fixed removed to allow refreshing */
+            }
+            
+            .logo-container {
+                display: none;
+            }
+            
+            .mobile-logo {
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: -25%;
+                width: 300px;
+                height: 300px;
+                z-index: 1;
+                opacity: 0.08;
+                transform: translateY(-50%);
+                pointer-events: none;
+            }
+            
+            /* New visible logo between video and content */
+            .mobile-visible-logo {
+                display: block;
+                width: 80px;
+                height: 80px;
+                margin: -20px auto 5px;
+                position: relative;
+                z-index: 5;
+            }
+            
+            .video-background {
+                height: 40vh; /* Reduced from 55vh to create less empty space */
+                object-position: center;
+            }
+            
+            .right-section {
+                height: 40vh; /* Reduced from 55vh to match video */
+                min-height: unset;
+            }
+            
+            .left-section {
+                height: auto; /* Changed to auto to allow scrolling */
+                min-height: unset;
+                padding: 1rem;
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            
+            .content-container {
+                width: 100%;
+                padding: 0;
+                text-align: center;
+                margin-top: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-bottom: 2rem; /* Add padding at bottom for scrollable content */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .right-section {
+                height: 35vh; /* Reduced further for smaller screens */
+            }
+            
+            .left-section {
+                height: 65vh; /* Increased to create more space for content */
+                padding: 0.5rem 1rem;
+            }
+            
+            .title {
+                font-size: 2.2rem;
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                padding: 0 0.5rem;
+            }
+            
+            .selection-box, .question-item {
+                height: 50px;
+                padding: 0 1rem;
+            }
+            
+            .text-container, .question-item span {
+                font-size: 0.9rem;
+            }
+            
+            .cta-buttons {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+                padding-bottom: 1rem;
+            }
+            
+            .cta-button {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+        
+        /* For very small screens */
+        @media (max-width: 360px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .cta-button {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .selection-box {
+                height: 45px;
+            }
+        }
+        
+        .mobile-explore-button {
+            display: none;
+        }
+        
+        .mobile-logo {
+            display: none;
+        }
+        
+        .mobile-visible-logo {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .mobile-visible-logo {
+                display: block;
+                width: 80px;
+                height: 80px;
+                margin: -20px auto 5px;
+                position: relative;
+                z-index: 5;
+            }
+        }
+    </style>
+    <!-- Page preloader for faster navigation -->    
+    <script defer src="js/page-preloader.js"></script>
+    <!-- Media optimizer for better performance -->
+    <script defer src="js/media-optimizer.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="mobile-logo" />
+            <div>
+                <div class="logo-container">
+                    <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="logo" />
+                </div>
+            </div>
+            
+            <div class="content-container">
+                <img src="media/logo/black theme.png" alt="The Parsi Project Logo" class="mobile-visible-logo" />
+                <h1 class="title">hi. this is the<br>parsi project</h1>
+                <p class="subtitle">come for the prayers,stay for the vibes</p>
+                
+                <div class="cta-buttons">
+                    <a href="pages/all-prayers.html" class="cta-button secondary-button">all prayers</a>
+                    <a href="pages/home.html" class="cta-button primary-button">daily prayers</a>
+                </div>
+                
+                <div class="mobile-explore-button">
+                    <a href="#">Explore</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <!-- GIF-like background video with iPhone and Android compatibility -->
+            <video 
+                id="main-background-video"
+                class="video-background" 
+                autoplay="autoplay" 
+                muted="muted" 
+                loop="loop" 
+                playsinline="playsinline" 
+                webkit-playsinline="webkit-playsinline" 
+                disableremoteplayback 
+                preload="metadata"
+                style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                loading="lazy"
+            >
+                <source src="media/videos/landing-page.mp4" type="video/mp4">
+                </video>
+                
+                <!-- Date picker style question selector -->
+                <div class="question-picker">
+                    <div class="question-wrapper">
+                        <!-- Static selection box with dynamic content in a separate container -->
+                        <div class="selection-box-container">
+                            <a href="#" id="selectionBox" class="selection-box">
+                                <div class="text-container">
+                                    <span id="activeQuestionText">learn about agiary</span>
+                                </div>
+                                <span class="arrow">→</span>
+                            </a>
+                        </div>
+                        
+                        <div class="question-slider" id="questionSlider">
+                            <a href="pages/peramni-calculator.html" class="question-item" data-index="0" data-link="pages/peramni-calculator.html">
+                                <span>peramni kekli aapvani</span>
+                                <span class="invisible-arrow" style="opacity: 0;">→</span>
+                            </a>
+                            <a href="pages/wedding-rituals.html" class="question-item" data-index="1" data-link="pages/wedding-rituals.html">
+                                <span>what wedding rituals are important</span>
+                                <span class="invisible-arrow" style="opacity: 0;">→</span>
+                            </a>
+                            <a href="pages/daily prayers/sudreh-kusti.html" class="question-item" data-index="2" data-link="pages/daily prayers/sudreh-kusti.html">
+                                <span>where do i face while doing the kasti</span>
+                                <span class="invisible-arrow" style="opacity: 0;">→</span>
+                            </a>
+                            <a href="pages/navjote.html" class="question-item" data-index="3" data-link="pages/navjote.html">
+                                <span>its my child's navjote. helppppp</span>
+                                <span class="invisible-arrow" style="opacity: 0;">→</span>
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay (required for iOS)
+                video.muted = true;
+                video.defaultMuted = true;
+                video.setAttribute('muted', 'muted');
+                
+                // Ensure all required attributes are set
+                video.setAttribute('autoplay', 'autoplay');
+                video.setAttribute('playsinline', 'playsinline');
+                video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+                video.setAttribute('disableremoteplayback', '');
+                
+                // Force low quality initially for faster start
+                if (video.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')) {
+                    video.setAttribute('preload', 'auto');
+                }
+                
+                // Explicitly load the video
+                try {
+                    video.load();
+                } catch (e) {
+                    console.log('Video load failed:', e);
+                }
+                
+                // Play the video with multiple fallbacks
+                const playAttempt = setInterval(() => {
+                    // iOS sometimes needs multiple play attempts
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Video started playing successfully
+                            clearInterval(playAttempt);
+                            console.log('Video started playing successfully');
+                        }).catch(error => {
+                            console.log('Autoplay attempt failed:', error);
+                            // Continue trying via the interval
+                        });
+                    }
+                }, 300);
+                
+                // Clear interval after 3 seconds to avoid excessive attempts
+                setTimeout(() => {
+                    clearInterval(playAttempt);
+                    
+                    // If video is not playing by now, try one more time with user interaction
+                    if (video.paused) {
+                        console.log('Setting up interaction handlers');
+                        // Set up multiple interaction events
+                        ['touchstart', 'touchend', 'click', 'scroll'].forEach(event => {
+                            document.addEventListener(event, function() {
+                                video.play().catch(() => {});
+                            }, {once: true});
+                        });
+                    }
+                }, 3000);
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the autoplay forcing code
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay
+            forceAutoplayVideos();
+            
+            // For iOS, also try to play videos on page visibility change
+            if (isIOS) {
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Also try playing when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Attempt to play videos again after a short delay (for slower devices)
+                setTimeout(forceAutoplayVideos, 1000);
+            }
+
+            const questionSlider = document.getElementById('questionSlider');
+            const questionItems = document.querySelectorAll('.question-item');
+            const activeQuestionText = document.getElementById('activeQuestionText');
+            const selectionBox = document.getElementById('selectionBox');
+            const mobileExploreButton = document.querySelector('.mobile-explore-button a');
+            const itemHeight = 60; // Height of each question item
+            const totalItems = questionItems.length;
+            let currentIndex = 2; // Start with the middle item active
+            let autoScrollInterval;
+            let isDragging = false;
+            let startY, startTranslate;
+
+            // Initialize position
+            function initializePosition() {
+                // Set initial transform to center the active item
+                updateSliderPosition();
+                
+                // Set active class to current item
+                updateActiveItem();
+            }
+
+            // Update slider position based on current index
+            function updateSliderPosition() {
+                const translateY = -currentIndex * itemHeight + (300 - itemHeight) / 2;
+                questionSlider.style.transform = `translateY(${translateY}px)`;
+            }
+
+            // Update which item is active
+            function updateActiveItem() {
+                // Update active class
+                questionItems.forEach((item, index) => {
+                    if (index === currentIndex) {
+                        item.classList.add('active');
+                        // Update the text in the static selection box
+                        const text = item.querySelector('span').textContent.trim();
+                        activeQuestionText.textContent = text;
+                        // Update href of selection box
+                        const link = item.getAttribute('data-link');
+                        selectionBox.href = link;
+                        // Update mobile explore button href
+                        if (mobileExploreButton) {
+                            mobileExploreButton.href = link;
+                            mobileExploreButton.textContent = "Explore: " + text;
+                        }
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            // Move to next item
+            function moveToNextItem() {
+                currentIndex = (currentIndex + 1) % totalItems;
+                updateSliderPosition();
+                updateActiveItem();
+            }
+
+            // Click handler for items
+            function onItemClick(e) {
+                const clickedItem = e.currentTarget;
+                const clickedIndex = parseInt(clickedItem.getAttribute('data-index'));
+                
+                // Only update if clicking a different item
+                if (clickedIndex !== currentIndex) {
+                    currentIndex = clickedIndex;
+                    updateSliderPosition();
+                    updateActiveItem();
+                    
+                    // Reset auto-scroll timer
+                    resetAutoScroll();
+                    
+                    // Prevent navigation when just selecting
+                    e.preventDefault();
+                }
+                // Allow navigation if clicking the same item again
+            }
+
+            // Touch/Mouse events for dragging
+            function onDragStart(e) {
+                isDragging = true;
+                startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+                startTranslate = getCurrentTranslateY();
+                
+                // Pause auto-scroll during drag
+                clearInterval(autoScrollInterval);
+                
+                // Add event listeners for move and end
+                document.addEventListener('touchmove', onDragMove, { passive: false });
+                document.addEventListener('mousemove', onDragMove);
+                document.addEventListener('touchend', onDragEnd);
+                document.addEventListener('mouseup', onDragEnd);
+                
+                e.preventDefault();
+            }
+
+            function onDragMove(e) {
+                if (!isDragging) return;
+                
+                const currentY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+                const deltaY = currentY - startY;
+                
+                const newTranslate = startTranslate + deltaY;
+                questionSlider.style.transform = `translateY(${newTranslate}px)`;
+                
+                e.preventDefault();
+            }
+
+            function onDragEnd(e) {
+                isDragging = false;
+                
+                // Calculate which item is closest to center
+                const currentTranslate = getCurrentTranslateY();
+                const centerPosition = (300 - itemHeight) / 2;
+                const offset = currentTranslate - centerPosition;
+                const itemOffset = Math.round(offset / itemHeight);
+                
+                // Calculate new index
+                currentIndex = Math.max(0, Math.min(totalItems - 1, -itemOffset));
+                
+                // Update position and active item
+                updateSliderPosition();
+                updateActiveItem();
+                
+                // Reset auto-scroll
+                resetAutoScroll();
+                
+                // Remove event listeners
+                document.removeEventListener('touchmove', onDragMove);
+                document.removeEventListener('mousemove', onDragMove);
+                document.removeEventListener('touchend', onDragEnd);
+                document.removeEventListener('mouseup', onDragEnd);
+            }
+
+            // Helper to get current translateY value
+            function getCurrentTranslateY() {
+                const style = window.getComputedStyle(questionSlider);
+                const matrix = new DOMMatrixReadOnly(style.transform);
+                return matrix.m42; // translateY value
+            }
+
+            // Auto-scroll function
+            function startAutoScroll() {
+                autoScrollInterval = setInterval(moveToNextItem, 5000);
+            }
+
+            // Reset auto-scroll timer
+            function resetAutoScroll() {
+                clearInterval(autoScrollInterval);
+                startAutoScroll();
+            }
+
+            // Add click event listeners to all items
+            questionItems.forEach(item => {
+                item.addEventListener('click', onItemClick);
+            });
+            
+            // Video playback implementation to ensure the full video plays
+            const backgroundVideo = document.getElementById('background-video');
+            if (backgroundVideo) {
+                // Ensure full video loading
+                backgroundVideo.preload = 'auto';
+                
+                // Make sure the video plays completely
+                backgroundVideo.addEventListener('loadedmetadata', () => {
+                    // Start playback when metadata is loaded
+                    backgroundVideo.play().catch(error => {
+                        console.log('Autoplay was prevented by the browser', error);
+                    });
+                });
+                
+                // Add event listener for when video ends to ensure looping works properly
+                backgroundVideo.addEventListener('ended', () => {
+                    // Reset to beginning and play again
+                    backgroundVideo.currentTime = 0;
+                    backgroundVideo.play();
+                });
+                
+                // Handle any errors that might occur during playback
+                backgroundVideo.addEventListener('error', (e) => {
+                    console.error('Video error:', e);
+                });
+                
+                // Force reload if the video stalls
+                backgroundVideo.addEventListener('stalled', () => {
+                    console.log('Video stalled, attempting to restart');
+                    backgroundVideo.load();
+                    backgroundVideo.play();
+                });
+            }
+
+            // Add drag event listeners to slider
+            questionSlider.addEventListener('touchstart', onDragStart, { passive: false });
+            questionSlider.addEventListener('mousedown', onDragStart);
+
+            // Initialize position and start auto-scroll
+            initializePosition();
+            startAutoScroll();
+            
+            // Add resize event listener to handle orientation changes
+            window.addEventListener('resize', function() {
+                // Just reapply the position calculation
+                updateSliderPosition();
+            });
+        });
+    </script>
+</body>
+</html>

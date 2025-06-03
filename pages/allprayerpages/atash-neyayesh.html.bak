@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ātash Neyāyesh - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .prayer-note {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Prayer title styling */
+        .prayer-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        /* Prayer text styling */
+        .prayer-text {
+            margin-bottom: 2.5rem;
+        }
+
+        .prayer-paragraph {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Translation title styling */
+        .translation-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        /* Translation text styling */
+        .prayer-translation p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+
+            .translation-title {
+                font-size: 1.25rem;
+            }
+
+            .prayer-paragraph, 
+            .prayer-translation p {
+                font-size: 1rem;
+            }
+
+            .prayer-note {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .prayer-title {
+                font-size: 1.25rem;
+            }
+
+            .prayer-note-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+
+        <h1 class="prayer-title">ātash neyāyesh</h1>
+        
+        <div class="prayer-note-container">
+            <p class="prayer-note">This Neyāyesh should be recited every day if possible, and especially on the following five days of every month - Hormazd, Ardibehesht, Ādar, Sroash and Beherām.</p>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo. (To recite bowing the head): Nemase-te, ātarsh Mazdāo Ahurahe hudhāo mazishta yazata. Ashem Vohū 1.</p>
+            
+            <p class="prayer-paragraph">Pa nāme yazdān Ahura Mazda Khodāe awazūni gorje khoreh awazāyād. (To recite as follows before Ātash Behrām) Ātash Beherām Ādar farā. (To recite as under before Ātash Ādarān) Ātash ādarān Ādar farā. (To recite as under before the fire in the house) Ātash dādgāh Ādar farā.</p>
+            
+            <p class="prayer-paragraph">Az hamā gunāh patet pashemānum; az harvastīn dushmata duzhukhta duzhvarshta, mem pa geti manid, oem goft, oem kard, oem jast, oem būn būd ested. Az ān gunāh manashnī gavashnī kunashnī, tanī ravānī getī mīnōānī, okhe awākhsh pashemān pa sē gavashnī pa patet hom.</p>
+
+            <p class="prayer-paragraph">Us-mōi uzāreshvā Ahurā Ārmaiti tevishim dasvā Spenishtā Mainyu Mazdā, Vanghuyā zaō ādā, Ashā hazō ēmavat vohū Mananghā feseratūm.</p>
+
+            <p class="prayer-paragraph">Rafedhrāi vouruchashāne, dōishī- mōi yā ve abifrā, tā khshathrahyā Ahurā yā vanghēush ashish mananghō; frō Spentā Ārmaite Ashā daēnāo fradakhshayā.</p>
+
+            <p class="prayer-paragraph">At rātām Zarathushtrō tanvaschīt khvakhyāo ushtanem dadāiti, paurvatātem mananghaschā vanghēush Mazdāi, shyaothanahyā ashāi yāchāukhdhakhyāchā seroshem khshathremchā.</p>
+
+            <p class="prayer-paragraph">Khshnaothra Ahurahe Mazdāo. (To recite bowing the head) Nemase-te Ātarsh Mazdāo Ahurahe hudhāo mazishta yazata. Ashem Vohū 3. Fravarāne mazdayasnō Zarathushtrish vīdaevo ahura-tkaeshō (Geh according to the period of the day) frasastayaēcha.</p>
+
+            <p class="prayer-paragraph">Āthro Ahurahe Mazdāo puthra, tava ātarsh puthra Ahurahe Mazdāo. Āthro Ahurahe Mazdāo puthra, khvarenanghō savanghō mazdadhātahe airyanām khvarenō mazdadhātanām, kāvayehecha khvarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra.</p>
+            
+            <p class="prayer-paragraph">Kavōish haosravanghahe, varōish haosravanghe asnavantahe garōish mazdadhātahe chaēchishtahe varōish mazdadhātahe, kāvayehecha khvarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra. Raēvantahe garōish mazdadhātahe, kāvayehecha khvarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra.</p>
+            
+            <p class="prayer-paragraph">Ātarsh spenta rathaēshtāra, yazata pouru-khvarenangha, yazata pouru-baēshaza. Āthrō Ahurahe Mazdāo puthra, mat vīspaeibyo āterebyō, khshathrō-nafedhrō nairyō-sanghahe yazatahe khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā Ahū vairyō zaotā frā me mrūte athā ratush ashātchit hacha frā ashava vīdhvāo mraotū.</p>
+
+            <p class="prayer-paragraph">Yasnemcha vahmemcha huberetīmcha ushta-beretīmcha, vanta-beretīmcha, āfrīnāmi, tava Ātarsh puthra Ahurahe Mazdāo, yesnyō ahi vahmyō, yesnyō buyāo vahmyō nmānāhu mashyākanām Ushta buyāt ahmāi naire, yase-thwā bādha frāyazāite, aesmō-zastō, baresmō-zastō, gao-zastō, hāvanō-zastō.</p>
+
+            <p class="prayer-paragraph">Dāityō aēsme buyāo, dāityō baoidhi buyāo, dāityo pithwi buyāo, dāityo upasayene buyāo. Perenāyush harethre buyāo, dahmāyush harethre buyāo, ātarsh puthra Ahurahe Mazdāo.</p>
+
+            <p class="prayer-paragraph">Saoche buye ahmya nmāne, mat-saoche buye ahmya nmāne, raochahi buye ahmya nmāne, vakhshathe buye ahmya nmāne, dareghemchit aipi zrvānem, upa sūrām frashō-keretīm, hadha sūrayāo vanghuyāo frashō-keretōit.</p>
+
+            <p class="prayer-paragraph">Dāyāo me Ātarsh puthra Ahurahe Mazdāo, āsu khvāthrem, āsu thrāitīm, āsu jītīm, pouru khvāthrem, pouru thrāitīm, pouru jītīm; mastīm, spānō, khshviwrem hizvām urune ushi, khratūm paschaēta masita mazāontem, apairi-āthrem, nairyām paschaeta hām-varetīm.</p>
+
+            <p class="prayer-paragraph">Eredhvō-zangām, akhvafnyām thrishūm asnāmcha khshafnāmcha āsitō-gātūm, jaghāurum, tuthrushām, āsnām frazaintim, karshō-rāzām, vyākhanām, hām-raodhām, hvāpām, ānzō-būzim hvīrām, yā me frādhayāt nmānemcha vīsemcha zantūmcha, dakhyūmcha danghu-sastīmcha.</p>
+
+            <p class="prayer-paragraph">Dāyāo me Ātarsh puthra Ahurahe Mazdāo, yā me anghat afrasāonghāo, nūremcha yavaēchatāite, vahishtem Ahūm ashaonām raochanghem vīspō-khvāthrem zaze-buye vanghāucha mīzde, vanghāucha sravahi, urunaēcha dareghe havanghe.</p>
+
+            <p class="prayer-paragraph">Vīspaeibyō sastīm baraiti Ātarsh Mazdāo Ahurahe yaēibyō aēm hām-pachāite khshāfnīmcha sūirīmcha vīspaēibyō hacha izyeite huberetimcha ushta-beretīmcha vanta-beretīmcha, Spitama.</p>
+
+            <p class="prayer-paragraph">Vīspanām para-charentām Ātarsh zasta ādidhaya. Chim hakha hashe baraiti fracharethvāo armaēshāidhe. Ātarem Spentem yazamaide, takhmem hantem rathaēshtārem.</p>
+
+            <p class="prayer-paragraph">Āat yezi-she aēm baraiti aēsmem vā ashaya beretem, baresma vā ashaya frastaretem, urvarām vā hadhānaepatām ā-he paschaēta frīnaiti Ātarsh Mazdāo Ahurahe, khshnūtō atbishtō haghdhang-hūm.</p>
+
+            <p class="prayer-paragraph">Upa-thwā hakhshōit geush vānthwa, upa vīranām pourutās. Upa-thwā verezvatcha manō, verezvaticha hakhshōit anguha. Urvākhsh-anguha gaya jighaēsha, tāo khshapanō yāo jvāhī, Imat āthrō āfrīvanem, yō ahmāi aēsmem baraiti hikush, raochas-pairishtān ashahe bereja yaozdātān.</p>
+
+            <p class="prayer-paragraph">(To recite in Bāz) Ahura Mazda Khodāe, awazūnie mardum, mardum sardagān hamā sardagān, hambāyaste vehān, oem behedīn māzdayasnān āgāhī āstavānī nekī ra- sānad; aēdun bād. (To recite loudly) Yathā Ahū Vairyō 2.</p>
+
+            <p class="prayer-paragraph">Yasnemcha vahmemcha aojascha zavarecha āfrīnāmi āthrō Ahurahe mazdāo puthra, tava ātarsh puthra Ahurahe Mazdāo, āthrō Ahurahe Mazdāo puthra. Khvarenanghō savanghō mazdadhātahe, airyanām khvarenō mazdadhātanām, kāvayehecha khavarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra. Kavōish Haosravanghahe, varōish Haosravanghahe, Asnavantahe gaōish mazda-dhātahe, Chaēchistahe varōsh mazda-dhātahe, kāvayehecha khvarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra. Raēvantahe garōish mazda-dhātahe, kāvayehecha khvarenanghō mazdadhātahe, āthrō Ahurahe Mazdāo puthra. Ātarsh Spenta rathaēshtāra, yazata pouru-khvarenangha, yazata pouru-baeshaza, āthrō Ahurahe Mazdāo puthra, mat vīspaeibyō āterebyō khshathrō-nafedhrō nairyō-sanghahe yazatahe. Ashem Vohu 3.</p>
+
+            <p class="prayer-paragraph">At tōi ātarem Ahurā aojonghvantem Ashā usemahi asishtem, ēmavantem, stō- rapentem, chithrā-avanghem; At mazdā daibishyante zastāishtāish dereshtā aenanghem. Ashem Vohū 1.</p>
+
+            <p class="prayer-paragraph">Ahmāi raēshacha: Hazanghrem; Jasa me Avanghe Mazda; Kerfeh Mozd.</p>
+
+            <p class="prayer-paragraph">Roz nek nām, roz pāk nām, roz mubārak (falān), māhe mubārak (falān), gāhe (falān), namāz dādāre gehān dāmān. Khashnaothra Ahurahe Mazdāo, nemase-te ātarsh Mazdāo Ahurahe hudhāo mazishta yazata. Ashem Vohū 1.</p>
+
+            <p class="prayer-paragraph">Gorje Khoreh awazāyād (to recite as follows before Ātash Behrām) Ātash Beherām ādar farāh. (to recite as follows before Ātash ādarān) Ātash Adarān ādar farāh (to recite as follows before the fire in the house) Ātash Dādgāh ādar farā.</p>
+
+            <p class="prayer-paragraph">Ādarān Shāh pirozgar, Ādar Gushasp Ādar Khordād, Ādar Burzīn Meher avare ādarān o ātashān, ke pa dādgāh neshāst ested; gorje khoreh awazāyād mīnōkarko amāvand pirozgar amāvandih pirozgarīh. Dād Dīn beh Māzdayasnān, āgāhi ravāi goāfarangāni bād hafte keshvar zamin; aedūn bād, man āno āwāyad shudan, man āno āwāyad shudan, man āno āwāyad shudan. Ashaone Ashem Vohū 1.</p>
+
+            <p class="prayer-paragraph">(Recite facing the South) : Dādāre gehān dīne māzdayasnī dāde Zarthushtī. Nemase-te ashāum sevishte Aredvi Sūra Anāhite. Ashaone Ashem Vohū 1.</p>
+
+            <p class="prayer-paragraph">Nemō urvaire vanguhi mazdadhāte ashaone. Ashem Vohū 1.</p>
+
+            <p class="prayer-paragraph">(recite bowing the head downward) : Khshnaothra Ahurahe Mazdāo nemase-te ātarsh Mazdāo Ahurahe hudhāo mazishta yazata. Ashem Vohū 1.</p>
+        </div>
+
+        <h2 class="translation-title">translation</h2>
+        
+        <div class="prayer-translation">
+            <p>I revere and worship Fire, the greatest Yazad. In the name of Ahura Mazda I start this prayer to the glory of the Fire of the Atash Behram (The Fire of the highest grade) Atash Adaran (The Fire of the second grade) Atash Dadgah (The household fire).</p>
+
+            <p>If I have wronged in thought, word or deed, I repent and promise never to do so again. Grant me O Lord the purity that comes from prayer, the strength that comes from being true and just and the success that comes from good thoughts and show me the precious truths of our religion.</p>
+
+            <p>O Fire, the son of Ahura Mazda, may thou blaze forever and be worshipped forever. May happiness, wealth in cattle, brave sons and every joy be bestowed on the one who worships thee.</p>
+
+            <p>May you be nourished and tended by devotees with due ceremonies and with incense and fuel, clean and dry. O Fire, the Universal purifier grant me a full happy life, wisdom, courage, energy and the will to work. Grant me offspring that will bring honour to my house, family, town, country and my religion.</p>
+
+            <p>Show me the path to lead a good life that will take me to the abode of righteousness. O Ahura Mazda, may the radiance and power of Fire in the various Fire Temples increase and keep burning forever.</p>
+
+            <p>May the Fire help me. May the knowledge and fame of my Mazdayasni religion, as revealed to Zarathushtra by Ahura Mazda, spread all over the world and may I always be faithful to my religion. I have to attain divinity and realize God. I bow respectfully to the beneficent Fire, the greatest among the Yazads.</p>
+        </div>
+    </div>
+</body>
+</html>

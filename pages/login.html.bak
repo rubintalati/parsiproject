@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .login-container {
+            background-color: #111;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            width: 400px;
+            max-width: 95%;
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: contrast(1.2) brightness(1.2);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        p {
+            color: #aaa;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            background-color: #fff;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .google-btn:hover {
+            background-color: #f5f5f5;
+            box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        .google-btn .google-icon {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .return-home {
+            display: inline-block;
+            margin-top: 15px;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #333;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .return-home:hover {
+            background-color: #333;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-top: 2px solid #333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="../media/logo/black theme.png" alt="The Parsi Project Logo">
+        </div>
+        
+        <h1>Welcome to The Parsi Project</h1>
+        <p>Connect with our community and access exclusive content</p>
+        
+        <button id="googleLoginBtn" class="google-btn">
+            <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Sign in with Google
+            <div id="spinner" class="spinner"></div>
+        </button>
+        
+        <div id="message" class="message"></div>
+        
+        <a href="../index.html" class="return-home">Return to Home</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            const spinner = document.getElementById('spinner');
+            const messageDiv = document.getElementById('message');
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('isAuthenticated') === 'true') {
+                showMessage('You are already logged in. Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = '../index_original.html';
+                }, 1500);
+                return;
+            }
+            
+            // Google authentication - using our server's auth endpoint
+            googleLoginBtn.addEventListener('click', function() {
+                // Show loading state
+                this.disabled = true;
+                spinner.style.display = 'inline-block';
+                
+                // Redirect to our server's Google auth endpoint - using the full URL
+                window.location.href = 'http://127.0.0.1:50272/auth/google';
+            });
+            
+            // Check for auth callback parameters from Google OAuth
+            function processAuthCallback() {
+                const urlParams = new URLSearchParams(window.location.search);
+                console.log('URL parameters:', window.location.search);
+                
+                try {
+                    // Check if we have a code from Google OAuth
+                    if (urlParams.has('code')) {
+                        console.log('Google auth code detected:', urlParams.get('code'));
+                        
+                        // Use the Google authentication data but set default avatar and type
+                        // In a real implementation, this would use the actual Google user data
+                        const userData = {
+                            token: 'google_' + Date.now(),
+                            firstName: urlParams.get('firstName') || 'Google', 
+                            lastName: urlParams.get('lastName') || 'User',   
+                            email: urlParams.get('email') || 'user@gmail.com',
+                            avatar: '1', // Default Parsi avatar
+                            userType: 'visitor'
+                        };
+                        
+                        // Save user data to localStorage
+                        localStorage.setItem('authToken', userData.token);
+                        localStorage.setItem('firstName', userData.firstName);
+                        localStorage.setItem('lastName', userData.lastName);
+                        localStorage.setItem('email', userData.email);
+                        localStorage.setItem('avatar', userData.avatar);
+                        localStorage.setItem('userType', userData.userType);
+                        localStorage.setItem('isAuthenticated', 'true');
+                        
+                        // Also save as parsiUser object for the combined.js functions
+                        localStorage.setItem('parsiUser', JSON.stringify({
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            email: userData.email,
+                            avatar: userData.avatar,
+                            type: userData.userType
+                        }));
+                        
+                        // Show success message
+                        showMessage('Authentication successful with Google! Redirecting...', 'success');
+                        
+                        // Clean the URL to remove the token parameters for security
+                        if (window.history && window.history.replaceState) {
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        }
+                        
+                        // Redirect to index_original.html after delay
+                        setTimeout(() => {
+                            console.log('Redirecting to index_original.html');
+                            window.location.href = '../index_original.html';
+                        }, 1500);
+                        return;
+                    }
+                    
+                    // Also check for token parameter (from our server's mock auth)
+                    if (urlParams.has('token')) {
+                        console.log('Auth token detected:', urlParams.get('token'));
+                        // Get user data from URL parameters provided by server authentication
+                        const token = urlParams.get('token');
+                        const firstName = urlParams.get('firstName') || 'Google';
+                        const lastName = urlParams.get('lastName') || 'User';
+                        const email = urlParams.get('email') || 'user@example.com';
+                        const avatar = urlParams.get('avatar') || '1'; // Default Parsi avatar
+                        const userType = urlParams.get('userType') || 'visitor';
+                        
+                        // Save user data to localStorage
+                        localStorage.setItem('authToken', token);
+                        localStorage.setItem('firstName', firstName);
+                        localStorage.setItem('lastName', lastName);
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('avatar', avatar);
+                        localStorage.setItem('userType', userType);
+                        localStorage.setItem('isAuthenticated', 'true');
+                        
+                        // Also save as parsiUser object for the combined.js functions
+                        localStorage.setItem('parsiUser', JSON.stringify({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            avatar: avatar,
+                            type: userType
+                        }));
+                        
+                        // Show success message
+                        showMessage('Authentication successful! Redirecting...', 'success');
+                        
+                        // Clean the URL to remove the token parameters for security
+                        if (window.history && window.history.replaceState) {
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        }
+                        
+                        // Redirect to index_original.html after delay
+                        setTimeout(() => {
+                            console.log('Redirecting to index_original.html');
+                            window.location.href = '../index_original.html';
+                        }, 1500);
+                        return;
+                    }
+                    
+                    console.log('No authentication parameters found in URL');
+                } catch (error) {
+                    console.error('Error processing authentication callback:', error);
+                    showMessage('Authentication failed. Please try again.', 'error');
+                    googleLoginBtn.disabled = false;
+                    spinner.style.display = 'none';
+                }
+            }
+            
+            // Process auth callback when page loads (if we've been redirected from Google)
+            processAuthCallback();
+            
+            // Function to show message
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = `message ${type}`;
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

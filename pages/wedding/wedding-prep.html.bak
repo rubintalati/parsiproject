@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Wedding Preparations - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Tab Navigation Styles */
+        .filter-container {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .filter-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            /* Removed border-radius for rectangular design */
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            max-width: 180px;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .numbered-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            .header {
+                padding: 0.5rem;
+            }
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">wedding preparations</h1>
+            <p class="ceremony-subtitle">Essential preparations for a traditional Parsi wedding</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <button class="filter-button active" data-tab="girl-clothes">Girl's Clothes</button>
+                <button class="filter-button" data-tab="girl-household">Girl's Household</button>
+                <button class="filter-button" data-tab="girl-jamais">Jamais Vago</button>
+            </div>
+            <div class="filter-row">
+                <button class="filter-button" data-tab="girl-utensils">Utensils & Antar</button>
+                <button class="filter-button" data-tab="girl-paheramni">Paheramnis</button>
+                <button class="filter-button" data-tab="boy-prep">Boy's Side</button>
+            </div>
+        </div>
+        
+        <!-- Girl's Clothes Tab -->
+        <div id="girl-clothes" class="tab-content active">
+            <div class="ceremony-section">
+                <h2 class="section-title">Clothes for the Girl</h2>
+                
+                <p>Five to seven sets of clothes should be given to the girl by the parents, over and above the main one. One set which is to be used during the marriage ceremony (mandav-heth-na) should be a fine, pure white, embroidered saree (in which the girl will look very delicate and nice), together with a blouse, a petticoat, shoes, a sadro, underwears, a mathubanu and handkerchief.</p>
+                
+                <h3 class="subsection-title">Sets of Clothes Required</h3>
+                <ul class="custom-list">
+                    <li>1 set of clothes adarni-na (a little expensive and some cash to be tied)</li>
+                    <li>1 Set of clothes varni-na</li>
+                    <li>1 set of clothes diva-na (moderately expensive and some cash to be tied)</li>
+                    <li>1 set of clothes gor-rupiya-na (and some cash to be tied)</li>
+                    <li>1 set of clothes sasu-na-sopara-na (moderately expensive and some cash to be tied)</li>
+                    <li>1 set of clothes for the sister-in-law (nanand and some cash to be tied)</li>
+                    <li>1 set of clothes teda-na (and some cash to be tied)</li>
+                </ul>
+                
+                <p class="note">In some cases, instead of clothes, jewellery or cash may be given. This is a custom, but nothing is compulsory.</p>
+                
+                <h3 class="subsection-title">Clothes for the Whole Year</h3>
+                <p>The clothes for the whole year can include some good clothes which have already been used, both sarees and dresses, and some new ones. Also:</p>
+                
+                <ul class="custom-list">
+                    <li>6 towels</li>
+                    <li>6 or more napkins</li>
+                    <li>6 nighties and kimonos (stitched or cloth)</li>
+                    <li>6 dresses (stitched or cloth)</li>
+                    <li>Also blouses, sarees, petticoats</li>
+                    <li>6 or more bedsheets</li>
+                    <li>12 or more pillowcases</li>
+                    <li>4 good bedspreads (can be more or less)</li>
+                    <li>1 suitcase</li>
+                    <li>2 quilts made with new cotton</li>
+                    <li>4 pillows made with new cotton</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Girl's Household Tab -->
+        <div id="girl-household" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Household Items</h2>
+                
+                <h3 class="subsection-title">Furniture</h3>
+                <p>If it is decided to give furniture, the following may be given:</p>
+                
+                <ul class="custom-list">
+                    <li>1 cupboard</li>
+                    <li>2 single beds or one double bed</li>
+                    <li>2 chairs for the wedding</li>
+                    <li>1 centre table</li>
+                    <li>1 lamp</li>
+                </ul>
+                
+                <p class="note">More items may be given if so desired. Instead of the furniture, cash may be given.</p>
+                
+                <h3 class="subsection-title">Copper Utensils</h3>
+                <ul class="custom-list">
+                    <li>4 copper tapelis or stainless steel tapelis or cooker as per convenience and utility</li>
+                    <li>1 small copper bowl, kasyo ghee apya-no which will be kept by the priest (Mobedsaheb)</li>
+                </ul>
+                
+                <h3 class="subsection-title">Things to be kept in the four Tapelis</h3>
+                <p>In each tapeli the following should be kept separately:</p>
+                <ul class="custom-list">
+                    <li>Wheat</li>
+                    <li>Batasa</li>
+                    <li>Sev</li>
+                    <li>Coconut vati with jaggery</li>
+                </ul>
+                
+                <p>Along with the clothes for nahan-nahva-na (paranva besvana) following items should be kept ready in a bag:</p>
+                <ul class="custom-list">
+                    <li>A soap</li>
+                    <li>A comb</li>
+                    <li>A brush</li>
+                    <li>A towel</li>
+                    <li>Chappals</li>
+                    <li>Powder</li>
+                    <li>Rouge</li>
+                    <li>Lipstick</li>
+                    <li>Hairpins and pins</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Jamais Vago Tab -->
+        <div id="girl-jamais" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Jamais Vago (Groom's Items)</h2>
+                
+                <h3 class="subsection-title">Sopara-ni-sés</h3>
+                <p>In a big, khumcho, with pado, pigani and gulabdani, the vago of Jamairaj should be arranged. Instead of a sés, a suitcase may be given, as per the understanding between the two parties, containing the following:</p>
+                
+                <ul class="custom-list">
+                    <li>1 suit piece</li>
+                    <li>6 shirts or shirt pieces</li>
+                    <li>6 pants or pant pieces</li>
+                    <li>1 tako-of-mulmul for sadra</li>
+                    <li>1 tako-of longcloth</li>
+                    <li>3 night-suits</li>
+                    <li>1 velvet cap (or more)</li>
+                    <li>1 feto or paghdi as per Jamairaj's wish</li>
+                    <li>1 woolen shawl</li>
+                    <li>1 dozen handkerchiefs</li>
+                    <li>6 pairs of socks</li>
+                    <li>1 pair of shoes</li>
+                    <li>6 ties (if being used)</li>
+                    <li>1 kasti</li>
+                    <li>Also material for dagli</li>
+                </ul>
+                
+                <p>One new sés or suitcase should be given on the adarni day. This is known as sopara-no-vago.</p>
+                
+                <h3 class="subsection-title">Additional Vago</h3>
+                <p>Another vago should be kept ready containing:</p>
+                
+                <ul class="custom-list">
+                    <li>1 wedding ring - plain gold</li>
+                    <li>1 gold watch for adarni-no-vago or cash Rs. 301/- or more or less</li>
+                    <li>1 set of gold buttons for divano-vago or cash and Rs. 51/- or more gor-rupiya-na vaga-na</li>
+                    <li>1 ring aragyani</li>
+                </ul>
+                
+                <p class="note">This takes care of all vagas and aragya-ni-viti.</p>
+            </div>
+        </div>
+        
+        <!-- Utensils & Antar Tab -->
+        <div id="girl-utensils" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Utensils & Ada Antar</h2>
+                
+                <h3 class="subsection-title">German Silver Utensils</h3>
+                <ul class="custom-list">
+                    <li>1 tray or thali with 5 polis and 4 batasas</li>
+                    <li>1 tray or thali and a kathli or glass for washing feet</li>
+                    <li>1 nice bowl or small tamdi varbeda-ni</li>
+                    <li>1 small tamdi for varovar</li>
+                </ul>
+                
+                <h3 class="subsection-title">Ada Antar</h3>
+                <ul class="custom-list">
+                    <li>1 white cotton saree or a cotton cloth piece (2.5 to 3 yards)</li>
+                    <li>1 ball of raw cotton thread (kachu sutar)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Paheramnis Tab -->
+        <div id="girl-paheramni" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Paheramnis (Gifts)</h2>
+                
+                <h3 class="subsection-title">Paheramnis For In-laws and Others</h3>
+                <ul class="custom-list">
+                    <li>1 Shawl for the father-in-law together with an envelope of Rs. 101/ or more</li>
+                    <li>Envelopes should also be kept ready for the daughter's brothers-in-law, kaka-sasra, mama-sasra etc.</li>
+                    <li>Over and above these, Rs. 201/- or more should be kept ready for matida baira-ni paheramni.</li>
+                    <li>Also two envelopes, containing adequate amount, should be kept ready for the priest.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Boy's Side Preparations Tab -->
+        <div id="boy-prep" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Boy's Side Preparations</h2>
+                
+                <h3 class="subsection-title">Clothes To Be Kept Ready</h3>
+                <p>Two sets of clothes have already been given at the engagement. Now three more sets, should be kept ready:</p>
+                
+                <ul class="custom-list">
+                    <li>1 set for the girl's mother sopara-na to be given on the wedding day</li>
+                    <li>1 set somewhat expensive, for the daughter-in-law, varni-na, together with shoes and kasti</li>
+                    <li>1 set (not so expensive) for the daughter-in-law diva-na or jewellery. Also Rs. 75/- or more for gor-rupiya-na or jewellery. For teda-ni-tirat, Rs 51/- or more or jewellery.</li>
+                    <li>1 ring for the sala (brother-in-law)</li>
+                    <li>1 pair of earings sasra-e khole lidha-na, as also some jewellery. The girl will be wearing jewellery given by the in-laws only, during the marriage ceremony.</li>
+                    <li>1 Shawl for the father-in-law together with an envelope of Rs. 101/- or more.</li>
+                </ul>
+                
+                <h3 class="subsection-title">Paheramnis From Boy's Side</h3>
+                <ul class="custom-list">
+                    <li>Envelopes should also be kept ready for the son's brothers-in-law, Kaka-Sasra, mama-sasra etc.</li>
+                    <li>Over and above these, Rs. 201 or more, should be kept ready for matida baira-ni baura-ni paheramnis.</li>
+                    <li>Also two envelopes, containing adequate amount, should be kept ready for the priest.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.filter-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

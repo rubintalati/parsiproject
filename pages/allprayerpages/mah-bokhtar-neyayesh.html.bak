@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Māh Bokhtār Neyāyesh - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(128, 128, 128, 0.5);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Prayer Modal Styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: none;
+            overflow: auto;
+        }
+
+        .modal-content {
+            max-width: 550px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-text {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                border: none;
+                background-color: transparent;
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+
+            .prayer-title {
+                font-size: 1.7rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-paragraph {
+                line-height: 1.7;
+            }
+            
+            .prayer-translation {
+                padding-left: 0.8rem;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+
+        <div class="prayer-header">
+            <p class="prayer-subtitle">the one for moon blessings</p>
+            <h1 class="prayer-title">māh bokhtār neyāyesh</h1>
+        </div>
+
+        <div class="prayer-note-container">
+            <p class="prayer-note">this neyāyesh should be recited every day if possible, and especially on the new moon, full moon and no moon-day of every month.</p>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">pa nāme yazdān ahuramazda khodāe awazūnī gorje khoreh awāzayād. māh bokhtār māh yazad be-rasād. az hamā gunāh patet pashemānum, az harvastīn dushmata duzkukhta duzhvarshta, mem pa getī manīd oem goft, oem kard, oem jast, oem būn būd ested, az ān gunāh manashnī gavashnī kunashnī, tanī ravānī getī mīnōānī, okhe awākhsh pashemān pa sē gavashni pa patet hom.</p>
+            
+            <p class="prayer-instruction">(to recite bowing the head)</p>
+            
+            <p class="prayer-paragraph">nemō ahurāi mazdāi, nemō ahurāi mazdāi, nemō ahurāi mazdāi, nemō ameshaēibyō spentaēibyō, nemō māonghāi gaochithrāi, nemō paiti-ditāi, nemō paiti-dite; nemō ahurāi mazdāi, nemō ameshaēibyō spentaēibyō nemō māonghai gao-chithrāi, nemō paiti-ditāi, nemō paiti-dite; nemō ahurāi mazdāi, nemō ameshaēibyō spentaēibyō, nemō maonghāi gaochithrāi, nemō paiti-dītāi, nemō paiti-dīte.</p>
+            
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdāo, tarōidite ang-rahe mainyēush; haithyāvarshtām hyat vasnā ferashōtemem. staomi ashem : ashem vohū 3.</p>
+            
+            <p class="prayer-paragraph">fravarāne mazdayasnō zarthushtrish vidaevō ahura-tkaeshō (geh according to the period of the day) frasastayaēcha. māonghahe gao-chithrahe, gēushcha aēvō-dātayāo, gēushcha pouru-saredhayāo, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahū vairyō zaotā frā-me-mrūte, athā ratush ashāt-chit hacha frā ashava vīdhvāo mraotū.</p>
+            
+            <p class="prayer-paragraph">nemō ahurāi mazdāi, nemō ameshaēibyo spentaēibyō, nemō māonghāi gao-chithrāi, nemō paiti-dītāi, nemō paiti-dīte.</p>
+            
+            <p class="prayer-paragraph">kat māo ukshyeiti, kat māo nerefsaiti pancha-dasa māo ukhshyeiti, panch-dasa māo nerefsaiti, yāo he ukshkyāstātō, tāo nerfsānstāō tāo nerefsānstātō, yāo he ukhshyānstātas chit. kē yā māo ukhshyeiti nerfsaiti thwat.</p>
+            
+            <p class="prayer-paragraph">māonghem gao - chithrem ashavanem ashahe ratūm yazamaide. tat māonghem paiti-vaēnem, tat māonghem paitī - vīsem, raokhshnem māonghem aiwi - vaēnem raokhshnem māonghem aiwi-vīsem, hishtenti ameshāo spenta khvarenō dārayeinti, hishtenti ameshāo spenta khvarenō bakhshenti, zām paiti ahuradhātām.</p>
+            
+            <p class="prayer-paragraph">āat yat māonghahe raokhshni tāpayeiti mishti urvaranām zairi-gaonanām zaramaēm paiti zemādha uzukhshyeiti. antare-māonghāoscha, perenōmāonghāoscha, vīshaptathāoscha. antaremāonghem ashavanem ashahe ratūm yazamaide; perenō-māonghem ashavanem ashahe ratūm yazamaide; vīshaptathem ashavanem ashahe ratūm yazamaide.</p>
+            
+            <p class="prayer-paragraph">yazāi māonghem gao-chitrem baghem raēvantem, khvarenanghuhantem afnanghuhantem tafnanghuhantem, varechanghuhantem khshtāvantem ishtivantem, yaokhshtivantem, saokavantem, zairimyāvantem, vohvāvantem, baghem baēshazem.</p>
+            
+            <p class="prayer-paragraph">ahe raya khvarenanghacha, tem yazāi surunvata yasna māonghem gaochithrem. zaothrābyo māonghem gao-chithrem ashavanem ashahe ratūm yazamaide.</p>
+            
+            <p class="prayer-paragraph">haomayō gava baresmana, hizvōdanghangha, mānthracha, vachacha, shyaothnacha, zaothrābysacha arshukhdhaeibyascha vāghzibyō.</p>
+            
+            <p class="prayer-paragraph">yenghe hātām āat ysene paiti vanghō, mazdāo ahurō vaēthā ashāt hachā yāonghāmchā tānschā tāoschā yazamaide.</p>
+            
+            <p class="prayer-instruction">(to recite in bāz)</p>
+            
+            <p class="prayer-paragraph">ahura mazda khodāe, awazūnie mardum, mardum sardagān hamā sardagān, hambāyaste vehān, oem behedīn māzdayasnān āgāhī āstavānī nekī rasānad. aedūn bād.</p>
+            
+            <p class="prayer-instruction">(to recite aloud)</p>
+            
+            <p class="prayer-paragraph">yathā ahū vairyō 2.</p>
+            
+            <p class="prayer-paragraph">yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, māonghahe gao-chithrahe, geushcha aēvo-dātayāo, gēushcha pourusaredhayāo. ashem vohū 3.</p>
+            
+            <p class="prayer-paragraph">dasta amem verethraghnemcha, dasta gēush khvāthrõōnahīm, dasta narām pourutātem, stāhyanām vyākhnanām, vanatām avanemnanām hathravanatām h a m e r e t h e , h a t h r a v a n a t ā m dushmainyush, steraptām chithraavanghām. yazata pouru-khvarenangha, yazata pouru-baeshaza, chithra vō buyāresh masānāo, chithra vō zavanōsavō chithrem bōit yūzemchit khvarenō, yazemnāi āpō dāyata. ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">ahmāi raēshcha, hazanghrem; jasa me avanghe mazda; kerfeh mozd.</p>
+            
+            <p class="prayer-paragraph">roz nek nām, roz pāk nām, roz mubārak (falān) māhe mubārak (falān), gāhe (falān) namāz dādāre gehān dāmān. khshnaothra ahurahe mazdāo, nemō ahurāi mazadāi, nemō amēshaeibyō spēntaeibyō, nemō māonghāi gao-chithrāi, nemō paiti-dītāi, nemō paiti-dīte; ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">gorje khoreh awazāyād māh bokhtār māh yazad berasād amāvand pirozgar amāvandih pirozgari. dād dīn beh māzdayasnān āgāhi ravāi goāfrangāni bād hafte keshvar zamīn; aedūn bād. man āno āwāyad shudan, man āno āwāyad shudan, man āno āwāyad shudan. ashaone ashem vohū 1.</p>
+            
+            <p class="prayer-instruction">(recite facing the south)</p>
+            
+            <p class="prayer-paragraph">dādāre gehān dīne māzdayasnī dāde zarthushtī. nemase-te ashāum sēvishte aredvi sūra anāhite. ashaone ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">nemō urvaire vanghuhi mazdadhāte ashaone ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">māonghem gao-chithrem ashavanem ashahe ratūm yazamaide. ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">māh bokhtār māh yazad be-rasād. ashem vohū 1</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>may mah yazad, the liberator of the soul come to my aid and relieve me of all my troubles. i truly repent for every bad thought that may have crossed my mind, every bad word i may have spoken and every bad deed i may have done. i promise never to do so again. i pay homage to ahura mazda, the amesha spentas, the visible and invisible part of the moon and the protector of cattle and sheep with due ceremonies, prayers, offerings, good words and good deeds. as the moon rises hundreds of yazads pour forth their light on the earth, banishing darkness and bringing prosperity, health and plenty. i praise the new moon, the full moon and the days that follow each of them. may the power of mah yazad and its brilliant light increase. o holy yazads grant me courage, success, wealth in cattle and a following of good, strong, brave men. may the knowledge and fame of our excellent mazdayasni religion given to us by ahura mazda through zarathushtra, spread all over the world.</p>
+        </div>
+    </div>
+
+    <!-- Prayer Detail Modal (hidden by default) -->
+    <div id="prayer-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closePrayerModal()">&times;</button>
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p class="modal-subtitle" id="modal-subtitle"></p>
+            <div class="modal-text" id="modal-text"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open prayer modal
+        function openPrayerModal(prayerId) {
+            const modal = document.getElementById('prayer-modal');
+            const title = document.getElementById('modal-title');
+            const subtitle = document.getElementById('modal-subtitle');
+            const text = document.getElementById('modal-text');
+            
+            // Set modal content based on prayer ID
+            // This is where you would set different content for different prayers
+            
+            modal.style.display = 'block';
+        }
+        
+        // Function to close prayer modal
+        function closePrayerModal() {
+            document.getElementById('prayer-modal').style.display = 'none';
+        }
+        
+        // Close modal if user clicks outside of modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayer-modal');
+            if (event.target == modal) {
+                closePrayerModal();
+            }
+        }
+    </script>
+</body>
+</html>

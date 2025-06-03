@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behram Yazad - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        /* Prayer note styling */
+        .prayer-note-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(128, 128, 128, 0.9);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .prayer-header {
+            margin-bottom: 2rem;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+            text-transform: lowercase;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-transform: lowercase;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prayer-paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .prayer-instruction {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .recitable-paragraph {
+            text-decoration: underline;
+            margin-bottom: 0.5rem;
+        }
+        
+        .prayer-instruction-close {
+            font-style: italic;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            margin-top: -0.5rem;
+        }
+
+        /* Translation styling */
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .prayer-translation p {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .prayer-header {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .prayer-text,
+            .prayer-translation {
+                padding: 0 0.8rem;
+            }
+            
+            .prayer-paragraph, 
+            .prayer-translation p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../all-prayers.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="prayer-header">
+            <p class="prayer-subtitle">special prayer for strength and victory</p>
+            <h2 class="prayer-name">behram yazad</h2>
+        </div>
+
+        <div class="prayer-text">
+            <p class="prayer-paragraph">khshnaothra ahurahe mazdao ashem vohū 3.</p>
+            
+            <p class="prayer-paragraph">fravarāne mazdayasno zarathushtrish vīdaevo ahura tkaēsho (recite the appropriate geh) ahurahe mazdāo raēvato kharenanghato ameshanām spentanām; amahe hutāshtahe huraodhahe, verethraghnahe ahuradhātahe, vanain-tyāoscha uparatāto, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyo zaotā frā me mrute athā ratush ashātchit hacha frā ashava vīdhwāo mraotu.</p>
+            
+            <p class="prayer-paragraph">ahurem mazdām raevantem kharenanghantem yazamaide, amesha spenta hukhshathrā hudhāongho yazamaide. amem hutashtem huraodhem yazamaide verethraghnem ahuradhātem yazamaide, vanaintimcha uparatātem yazamaide.</p>
+            
+            <p class="prayer-paragraph recitable-paragraph">amemcha verethraghnemcha āfrināmi, dva pātār, dva nipātār, dva nish-haretār dva adhvaozen, dva vidhvaozen, dva fradhvaozen dva amarezen, dva vimarezen, dva framarezen. yathā ahū vairyō (1)</p>
+            <p class="prayer-instruction-close">recite 7 times</p>
+            
+            <p class="prayer-paragraph">yathā ahū vairyō (2)</p>
+            
+            <p class="prayer-paragraph">yasnemcha vahmemcha aojascha zavarecha āfrināmi, ahurahe mazdāo raevato kharenanghato ameshanām spentanām, amahe hutāshtahe huraodhahe verethraghnahe ahuradhātahe, vanaintyāoscha uparatāto. ashem vohū 1.</p>
+            
+            <p class="prayer-paragraph">ahmāi raeshcha - hazanghrem - jasa me avanghe - kerfeh mozd. ashem vohū (1)</p>
+        </div>
+
+        <div class="prayer-translation">
+            <p>we remember and ask the help of behram yazad and ama yazad, who are the saviours and protectors of men.</p>
+            
+            <p>they help us fight the enemy, they keep the enemy away, they hold the enemy back, they destroy the enemy.</p>
+            
+            <p>we thank and revere these two - behram yazad and ama yazad.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>a letter for you - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #fff;
+            color: #222;
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        .letter-container {
+            max-width: 540px;
+            margin: 48px auto 48px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 24px 0 rgba(0,0,0,0.07);
+            padding: 2.2rem 2.5rem 2.5rem 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .letter-container h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            text-align: left;
+            letter-spacing: -0.03em;
+        }
+        .letter-container .letter-meta {
+            font-size: 0.98rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        .letter-container .letter-content {
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: #222;
+            margin-bottom: 2.2rem;
+        }
+        .media-row {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            background: #faf9f6;
+            margin-bottom: 28px;
+        }
+        .media-row img, .media-row video {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            background: #fff;
+        }
+        .media-row .media-half {
+            width: calc(50vw - 14px);
+            max-width: calc(50% - 14px);
+        }
+        .media-row .media-third {
+            width: calc(33.333vw - 19px);
+            max-width: calc(33.333% - 19px);
+        }
+        .media-row .media-full {
+            width: 100vw;
+            max-width: 100vw;
+        }
+        /* Back button styles */
+        .back-symbol {
+            text-decoration: none;
+            color: #222;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            line-height: 1;
+            padding: 5px;
+            display: inline-block;
+        }
+        @media (max-width: 800px) {
+            .letter-container {
+                box-shadow: none;
+                background: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: 100vw;
+                margin: 0;
+            }
+            .letter-container h1,
+            .letter-container .letter-meta,
+            .letter-container .letter-content {
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+            }
+            .letter-container h1 {
+                margin-top: 0.7rem;
+                text-align: left;
+            }
+            .back-symbol {
+                display: block;
+                position: static;
+                left: auto;
+                top: auto;
+                margin: 0 0 0.7rem 1.2rem;
+                font-size: 2em;
+                color: #222;
+                background: none;
+                z-index: 10;
+            }
+            .media-row {
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+            .media-row .media-half, .media-row .media-third, .media-row .media-full {
+                width: 100vw;
+                max-width: 100vw;
+            }
+        }
+        /* Make all links black and underlined */
+        a, a:visited {
+            color: #111;
+            text-decoration: underline;
+        }
+        a:hover, a:active {
+            color: #222;
+            text-decoration: underline;
+        }
+
+        /* Book popup styling */
+        .book-link {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #111;
+        }
+        .book-link:hover {
+            color: #222;
+        }
+        .book-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow: auto;
+            padding: 20px;
+        }
+        .book-popup-content {
+            background-color: #fff;
+            color: #222;
+            margin: 10% auto;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 15px 0 rgba(0,0,0,0.08);
+            max-width: 250px;
+            position: relative;
+        }
+        .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #222;
+        }
+        .book-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .book-info {
+            text-align: center;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #333;
+        }
+        
+        .social-link {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #111;
+        }
+        @media (max-width: 800px) {
+            .book-popup {
+                padding: 15px;
+            }
+            .book-popup-content {
+                margin: 30% auto;
+                max-width: 85%;
+                width: 280px;
+                left: 0;
+                right: 0;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FKS Book popup
+            const fksTrigger = document.getElementById('book-popup-trigger');
+            const fksPopup = document.getElementById('book-popup');
+            const fksCloseBtn = fksPopup.querySelector('.close-popup');
+            
+            fksTrigger.addEventListener('click', function() {
+                fksPopup.style.display = 'block';
+            });
+            
+            fksCloseBtn.addEventListener('click', function() {
+                fksPopup.style.display = 'none';
+            });
+            
+            // Ahuramazda Book popup
+            const ahuramazdaTrigger = document.getElementById('ahuramazda-popup-trigger');
+            const ahuramazdaPopup = document.getElementById('ahuramazda-popup');
+            const ahuramazdaCloseBtn = ahuramazdaPopup.querySelector('.close-popup');
+            
+            ahuramazdaTrigger.addEventListener('click', function() {
+                ahuramazdaPopup.style.display = 'block';
+            });
+            
+            ahuramazdaCloseBtn.addEventListener('click', function() {
+                ahuramazdaPopup.style.display = 'none';
+            });
+            
+            // Close popups when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target == fksPopup) {
+                    fksPopup.style.display = 'none';
+                }
+                if (event.target == ahuramazdaPopup) {
+                    ahuramazdaPopup.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="letter-container" style="position: relative;">
+        <a href="#" onclick="window.history.length > 1 ? window.history.back() : window.location.href='home.html'; return false;" class="back-symbol" aria-label="Back">
+            &#8592;
+        </a>
+        <h1>a letter for you</h1>
+        <div class="letter-meta">by rubin<br>published: june 01, 2025</div>
+        <div class="letter-content">
+            <p>hi,</p>
+            <p>the idea is simple. our community is small, but it’s full of rich culture and beautiful traditions. we’ve settled far and wide across vast lands and the seven seas. in that chakkar, it’s only fair that traditions and culture become fragmented, and access to them also becomes a little more difficult. at some point in your life, you’ll probably wonder, <i>aii su, ne ema su karvaanu?</i> this project helps answer the small questions we have in our everyday lives and at important moments in our life.</p>
+            <p>sometimes, it feels like the world is moving so fast that our stories get left behind, tucked away in some old cupboard or lost in WhatsApp forwards. but there’s a strange comfort in knowing that even if we’re scattered, there’s a thread that ties us back to our roots—sometimes all it takes is a single phrase or memory to bring it all rushing back. maybe this project is just that: a gentle nudge, a reminder that you’re not alone in your questions or your nostalgia.</p>
+            <p>this project was borne out of my quarter-life crisis. they say that at this point, a man probably chooses one of three things: either starts watering plants, gets a bit more into faith, or starts running a marathon. you can guess what I’ve chosen. the project is also a way for the community to connect with each other and communicate our voices outside.</p>
+        </div>
+    </div>
+    <div class="media-row">
+        <img src="../media/a letter for you/WhatsApp Image 2025-04-21 at 15.18.03.jpeg" alt="workspace" class="media-half">
+        <img src="../media/a letter for you/WhatsApp Image 2025-04-21 at 15.18.04.jpeg" alt="team" class="media-half">
+    </div>
+    <div class="media-row">
+        <video class="media-half" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.16.49.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+        <img src="../media/a letter for you/WhatsApp Image 2025-04-21 at 15.18.17.jpeg" alt="planning" class="media-half">
+    </div>
+    <div class="letter-container">
+        <div class="letter-content">
+            <p>sometimes, after a long day, i wonder if anyone will actually read all this or if it’ll just float around the internet like a digital dakhma. but then, someone sends a message, shares a memory, or asks about a prayer, and suddenly it’s all worth it. it’s these little sparks that keep us going.</p>
+            <p>everything you see in this project—and everything you’ll probably see—is something we’ve gone through. the eventual goal is to get the community together around experiences each one of us has had, so that eventually, when there are no parsis left and ai sifts through its databases, it’ll be like <i>awwww, elokone toh bachhava parse boss!</i> and probably get us out of extinction. (yes, the ai has chosen transliterated gujarati as its speaking language).</p>
+            <p>of course, this journey hasn't been alone. when i began, i had a rough idea but didn't know where to start. then i landed on a website made by <a href="https://ramiyarkaranjia.com/" target="_blank" rel="noopener">ramiyar sir</a>. let me tell you, it's a treasure trove and will probably answer most of your questions—so shoutout to sir. then there are friends who have helped me make this a reality. the marriage and navjote traditions have been taken from a <span class="book-link" id="book-popup-trigger">cute little book</span> sold by the fks foundation. <a href="https://www.instagram.com/pashang_d/" target="_blank" rel="noopener">pashang dadyburjor</a> for the logo and opening video. <a href="https://www.instagram.com/rehandphotography/" target="_blank" rel="noopener">rehan daruwalla</a> for images and videos for navjote and wedding ceremonies. <a href="https://www.instagram.com/a.z.m_23897/" target="_blank" rel="noopener">ayesha mehta</a> for the content. the <a href="https://instagram.com/zenobia_davar/" target="_blank" rel="noopener">davars</a> with their lovely garas, which portray the peak of our culture, mrs. shernaz talati for the <span class="book-link" id="ahuramazda-popup-trigger">avestan prayers</span>, and the numerous people who gave their bits and time to complete this project. if a community comes together, many great things are possible.</p>
+
+<div id="book-popup" class="book-popup">
+    <div class="book-popup-content">
+        <span class="close-popup">&times;</span>
+        <img src="../media/images/fks_book.jpeg" alt="FKS Foundation Book" class="book-image">
+        <p class="book-info">book available in bombay. contact info - +91 9820585971</p>
+    </div>
+</div>
+
+<div id="ahuramazda-popup" class="book-popup">
+    <div class="book-popup-content">
+        <span class="close-popup">&times;</span>
+        <img src="../media/images/ahuramazda_book.jpeg" alt="Ahuramazda Book" class="book-image">
+        <p class="book-info">available across india with contact info - +91 9769851549, +91 9967137037</p>
+    </div>
+</div>
+            <p>obvs, the project is not over—it's just the start. there's a lot we want to add. if you have ideas or want to help with research, marketing, tech, feedback, or anything, feel free to reach out to us on <a href="https://www.instagram.com/the_parsi_project/" target="_blank" rel="noopener">insta</a>, <a href="https://www.facebook.com/profile.php?id=61577086073269" target="_blank" rel="noopener">fb</a> and we'll get in touch.</p>
+            <p>and if you’re reading this and smiling, or even rolling your eyes a little, that’s okay too. this is as much your project as it is ours. so, <i>su karvaanu?</i> just explore, share, and maybe—just maybe—add your own story to the mix.</p>
+        </div>
+    </div>
+    <div class="media-row">
+        <img src="../media/a letter for you/WhatsApp Image 2025-04-21 at 15.18.46.jpeg" alt="laughter" class="media-third">
+        <img src="../media/a letter for you/WhatsApp Image 2025-04-21 at 15.19.11.jpeg" alt="rituals" class="media-third">
+        <video class="media-third" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.17.48.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="media-row">
+        <video class="media-half" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.18.25.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+        <video class="media-half" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.18.54.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="media-row">
+        <video class="media-half" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.19.19.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+        <video class="media-half" autoplay loop muted playsinline webkit-playsinline disableremoteplayback style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <source src="../media/a letter for you/WhatsApp Video 2025-04-21 at 15.20.27.mp4" type="video/mp4">
+            your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- iOS Video Autoplay Fix -->
+    <script>
+        // Function to force autoplay videos on iOS
+        function forceAutoplayVideos() {
+            document.querySelectorAll('video').forEach(function(video) {
+                // Make sure video is muted for autoplay
+                video.muted = true;
+                video.setAttribute('muted', '');
+                
+                // Force playsInline and other attributes
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                video.setAttribute('disableremoteplayback', '');
+                
+                // Play the video
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.log('Autoplay failed:', error);
+                        
+                        // Setup touchstart listener to play on first interaction
+                        document.body.addEventListener('touchstart', function() {
+                            video.play().catch(function(e) {
+                                console.log('Play on interaction failed:', e);
+                            });
+                        }, {once: true});
+                    });
+                }
+            });
+        }
+        
+        // Check if this is iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Run the function when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force autoplay immediately
+            forceAutoplayVideos();
+            
+            // For iOS, set up additional event handlers
+            if (isIOS) {
+                // Listen for page visibility changes
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) {
+                        forceAutoplayVideos();
+                    }
+                });
+                
+                // Try when window gets focus
+                window.addEventListener('focus', forceAutoplayVideos);
+                
+                // Try on user interaction with the page
+                document.addEventListener('touchstart', forceAutoplayVideos, {once: true});
+                
+                // Also try playing videos after delays (for slower devices or network conditions)
+                setTimeout(forceAutoplayVideos, 500);
+                setTimeout(forceAutoplayVideos, 1000);
+                setTimeout(forceAutoplayVideos, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

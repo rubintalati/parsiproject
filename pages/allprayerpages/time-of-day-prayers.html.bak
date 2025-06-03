@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time of Day Prayers - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SunCalc library for sunrise/sunset calculations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Hide scrollbar when not in use */
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden; /* To contain colored geh sections */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem 2rem 0 2rem;
+        }
+
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+
+        /* Time selector styles */
+        .time-selector {
+            position: relative;
+        }
+        
+        .time-select {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 3px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .time-select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .select-arrow {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #fff;
+            font-size: 0.6rem;
+        }
+
+        /* Color styling for dropdown options */
+        .time-select option[value="havan-gah"] {
+            background-color: #E6D2B5; 
+            color: #333;
+        }
+        
+        .time-select option[value="rapithwan-geh"] {
+            background-color: #E8A87C; 
+            color: #333;
+        }
+        
+        .time-select option[value="uzirin-geh"] {
+            background-color: #A088B3; 
+            color: #333;
+        }
+        
+        .time-select option[value="aiwisruthrem-geh"] {
+            background-color: #333D5C; 
+            color: #fff;
+        }
+        
+        .time-select option[value="ushahin-geh"] {
+            background-color: #1A1E3C; 
+            color: #fff;
+        }
+
+        .prayer-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .prayer-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prayer-translation {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-divider {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+        }
+
+        .fin {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Prayer containers */
+        .prayer-container {
+            display: none; /* Hidden by default */
+        }
+        
+        .prayer-container.active {
+            display: block; /* Show when active */
+        }
+
+        /* Header container for each prayer */
+        .prayer-header {
+            margin-bottom: 2rem;
+            padding: 0 2rem;
+        }
+
+        /* Prayer content container */
+        .prayer-content {
+            padding: 0 2rem 2rem;
+        }
+
+        /* Color themes for different times */
+        .havan-gah-theme {
+            background-color: #E6D2B5; /* Morning - Soft, warm beige */
+        }
+        
+        .rapithwan-geh-theme {
+            background-color: #E8A87C; /* Afternoon - Mellow, peachy orange */
+        }
+        
+        .uzirin-geh-theme {
+            background-color: #A088B3; /* Evening - Muted lavender purple */
+        }
+        
+        .aiwisruthrem-geh-theme {
+            background-color: #333D5C; /* Night - Deep navy blue */
+        }
+        
+        .ushahin-geh-theme {
+            background-color: #1A1E3C; /* Pre-dawn - Rich, deep indigo blue */
+        }
+
+        /* Prayer note styling */
+        .prayer-note-container {
+            border-left: 3px solid rgba(0, 0, 0, 0.2);
+            padding-left: 0.8rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+        
+        .prayer-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        /* Prayer note colors for different themes */
+        .havan-gah-theme .prayer-note {
+            color: rgba(72, 54, 28, 0.85);
+        }
+        
+        .rapithwan-geh-theme .prayer-note {
+            color: rgba(72, 54, 28, 0.85);
+        }
+        
+        .uzirin-geh-theme .prayer-note {
+            color: rgba(53, 58, 29, 0.85);
+        }
+        
+        .aiwisruthrem-geh-theme .prayer-note {
+            color: rgba(160, 175, 195, 0.9);
+        }
+        
+        .ushahin-geh-theme .prayer-note {
+            color: rgba(160, 175, 195, 0.9);
+        }
+
+        /* Text color adjustments for light and dark backgrounds */
+        .havan-gah-theme .prayer-subtitle,
+        .havan-gah-theme .section-label,
+        .havan-gah-theme .prayer-name,
+        .havan-gah-theme .prayer-text,
+        .rapithwan-geh-theme .prayer-subtitle,
+        .rapithwan-geh-theme .section-label, 
+        .rapithwan-geh-theme .prayer-name,
+        .rapithwan-geh-theme .prayer-text,
+        .uzirin-geh-theme .prayer-subtitle,
+        .uzirin-geh-theme .section-label,
+        .uzirin-geh-theme .prayer-name,
+        .uzirin-geh-theme .prayer-text {
+            color: #333;
+        }
+
+        .havan-gah-theme .prayer-translation,
+        .rapithwan-geh-theme .prayer-translation,
+        .uzirin-geh-theme .prayer-translation {
+            color: #555;
+            border-left: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .havan-gah-theme .fin,
+        .rapithwan-geh-theme .fin,
+        .uzirin-geh-theme .fin {
+            color: #666;
+        }
+
+        .havan-gah-theme .section-divider,
+        .rapithwan-geh-theme .section-divider,
+        .uzirin-geh-theme .section-divider {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .aiwisruthrem-geh-theme .time-select,
+        .ushahin-geh-theme .time-select {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .aiwisruthrem-geh-theme .select-arrow,
+        .ushahin-geh-theme .select-arrow {
+            color: #fff;
+        }
+
+        .havan-gah-theme .time-select,
+        .rapithwan-geh-theme .time-select,
+        .uzirin-geh-theme .time-select {
+            color: #333;
+            border-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .havan-gah-theme .select-arrow,
+        .rapithwan-geh-theme .select-arrow,
+        .uzirin-geh-theme .select-arrow {
+            color: #333;
+        }
+
+        .havan-gah-theme .back-button,
+        .rapithwan-geh-theme .back-button,
+        .uzirin-geh-theme .back-button {
+            color: #333;
+        }
+
+        .havan-gah-theme .back-button:hover,
+        .rapithwan-geh-theme .back-button:hover,
+        .uzirin-geh-theme .back-button:hover {
+            color: #555;
+        }
+
+        /* Section label styling */
+        .section-label {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 0rem;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 768px) {
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 1rem 1.5rem; /* Add some margin */
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+            
+            /* Reset container for mobile */
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: visible;
+            }
+            
+            .prayer-title {
+                font-size: 1.5rem;
+            }
+            
+            .prayer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .prayer-name {
+                font-size: 1.3rem;
+            }
+            
+            .prayer-text, .gif-box, .prayer-instruction {
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            
+            /* Keep the vertical border for translations in mobile */
+            .prayer-translation {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+                padding-left: 1rem !important;
+            }
+            
+            /* No prayer section borders for mobile since it's one prayer */
+            .prayer-section {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                margin-top: 1rem !important;
+                padding-top: 1rem !important;
+            }
+
+            .back-button {
+                display: block;
+                position: static;
+                left: auto;
+                top: auto;
+                margin: 0 0 0.7rem 0;
+                font-size: 2em;
+                background: none;
+                z-index: 10;
+                padding-left: 0;
+                line-height: 1;
+                padding: 5px;
+            }
+            
+            .header {
+                position: relative;
+                padding: 1.2rem 1rem 0 1rem;
+            }
+            
+            /* Reset all paddings for mobile view */
+            .prayer-header,
+            .prayer-text {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .prayer-content {
+                padding: 1rem 0.5rem;
+            }
+            
+            /* Make colored geh sections stretch edge to edge */
+            .prayer-container.havan-gah-theme,
+            .prayer-container.rapithwan-geh-theme,
+            .prayer-container.uzirin-geh-theme,
+            .prayer-container.aiwisruthrem-geh-theme,
+            .prayer-container.ushahin-geh-theme {
+                width: 100vw !important;
+                position: relative !important;
+                left: 50% !important;
+                right: 50% !important;
+                margin-left: -50vw !important;
+                margin-right: -50vw !important;
+                padding: 1.5rem 1rem !important;
+                box-sizing: border-box !important;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <!-- Havan Gah Prayer (sunrise to 12:40) -->
+        <div id="havan-gah" class="prayer-container havan-gah-theme">
+            <div class="header">
+                <a href="../home.html" class="back-button">
+                    <span class="back-arrow">←</span>
+                </a>
+                
+                <div class="time-selector">
+                    <select class="time-select" id="time-selector">
+                        <option value="havan-gah" selected>hāvan gāh</option>
+                        <option value="rapithwan-geh">rapithwan geh</option>
+                        <option value="uzirin-geh">uzirin geh</option>
+                        <option value="aiwisruthrem-geh">aiwisruthrem geh</option>
+                        <option value="ushahin-geh">ushahin geh</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="prayer-header">
+                <p class="section-label">sunrise to 12:40</p>
+                <h2 class="prayer-name">hāvan geh</h2>
+                <div class="prayer-note-container">
+                    <p class="prayer-note">note - this same geh should be recited during the period of second havan as well, i.e. from the month āvan, roz hormazd up to vahishtoisht gatha.</p>
+                </div>
+                <p class="prayer-subtitle">khshnaothra ahurahe mazdāo. ashem vohū 3.</p>
+            </div>
+            
+            <div class="prayer-content">
+                <div class="prayer-text">
+                    <p>fravarāne mazdayasnō zarathushtrish vīdaēvō ahuratkaeshō. hāvanēe ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. sāvangheē visyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasas-tayaēcha. mithrahe vouru-gaoyoāish hazanghrō-gaoshahe, baēvare-chashmanō, aokhtō-nāmanō yazatahe, rāmanō khvāstrahe, khashnaothra yasnāicha vahmāicha khshnaothrāicha frasas-tayaēcha, yathā ahū vairyō zaotā frāme mrūte athā ratush ashātchit hacha frā ashava vīdhvāo mraotū.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ahurem mazdām ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide; zarathushtrahe ashaonō fravashīm yazamaide; ameshe spente ashaonām yazamaide. ashāunām vangushīsh sūrāo spentāo fravashayō yazamaide, astvato manakhyācha apanōtemem rathwām yazamaide yaētushtemem yazatanām hanghanushtemem ashahe rathavām aiwinasānstemem, jaghmūshtemām ashaonō ashahe rathwō ratufritīm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>hāvanim ashavanem ashaheratūm yazamaide; haurvatātem ashavanem ashahe ratūm yazamaide; ameretātem ashavanem ashahe ratūm yazamaide; āhūirīm frashnem ashavanem ashahe ratūm yazamaide, āhūirīm tkaēshem ashavanem ashahe ratūm yazamaide, yasnem sūrem haptanghāitīm ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>sāvanghaēm vīsīmcha ashavanem ashahe ratūm yazamaide, airyamanem ishīm ashavanem ashahe ratūm yazamaide amavantem verethrājanem, vitbaēshanghem, vīspa tbaēshāo taurvayantem vīspa tbaēshāo. titarentem; yō upemō, yō madhemō, yō fratemō, zaozīzuye tarō mānthrem pancha gāthāo.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>mithremcha vouru-gaoyaoitim yazamaide; rāmacha khvāstrem yazamaide; vīsyehe rathwō yasnāicha vahmāicha vīsīmcha ashavanem ashahe ratūm yazamaide. mithrem vouru-gaoyaoitīm hazangra-gaoshem, baēvare-chashmanem, aokhtō-nāmanem yazatem yazamaide, rāma khvāstrem yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide; hadha-zaothrem hadhaaiwyāonghanem, imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; apām naptārem yazamaide; nairīm sanghem yazamaide; takhmem dāmōish upamanem yazatem, yazamaide; iristanām urvānō yazamaide yāo ashaonām fravashayō.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ratūm berezantem yazamaide yim ahurem mazdām, yō ashahe apanōtemō, yō ashahe jaghmūshtemō vīspa sravāo zarathushtri yazamaide; vīspacha hvarshta shyaothna yazamaide, varshtacha vareshyamnacha.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yenghe hātām āat yesne paiti vanghō, mazdāo ahurō vaēthā ashāt hachā, yāonghāmchā tānschā tāoschā yazamaide. yathā ahu vairyō 2.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, mithrahe vouru-gaoyaoitōish hazanghrō-gaoshahe, baēvare-chashmanō, aokhtō-nāmanō yazatahe, rāmanō khvāstrahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>hāvan is the time for performing the haoma ceremony which stands for man's progress towards oneness with god. i invoke the blessings of ahura mazda, zarathushtra, fire-the son of ahura mazda and mithra- the lord of light. i revere savanghi the earner of livelihood and 'visya', the lord of the village. i worship the urvans of the departed who get united with the fravashis of the pure.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine blessings</p>
+                    <h3 class="prayer-name">ahmāi raēshcha</h3>
+                    
+                    <p>ahmāi raēshcha khvarenascha, ahmāi tanvō dravatātem, ahmāi tanvō vazdvare, ahmāi tanvō verethrem, ahmāi ishtīm pourush-khvāthrām, ahmāi āsnāmchit frazantim, ahmāi daregham daregho-jītīm, ahmāi vahistem-ahūm ashaonām raochanghem, vīspō-khvāthrem. atha jamyāt, yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may the almighty bless a true devotee with health, strength, joy, wise offspring, a long life and the kingdom of heaven.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for health</p>
+                    <h3 class="prayer-name">hazanghrem</h3>
+                    
+                    <p>hazanghrem baēshazanām, baēvare baēshazanām; hazanghrem baēshazanām, baēvare baēshazanām, hazanghrem baeshzanām, baēvare baeshzanām. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may ahura mazdā grant good health a thousand times and even ten thousand times, to the one who is truthful.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine aid</p>
+                    <h3 class="prayer-name">jasa me avanghe mazda</h3>
+                    
+                    <p>jasa me avanghe mazda, jasa me avanghe mazda, jasa me avanghe mazda, amahe hutāshtahe huraodhahe verethraghnahe, ahuradhātahe, vanain-tyāoscha uparatātō rāmanō khvāstrahe, vayaosh uparō-kairyehe taradhātō anyāish dāmān, aētat te vayō yat te asti spentō-mainyaom thwāshahe khvadhātahe, zrvānahe akaranahe, zrvānahe daregho-khvādhātahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>come to my aid o lord and grant me courage, victory, power and the joy of life.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for good deeds</p>
+                    <h3 class="prayer-name">kerfeh mozd</h3>
+                    
+                    <p>kerfeh mozd gunāh guzāreshnerā kunam, ashahi ravān dushāramrā ham kerfeh hamā vehāne haft-keshvar zamīn, zamīn-pahanā, rud-drānā, khorshid-bālā, bundehād be-rasād; asho bed der-zī, atha jamyāt yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>to be able to win forgiveness for my sins may i gain the reward of good deeds. may all the good people be blessed with righteousness as wide as the world, as long as the rivers and as shining as the sun. may it be so, even as i pray.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+
+                
+                <p class="fin">fin</p>
+            </div>
+        </div>
+        
+        <!-- Rapithwan Geh Prayer (12:40 to 15:40) -->
+        <div id="rapithwan-geh" class="prayer-container rapithwan-geh-theme">
+            <div class="header">
+                <a href="../home.html" class="back-button">
+                    <span class="back-arrow">←</span>
+                </a>
+                
+                <div class="time-selector">
+                    <select class="time-select" id="time-selector-rapithwan">
+                        <option value="havan-gah">Hāvan Gāh</option>
+                        <option value="rapithwan-geh" selected>Rapithwan Geh</option>
+                        <option value="uzirin-geh">Uzirin Geh</option>
+                        <option value="aiwisruthrem-geh">Aiwisruthrem Geh</option>
+                        <option value="ushahin-geh">Ushahin Geh</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="prayer-header">
+                <p class="section-label">12:40 to 15:40</p>
+                <h2 class="prayer-name">rapithwan geh</h2>
+                <div class="prayer-note-container">
+                    <p class="prayer-note">from hormuzd roj of mah avan till vahishtoisht gatha, this geh is not to be prayed. instead, hāvan gah has to be prayed at this time of the day. the reason is that during this period ardibehesht ameshaspand who is the presiding diety over rapithwan geh goes underground to give warmth to god's creation there.</p>
+                </div>
+                <p class="prayer-subtitle">khshnaothra ahurahe mazdāo. ashem vohū 3.</p>
+            </div>
+            
+            <div class="prayer-content">
+               <div class="prayer-text">
+                    <p>fravarāne mazdayasnō zarathuhtrish vīdaēvō ahuratkaeshō. rapithwināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasas-tayaēcha. frādat-shave zantumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaecha, ashahe vahishtahe āthrascha ahurahe mazdāo, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyō zaotā frā me mrūte, athā ratush ashāt-chit hacha frā ashava vīdhvāo mraotū.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ahurem mazdām ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide; zarathushtrahe ashaonō fravashīm yazamaide; ameshe spente ashaonām yazamaide. ashāunām vanguhīsh surāo spentāo fravashayō yazamaide, astvatō manakhyācha apanō-temem rathwām yazamaide, yaētushtemem yazatanām, hanghanushtemem ashahe rathwām aiwinasānstemem, jaghmūsh-temām ashaonō ashahe rathwō ratufritīm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>rapithwinem ashavanem ashahe ratūm yazamaide. ahunavaitiīm gāthām ashaonim ashahe ratūm yazamaide ushtavaitim gāthām ashaonīm ashahe ratūm yazamaide; spentā-mainyūm gāthām ashaonīm ashahe ratūm yazamaide, vohū-khshathrām gāthām ashaonīm ashahe ratūm yazamaide; vahishtōishtīm gāthām ashaonīm ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>frādat-fshāum zantumemcha ashavanem ashahe ratūm yazamaide; fshushemcha mānthrem yazamaide; arshukdhemcha vāchem yazamaide; vacha arshukhudha yazamaide; vārethraghnīsh daevō-ghnīta yazamaide; apascha zemascha yazamaide; urvarāoscha, mainyavacha yazata yazamaide, yōi vanghazdao ashavanA
+; ameshescha spente ashaonām yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ashāunām vanguhīsh surāo spentāo fravashayō yazamaide. bareshnūshcha ashahe yat vahishtahe, mazishta mānthra, mazishta verezya, mazishta urvaithya, mazishta haithyā-varezya, mazishta vindaithya daēnayāo māzdayasnōish yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>avat vyākhnemcha hanjamanemcha yazamaide, yat asti ameshanam spentanam, bareshnavA
+ avanghe ashnA
+ ghimatem zantumahe rathwA
+ yasnaīcha vahmaīcha, zantumemcha ashavanem ashahe ratūm yazamaide. ashem vahishtem ātaremcha ahurahe mazdāo puthrem yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide; hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; apām naptārem yazamaide; nairīm sanghem yazamaide; takhmem dāmōish upamanem yazatem yazamaide; iristanām urvānō yazamaide yāo ashaonām fravashayō.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ratūm berezantem yazamaide yim ahurem mazdām, yō ashahe apanōtemo, yō ashahe jaghmūshtemō; vīspa sravāo zarathushtri yazamaide; vīspacha hvarshta shyaothna yazamaide, varshtacha vareshyamnacha.</p>
+                </div>
+
+                <div class="prayer-text">
+                    <p>yenghe hātām āat yesne paiti vanghō. mazdāo ahurō vaēthā ashāt hachā, yāonghamchā tānschā tāoschā yazamaide. yathā ahū vairyō 2.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, ashahe vahishtahe āthrascha ahurahe mazdāo. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>"rapithwan" means the middle part of the day. it is associated with "frādat-fshu" the increaser of cattle and "zantuma", the lord of the town. i worship ahura mazda, zarathushtra, the gathas ahunavad, ushtavad, spentomad, vohukhshathra and vahishtoisht. i praise the righteous, the victorious, the waters, the lands, the plants, the heavenly yazads and the power of ardibehesht - the fire of ahura mazda.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine blessings</p>
+                    <h3 class="prayer-name">ahmāi raēshcha</h3>
+                    
+                    <p>ahmāi raēshcha khvarenascha, ahmāi tanvō dravatātem, ahmāi tanvō vazdvare, ahmāi tanvō verethrem, ahmāi ishtīm pourush-khvāthrām, ahmāi āsnāmchit frazantim, ahmāi daregham daregho-jītīm, ahmāi vahistem-ahūm ashaonām raochanghem, vīspō-khvāthrem. atha jamyāt, yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may the almighty bless a true devotee with health, strength, joy, wise offspring, a long life and the kingdom of heaven.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for health</p>
+                    <h3 class="prayer-name">hazanghrem</h3>
+                    
+                    <p>hazanghrem baēshazanām, baēvare baēshazanām; hazanghrem baēshazanām, baēvare baēshazanām, hazanghrem baeshzanām, baēvare baeshzanām. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may ahura mazdā grant good health a thousand times and even ten thousand times, to the one who is truthful.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine aid</p>
+                    <h3 class="prayer-name">jasa me avanghe mazda</h3>
+                    
+                    <p>jasa me avanghe mazda, jasa me avanghe mazda, jasa me avanghe mazda, amahe hutāshtahe huraodhahe verethraghnahe, ahuradhātahe, vanain-tyāoscha uparatātō rāmanō khvāstrahe, vayaosh uparō-kairyehe taradhātō anyāish dāmān, aētat te vayō yat te asti spentō-mainyaom thwāshahe khvadhātahe, zrvānahe akaranahe, zrvānahe daregho-khvādhātahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>come to my aid o lord and grant me courage, victory, power and the joy of life.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for good deeds</p>
+                    <h3 class="prayer-name">kerfeh mozd</h3>
+                    
+                    <p>kerfeh mozd gunāh guzāreshnerā kunam, ashahi ravān dushāramrā ham kerfeh hamā vehāne haft-keshvar zamīn, zamīn-pahanā, rud-drānā, khorshid-bālā, bundehād be-rasād; asho bed der-zī, atha jamyāt yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>to be able to win forgiveness for my sins may i gain the reward of good deeds. may all the good people be blessed with righteousness as wide as the world, as long as the rivers and as shining as the sun. may it be so, even as i pray.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <p class="fin">fin</p>
+            </div>
+        </div>
+
+        
+        <!-- Uzirin Geh Prayer (15:40 to sunset) -->
+        <div id="uzirin-geh" class="prayer-container uzirin-geh-theme">
+            <div class="header">
+                <a href="../home.html" class="back-button">
+                    <span class="back-arrow">←</span>
+                </a>
+                
+                <div class="time-selector">
+                    <select class="time-select" id="time-selector-uzirin">
+                        <option value="havan-gah">Hāvan Gāh</option>
+                        <option value="rapithwan-geh">Rapithwan Geh</option>
+                        <option value="uzirin-geh" selected>Uzirin Geh</option>
+                        <option value="aiwisruthrem-geh">Aiwisruthrem Geh</option>
+                        <option value="ushahin-geh">Ushahin Geh</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="prayer-header">
+                <p class="section-label">15:40 to sunset</p>
+                <h2 class="prayer-name">uzirin geh</h2>
+                <p class="prayer-subtitle">khshnaothra ahurahe mazdāo. ashem vohū 3.</p>
+            </div>
+            
+            <div class="prayer-content">
+                <div class="prayer-text">
+                    <p>fravarāne mazdayasnō zarathuhtrish vidaēvō ahuratkaēshō. uzyeirināi ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, frādat-virāi dakhyumāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. berezatō ahurahe nafedhrō apām apascha mazdadhātayāo, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyō zaotā frā me mrute, athā ratush ashāt-chit hacha frā ashava vidhvāo mraotū.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ahurem mazdām ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide; zarathushtrahe ashaonō fravashīm yazamaide; ameshe spente ashaonām yazamaide. ashāunām vanguhīsh sūrāo spentāo fravashayō yazamaide, astvatō manakhyācha apanōtemem rathwām yazamaide; yaētushtemem yazatanām hanghanushtemem ashahe rathwān awinasānstemem, jaghmūshtemām ashaonō ashahe rathwō ratufritīm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>uzyeirinem ashavanem ashahe ratūm yazamaide; zaotārem ashavanem ashahe ratūm yazamaide; hāvanānem ashavanem ashahe ratūm yazamaide; ātarevakhshem ashavanem ashahe ratūm yazamaide; frabaretārem ashavanem ashahe ratūm yazamaide; āberetem ashavanem ashahe ratūm yazamaide; āsnatārem ashavanem ashahe ratūm yazamaide; rathwishkarem ashavanem ashahe ratūm yazamaide; sraoshāvarezem ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>frādat-virēm dakhymemcha ashavanem ashahe ratūm yazamaide; strēushcha māonghemcha hvarecha raochāo yazamaide; anaghra raochāo yazamaide; afrasanghāmcha khvāthrem yazamaide; yā narsh sādrā dregvato. haithyāvarezem ashavanem ashahe ratūm yazamaide; aparemcha tkaēshem yazamaide; haithyāvarezem ashavanem ashaonō stīm yazamaide; paiti asni paiti khshafne, yasō-beretābyō zaothrābyō, dakhyumahe rathwō yasnaīcha vahmāicha; dakhumemcha ashavanem ashahe ratūm yazamaide. berezantem ahurem khshathrīm, khshaētem, apām napātem aurvat - aspem yazamaide; apemcha mazdadhātām ashaonīm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>avat vyākhnemcha hanjamanemcha yazamaide, yatasti ameshanam spentanam, bareshnavō avanghe ashnō ghīmatem. zantumahe rathwō yasnaīcha vahmaīcha, zantumemcha ashavanem ashahe ratūm yazamaide. ashem vahishtem ātaremcha ahurahe mazdāo puthrem yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide; hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; apām naptārem yazamaide; nairīm sanghem yazamaide: takhmem dāmōish upamanem yazatem yazamaide; iristanām urvānō yazamaide yāo ashaonām fravashayō. ratūm berezantem yazamaide yim ahurem mazdām, yō ashahe apanotemō, yō ashahe jaghmushtemō; vīspa sravāo zarathushtri yazamaide; vīspacha hvarshta shyaothna yazamaide, varshtacha vareshyamnacha.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yenghe hātām āat yesne paiti vanghō, mazdāo ahurō vaēthā ashāt hachā; yāonghāmchā tānschā tāoschā yazamaide. yathā ahū vairyō 2.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, berezatō ahurahe nafedhrō apām apascha mazdadhātayāo. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>uzirin marks the close of the day. it is associated with "frādat-vira", the progress of mankind and "dakhyuma", the lord of the land. i worship ahura mazda, zarathushtra, the amesh spentas, the fravashis, the good priests, the divine fire, the flowing waters, the sun, the moon, the stars and all the elements of nature. i revere ahura mazda's true devotees.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine blessings</p>
+                    <h3 class="prayer-name">ahmāi raēshcha</h3>
+                    
+                    <p>ahmāi raēshcha khvarenascha, ahmāi tanvō dravatātem, ahmāi tanvō vazdvare, ahmāi tanvō verethrem, ahmāi ishtīm pourush-khvāthrām, ahmāi āsnāmchit frazantim, ahmāi daregham daregho-jītīm, ahmāi vahistem-ahūm ashaonām raochanghem, vīspō-khvāthrem. atha jamyāt, yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may the almighty bless a true devotee with health, strength, joy, wise offspring, a long life and the kingdom of heaven.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for health</p>
+                    <h3 class="prayer-name">hazanghrem</h3>
+                    
+                    <p>hazanghrem baēshazanām, baēvare baēshazanām; hazanghrem baēshazanām, baēvare baēshazanām, hazanghrem baeshzanām, baēvare baeshzanām. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may ahura mazdā grant good health a thousand times and even ten thousand times, to the one who is truthful.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine aid</p>
+                    <h3 class="prayer-name">jasa me avanghe mazda</h3>
+                    
+                    <p>jasa me avanghe mazda, jasa me avanghe mazda, jasa me avanghe mazda, amahe hutāshtahe huraodhahe verethraghnahe, ahuradhātahe, vanain-tyāoscha uparatātō rāmanō khvāstrahe, vayaosh uparō-kairyehe taradhātō anyāish dāmān, aētat te vayō yat te asti spentō-mainyaom thwāshahe khvadhātahe, zrvānahe akaranahe, zrvānahe daregho-khvādhātahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>come to my aid o lord and grant me courage, victory, power and the joy of life.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for good deeds</p>
+                    <h3 class="prayer-name">kerfeh mozd</h3>
+                    
+                    <p>kerfeh mozd gunāh guzāreshnerā kunam, ashahi ravān dushāramrā ham kerfeh hamā vehāne haft-keshvar zamīn, zamīn-pahanā, rud-drānā, khorshid-bālā, bundehād be-rasād; asho bed der-zī, atha jamyāt yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>to be able to win forgiveness for my sins may i gain the reward of good deeds. may all the good people be blessed with righteousness as wide as the world, as long as the rivers and as shining as the sun. may it be so, even as i pray.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <p class="fin">fin</p>
+            </div>
+        </div>
+        
+        <!-- Aiwisruthrem Geh Prayer (sunset to 00:40) -->
+        <div id="aiwisruthrem-geh" class="prayer-container aiwisruthrem-geh-theme">
+            <div class="header">
+                <a href="../home.html" class="back-button">
+                    <span class="back-arrow">←</span>
+                </a>
+                
+                <div class="time-selector">
+                    <select class="time-select" id="time-selector-aiwisruthrem">
+                        <option value="havan-gah">Hāvan Gāh</option>
+                        <option value="rapithwan-geh">Rapithwan Geh</option>
+                        <option value="uzirin-geh">Uzirin Geh</option>
+                        <option value="aiwisruthrem-geh" selected>Aiwisruthrem Geh</option>
+                        <option value="ushahin-geh">Ushahin Geh</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="prayer-header">
+                <p class="section-label">sunset to 00:40</p>
+                <h2 class="prayer-name">aiwisruthrem geh</h2>
+                <p class="prayer-subtitle">khshnaothra ahunahe mazdāo, ashem vohū 3</p>
+            </div>
+            
+            <div class="prayer-content">
+                              <div class="prayer-text">
+                    <p>fravarāne mazdayasnō zarathushtrish vidāēvō ahuratkaēshō, aiwisrūthremāi aibigayāi ashaone ashahe rathwe, yasnāicha vahmāicha khshknao-thrāicha frasastayaēcha, frādat-vīspām-hujyāitēē zarathushtrōtemāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha. ashāunām, fravashinām ghenānāmcha virōvānthwanām, yāiryāoscha hushitōish, amahecha hutāshtahe huraodhāhe verethraghnahecha ahuradhātahe, vanaintyāoscha uparatāto, kshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyō zaotā frā me mrute, athā ratush ashāt- chit hacha frā ashava vidhvāo mraotū.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ahurem mazdām ashavanem ashahe ratūm yazamaide; zarathushtrəm ashavanem ashahe ratum yazamaide; zarathushtrahe ashaonō fravashīm yazamaide; ameshe spente ashaonām yazamaide. ashāunām vanguhīsh sūrāō spentāō fravashayō yazamaide, astvatō mana-khyācha apanōtemem rathwām yazamaide, yaētushṭemem yazatanām, hanghanushṭemem ashahe rathwām aiwinasānstemem, jaghmūshṭemām ashaonō ashahe rathwō ratufritīm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>aiwisrūthremem ashavanem ashahe ratūm yazamaide; aibigāim ashavanem ashahe ratūm yazamaide; thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide; asmana hāvana ashahe ratavō yazamaide; ayanghaēna hāvana ashahe ratavō yazamaide hadha-zaothrem hadha-aiwyāonghanem imat baresma, ashaya frastaretem ashavanem ashahe ratūm yazamaide; āpa urvaire yazamaide; aourvatām urune ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>frādat-vīspām-hujyāitīm ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide; mānthrem spentem ashavanem ashahe ratūm yazamaide; gēush urvānem ashavanem ashahe ratūm yazamaide; zarathushtrōtememcha ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>āthravanem ashavanem ashahe ratūm yazamaide; rathaēshtārem ashavanem ashahe ratūm yazamaide; vāstrīm fshuyantem ashavanem ashahe ratūm yazamaide; nmānahe nmānō-paitim ashavanem ashahe ratūm yazamaide; vīsō vis-paitīm ashavanem ashahe ratūm yazamaide; zantēush zantu-paitīm ashavanem ashahe ratūm yazamaide; danghēush danghu-paitīm ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yavānem humananghem huvachanghem hushyaothnem hudaenem ashavanem ashahe ratūm yazamaide; yavānem ukhdō-vachanghem ashavanem ashahe ratūm yazamaide; khvaētva-dathem ashavanem ashahe ratūm yazamaide; danghā-urvaēsem ashavanem ashahe ratūm yazamaide; humāim pairijathnem ashavanem ashahe ratūm yazamaide; nmānahe nmānō-pathnim ashavanem ashahe ratūm yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>nārikāmcha ashaonīm yazamaide, frāyō-humatām, frāyō-hūkhtām, frāyō-hvarshtām, hush-hām-sāstām, ratukhsha-thrām, ashaonim, yām ārmaitīm spentām, yāoscha te ghenāo, ahura mazda. naremcha ashavanem yazamaide, frāyō-humatem, frāyō-hūkhtem, frāyō-hvarshtem, vistō-fraoritīm, ēvistō kayadhem, yenghe shyaothnāish gaēthāo asha frādente, zarathushtrōtemehe rathwō yasnāicha, vahmāicha zarathushtrōtememcha ashavanem ashahe ratūm yazamaide. ashāunām vanguhīsh sūrāo spentāo fravashayō yazamaide; ghenāoscha virōvānthvāo yazamaide; yāiryāmcha hushitīm yazamaide; amemcha hutashtem huraodhem yazamaide; verethraghnemcha ahuradhātem yazamaide; vanaintīmcha upartātem yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide, hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; apām naptārem yazamaide; nairīm sanghem yazamaide; takhmem dāmōish upamanem yazatem yazamaide, iristanām urvānō yazamaide yāo ashaonām fravashayō. ratūm berezantem yazamaide yim ahurem mazdām, yō ashahe apanotemō, yō ashahe jaghmushtemō; vīspa sravāo zarathushtri yazamaide; vīspacha hvarshta shyaothna yazamaide varshtacha vareshyamnacha.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yenghe hātām āat yesne paiti vanghō, mazdāo ahurō vaēthā ashāt hachā, yāonghāmchā tānschā tāoschā yazamaide. yathā ahū vairyō 2.</p>
+                </div>
+
+		<div class="prayer-text">
+                    <p>yasnemcha vahmemcha aojascha zavarecha āfrīnāmi, ashāunām fravashinām ghenānāmcha virōvānthwanām, yāiryāoscha hushitōish, amahecha hutāshtahe huraodhahe, verethraghnahecha ahuradhātahe, vanaintyāoscha uparatāto. ashem vohū 1.</p>
+                </div>
+
+		<div class="prayer-translation">
+                    <p>aiwisruthrem is associated with evening time and with "fradat vispam hujyaiti", the progress towards good life and also the holiest priest of the times. i worship ahura mazda, zarathushtra, behram yazad (the lord of victory), the good spiritual beings who bring in the different seasons of the year, the amesha spentas, the fravashis and the fire that purifies everything. i revere the righteous leaders, righteous women who obey their husbands and ahura mazda's true devotees.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine blessings</p>
+                    <h3 class="prayer-name">ahmāi raēshcha</h3>
+                    
+                    <p>ahmāi raēshcha khvarenascha, ahmāi tanvō dravatātem, ahmāi tanvō vazdvare, ahmāi tanvō verethrem, ahmāi ishtīm pourush-khvāthrām, ahmāi āsnāmchit frazantim, ahmāi daregham daregho-jītīm, ahmāi vahistem-ahūm ashaonām raochanghem, vīspō-khvāthrem. atha jamyāt, yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may the almighty bless a true devotee with health, strength, joy, wise offspring, a long life and the kingdom of heaven.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for health</p>
+                    <h3 class="prayer-name">hazanghrem</h3>
+                    
+                    <p>hazanghrem baēshazanām, baēvare baēshazanām; hazanghrem baēshazanām, baēvare baēshazanām, hazanghrem baeshzanām, baēvare baeshzanām. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may ahura mazdā grant good health a thousand times and even ten thousand times, to the one who is truthful.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine aid</p>
+                    <h3 class="prayer-name">jasa me avanghe mazda</h3>
+                    
+                    <p>jasa me avanghe mazda, jasa me avanghe mazda, jasa me avanghe mazda, amahe hutāshtahe huraodhahe verethraghnahe, ahuradhātahe, vanain-tyāoscha uparatātō rāmanō khvāstrahe, vayaosh uparō-kairyehe taradhātō anyāish dāmān, aētat te vayō yat te asti spentō-mainyaom thwāshahe khvadhātahe, zrvānahe akaranahe, zrvānahe daregho-khvādhātahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>come to my aid o lord and grant me courage, victory, power and the joy of life.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for good deeds</p>
+                    <h3 class="prayer-name">kerfeh mozd</h3>
+                    
+                    <p>kerfeh mozd gunāh guzāreshnerā kunam, ashahi ravān dushāramrā ham kerfeh hamā vehāne haft-keshvar zamīn, zamīn-pahanā, rud-drānā, khorshid-bālā, bundehād be-rasād; asho bed der-zī, atha jamyāt yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>to be able to win forgiveness for my sins may i gain the reward of good deeds. may all the good people be blessed with righteousness as wide as the world, as long as the rivers and as shining as the sun. may it be so, even as i pray.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <p class="fin">fin</p>
+            </div>
+        </div>
+        
+        <!-- Ushahin Geh Prayer (00:40 to sunrise) -->
+        <div id="ushahin-geh" class="prayer-container ushahin-geh-theme">
+            <div class="header">
+                <a href="../home.html" class="back-button">
+                    <span class="back-arrow">←</span>
+                </a>
+                
+                <div class="time-selector">
+                    <select class="time-select" id="time-selector-ushahin">
+                        <option value="havan-gah">Hāvan Gāh</option>
+                        <option value="rapithwan-geh">Rapithwan Geh</option>
+                        <option value="uzirin-geh">Uzirin Geh</option>
+                        <option value="aiwisruthrem-geh">Aiwisruthrem Geh</option>
+                        <option value="ushahin-geh" selected>Ushahin Geh</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="prayer-header">
+                <p class="section-label">00:40 to sunrise</p>
+                <h2 class="prayer-name">ushahin geh</h2>
+                <p class="prayer-subtitle">khshnaothra ahurahe mazdāo. ashem vohū 3.</p>
+            </div>
+            
+	    <div class="prayer-content">
+               <div class="prayer-text">
+                    <p>fravarāne mazdayasnō zarathushtrish vīdaēvō ahuratkaeshō. ushahināi ashaone ashahe rathwe yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, berejyāi nmānyāicha ashaone ashahe rathwe, yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, sraoshahe ashyehe ashivatō verethrājanō frādat-gaēthahe, rashnaosh razishtahe, arshtātascha frādat-gaēthayāo varēdat-gaēthayāo, khshnaothra yasnāicha vahmāicha khshnaothrāicha frasastayaēcha, yathā ahu vairyō zaotā frā me mrute, athā ratush ashāt-chit hacha frā ashava vidhvāo mraotū.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>ahurem mazdām ashavanem ashahe ratūm yazamaide; zarathushtrem ashavanem ashahe ratūm yazamaide; zarathushtrahe ashaonō fravashīm yazamaide; ameshe spente ashaonām yazamaide. ashāunām vanguhīsh sūrāō spentāō fravashayō yazamaide, astvatō manakhyācha apanōtemem rathwām yazamaide; yaētushṭemem yazatanām, hanghanushtemem ashahe rathwām aiwinasānstemem, jaghmūshtēām ashaonō ashahe rathwō ratufritīm yazamaide. </p>
+                </div>
+                <div class="prayer-text">
+                    <p>ushahinem ashavanem ashahe ratūm yazamaide; ushām srīrām yazamaide; ushāonghem yazamaide, khshōithnīm raēvat-aspām, framen-narām, framen-narō-vīrām; yā khvāthravaitī nmānavaitī; ushāonghem yazamaide, revīm renjat-aspām, yā sanat avi haptō-karshvairīm zām; avām ushām yazamaide. ahurem mazdām ashavanem ashahe ratūm yazamaide; vohū manō yazamaide; ashem vahishtem yazamaide; khshathrem vairīm yazamaide; spentām vanguhim ārmaitim yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>berejīm ashavanem ashahe ratūm yazamaide, bereja vangheush ashahe, berejadaēnayāo vanghuyāo māzdayasnōish, nmānyehe rathwō yasnaīcha vahmāicha nmānimcha ashavanem ashahe ratūm yazamaide. sraoshem ashīm huraodhem verethrājanem frādat-gaēthem ashavanem ashahe ratūm yazamaide; rashnūm razistem yazamaide, arshtātem frādat-gaēthām varedat-gaēthām yazamaide.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>thwām ātarem ahurahe mazdāo puthrem ashavanem ashahe ratūm yazamaide; hadha-zaothrem hadha-aiwyāonghanem imat baresma ashaya frastaretem, ashavanem ashahe ratūm yazamaide; apām naptārem yazamaide; nairīm sanghem yazamaide; takhmem dāmōish upamanem yazatem yazamaide; iristanām urvānō yazamaide yāo ashaonām fravashayō. ratūm berezantem yazamaide yim ahurem mazdām, yō ashahe apanotemō, yō ashahe jaghmushtemō; vīspa sravāo zarathushtri yazamaide, vīspacha hvarshta shyaothna yazamaide varshtacha vareshyamnacha.</p>
+                </div>
+                
+                <div class="prayer-text">
+                    <p>yenghe hātām āt yesne paitī vanghō, mazdāo ahurō vaēthā ashāt hachā, yāonghāmchā tānschā tāoschā yazamaide. yathā ahu vairyō 2.</p>
+                </div>
+                <div class="prayer-text">
+                    <p>yasnemcha vahmemcha aojascha zavarecha āfrīnāmi sraoshahe ashyehe ashivatō verethrājanō frādat-gaēthahe, rashnaosh razishtahe, arshtātascha frādat-gaēthayāo varedat-gaēthayāo. ashem vohū 1.</p>
+                </div>
+                                
+                <div class="prayer-translation">
+                    <p>ushahin means belonging to the dawn. it is associated with "berezya nmanya", welcoming the lord of the house. i worship ahura mazda, zarathushtra, the yazads-sroash, rashna and astād. i praise the beautiful dawn and all that is righteous.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine blessings</p>
+                    <h3 class="prayer-name">ahmāi raēshcha</h3>
+                    
+                    <p>ahmāi raēshcha khvarenascha, ahmāi tanvō dravatātem, ahmāi tanvō vazdvare, ahmāi tanvō verethrem, ahmāi ishtīm pourush-khvāthrām, ahmāi āsnāmchit frazantim, ahmāi daregham daregho-jītīm, ahmāi vahistem-ahūm ashaonām raochanghem, vīspō-khvāthrem. atha jamyāt, yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may the almighty bless a true devotee with health, strength, joy, wise offspring, a long life and the kingdom of heaven.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for health</p>
+                    <h3 class="prayer-name">hazanghrem</h3>
+                    
+                    <p>hazanghrem baēshazanām, baēvare baēshazanām; hazanghrem baēshazanām, baēvare baēshazanām, hazanghrem baeshzanām, baēvare baeshzanām. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>may ahura mazdā grant good health a thousand times and even ten thousand times, to the one who is truthful.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for divine aid</p>
+                    <h3 class="prayer-name">jasa me avanghe mazda</h3>
+                    
+                    <p>jasa me avanghe mazda, jasa me avanghe mazda, jasa me avanghe mazda, amahe hutāshtahe huraodhahe verethraghnahe, ahuradhātahe, vanain-tyāoscha uparatātō rāmanō khvāstrahe, vayaosh uparō-kairyehe taradhātō anyāish dāmān, aētat te vayō yat te asti spentō-mainyaom thwāshahe khvadhātahe, zrvānahe akaranahe, zrvānahe daregho-khvādhātahe. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>come to my aid o lord and grant me courage, victory, power and the joy of life.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <div class="prayer-text">
+                    <p class="section-label">the one for good deeds</p>
+                    <h3 class="prayer-name">kerfeh mozd</h3>
+                    
+                    <p>kerfeh mozd gunāh guzāreshnerā kunam, ashahi ravān dushāramrā ham kerfeh hamā vehāne haft-keshvar zamīn, zamīn-pahanā, rud-drānā, khorshid-bālā, bundehād be-rasād; asho bed der-zī, atha jamyāt yatha āfrīnāmi. ashem vohū 1.</p>
+                </div>
+                
+                <div class="prayer-translation">
+                    <p>to be able to win forgiveness for my sins may i gain the reward of good deeds. may all the good people be blessed with righteousness as wide as the world, as long as the rivers and as shining as the sun. may it be so, even as i pray.</p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <p class="fin">fin</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to get current local time as a JavaScript Date object
+            function getCurrentTime() {
+                return new Date();
+            }
+            
+            // Initialize SunCalc for getting sunrise/sunset times
+            function getSunTimes() {
+                const date = new Date();
+                
+                // Use browser's geolocation if available, otherwise use default coordinates
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const sunTimes = SunCalc.getTimes(date, lat, lng);
+                        
+                        // Now that we have sun times, determine which prayer to show
+                        showCorrectPrayer(sunTimes);
+                    }, error => {
+                        // If user denies geolocation, use default coordinates (roughly central position)
+                        const sunTimes = SunCalc.getTimes(date, 40, 0); // Default: mid-Northern Hemisphere
+                        showCorrectPrayer(sunTimes);
+                    });
+                } else {
+                    // If geolocation is not supported, use default coordinates
+                    const sunTimes = SunCalc.getTimes(date, 40, 0); // Default: mid-Northern Hemisphere
+                    showCorrectPrayer(sunTimes);
+                }
+            }
+            
+            // Determine which prayer to show based on current time and sun times
+            function showCorrectPrayer(sunTimes) {
+                const now = getCurrentTime();
+                const currentHour = now.getHours();
+                const currentMinute = now.getMinutes();
+                const currentDecimalTime = currentHour + (currentMinute / 60);
+                
+                const sunrise = sunTimes.sunrise;
+                const sunset = sunTimes.sunset;
+                
+                const sunriseDecimal = sunrise.getHours() + (sunrise.getMinutes() / 60);
+                const sunsetDecimal = sunset.getHours() + (sunset.getMinutes() / 60);
+                
+                // First, convert times to a decimal value for easier comparison
+                // 12:40 = 12.667, 15:40 = 15.667, 00:40 = 0.667
+                
+                let prayerId;
+                
+                // Determine which prayer to show
+                if (currentDecimalTime >= 0.667 && currentDecimalTime < sunriseDecimal) {
+                    // Ushahin Geh (00:40 to sunrise)
+                    prayerId = 'ushahin-geh';
+                } else if (currentDecimalTime >= sunriseDecimal && currentDecimalTime < 12.667) {
+                    // Havan Gah (sunrise to 12:40)
+                    prayerId = 'havan-gah';
+                } else if (currentDecimalTime >= 12.667 && currentDecimalTime < 15.667) {
+                    // Rapithwan Geh (12:40 to 15:40)
+                    prayerId = 'rapithwan-geh';
+                } else if (currentDecimalTime >= 15.667 && currentDecimalTime < sunsetDecimal) {
+                    // Uzirin Geh (15:40 to sunset)
+                    prayerId = 'uzirin-geh';
+                } else {
+                    // Aiwisruthrem Geh (sunset to 00:40)
+                    prayerId = 'aiwisruthrem-geh';
+                }
+                
+                // Show the correct prayer
+                showPrayer(prayerId);
+            }
+            
+            // Function to show the selected prayer and hide others
+            function showPrayer(prayerId) {
+                // Hide all prayers
+                document.querySelectorAll('.prayer-container').forEach(container => {
+                    container.classList.remove('active');
+                });
+                
+                // Show the selected prayer
+                document.getElementById(prayerId).classList.add('active');
+                
+                // Update all dropdown selectors to match
+                const selectors = [
+                    document.getElementById('time-selector'),
+                    document.getElementById('time-selector-rapithwan'),
+                    document.getElementById('time-selector-uzirin'),
+                    document.getElementById('time-selector-aiwisruthrem'),
+                    document.getElementById('time-selector-ushahin')
+                ];
+                
+                selectors.forEach(selector => {
+                    if (selector) selector.value = prayerId;
+                });
+            }
+            
+            // Handle dropdown selection change
+            document.querySelectorAll('.time-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    showPrayer(this.value);
+                });
+            });
+            
+            // Initialize by getting sun times and showing the correct prayer
+            getSunTimes();
+        });
+    </script>
+</body>
+</html>

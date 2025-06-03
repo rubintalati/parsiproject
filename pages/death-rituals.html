@@ -82,6 +82,13 @@
         @media (max-width: 992px) { .content-layout { flex-direction: column; } .left-side, .right-side { width: 100%; flex-direction: row; flex-wrap: wrap; } .ritual-card { flex: 1; min-width: 45%; } .media-container { width: 100%; aspect-ratio: 16/9; order: -1; margin-bottom: 1.5rem; } }
         @media (max-width: 768px) { body { overflow: auto !important; } .welcome-text-container { padding: 0 1rem; min-height: 200px; /* Increased height for mobile */ } .page-title { font-size: 2rem; } .main-content { padding: 1rem; } .left-side, .right-side { flex-direction: column; } .content-layout { padding: 0 1rem; gap: 1rem; } .media-container { width: 100%; aspect-ratio: 16/9; margin-bottom: 1.2rem; height: auto; min-height: 200px; } }
     </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+    <!-- Sidebar persistence script -->
+    <script defer src="/js/sidebar-persistence.js"></script>
+  
 </head>
 <body>
     <div class="container">

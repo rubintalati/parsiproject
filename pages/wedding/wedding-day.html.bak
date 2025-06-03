@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>wedding day ceremonies - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ceremony-section:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .note {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+
+        /* Tab Navigation Styles */
+        .filter-container {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .filter-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            /* Removed border-radius for rectangular design */
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            max-width: 180px;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom List Styling */
+        .custom-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .custom-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .numbered-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            .header {
+                padding: 0.5rem;
+            }
+            .ceremony-header {
+                padding: 1.2rem 0 0 0;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../wedding-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">wedding day ceremonies</h1>
+            <p class="ceremony-subtitle">The pinnacle of Parsi marriage rituals</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="filter-container">
+            <div class="filter-row">
+                <button class="filter-button active" data-tab="preparations">preparations</button>
+                <button class="filter-button" data-tab="bride-ceremony">bride's ceremony</button>
+                <button class="filter-button" data-tab="groom-ceremony">groom's ceremony</button>
+            </div>
+            <div class="filter-row">
+                <button class="filter-button" data-tab="gifts">gifts & shawls</button>
+                <button class="filter-button" data-tab="ashirwad">ashirwad</button>
+                <button class="filter-button" data-tab="after-wedding">after wedding</button>
+            </div>
+        </div>
+        
+        <!-- Wedding Preparations Tab -->
+        <div id="preparations" class="tab-content active">
+            <div class="ceremony-section">
+                <h2 class="section-title">preparations for the wedding day</h2>
+                
+                <p>This is the fourth day of the celebrations - The Wedding Day.</p>
+                
+                <p>In the morning, after doing chok-chandan, toran should be put on every door. Sagan-ni Sev and dahi should be made. As the bride is to come today, her room should be arranged and kept ready.</p>
+                
+                <p>Both the sides should prepare ses for taking to the baag.</p>
+                
+                <h3 class="subsection-title">items to be taken to the baag</h3>
+                
+                <p>If everything is done at the time of varni, only the following needs to be taken to the baag by the girl's parents:</p>
+                <ul class="custom-list">
+                    <li>Father-in-law's shawl and the envelope of cash</li>
+                    <li>Jamai's argya-ni viti</li>
+                    <li>Relatives' envelopes</li>
+                    <li>Envelopes for matida baira</li>
+                </ul>
+                
+                <p>Both sides should remember to take the wedding rings. The girl's parents should remember to put in the bag, Jamairaj's argya-ni viti and boy's parents should remember to take for the bride khole lidha-ni buttie and a ring for the bride's brother (sala).</p>
+                
+                <p>If nahan is to be done at home, there is no problem. But if nahan is to be done in the baag, everything should be taken carefully.</p>
+                
+                <h3 class="subsection-title">additional items to remember</h3>
+                
+                <p>While going to the baag, they should remember to take:</p>
+                <ul class="custom-list">
+                    <li>A few blank envelopes and a pen with red ink</li>
+                    <li>Paranva-no vago, towel, chappals, comb, hairpins, powder</li>
+                    <li>The coconut wrapped with raw cotton thread</li>
+                    <li>A big bag to keep the gifts that will be received</li>
+                    <li>A thali for washing feet, varbeda-ni tamdi</li>
+                    <li>Copper kasyo filled with ghee-gol</li>
+                    <li>A ball of raw cotton thread and ada antar-nu kapdu</li>
+                    <li>Wedding chairs, teapoy and lamp</li>
+                </ul>
+                
+                <h3 class="subsection-title">Items for the Bride's Side</h3>
+                
+                <p>In the ses for sagan, should be taken mandavhethal-ni saree no vago. The rest should be kept in the bag.</p>
+                
+                <h3 class="subsection-title">Items for the Groom's Side</h3>
+                
+                <p>The boy's mother should also keep the boy's vago in the bag and also take the coconut wrapped with raw cotton thread, and a big bag for keeping the gifts that will be received.</p>
+                
+                <p>When the boy finishes the nahan, some cash, to be given as gift, should be put in his pocket for varbeda-na and for pug-dhova-na. She should also remember to take a towel, chappals, a comb, a brush and the wedding ring.</p>
+                
+                <h3 class="subsection-title">Payments & Envelopes</h3>
+                
+                <p>Ashirwad-na rupiya should be given by the boy's side, and the girl's side should also give Rs. 25/- to Mobedsaheb hak-na, and also for nahan-nahava-na. These envelopes should be kept ready. They should also keep some extra cash.</p>
+                
+                <p>In the ses should be kept one set of clothes for pachla lagan and they should be given to the girl.</p>
+                
+                <p class="note">Some people do not give pachla lagan-na kapda.</p>
+                
+                <p>Money should be carried to the baag for paying the electricity bill and the bandwala's bill.</p>
+            </div>
+        </div>
+        
+        <!-- Bride's Ceremony Tab -->
+        <div id="bride-ceremony" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Bride's Ceremony</h2>
+                
+                <h3 class="subsection-title">Nahan Ceremony</h3>
+                
+                <p>First, the girl goes for nahan. After the Mobedsaheb gives the nahan and asks her to take her bath, ovarna should be taken with an egg 7 times, and broken on the thereshold (umbar) and then only she should be sent for the bath.</p>
+                
+                <p class="note">The egg and the akhiyanum for the nahan has to be kept ready by the caterer.</p>
+                
+                <h3 class="subsection-title">Stage Ceremony</h3>
+                
+                <p>Once the bride is ready after the bath, a tili should be done and a coconut and a bouquet should be given to her. Then she should be made to stand on the steps of the stage.</p>
+                
+                <p>Here the mother-in-law should do achumichu and the father-in-law should give her the earings khole lidha-na. After this, the bride should go and sit next to the stage.</p>
+                
+                <h3 class="subsection-title">Pachla Lagan</h3>
+                
+                <p>If clothes for pachla lagan are to be given, the girl should be asked to stand on a decorated patla and the clothes should be given to her. And in that case, the father-in-law should give the earings there only.</p>
+                
+                <h3 class="subsection-title">Bride on the Stage for Ashirwad</h3>
+                
+                <p>After the bridegroom sits down on the stage, the girl's father should bring the bride to the stage. The girl's mother should do achumichu and then the girl should sit on the stage and her mother should stand behind her. She should be there to hold the sutarna-ata.</p>
+                
+                <p>Now the auspicious ceremony of ada antar should start. If too many people do not go on the stage the solemnity of the occasion will be maintained.</p>
+                
+                <p class="note">At the time of this ceremony, everyone should maintain silence. A mike may be kept on the stage so that guests can listen to the kalaam and respect peacefully this auspicious ceremony.</p>
+            </div>
+        </div>
+        
+        <!-- Groom's Ceremony Tab -->
+        <div id="groom-ceremony" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Groom's Ceremony</h2>
+                
+                <h3 class="subsection-title">After Nahan</h3>
+                
+                <p>Once the var-raja comes after his nahan a tili should be done and putting a shawl on his hand, he should be garlanded and given a coconut and bouquet of flowers. Then, he too should be made to stand on the steps of the stage.</p>
+                
+                <p>Then the girl's mother should do vadhavo after doing achumichu, & then put on his finger argya-ni-viti. After this the groom should go and sit next to the stage.</p>
+                
+                <h3 class="subsection-title">Varbedu Ceremony</h3>
+                
+                <p>The bride's sister (sali) should then go to the brother-in-law (i.e. the bridegroom - the banevi) with varbedu, make him put his hand in the water, and then taking the money he puts in the varbedu she should hand it over to the groom's people.</p>
+                
+                <h3 class="subsection-title">Bridegroom on the Stage for Ashirwad</h3>
+                
+                <p>First, the bridegroom should come on the stage. His mother should vadhavo him by doing achumichu. Then the bridegroom should sit on the chair and the witnesses should stand with ada antar-nu kapdu.</p>
+                
+                <p class="note">These days, when the jamai comes on the stage, after doing kasti, argya-ni reet is done. As a result, Vada Dastursaheb has to wait. To respect his status, it would be better to finish all the ceremonies earlier. It should be so arranged that after doing the kasti, bridegroom goes straight on the stage together with Dasturji Saheb.</p>
+                
+                <h3 class="subsection-title">Feet Washing Ceremony</h3>
+                
+                <p>After the Ashirwad Ceremony is over, the bride's sister (sali) should go on the stage with the thali for washing the brother-in-law's (banevi's) feet and then, sprinkling a little milk on the shoes, she should keep the cash given by him, and give the thali to the bride's in-laws.</p>
+            </div>
+        </div>
+        
+        <!-- Gifts & Shawls Tab -->
+        <div id="gifts" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Gifts & Shawls</h2>
+                
+                <h3 class="subsection-title">Shawl and Cash Gifts</h3>
+                
+                <p>The girl's relatives should welcome the boy's father with a shawl and cash. Others like mama, masa and other relatives should also be given envelopes.</p>
+                
+                <p>After this, the boy's relatives also should give the vevai shawl and cash and envelopes to the other relatives, and ring to the sala (bride's brother).</p>
+                
+                <p class="note">If separate envelopes are not to be given, all the cash can be put in one envelope and given to the vevai.</p>
+                
+                <h3 class="subsection-title">Ashirwad Gift</h3>
+                
+                <p>After the Ashirwad Ceremony is over, the groom's father should garland the Mobedsaheb and give him the envelope.</p>
+                
+                <h3 class="subsection-title">Gift Redistribution</h3>
+                
+                <p>Whatever clothes, jewellery and cash have been brought by the girl's in-laws, should be given to her and the groom.</p>
+                
+                <p>To whatever amount is received by the bride's relatives in envelopes, some more amount should be added (making it an odd number) and sent to the girl's sasre.</p>
+                
+                <h3 class="subsection-title">Keeping of Gifts</h3>
+                
+                <p>The bride's mother can keep for herself sopara-na clothes and the father can keep the shawl and cash. This is the custom. But ofcourse, people can do whatever they desire. Nothing is compulsory.</p>
+                
+                <p>Similarly the, groom's mother can keep sasu dakhal-na kapda and his father can keep the shawl and cash.</p>
+                
+                <p>If too many clothes have come from the girl's side, some may be kept aside and they may be given back on different auspicious occasions. Both the sides should act with understanding and should not feel burdened as these are our customs for joy and happiness and nothing is compulsory.</p>
+            </div>
+        </div>
+        
+        <!-- Ashirwad Tab -->
+        <div id="ashirwad" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">Ashirwad Ceremony</h2>
+                
+                <h3 class="subsection-title">Preparation for Ashirwad</h3>
+                
+                <p>As the time of the marriage ceremony approaches, care should be taken that the witnesses are there on time.</p>
+                
+                <h3 class="subsection-title">Importance of the Ceremony</h3>
+                
+                <p>The Ashirwad ceremony is the central and most sacred part of the Parsi wedding. During this ceremony, the bride and groom receive blessings from the priests and their families.</p>
+                
+                <p>The couple sits side by side on the stage while the Mobedsaheb (priest) recites prayers and gives them spiritual guidance for their married life.</p>
+                
+                <h3 class="subsection-title">Ada Antar</h3>
+                
+                <p>During the Ashirwad ceremony, the ritual of ada antar takes place. This involves the witnesses holding a cloth above the couple while the priest recites sacred prayers.</p>
+                
+                <p>The witnesses should be ready with ada antar-nu kapdu when the ceremony begins.</p>
+                
+                <h3 class="subsection-title">Seating Arrangement</h3>
+                
+                <p>The bridegroom sits on the chair first, and the witnesses stand with ada antar-nu kapdu.</p>
+                
+                <p>After the bridegroom sits down, the girl's father brings the bride to the stage. The girl's mother does achumichu and then the girl sits on the stage with her mother standing behind her to hold the sutarna-ata.</p>
+                
+                <h3 class="subsection-title">Solemnity of the Ceremony</h3>
+                
+                <p>During the Ashirwad ceremony, everyone should maintain silence to preserve the solemnity of this sacred occasion.</p>
+                
+                <p>A microphone may be placed on the stage so that guests can hear the prayers and blessings clearly.</p>
+            </div>
+        </div>
+        
+        <!-- After Wedding Tab -->
+        <div id="after-wedding" class="tab-content">
+            <div class="ceremony-section">
+                <h2 class="section-title">After Wedding</h2>
+                
+                <h3 class="subsection-title">Going to the In-Laws' Home</h3>
+                
+                <p>When the girl goes sasre, one or two members of her family should accompany her. This will help the boy's side to arrange the teapoy and wedding chairs which are brought home.</p>
+                
+                <p>When the groom and the bride come home, they should be welcomed with achumichu.</p>
+                
+                <h3 class="subsection-title">Wedding Gifts Distribution</h3>
+                
+                <p>Whatever clothes, jewellery and cash have been brought by the girl's in-laws, should be given to her and the groom.</p>
+                
+                <p>To whatever amount is received by the bride's relatives in envelopes, some more amount should be added (making it an odd number) and sent to the girl's sasre.</p>
+                
+                <h3 class="subsection-title">Customs Regarding Gifts</h3>
+                
+                <p>The bride's mother can keep for herself sopara-na clothes and the father can keep the shawl and cash. This is the custom. But ofcourse, people can do whatever they desire. Nothing is compulsory.</p>
+                
+                <p>Similarly the, groom's mother can keep sasu dakhal-na kapda and his father can keep the shawl and cash.</p>
+                
+                <h3 class="subsection-title">Gift Exchanges</h3>
+                
+                <p>If too many clothes have come from the girl's side, some may be kept aside and they may be given back on different auspicious occasions.</p>
+                
+                <p class="note">Both the sides should act with understanding and should not feel burdened as these are our customs for joy and happiness and nothing is compulsory.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.filter-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

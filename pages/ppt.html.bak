@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPT - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            overflow: hidden; /* Prevent scrolling */
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .header-text {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            min-height: 4.8rem; /* Height for 3 lines of text */
+        }
+
+        .welcome-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .gif-container {
+            margin-top: 2rem;
+            text-align: center;
+            max-height: 50vh; /* Limit height to prevent overflow */
+            overflow: hidden; /* Hide overflow */
+        }
+
+        .gif-container img {
+            max-width: 100%;
+            max-height: 50vh; /* Limit height to prevent overflow */
+            object-fit: contain;
+        }
+
+        /* Flying Numbers Animation Styles */
+        .number {
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            transform: scale(0);
+            opacity: 0;
+            user-select: none;
+            transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        opacity 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 1;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            html, body {
+                overflow: hidden;
+                position: fixed;
+                touch-action: manipulation;
+            }
+            .container {
+                flex-direction: column;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 4rem 1.5rem 1.5rem 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <!-- Numbers animation container (covers the whole page) -->
+    <div id="numbers-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;"></div>
+
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">ppt</h1>
+                <div id="welcome-text" class="welcome-text"></div>
+            </div>
+            
+            <div class="gif-container">
+                <img src="../media/gifs/parsisvstigers.gif" alt="Parsis vs Tigers">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typing animation for welcome text
+            const welcomeText = document.getElementById('welcome-text');
+            const textToType = "coming soon means thobvaanu dikra. check back soon for this exciting feature.";
+            let i = 0;
+            const typingSpeed = 50; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < textToType.length) {
+                    welcomeText.innerHTML = textToType.substring(0, i + 1);
+                    i++;
+                    setTimeout(typeWriter, typingSpeed);
+                }
+            }
+            
+            // Start typing animation
+            typeWriter();
+
+            // Flying Numbers Animation
+            // Configuration
+            const config = {
+                spawnRate: 300,      // How often to spawn a new number (ms) - reduced for better performance
+                maxNumbers: 40,      // Maximum number of elements on screen - reduced for mobile
+                minSize: 15,         // Minimum font size
+                maxSize: 40,         // Maximum font size - reduced to fit mobile screens better
+                duration: 5000,      // How long each number stays on screen - slightly reduced
+            };
+            
+            // Adjust for mobile devices
+            if (window.innerWidth < 768) {
+                config.maxNumbers = 25;
+                config.spawnRate = 400;
+                config.maxSize = 30;
+            }
+
+            // DOM Elements
+            const body = document.body;
+            const numbersContainer = document.getElementById('numbers-container');
+            
+            // Track all numbers on screen
+            let numbers = [];
+            let spawnInterval;
+            let lastTimestamp = 0;
+
+            // Random utilities
+            function randomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function randomNumber() {
+                // Generate numbers between 0 and 100,000
+                return randomInt(0, 100000);
+            }
+
+            function randomOpacity() {
+                // Generate random opacity between 0.2 and 0.9
+                return (Math.random() * 0.7 + 0.2).toFixed(2);
+            }
+
+            // Create and animate a number
+            function createNumber() {
+                // If we've reached the maximum, remove the oldest number
+                if (numbers.length >= config.maxNumbers) {
+                    const oldest = numbers.shift();
+                    if (oldest.element && oldest.element.parentNode) {
+                        oldest.element.parentNode.removeChild(oldest.element);
+                    }
+                }
+
+                // Create number element
+                const numElement = document.createElement('div');
+                numElement.className = 'number';
+                numElement.textContent = randomNumber();
+                
+                // Random position on screen - only on the right side of the page
+                const x = randomInt(0, window.innerWidth);
+                const y = randomInt(0, window.innerHeight);
+                
+                // Random size
+                const size = randomInt(config.minSize, config.maxSize);
+                
+                // Random movement direction and speed (more subtle for smoother appearance)
+                const speedX = (randomInt(-30, 30) / 100);  // Reduced speed
+                const speedY = (randomInt(-30, 30) / 100);  // Reduced speed
+                
+                // Set random opacity
+                const opacity = randomOpacity();
+                
+                // Set initial style
+                numElement.style.left = `${x}px`;
+                numElement.style.top = `${y}px`;
+                numElement.style.fontSize = `${size}px`;
+                numElement.style.color = `rgba(255, 255, 255, ${opacity})`;
+                
+                // Add to container instead of body
+                numbersContainer.appendChild(numElement);
+                
+                // Start animation
+                setTimeout(() => {
+                    numElement.style.transform = 'scale(1)';
+                    numElement.style.opacity = opacity;
+                }, 10);
+                
+                // Store number data
+                const numberData = {
+                    element: numElement,
+                    x: x,
+                    y: y,
+                    speedX: speedX,
+                    speedY: speedY,
+                    size: size,
+                    opacity: opacity,
+                    startTime: performance.now(),
+                    zoomRate: randomInt(10, 30) / 1000 // Random zoom rate for variety
+                };
+                
+                numbers.push(numberData);
+                
+                // Set timeout to remove the number
+                setTimeout(() => {
+                    // Find the index of this number in our array
+                    const index = numbers.indexOf(numberData);
+                    if (index !== -1) {
+                        numbers.splice(index, 1);
+                    }
+                    
+                    // Fade out animation
+                    numElement.style.transform = 'scale(0)';
+                    numElement.style.opacity = '0';
+                    
+                    // Remove from DOM after animation
+                    setTimeout(() => {
+                        if (numElement.parentNode) {
+                            numElement.parentNode.removeChild(numElement);
+                        }
+                    }, 1200); // Match the transition duration in CSS
+                }, config.duration);
+            }
+
+            // Animate all numbers with timestamp for smoother animation
+            function animateNumbers(timestamp) {
+                // Calculate delta time for smooth animation regardless of frame rate
+                const deltaTime = timestamp - lastTimestamp;
+                lastTimestamp = timestamp;
+                
+                // Use requestAnimationFrame's timestamp for smooth animation
+                numbers.forEach(numData => {
+                    // Update position with deltaTime for consistent speed
+                    const moveFactor = deltaTime / 16.67; // Normalized to 60fps
+                    numData.x += numData.speedX * moveFactor;
+                    numData.y += numData.speedY * moveFactor;
+                    
+                    // Apply position with transform for better performance
+                    numData.element.style.transform = `translate3d(${numData.x}px, ${numData.y}px, 0) scale(${numData.zoomCurrent || 1})`;
+                    
+                    // Time-based smooth zoom animation
+                    const elapsedTime = timestamp - numData.startTime;
+                    const progress = Math.min(elapsedTime / config.duration, 1);
+                    
+                    // Bezier easing for smooth zoom in
+                    const easeInOut = t => t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
+                    const zoomProgress = easeInOut(progress);
+                    
+                    // Calculate zoom factor with individual zoom rate
+                    const zoomFactor = 1 + zoomProgress * numData.zoomRate * 10;
+                    numData.zoomCurrent = zoomFactor;
+                    
+                    // Apply transform with both translation and scale
+                    numData.element.style.transform = `translate3d(${numData.x}px, ${numData.y}px, 0) scale(${zoomFactor})`;
+                });
+                
+                requestAnimationFrame(animateNumbers);
+            }
+
+            // Start animation
+            function initialize() {
+                spawnInterval = setInterval(createNumber, config.spawnRate);
+                lastTimestamp = performance.now();
+                requestAnimationFrame(animateNumbers);
+                
+                // Pre-populate with some numbers for immediate visual
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(createNumber, i * 100);
+                }
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                // Keep numbers within new window bounds
+                numbers.forEach(numData => {
+                    if (numData.x > window.innerWidth) {
+                        numData.x = window.innerWidth - numData.size;
+                    }
+                    if (numData.y > window.innerHeight) {
+                        numData.y = window.innerHeight - numData.size;
+                    }
+                });
+            });
+
+            // Start the animation
+            initialize();
+        });
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

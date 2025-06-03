@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>philosophy & soul - the parsi project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../../css/logo.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-transform: lowercase;
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem 2rem 0 2rem;
+        }
+        
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            line-height: 1;
+            padding: 5px;
+        }
+        
+        .back-button:hover {
+            color: #ccc;
+        }
+        
+        .back-arrow {
+            margin-right: 0.5rem;
+            font-size: 18px;
+        }
+        
+        .ceremony-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        
+        .ceremony-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        
+        .ceremony-subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        
+        .ceremony-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 2rem;
+        }
+        
+        .ceremony-section p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .subsection-title {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .subsection-subtitle {
+            font-size: 1rem;
+            margin-top: 1.3rem;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        
+        .note-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .note-box p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        em {
+            font-style: italic;
+            color: #b6eaff;
+        }
+        
+        /* Custom List Styling */
+        .custom-list {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+            padding-left: 1.2rem;
+        }
+        
+        .custom-list li {
+            position: relative;
+            margin-bottom: 0.7rem;
+            line-height: 1.5;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+        
+        .custom-list li::before {
+            content: '•';
+            position: absolute;
+            left: -1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Fade effect at the top/bottom of the container */
+        .fade-top, .fade-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .fade-top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        .fade-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
+        
+        /* Mobile responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: #000;
+            margin: 10% auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        /* Mobile responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+                border: none;
+                background-color: transparent;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 5% auto;
+            }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span>
+            </a>
+        </div>
+        
+        <div class="ceremony-header">
+            <h1 class="ceremony-title">philosophy & soul</h1>
+            <p class="ceremony-subtitle">beliefs about death, the soul, and the afterlife journey</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Nature and Philosophy of Death</h2>
+            <p>Zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. The physical body is transmuted from one form to another, as the soul departs for the spiritual realm.</p>
+            
+            <p>Death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of God's plan. Unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all.</p>
+            
+            <div class="note-box">
+                <p>in zoroastrian tradition, death is not the end of existence but rather a transition from the material world to the spiritual realm.</p>
+            </div>
+            
+            <p>Zoroastrians understand death as part of the cosmic struggle between good and evil. While death represents a momentary victory for evil forces, the soul's journey continues, and ultimately good triumphs as the soul reaches its spiritual destination.</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">The Soul and Divine Justice</h2>
+            
+            <p>A human being is composed of three primary constituents:</p>
+            
+            <ul class="custom-list">
+                <li><em>The physical body</em> - which decomposes after death and must be disposed of properly</li>
+                <li><em>The astral form</em> - which takes time to return to the elements</li>
+                <li><em>The immortal spiritual constituents</em> - which return to their respective stations</li>
+            </ul>
+            
+            <h3 class="subsection-title">The Soul's Journey After Death</h3>
+            <p>The soul remains in the material world for three days and nights after death, in the care of the divine being Sraosha. During this time, it hovers near the body and requires protection through prayers and rituals.</p>
+            
+            <p>On the dawn of the fourth day (Chahrom), the soul travels to the <em>Chinvad Bridge</em>, where it faces judgment. This bridge is said to widen for the righteous souls, allowing easy passage to the spiritual realm, but narrows to a razor's edge for the wicked, causing them to fall into the abyss.</p>
+            
+            <div class="note-box">
+                <p>the three-day period after death is considered crucial as the soul is believed to be vulnerable and in need of protection through prayers and rituals.</p>
+            </div>
+            
+            <h3 class="subsection-title">Divine Justice and Judgment</h3>
+            <p>At the Chinvad Bridge, the soul meets its own conscience (Daena), which appears as a beautiful maiden for the righteous or as a hideous hag for the wicked. This encounter represents the soul's confrontation with the sum of its deeds in life.</p>
+            
+            <p>The judgment is not arbitrary but based on the soul's own actions during its earthly existence. The principle of divine justice in Zoroastrianism is summarized by the phrase "As you sow, so shall you reap."</p>
+            
+            <p>The righteous soul proceeds to Garothman (the highest heaven), while the wicked soul descends to temporary punishment proportionate to its evil deeds. Zoroastrianism teaches that no punishment is eternal; all souls will eventually be purified and reunited with Ahura Mazda at the time of Frashogird (Final Renovation).</p>
+        </div>
+        
+        <div class="ceremony-section">
+            <h2 class="section-title">Purpose of After-Death Rituals</h2>
+            
+            <h3 class="subsection-title">For the Soul</h3>
+            <ul class="custom-list">
+                <li>Rituals help the soul reach its station in the spiritual world by the dawn of the fourth day (Chahrom)</li>
+                <li>Later rituals console and support the soul, encouraging its journey towards Garothman (the highest heaven)</li>
+                <li>Prayers and rituals do not alter the soul's karmic balance or place in the afterlife; only deeds in the material world matter</li>
+            </ul>
+            
+            <h3 class="subsection-title">For the Living</h3>
+            <ul class="custom-list">
+                <li>Rituals serve as a balm, helping the bereaved cope with loss</li>
+                <li>They provide a structured way for the living to fulfill their obligations to the departed</li>
+                <li>They reinforce community bonds and shared values during times of grief</li>
+            </ul>
+            
+            <div class="note">
+                While prayers and rituals are important, they cannot change the soul's destiny, which is determined by the person's thoughts, words, and deeds during life. The rituals primarily help the soul on its journey and console the living.
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

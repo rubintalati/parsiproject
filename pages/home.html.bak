@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles (Reference only, sidebar injected by JS) */
+        /* .sidebar { ... } */
+        /* .logo-container { ... } */
+        /* .logo { ... } */
+        /* .sidebar-section { ... } */
+        /* .sidebar a { ... } */
+        /* .sidebar a:hover { ... } */
+        /* .user-profile { ... } */
+        /* .user-avatar { ... } */
+        /* .user-info { ... } */
+        /* .user-name { ... } */
+        /* .user-status { ... } */
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem; /* Original padding, might overlap header */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            /* Add scroll for smaller viewports if needed */
+            overflow-y: auto;
+        }
+
+        /* Header Styles (Header injected by JS) */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #000;
+            transition: box-shadow 0.2s;
+        }
+        .header.sticky {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Welcome Text Styles */
+        .welcome-text-container {
+            padding: 0 4rem;
+            margin-bottom: 2rem;
+            height: 130px;
+            min-height: 130px; /* Added to prevent layout shifts */
+            overflow: hidden;
+        }
+
+        .welcome-text {
+            text-align: left;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .welcome-text p {
+            margin-bottom: 0.8rem;
+            min-height: 1.5em;
+        }
+
+        /* Specific margins for welcome text lines */
+        #text1 {
+            margin-bottom: 0.8rem; /* Keep some space after the greeting */
+        }
+        #text2 {
+            margin-bottom: 0.1rem; /* Reduce space after the second line */
+        }
+        #text3 {
+            margin-bottom: 0.8rem; /* Default space after the last line */
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ccc;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Prayer Container */
+        .prayers-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Main prayer categories - first row */
+        .main-prayers {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0 10%;
+            flex-wrap: wrap; /* Allow wrapping */
+        }
+
+        .main-prayer-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 22%;
+            min-width: 150px;
+            box-sizing: border-box;
+        }
+
+        .main-prayer-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .main-prayer-card h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .main-prayer-card p {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Secondary prayer categories - rows 2 & 3 */
+        .secondary-prayers {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .secondary-prayer-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: auto;
+            font-size: 0.9rem;
+        }
+
+        .secondary-prayer-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Enhanced Message Box */
+        .message-box {
+            display: flex;
+            align-items: center;
+            width: 70%;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .message-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 0.8rem;
+            color: #fff;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .message-input:focus {
+            outline: none;
+        }
+
+        .send-button {
+            background: none;
+            border: none;
+            color: #fff;
+            padding: 0.8rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Prayer Popup Modal */
+        /* Styles potentially handled by onboarding-modal.css */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Darker overlay */
+            z-index: 1100; /* Ensure above sidebar/header */
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            background-color: #111; /* Slightly lighter than body */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+             transition: color 0.3s ease;
+        }
+        .close-button:hover {
+             color: #fff;
+        }
+
+        .prayer-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .prayer-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+            color: #eee;
+        }
+
+        .prayer-subtitle {
+            color: #999;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+             color: #ddd;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .audio-player::-webkit-media-controls-panel {
+            background-color: #222;
+        }
+         .audio-player::-webkit-media-controls-play-button,
+         .audio-player::-webkit-media-controls-volume-slider,
+         .audio-player::-webkit-media-controls-mute-button,
+         .audio-player::-webkit-media-controls-timeline,
+         .audio-player::-webkit-media-controls-current-time-display,
+         .audio-player::-webkit-media-controls-time-remaining-display {
+             filter: brightness(1.5) saturate(0) contrast(2);
+         }
+
+        .prayer-text {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #ccc;
+             text-align: justify;
+        }
+        .prayer-text p {
+            margin-bottom: 1em;
+        }
+
+        .prayer-translation {
+            margin-top: 1.5rem;
+            color: #aaa;
+            line-height: 1.7;
+            font-style: italic;
+             border-left: 3px solid #555;
+             padding-left: 1rem;
+        }
+        .prayer-translation p {
+             margin-bottom: 1em;
+        }
+
+        .prayer-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            /* Container adjustments handled by include-sidebar.js */
+            
+            .header {
+                position: relative;
+                margin-bottom: 1.5rem;
+                margin-top: 1rem;
+                width: 100%;
+                border-radius: 0;
+                background: #000;
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                height: auto;
+                padding: 1rem;
+                overflow-x: hidden;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+                margin-top: 0;
+                margin-bottom: 0.8rem;
+            }
+            
+            .welcome-text-container {
+                padding: 0 1rem;
+                height: auto;
+                min-height: 100px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .welcome-text {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .main-prayers {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 0.8rem;
+                padding: 0 0.5rem;
+                justify-content: space-between;
+            }
+            
+            .main-prayer-card {
+                width: calc(50% - 0.4rem);
+                min-width: 120px;
+                margin: 0 0 0.8rem 0;
+                box-sizing: border-box;
+            }
+            
+            .secondary-prayers {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 0.8rem;
+                padding: 0 0.5rem;
+                justify-content: space-between;
+            }
+            
+            .secondary-prayer-card {
+                width: calc(50% - 0.4rem);
+                min-width: 100px;
+                margin: 0 0 0.8rem 0;
+                box-sizing: border-box;
+            }
+            
+            .modal-content {
+                padding: 1rem;
+                margin: 1rem auto;
+            }
+            
+            .prayer-title { 
+                font-size: 1.5rem; 
+            }
+            
+            .prayer-name { 
+                font-size: 1.3rem; 
+            }
+            
+            body {
+                overflow: auto;
+            }
+        }
+        
+        /* Added for better small screen support */
+        @media (max-width: 480px) {
+            .header {
+                margin-top: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .main-prayers {
+                gap: 0.6rem;
+                padding: 0 0.3rem;
+            }
+            
+            /* Custom logic for boxes - first 4 boxes 2-in-a-row, then 1 per row */
+            .main-prayer-card {
+                width: calc(50% - 0.3rem);
+                min-width: unset;
+                margin-bottom: 0.6rem;
+            }
+            
+            /* Target boxes after the 4th one to be full width */
+            .main-prayer-card:nth-child(n+5) {
+                width: 100%;
+            }
+            
+            .secondary-prayer-card {
+                width: 100%;
+                min-width: unset;
+                margin-bottom: 0.6rem;
+            }
+            
+            .main-prayer-card h3 {
+                font-size: 0.95rem;
+            }
+            
+            .main-prayer-card p {
+                font-size: 0.75rem;
+            }
+            
+            .welcome-text-container {
+                padding: 0 0.5rem;
+                margin-bottom: 1rem;
+                min-height: 120px; /* Fixed height to prevent layout shifts on mobile */
+                height: 120px;
+            }
+            
+            .welcome-text {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+        }
+        
+        /* Added to handle landscape orientation on mobile */
+        @media (max-height: 480px) and (orientation: landscape) {
+            .header {
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .welcome-text-container {
+                padding: 0 0.5rem;
+                margin-bottom: 0.5rem;
+                min-height: 60px;
+            }
+            
+            .main-prayers, .secondary-prayers {
+                gap: 0.5rem;
+            }
+            
+            .main-prayer-card, .secondary-prayer-card {
+                width: calc(33.33% - 0.4rem);
+                padding: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar injected by include-sidebar.js -->
+        <div class="mobile-nav-overlay"></div> <!-- Needed for mobile nav -->
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header injected by include-sidebar.js -->
+
+            <div class="header">
+                <h1 class="page-title">basic daily prayers</h1>
+            </div>
+
+            <div class="main-layout">
+                <!-- Welcome Text Area -->
+                <div class="welcome-text-container">
+                    <div class="welcome-text" id="welcome-text">
+                        <p id="text1"></p>
+                        <p id="text2"></p>
+                        <p id="text3"></p>
+                    </div>
+                </div>
+
+                <div class="prayers-container">
+                    <!-- Main Prayer Categories -->
+                    <div class="main-prayers">
+                        <div class="main-prayer-card" onclick="window.location.href='daily prayers/sudreh-kusti.html'">
+                            <h3>sudreh kusti</h3>
+                            <p>foundation prayers 101</p>
+                        </div>
+                        <div class="main-prayer-card" onclick="window.location.href='daily prayers/sarosh-baz.html'">
+                            <h3>sarosh baj</h3>
+                            <p>prep for the geh's</p>
+                        </div>
+                        <div class="main-prayer-card" onclick="window.location.href='daily prayers/time-of-day-prayers.html'"> 
+                            <h3>time of day prayers</h3>
+                            <p>the geh's</p>
+                        </div>
+                        <div class="main-prayer-card" onclick="window.location.href='daily prayers/concluding-prayers.html'">
+                            <h3>concluding prayers</h3>
+                            <p>doa-tandarosti, din-no-kalmo</p>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Prayer Categories -->
+                    <div class="secondary-prayers">
+                        <div class="secondary-prayer-card" onclick="window.location.href='daily prayers/101-names-of-ahura-mazda.html'"> 
+                            101 names of ahura mazda
+                        </div>
+                        <div class="secondary-prayer-card" onclick="window.location.href='daily prayers/ashem-vohu-yatha-ahu-vairyo.html'">
+                            ashem vohū & yathā ahū vairyō
+                        </div>
+                        <div class="secondary-prayer-card" onclick="window.location.href='daily prayers/incense-placing-prayer.html'"> 
+                            incense (loban) placing prayer
+                        </div>
+                    </div>
+                    <div class="secondary-prayers">
+                        <div class="secondary-prayer-card" onclick="window.location.href='daily prayers/char-disha-no-namaskar.html'"> 
+                            chaar disa no namaskar
+                        </div>
+                        <div class="secondary-prayer-card" onclick="window.location.href='zoroastrian-calendar.html'">
+                            <span id="roj-link">roj & mah (zoroastrian calendar)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal removed as requested -->
+
+    <script>
+        // Typing animation and welcome text with user's first name
+        document.addEventListener('DOMContentLoaded', function() {
+            const text1Element = document.getElementById('text1');
+            const text2Element = document.getElementById('text2');
+            const text3Element = document.getElementById('text3');
+
+            // Custom welcome text for praying on the go
+            const texts = [
+                "you & bon jovi might be both living on a prayer. what prayer? what time? here's a comprehensive guide to your daily parsi prayers.",
+                "ave jara barabar bhanje haa dikra.",
+                ""
+            ];
+            let currentTextIndex = 0;
+            let currentCharIndex = 0;
+            let currentElement = text1Element;
+
+            function typeText() {
+                if (!currentElement || currentTextIndex >= texts.length) {
+                    const lastCursor = document.querySelector('.typing-cursor');
+                    if(lastCursor) lastCursor.remove();
+                    return;
+                }
+                const currentText = texts[currentTextIndex];
+                if (currentCharIndex < currentText.length) {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    cursor.textContent = '|';
+                    currentElement.appendChild(cursor);
+                    currentCharIndex++;
+                    setTimeout(typeText, Math.random() * 20 + 15);
+                } else {
+                    const existingCursor = currentElement.querySelector('.typing-cursor');
+                    if (existingCursor) existingCursor.remove();
+                    currentTextIndex++;
+                    currentCharIndex = 0;
+                    currentElement = currentTextIndex === 1 ? text2Element : text3Element;
+                    if(currentElement) currentElement.textContent = '';
+                    setTimeout(typeText, currentTextIndex === 1 ? 600 : 400);
+                }
+            }
+            typeText();
+        });
+
+        // Sticky header scroll logic (desktop only)
+        const header = document.querySelector('.header');
+        function updateStickyHeader() {
+            if (!header) return;
+            if (window.innerWidth > 768) {
+                window.addEventListener('scroll', stickyScrollHandler);
+            } else {
+                window.removeEventListener('scroll', stickyScrollHandler);
+                header.classList.remove('sticky');
+            }
+        }
+        function stickyScrollHandler() {
+            if (!header) return;
+            if (window.scrollY > 20) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        }
+        updateStickyHeader();
+        window.addEventListener('resize', updateStickyHeader);
+    </script>
+    <script src="../js/combined.js"></script>
+</body>
+</html>

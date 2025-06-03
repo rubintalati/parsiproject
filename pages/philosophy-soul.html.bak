@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>philosophy & soul - death rituals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:vertical {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body:hover::-webkit-scrollbar-thumb:vertical,
+        body:active::-webkit-scrollbar-thumb:vertical {
+            opacity: 1;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+            position: relative;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .back-arrow {
+            margin-right: 0.5rem;
+        }
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem 0 0 0;
+        }
+        .main-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: lowercase;
+        }
+        .subtitle {
+            color: #999;
+            margin-bottom: 0rem;
+            font-size: 1.1rem;
+            line-height: 1.1;
+            text-transform: lowercase;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            color: #ffb347;
+            margin-bottom: 0.7rem;
+            text-transform: lowercase;
+        }
+        .subsection-title {
+            font-size: 1.05rem;
+            color: #ffe6b3;
+            margin-bottom: 0.5rem;
+            text-transform: lowercase;
+        }
+        ul, ol {
+            margin-left: 1.6em;
+            margin-bottom: 1em;
+        }
+        .info-box {
+            background: rgba(255,180,71,0.09);
+            border-left: 6px solid #ffb347;
+            padding: 1.1em 1.3em;
+            border-radius: 10px;
+            margin: 1.2em 0;
+            color: #ffe6b3;
+        }
+        .soul-list li { margin-bottom: 0.3em; }
+        .purpose-list li { margin-bottom: 0.3em; }
+        @media (max-width: 700px) {
+            .container { padding: 1.2rem 0.5rem; }
+            .main-title { font-size: 1.3rem; }
+        }
+    </style>
+
+    <!-- Performance optimization scripts -->
+    <script defer src="/js/page-preloader.js"></script>
+    <script defer src="/js/media-optimizer.js"></script>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="death-rituals.html" class="back-button">
+                <span class="back-arrow">←</span> back
+            </a>
+        </div>
+        <div class="section-header">
+            <h1 class="main-title">philosophy & soul</h1>
+            <p class="subtitle">the soul and divine justice</p>
+        </div>
+        <div class="info-box">
+            a human being is composed of physical, astral, and spiritual constituents. at death, these separate:
+        </div>
+        <ul class="soul-list">
+            <li>the physical decomposes and must be disposed of properly</li>
+            <li>the astral takes time to return to the elements</li>
+            <li>the immortal spiritual constituents return to their respective stations</li>
+        </ul>
+        <div class="info-box">
+            the soul remains in the material world for three days and nights after death, in the care of the divine being sraosha. rituals performed during this period ensure the soul’s safe passage to the spiritual world.
+        </div>
+        <div class="section-title">necessity and purpose of after-death rituals</div>
+        <ul class="purpose-list">
+            <li><b>for the soul:</b>
+                <ul>
+                    <li>rituals help the soul reach its station in the spiritual world by the dawn of the fourth day (chahrom)</li>
+                    <li>later rituals console and support the soul, encouraging its journey towards garothman (the highest heaven)</li>
+                    <li>prayers and rituals do not alter the soul’s karmic balance or place in the afterlife; only deeds in the material world matter</li>
+                </ul>
+            </li>
+            <li><b>for the living:</b>
+                <ul>
+                    <li>rituals serve as a balm, helping the bereaved cope with loss and fulfill their obligations to the departed</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

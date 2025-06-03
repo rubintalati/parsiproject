@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6DT5E4V7SQ');
+
+  // Track page load time
+  window.addEventListener('load', function() {
+    // Calculate page load time
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      // Send to Google Analytics
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+        console.log('Page load time: ' + pageLoadTime + 'ms');
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Prayers - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <script src="../js/load-components.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            
+            /* Custom scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        /* Hero section */
+        .hero-section {
+            height: 25vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: height 0.4s ease;
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        /* Sticky header */
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 1.5rem 2rem;
+            z-index: 100;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+        }
+
+        .sticky-header.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .sticky-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .sticky-filter {
+            display: flex;
+            flex-direction: row;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
+        }
+        
+        .sticky-filter-button {
+            background-color: transparent;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            text-align: center;
+            /* Removed border-radius for rectangular design */
+            flex: 1;
+        }
+        
+        .sticky-filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .sticky-filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* Category filter */
+        .category-filter {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            gap: 1rem;
+        }
+
+        .filter-button {
+            background-color: transparent;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            /* Removed border-radius for rectangular design */
+            text-align: center;
+            flex: 1;
+        }
+
+        .filter-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* Prayer grid */
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 3rem;
+        }
+
+        .prayer-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .prayer-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .prayer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .prayer-description {
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            body {
+                overflow: auto !important;
+            }
+            .container {
+                flex-direction: column;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 4rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .sticky-header {
+                left: 0;
+                padding: 1rem;
+            }
+            
+            .prayer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .category-filter {
+                width: 100%;
+                gap: 0.5rem;
+            }
+            
+            .filter-button {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            .sticky-filter {
+                gap: 0.5rem;
+            }
+            
+            .sticky-filter-button {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .prayer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-section {
+                height: 20vh;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .filter-button {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.75rem;
+                /* Remove borders on mobile as per styling preferences */
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .sticky-filter-button {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.75rem;
+                /* Remove borders on mobile as per styling preferences */
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            /* Adjust prayer cards for mobile */
+            .prayer-card {
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1rem 0;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .prayer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1 class="hero-title">all prayers</h1>
+                <p class="hero-subtitle">the one with everything</p>
+            </div>
+
+            <!-- Sticky Header -->
+            <div class="sticky-header" id="stickyHeader">
+                <div class="sticky-title">all prayers</div>
+                <div class="sticky-filter">
+                    <button class="sticky-filter-button active" data-filter="all">all prayers</button>
+                    <button class="sticky-filter-button" data-filter="yasht">yasht prayers</button>
+                    <button class="sticky-filter-button" data-filter="special">special prayers</button>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <button class="filter-button active" data-filter="all">all prayers</button>
+                <button class="filter-button" data-filter="yasht">yasht prayers</button>
+                <button class="filter-button" data-filter="special">special prayers</button>
+            </div>
+
+            <!-- Prayer Grid -->
+            <div class="prayer-grid">
+                <!-- Prayer 1 -->
+                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/101-names-of-ahura-mazda.html'">
+                    <h3 class="prayer-title">101 names of ahura mazda</h3>
+                    <p class="prayer-description">The one for divine attributes</p>
+                </div>
+
+                <!-- Prayer 2 -->
+                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/ashem-vohu-yatha-ahu-vairyo.html'">
+                    <h3 class="prayer-title">ashem vohū & yathā ahū vairyō</h3>
+                    <p class="prayer-description">Our most sacred prayers</p>
+                </div>
+
+                <!-- Prayer 3 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/kem-na-mazda.html'">
+                    <h3 class="prayer-title">kem-nā-mazdā</h3>
+                    <p class="prayer-description">The one for divine protection</p>
+                </div>
+
+                <!-- Prayer 4 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hormazd-khoday.html'">
+                    <h3 class="prayer-title">hormazd khodāy</h3>
+                    <p class="prayer-description">The one for forgiveness</p>
+                </div>
+
+                <!-- Prayer 5 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/jasa-me-avanghe-mazda.html'">
+                    <h3 class="prayer-title">jasa me avanghe mazda</h3>
+                    <p class="prayer-description">The one for faithful devotion</p>
+                </div>
+
+                <!-- Prayer 6 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/baz.html'">
+                    <h3 class="prayer-title">bāz</h3>
+                    <p class="prayer-description">The one for saying grace</p>
+                </div>
+
+                <!-- Prayer 7 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/sarosh-baz.html'">
+                    <h3 class="prayer-title">sraosh bāz</h3>
+                    <p class="prayer-description">The one for the mighty leader</p>
+                </div>
+
+                <!-- Prayer 8 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/ahmai-rascha.html'">
+                    <h3 class="prayer-title">ahmāi raēshcha</h3>
+                    <p class="prayer-description">The one for divine blessings</p>
+                </div>
+
+                <!-- Prayer 9 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hazangarem.html'">
+                    <h3 class="prayer-title">hazanghrem</h3>
+                    <p class="prayer-description">The one for health</p>
+                </div>
+
+                <!-- Prayer 10 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/jasa-me-avanghe-mazda-2.html'">
+                    <h3 class="prayer-title">jasa me avanghe mazda</h3>
+                    <p class="prayer-description">The one for divine aid</p>
+                </div>
+
+                <!-- Prayer 11 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/kerfeh-mozd.html'">
+                    <h3 class="prayer-title">kerfeh mozd</h3>
+                    <p class="prayer-description">The one for seeking redemption</p>
+                </div>
+
+                <!-- Prayer 12 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/time-of-day-prayers.html'">
+                    <h3 class="prayer-title">geh's</h3>
+                    <p class="prayer-description">The one according to the time of day</p>
+                </div>
+
+                <!-- Prayer 13 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/hoshbam.html'">
+                    <h3 class="prayer-title">hoshbām</h3>
+                    <p class="prayer-description">The one for a new day</p>
+                </div>
+
+                <!-- Prayer 14 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/khorshed-neyayesh.html'">
+                    <h3 class="prayer-title">khorshed neyāyesh</h3>
+                    <p class="prayer-description">The one for radiant blessing</p>
+                </div>
+
+                <!-- Prayer 15 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/meher-nayayesh.html'">
+                    <h3 class="prayer-title">meher neyāyesh</h3>
+                    <p class="prayer-description">the one for cosmic aid</p>
+                </div>
+
+                <!-- Atash Neyayesh -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/atash-neyayesh.html'">
+                    <h3 class="prayer-title">ātash neyāyesh</h3>
+                    <p class="prayer-description">the one for sacred fire</p>
+                </div>
+
+                <!-- Cherag-no Namaskar -->
+                <div class="prayer-card" data-category="short" onclick="location.href='allprayerpages/cherag-no-namaskar.html'">
+                    <h3 class="prayer-title">cherag-no namaskar</h3>
+                    <p class="prayer-description">the one for the sacred fire</p>
+                </div>
+
+                <!-- Behram Yazad -->
+                <div class="prayer-card" data-category="short" onclick="location.href='allprayerpages/behram-yazad.html'">
+                    <h3 class="prayer-title">behram yazad</h3>
+                    <p class="prayer-description">the one for strength and victory</p>
+                </div>
+
+                <!-- Prayer 16 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/vuspa-humata.html'">
+                    <h3 class="prayer-title">vūspa humata</h3>
+                    <p class="prayer-description">The one for righteous path</p>
+                </div>
+
+                <!-- Prayer 17 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/doa-nam-setayeshne.html'">
+                    <h3 class="prayer-title">doā nām setāyeshne</h3>
+                    <p class="prayer-description">the one for gratitude</p>
+                </div>
+
+                <!-- Prayer 18 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/char-disha-no-namaskar.html'">
+                    <h3 class="prayer-title">char-disha no namaskar</h3>
+                    <p class="prayer-description">The one for humble repentance</p>
+                </div>
+
+                <!-- Prayer 19 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/mah-bokhtar-neyayesh.html'">
+                    <h3 class="prayer-title">māh bokhtār neyāyesh</h3>
+                    <p class="prayer-description">the one for lunar blessings</p>
+                </div>
+
+                <!-- Prayer 20 -->
+                <div class="prayer-card" data-category="yasht" onclick="location.href='allprayerpages/ardvi-neyayesh.html'">
+                    <h3 class="prayer-title">ardvī sūra neyāyesh</h3>
+                    <p class="prayer-description">The one for water purification</p>
+                </div>
+
+
+
+                <!-- Prayer 22 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/cherag-no-namaskar.html'">
+                    <h3 class="prayer-title">cherag-no namaskar</h3>
+                    <p class="prayer-description">The one for the sacred fire</p>
+                </div>
+
+                <!-- Prayer 23 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/din-no-kalmo.html'">
+                    <h3 class="prayer-title">din-no kalmo</h3>
+                    <p class="prayer-description">the one for our community</p>
+                </div>
+
+                <!-- Prayer 24 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/doa-tandarosti.html'">
+                    <h3 class="prayer-title">doā tandarosti</h3>
+                    <p class="prayer-description">The one for good health</p>
+                </div>
+
+                <!-- Prayer 25 -->
+                <div class="prayer-card" data-category="all" onclick="location.href='allprayerpages/incense-placing-prayer.html'">
+                    <h3 class="prayer-title">incense (loban) placing prayer</h3>
+                    <p class="prayer-description">The one for all souls</p>
+                </div>
+
+                <!-- Prayer 27 -->
+                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/afsune-shahe-faredun.html'">
+                    <h3 class="prayer-title">afsune-shahe-faredun's prayer</h3>
+                    <p class="prayer-description">The one for divine help in health, wealth, fulfillment of wishes and to ward off planetary afflictions</p>
+                </div>
+
+                <!-- Prayer 28 -->
+                <div class="prayer-card" data-category="special" onclick="location.href='allprayerpages/setayash-i-shaherevar.html'">
+                    <h3 class="prayer-title">setayash-i-shaherevar</h3>
+                    <p class="prayer-description">The one for Shaherevar Ameshaspand</p>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/combined.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stickyHeader = document.getElementById('stickyHeader');
+            const heroSection = document.querySelector('.hero-section');
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const stickyFilterButtons = document.querySelectorAll('.sticky-filter-button');
+            const prayerCards = document.querySelectorAll('.prayer-card');
+            
+            // Title transformation on scroll
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                
+                // Fade out hero section elements as user scrolls
+                if (scrollPosition > 10) {
+                    const opacity = Math.max(1 - (scrollPosition / 150), 0);
+                    heroTitle.style.opacity = opacity.toString();
+                    if (heroSubtitle) {
+                        heroSubtitle.style.opacity = opacity.toString();
+                    }
+                } else {
+                    heroTitle.style.opacity = '1';
+                    if (heroSubtitle) {
+                        heroSubtitle.style.opacity = '1';
+                    }
+                }
+                
+                // Show sticky header when hero section fades out
+                if (scrollPosition > 150) {
+                    stickyHeader.classList.add('visible');
+                } else {
+                    stickyHeader.classList.remove('visible');
+                }
+            });
+            
+            // Filter functionality for main filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    applyFilter(this.getAttribute('data-filter'));
+                });
+            });
+            
+            // Filter functionality for sticky filter buttons
+            stickyFilterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    applyFilter(this.getAttribute('data-filter'));
+                });
+            });
+            
+            // Function to apply filter and update UI
+            function applyFilter(filterValue) {
+                // Update active button states for both filter sets
+                filterButtons.forEach(btn => {
+                    if (btn.getAttribute('data-filter') === filterValue) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                stickyFilterButtons.forEach(btn => {
+                    if (btn.getAttribute('data-filter') === filterValue) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Apply filtering to prayer cards
+                prayerCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    
+                    if (filterValue === 'all' || category === filterValue) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

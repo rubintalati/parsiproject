@@ -200,6 +200,19 @@ function navigateToPage(url) {
                 const loadEvent = new Event('load');
                 window.dispatchEvent(loadEvent);
                 
+                // Dispatch a custom event for sidebar persistence to know navigation is complete
+                const navCompleteEvent = new Event('preloaderNavigationComplete');
+                document.dispatchEvent(navCompleteEvent);
+                
+                // Ensure combined.js has executed properly by checking if sidebar exists
+                setTimeout(() => {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (!sidebar && typeof loadSidebar === 'function') {
+                        // If sidebar is missing but loadSidebar function exists, call it
+                        loadSidebar();
+                    }
+                }, 100);
+                
                 // Remove the overlay after the new page is ready
                 transitionOverlay.remove();
                 
