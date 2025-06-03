@@ -156,6 +156,9 @@ function navigateToPage(url) {
     transitionOverlay.style.transition = 'opacity 0.2s ease';
     document.body.appendChild(transitionOverlay);
     
+    // Store the current page's scroll position
+    const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+    
     // Fade in
     requestAnimationFrame(() => {
         transitionOverlay.style.opacity = '1';
@@ -166,19 +169,94 @@ function navigateToPage(url) {
             const parser = new DOMParser();
             const newDoc = parser.parseFromString(cachedPage.content, 'text/html');
             
+            // Save scripts to execute after content is updated
+            const scriptNodes = newDoc.querySelectorAll('script');
+            const scripts = Array.from(scriptNodes).map(script => {
+                return {
+                    src: script.src,
+                    text: script.textContent,
+                    attributes: Array.from(script.attributes).reduce((attrs, attr) => {
+                        if (attr.name !== 'src' && attr.name !== 'data-executed') {
+                            attrs[attr.name] = attr.value;
+                        }
+                        return attrs;
+                    }, {})
+                };
+            });
+            
             // Replace the page content
             document.documentElement.innerHTML = newDoc.documentElement.innerHTML;
-            
-            // Execute scripts in the new page
-            executeScripts();
             
             // Complete the navigation by updating history
             window.history.pushState({}, '', url);
             
-            // Remove the overlay after the new page is ready
-            transitionOverlay.remove();
+            // Manually re-execute scripts in order
+            executeScriptsInOrder(scripts).then(() => {
+                // If the page has a DOMContentLoaded event handler, trigger it
+                const event = new Event('DOMContentLoaded');
+                document.dispatchEvent(event);
+                
+                // If there's a window.onload handler, trigger it too
+                const loadEvent = new Event('load');
+                window.dispatchEvent(loadEvent);
+                
+                // Remove the overlay after the new page is ready
+                transitionOverlay.remove();
+                
+                // Reset scroll position to top
+                window.scrollTo(0, 0);
+            });
         }, 200);
     });
+}
+
+// Execute scripts in order (external first, then inline)
+async function executeScriptsInOrder(scripts) {
+    // First, identify and load external scripts
+    const externalScripts = scripts.filter(script => script.src);
+    const inlineScripts = scripts.filter(script => !script.src);
+    
+    // Load external scripts sequentially
+    for (const script of externalScripts) {
+        await new Promise((resolve, reject) => {
+            const scriptEl = document.createElement('script');
+            
+            // Add all attributes
+            Object.entries(script.attributes).forEach(([name, value]) => {
+                scriptEl.setAttribute(name, value);
+            });
+            
+            // Set load handlers
+            scriptEl.onload = () => {
+                console.log(`Loaded script: ${script.src}`);
+                resolve();
+            };
+            scriptEl.onerror = () => {
+                console.error(`Failed to load script: ${script.src}`);
+                resolve(); // Resolve anyway to continue with other scripts
+            };
+            
+            // Set src last to start loading
+            scriptEl.src = script.src;
+            document.body.appendChild(scriptEl);
+        });
+    }
+    
+    // Then execute inline scripts
+    for (const script of inlineScripts) {
+        const scriptEl = document.createElement('script');
+        
+        // Add all attributes
+        Object.entries(script.attributes).forEach(([name, value]) => {
+            scriptEl.setAttribute(name, value);
+        });
+        
+        // Add the script content
+        scriptEl.textContent = script.text;
+        
+        // Append to trigger execution
+        document.body.appendChild(scriptEl);
+    }
 }
 
 // Execute scripts from dynamically loaded content
@@ -186,21 +264,74 @@ function executeScripts() {
     // Find all scripts in the document
     const scripts = document.querySelectorAll('script:not([data-executed="true"])');
     
-    scripts.forEach(oldScript => {
+    // Process scripts in order, prioritizing external scripts first
+    const externalScripts = [];
+    const inlineScripts = [];
+    
+    scripts.forEach(script => {
+        if (script.src) {
+            externalScripts.push(script);
+        } else {
+            inlineScripts.push(script);
+        }
+    });
+    
+    // Execute external scripts first, then inline scripts
+    const executeInOrder = async () => {
+        // Execute external scripts sequentially
+        for (const oldScript of externalScripts) {
+            await loadExternalScript(oldScript);
+        }
+        
+        // Then execute inline scripts
+        inlineScripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            
+            // Copy all attributes
+            Array.from(oldScript.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
+            });
+            
+            // Mark as executed to prevent re-execution
+            newScript.setAttribute('data-executed', 'true');
+            
+            // Copy inline content if any
+            newScript.textContent = oldScript.textContent;
+            
+            // Replace the old script with the new one to execute it
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+    };
+    
+    executeInOrder();
+}
+
+// Load an external script and return a promise that resolves when it's loaded
+function loadExternalScript(oldScript) {
+    return new Promise((resolve, reject) => {
         const newScript = document.createElement('script');
         
-        // Copy all attributes
+        // Copy all attributes except src (we'll set that separately to trigger loading)
         Array.from(oldScript.attributes).forEach(attr => {
-            newScript.setAttribute(attr.name, attr.value);
+            if (attr.name !== 'src') {
+                newScript.setAttribute(attr.name, attr.value);
+            }
         });
         
         // Mark as executed to prevent re-execution
         newScript.setAttribute('data-executed', 'true');
         
-        // Copy inline content if any
-        newScript.textContent = oldScript.textContent;
+        // Set up load and error handlers
+        newScript.onload = () => resolve();
+        newScript.onerror = () => {
+            console.error(`Failed to load script: ${oldScript.src}`);
+            resolve(); // Resolve anyway to continue with other scripts
+        };
         
-        // Replace the old script with the new one to execute it
+        // Set the src last to begin loading
+        newScript.src = oldScript.src;
+        
+        // Replace the old script with the new one
         oldScript.parentNode.replaceChild(newScript, oldScript);
     });
 }
