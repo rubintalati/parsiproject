@@ -34,10 +34,10 @@
         .main-content { flex: 1; padding: 1.5rem; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
         .header { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem; margin-top: 2rem; text-align: center; width: 100%; }
         .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-align: center; text-transform: lowercase; }
-        .welcome-text-container { padding: 0 2rem; margin-bottom: 1.5rem; height: 120px; overflow: hidden; text-align: left; width: 95%; max-width: 1200px; }
+        .welcome-text-container { padding: 0 2rem; margin-bottom: 1.5rem; min-height: 160px; overflow: hidden; text-align: left; width: 95%; max-width: 1200px; /* Fixed min-height to prevent content shifting */ }
         .welcome-text { text-align: left; color: #ccc; font-size: 0.9rem; line-height: 1.5; width: 100%; max-width: 100%; text-transform: lowercase; }
         .welcome-text p { margin-bottom: 0.8rem; min-height: 1.5em; text-transform: lowercase; }
-        #text1 { margin-bottom: 0.8rem; }
+        #text1 { margin-bottom: 0.8rem; min-height: 120px; /* Fixed height based on text content */ }
         #text2 { margin-bottom: 0.8rem; }
         #text3 { margin-bottom: 0.8rem; }
         .typing-cursor { display: inline-block; width: 2px; height: 1em; background-color: #ccc; margin-left: 2px; animation: blink 1s infinite; vertical-align: middle; }
@@ -52,7 +52,7 @@
         .ritual-card h3 { margin-bottom: 0.4rem; font-size: 1rem; font-weight: 600; color: #fff; text-transform: lowercase; }
         .ritual-card p { color: #999; font-size: 0.85rem; line-height: 1.45; text-transform: lowercase; }
         @media (max-width: 992px) { .content-layout { flex-direction: column; } .left-side, .right-side { width: 100%; flex-direction: row; flex-wrap: wrap; } .ritual-card { flex: 1; min-width: 45%; } .media-container { width: 100%; aspect-ratio: 16/9; order: -1; margin-bottom: 1.5rem; } }
-        @media (max-width: 768px) { body { overflow: auto !important; } .welcome-text-container { padding: 0 1rem; height: auto; } .page-title { font-size: 2rem; } .main-content { padding: 1rem; } .left-side, .right-side { flex-direction: column; } .content-layout { padding: 0 1rem; gap: 1rem; } .media-container { width: 100%; aspect-ratio: 16/9; margin-bottom: 1.2rem; height: auto; min-height: 200px; } }
+        @media (max-width: 768px) { body { overflow: auto !important; } .welcome-text-container { padding: 0 1rem; min-height: 200px; /* Increased height for mobile */ } .page-title { font-size: 2rem; } .main-content { padding: 1rem; } .left-side, .right-side { flex-direction: column; } .content-layout { padding: 0 1rem; gap: 1rem; } .media-container { width: 100%; aspect-ratio: 16/9; margin-bottom: 1.2rem; height: auto; min-height: 200px; } }
     </style>
 </head>
 <body>
@@ -132,23 +132,48 @@
             }
 
             const text1Element = document.getElementById('text1');
+            const text2Element = document.createElement('p');
+            text2Element.id = 'text2';
+            text1Element.parentNode.appendChild(text2Element);
+            
             const texts = [
-                "zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. the physical body is transmuted from one form to another, as the soul departs for the spiritual realm. death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of god’s plan. unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all."
+                {
+                    element: text1Element,
+                    content: "zoroastrianism teaches that every human is mortal, and death is a transformation for the soul—not total annihilation. the physical body is transmuted from one form to another, as the soul departs for the spiritual realm. death is seen as a temporary triumph of evil, but ultimately, it is a necessary and inevitable part of god's plan. unnatural and untimely death is viewed as the work of evil, but in the broader context, death is a certainty for all.",
+                    isHTML: false
+                },
+                {
+                    element: text2Element,
+                    content: "if you want to dive deeper into this topic hop on to <a href=\"https://ramiyarkaranjia.com/death-rituals/\" target=\"_blank\" rel=\"noopener\" style=\"color: #fff; text-decoration: underline;\">ramiyar sir's website</a>.",
+                    isHTML: true
+                }
             ];
+            
             let currentTextIndex = 0;
             let currentCharIndex = 0;
-            let currentElement = text1Element;
+            
             function typeText() {
-                if (!currentElement || currentTextIndex >= texts.length) {
+                if (currentTextIndex >= texts.length) {
                     const lastCursor = document.querySelector('.typing-cursor');
                     if(lastCursor) lastCursor.remove();
                     return;
                 }
-                const currentText = texts[currentTextIndex];
+                
+                const currentTextObj = texts[currentTextIndex];
+                const currentElement = currentTextObj.element;
+                const currentText = currentTextObj.content;
+                
                 if (currentCharIndex < currentText.length) {
                     const existingCursor = currentElement.querySelector('.typing-cursor');
                     if (existingCursor) existingCursor.remove();
-                    currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    
+                    if (currentTextObj.isHTML) {
+                        // For HTML content (like links), we need to use innerHTML
+                        currentElement.innerHTML = currentText.substring(0, currentCharIndex + 1);
+                    } else {
+                        currentElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    }
+                    
                     const cursor = document.createElement('span');
                     cursor.className = 'typing-cursor';
                     currentElement.appendChild(cursor);
@@ -159,7 +184,7 @@
                     if (existingCursor) existingCursor.remove();
                     currentTextIndex++;
                     currentCharIndex = 0;
-                    // No more lines, so stop
+                    setTimeout(typeText, 500); // Delay before starting the next paragraph
                 }
             }
             setTimeout(typeText, 300);

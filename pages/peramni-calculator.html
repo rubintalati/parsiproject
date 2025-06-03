@@ -94,7 +94,7 @@
         .welcome-text-container {
             padding: 0 0 0 4rem;
             margin-bottom: 1rem;
-            height: auto;
+            min-height: 160px; /* Fixed minimum height to prevent content shifting */
             overflow: visible;
             width: 100%;
             max-width: none;
@@ -114,6 +114,15 @@
             min-height: 1.5em;
             text-align: left;
             width: 100%;
+        }
+        
+        /* Fixed heights for paragraphs to prevent content shifting */
+        #text1 {
+            min-height: 70px; /* Fixed height based on text content */
+        }
+        
+        #text2 {
+            min-height: 70px; /* Fixed height based on text content */
         }
 
         /* Calculator Grid */
