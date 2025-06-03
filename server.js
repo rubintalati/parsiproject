@@ -79,7 +79,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to inject orientation lock script in all HTML responses with highest priority
+// Google Analytics configuration
+const GA_MEASUREMENT_ID = 'G-6DT5E4V7SQ'; // User's Google Analytics Measurement ID
+
+// Middleware to inject Google Analytics and orientation lock scripts in all HTML responses
 app.use((req, res, next) => {
   // Store original send function
   const originalSend = res.send;
@@ -88,6 +91,37 @@ app.use((req, res, next) => {
   res.send = function(body) {
     // Only process HTML responses
     if (typeof body === 'string' && body.includes('<head>') && !req.path.includes('.js') && !req.path.includes('.css')) {
+      // Google Analytics tag (GA4)
+      const analyticsScript = `
+        <!-- Google Analytics (GA4) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}', {
+            'page_path': window.location.pathname,
+            'debug_mode': false
+          });
+
+          // Track page load time
+          window.addEventListener('load', function() {
+            // Calculate page load time
+            if(window.performance) {
+              const perfData = window.performance.timing;
+              const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+              // Send to Google Analytics
+              if(pageLoadTime > 0) {
+                gtag('event', 'timing_complete', {
+                  'name': 'page_load',
+                  'value': pageLoadTime,
+                  'event_category': 'Page Timing'
+                });
+                console.log('Page load time: ' + pageLoadTime + 'ms');
+              }
+            }
+          });
+        </script>`;
       // Add special meta tag to prevent any viewport manipulation after our script
       const metaViewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">';
       
@@ -98,7 +132,7 @@ app.use((req, res, next) => {
       const orientationScript = '<script defer src="/js/orientation-lock.js"></script>';
       
       // Combine all elements
-      const injectedContent = metaViewport + metaOrientation + orientationScript;
+      const injectedContent = metaViewport + metaOrientation + orientationScript + analyticsScript;
       
       // Place at the beginning of head for highest priority
       body = body.replace('<head>', '<head>' + injectedContent);
