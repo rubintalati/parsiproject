@@ -3,6 +3,9 @@ const path = require('path');
 const app = express();
 const port = 3002; // Using port 3002 as this is what your browser preview uses
 
+// Import performance monitoring
+const { performanceMonitor } = require('./server/performance-monitor');
+
 // Define Google OAuth credentials directly
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
@@ -62,6 +65,9 @@ function calculateRojMah(date, timeOfBirth) {
     rojDetails: `${rojNames[rojIndex]} roj, ${mahNames[mahIndex]} mah`
   };
 }
+
+// Performance monitoring middleware
+app.use(performanceMonitor);
 
 // Setup the server to properly work with http://127.0.0.1:50272
 app.use((req, res, next) => {
@@ -293,8 +299,24 @@ app.delete('/api/birthdays/:id', (req, res) => {
   }
 });
 
+// Optimize static file serving with caching
+app.use(express.static(path.join(__dirname), {
+  maxAge: '1d', // Cache static assets for 1 day
+  etag: true,    // Enable ETag for cache validation
+  lastModified: true // Enable Last-Modified for cache validation
+}));
+
+// Set cache headers for specific file types
+app.use((req, res, next) => {
+  // Add caching for common static file types
+  if (req.path.match(/\.(jpg|jpeg|png|gif|ico|svg|css|js|woff|woff2)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // 24 hours
+  }
+  next();
+});
+
 // Serve static files from the root directory
-app.use(express.static(path.join(__dirname)));
+// app.use(express.static(path.join(__dirname)));
 
 // Add specific route for prayer pages
 app.get('/pages/allprayerpages/:prayerPage', (req, res) => {
