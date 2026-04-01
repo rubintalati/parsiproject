@@ -572,6 +572,9 @@ modalClose.addEventListener('click', closeModal);
 contactModal.addEventListener('click', function (e) {
     if (e.target === contactModal) closeModal();
 });
+contactModal.addEventListener('touchend', function (e) {
+    if (e.target === contactModal) closeModal();
+});
 
 onboardSaveBtn.addEventListener('click', saveOnboardingSettings);
 
@@ -580,12 +583,15 @@ contactMobile.addEventListener('input', function () {
     contactMobile.value = contactMobile.value.replace(/\s/g, '');
 });
 
-contactForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
+var isSaving = false;
+async function handleContactSave() {
+    if (isSaving) return;
+    isSaving = true;
 
     var dobValue = getDobValue();
     if (!contactNameInput.value.trim() || !dobValue) {
         showToast('name and date are required');
+        isSaving = false;
         return;
     }
 
@@ -605,6 +611,18 @@ contactForm.addEventListener('submit', async function (e) {
     }
 
     closeModal();
+    isSaving = false;
+}
+
+contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    handleContactSave();
+});
+
+// Fallback: direct click on save button for iOS Safari
+document.querySelector('#contact-form .submit-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    handleContactSave();
 });
 
 // Mark calendar as subscribed when user clicks a subscribe button
