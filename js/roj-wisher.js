@@ -318,7 +318,9 @@ async function addContact(data) {
         .single();
 
     if (result.error) {
-        showToast('failed to add contact');
+        console.error('addContact error:', result.error);
+        alert('Error: ' + result.error.message + '\nCode: ' + result.error.code + '\nDetails: ' + result.error.details);
+        showToast('failed to add contact: ' + result.error.message);
         return;
     }
 
@@ -602,6 +604,8 @@ async function handleContactSave() {
         event_type: contactEventType.value,
         mobile_number: getMobileNumber()
     };
+
+    console.log('Saving contact:', JSON.stringify(data));
 
     var editId = contactIdInput.value;
     if (editId) {
