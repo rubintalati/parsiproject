@@ -1,40 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6DT5E4V7SQ');
-
-  // Track page load time
-  window.addEventListener('load', function() {
-    // Calculate page load time
-    if(window.performance) {
-      const perfData = window.performance.timing;
-      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-      // Send to Google Analytics
-      if(pageLoadTime > 0) {
-        gtag('event', 'timing_complete', {
-          'name': 'page_load',
-          'value': pageLoadTime,
-          'event_category': 'Page Timing'
-        });
-        console.log('Page load time: ' + pageLoadTime + 'ms');
-      }
-    }
-  });
-</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPT - The Parsi Project</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Population Tracker - The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -42,147 +28,15 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: fixed;
-        }
-
         body {
             font-family: 'Manrope', sans-serif;
             background-color: #000;
             color: #fff;
-            
-            /* Custom scrollbar styling */
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-        /* Custom scrollbar for Webkit browsers */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 2px;
-        }
-
-        .container {
-            display: flex;
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            overflow: hidden; /* Prevent scrolling */
-            position: relative;
-        }
-
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2rem;
-            margin-top: 2rem;
-            text-align: center;
-            width: 100%;
-        }
-
-        .header-text {
-            color: #fff;
-            font-size: 14px;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .welcome-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 1.5rem;
-            min-height: 4.8rem; /* Height for 3 lines of text */
-        }
-
-        .welcome-text::after {
-            content: '|';
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .gif-container {
-            margin-top: 2rem;
-            text-align: center;
-            max-height: 50vh; /* Limit height to prevent overflow */
-            overflow: hidden; /* Hide overflow */
-        }
-
-        .gif-container img {
-            max-width: 100%;
-            max-height: 50vh; /* Limit height to prevent overflow */
-            object-fit: contain;
-        }
-
-        /* Flying Numbers Animation Styles */
-        .number {
-            position: absolute;
-            color: white;
-            font-weight: bold;
-            transform: scale(0);
-            opacity: 0;
-            user-select: none;
-            transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), 
-                        opacity 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-            z-index: 1;
-            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Media queries for responsive design */
-        @media (max-width: 768px) {
-            html, body {
-                overflow: hidden;
-                position: fixed;
-                touch-action: manipulation;
-            }
-            .container {
-                flex-direction: column;
-            }
-
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding: 4rem 1.5rem 1.5rem 1.5rem;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
-        }
-
+        /* Noise overlay - matching site design */
         body::before {
             content: '';
             position: fixed;
@@ -195,237 +49,820 @@
             opacity: 0.18;
             background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
         }
-    </style>
 
-    <!-- Performance optimization scripts -->
-    <script defer src="/js/page-preloader.js"></script>
-    <script defer src="/js/media-optimizer.js"></script>
-    <!-- Sidebar persistence script -->
-    <script defer src="/js/sidebar-persistence.js"></script>
-  
+        /* Header */
+        .ppt-header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-container {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        /* Hero Section - Split Layout */
+        .hero-section {
+            display: flex;
+            min-height: 80vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-left {
+            flex: 0.35;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-right {
+            flex: 0.65;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .satire-text {
+            font-size: 1.1rem;
+            color: #ff8c42;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* The Big Counter */
+        .big-counter-container {
+            text-align: center;
+        }
+
+        .counter-label {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .big-counter {
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.05em;
+            color: #fff;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .big-counter.glitch {
+            animation: glitch 0.2s ease;
+        }
+
+        @keyframes glitch {
+            0%, 100% { opacity: 1; transform: translateX(0); }
+            25% { opacity: 0.8; transform: translateX(-3px); }
+            50% { opacity: 1; transform: translateX(3px); }
+            75% { opacity: 0.9; transform: translateX(-2px); }
+        }
+
+        .counter-stats {
+            margin-top: 2rem;
+        }
+
+        .counter-stat {
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .counter-stat .arrow {
+            color: #ff4444;
+            margin-right: 0.5rem;
+        }
+
+        /* Full Width Sections */
+        .full-section {
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+        }
+
+        /* Stat Cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background-color: rgba(30, 30, 30, 0.7);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .stat-card-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value.danger {
+            color: #ff4444;
+        }
+
+        .stat-card-value.warning {
+            color: #ff8c42;
+        }
+
+        .stat-card-value.neutral {
+            color: #fff;
+        }
+
+        .stat-card-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        /* Bold Claims Section */
+        .bold-claim {
+            border-left: 4px solid #ff4444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .bold-claim-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .bold-claim-status {
+            display: inline-block;
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .bold-claim-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Interactive Calculator */
+        .calculator-box {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .calculator-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-input {
+            margin-bottom: 2rem;
+        }
+
+        .calculator-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .calculator-slider {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            appearance: none;
+            border-radius: 4px;
+        }
+
+        .calculator-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .calculator-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .calculator-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .calculator-result {
+            background-color: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .calculator-result-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .calculator-result-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ff4444;
+            margin: 0.5rem 0;
+        }
+
+        .calculator-result-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* Comparison Box */
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-item {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+        }
+
+        .comparison-item.highlight {
+            background-color: rgba(255, 68, 68, 0.1);
+            border-color: #ff4444;
+        }
+
+        .comparison-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Buttons */
+        .ppt-button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .ppt-button-primary {
+            background-color: #fff;
+            color: #000;
+            border: none;
+        }
+
+        .ppt-button-primary:hover {
+            background-color: #e6e6e6;
+        }
+
+        .ppt-button-secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .ppt-button-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .hero-left,
+            .hero-right {
+                flex: 1;
+                width: 100%;
+                border-right: none;
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-left {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .big-counter {
+                font-size: 4rem;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-box {
+                grid-template-columns: 1fr;
+            }
+
+            .full-section {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ppt-header {
+                padding: 1.5rem;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .big-counter {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .calculator-box {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Numbers animation container (covers the whole page) -->
-    <div id="numbers-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;"></div>
+    <!-- Header -->
+    <div class="ppt-header">
+        <div class="logo-container">
+            <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="80" height="80" fill="none" stroke="white" stroke-width="2"/>
+                <text x="50" y="60" font-family="Manrope" font-size="24" font-weight="bold" fill="white" text-anchor="middle">TPP</text>
+            </svg>
+        </div>
+        <a href="/" class="nav-link">← Back to Home</a>
+    </div>
 
-    <div class="container">
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h1 class="page-title">ppt</h1>
-                <div id="welcome-text" class="welcome-text"></div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-left">
+            <div class="content-container">
+                <h1 class="title">Population Tracker</h1>
+                <p class="subtitle">Counting down to cultural extinction.<br>One death at a time.</p>
+                <p class="satire-text">"At this rate, we'll be a museum exhibit by 2120"</p>
             </div>
-            
-            <div class="gif-container">
-                <img src="../media/gifs/parsisvstigers.gif" alt="Parsis vs Tigers">
+        </div>
+        <div class="hero-right">
+            <div class="big-counter-container">
+                <div class="counter-label">Live Population</div>
+                <div class="big-counter" id="populationCounter">47,234</div>
+                <div class="counter-stats">
+                    <div class="counter-stat"><span class="arrow">↓</span> 2 people every day</div>
+                    <div class="counter-stat"><span class="arrow">↓</span> 14 people every week</div>
+                    <div class="counter-stat"><span class="arrow">↓</span> 720 people every year</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- The Brutal Math Section -->
+    <div class="full-section">
+        <div class="section-content">
+            <h2 class="section-title">The Brutal Math</h2>
+            <p class="section-subtitle">No sugar-coating. No "everything will be fine." Just numbers.</p>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-card-title">Deaths per Year</div>
+                    <div class="stat-card-value danger">~1,000</div>
+                    <div class="stat-card-desc">Based on Parsi Times death announcements and community records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Births per Year</div>
+                    <div class="stat-card-value warning">~280</div>
+                    <div class="stat-card-desc">Declining from 928/year in 1951. Down 70% in 73 years.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Net Annual Loss</div>
+                    <div class="stat-card-value danger">-720</div>
+                    <div class="stat-card-desc">We're losing 1.5% of our population every single year</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Extinction Year</div>
+                    <div class="stat-card-value neutral">~2120</div>
+                    <div class="stat-card-desc">At current rate. That's 96 years. Your grandkids will see it.</div>
+                </div>
+            </div>
+
+            <div class="comparison-box">
+                <div class="comparison-item">
+                    <div class="comparison-label">1941 Peak</div>
+                    <div class="comparison-value">114,890</div>
+                    <div class="stat-card-desc">The glory days. Before we started disappearing.</div>
+                </div>
+                <div class="comparison-item highlight">
+                    <div class="comparison-label">2024 Current</div>
+                    <div class="comparison-value">47,000</div>
+                    <div class="stat-card-desc">Down 59%. We've lost more than half our community in 83 years.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Reproductive Crisis Section -->
+    <div class="full-section" style="background-color: rgba(255, 68, 68, 0.05);">
+        <div class="section-content">
+            <h2 class="section-title">The Reproductive Crisis</h2>
+            <p class="section-subtitle">Or: "Who Can Actually Make Babies?"</p>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-card-title">Total Population</div>
+                    <div class="stat-card-value neutral">47,000</div>
+                    <div class="stat-card-desc">That's everyone. Kids, adults, elderly.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Reproductive Age (20-39)</div>
+                    <div class="stat-card-value warning">12,200</div>
+                    <div class="stat-card-desc">Only 26% of us are even in the right age bracket</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Women Age 20-39</div>
+                    <div class="stat-card-value warning">6,200</div>
+                    <div class="stat-card-desc">13% of population. Half of reproductive age group.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Actually Having Kids</div>
+                    <div class="stat-card-value danger">2,200</div>
+                    <div class="stat-card-desc">4.7% of our population. That's it. That's the number.</div>
+                </div>
+            </div>
+
+            <div class="bold-claim">
+                <h3 class="bold-claim-title">🔥 "ONLY 5% OF PARSIS CAN HAVE BABIES"</h3>
+                <span class="bold-claim-status">TRUE</span>
+                <p class="bold-claim-desc">
+                    <strong>Math:</strong> 2,200 fertile, married women ÷ 47,000 total population = 4.7%<br><br>
+                    <strong>Translation:</strong> 95% of us are too young, too old, unmarried, or don't want kids.
+                    But sure, let's keep the same marriage rules and wonder why we're disappearing.
+                </p>
+            </div>
+
+            <p class="satire-text" style="font-size: 1.2rem; text-align: center; margin-top: 2rem;">
+                "We have enough people to field a cricket team.<br>We don't have enough people to continue the species."
+            </p>
+        </div>
+    </div>
+
+    <!-- The Dependency Burden Section -->
+    <div class="full-section">
+        <div class="section-content">
+            <h2 class="section-title">The Dependency Burden</h2>
+            <p class="section-subtitle">Or: "What Every Parsi Child Will Have To Pay"</p>
+
+            <div class="comparison-box">
+                <div class="comparison-item">
+                    <div class="comparison-label">Working Adults (20-59)</div>
+                    <div class="comparison-value">26,300</div>
+                    <div class="stat-card-desc">56% of population. These are the workers.</div>
+                </div>
+                <div class="comparison-item highlight">
+                    <div class="comparison-label">Dependents (0-19 + 60+)</div>
+                    <div class="comparison-value">20,700</div>
+                    <div class="stat-card-desc">44% of population. Children + elderly who need support.</div>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-card-title">Dependency Ratio</div>
+                    <div class="stat-card-value danger">0.79</div>
+                    <div class="stat-card-desc">79 dependents per 100 workers. Worse than Japan (0.69), the world's oldest country.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Annual Community Costs</div>
+                    <div class="stat-card-value warning">₹2,700 Cr</div>
+                    <div class="stat-card-desc">Healthcare, welfare, education, maintenance. Every year.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">Cost Per Worker</div>
+                    <div class="stat-card-value danger">₹10.27 L/yr</div>
+                    <div class="stat-card-desc">Every working Parsi pays ₹85,000/month to keep the community afloat.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">By 2054</div>
+                    <div class="stat-card-value danger">₹42.3 L/yr</div>
+                    <div class="stat-card-desc">₹3.5 lakh per month. That's your entire salary.</div>
+                </div>
+            </div>
+
+            <div class="bold-claim">
+                <h3 class="bold-claim-title">🔥 "EVERY WORKING PARSI PAYS ₹10 LAKH/YEAR IN COMMUNITY COSTS"</h3>
+                <span class="bold-claim-status">TRUE</span>
+                <p class="bold-claim-desc">
+                    <strong>Math:</strong> ₹2,700 crore annual costs ÷ 26,300 workers = ₹10.27 lakh per worker<br><br>
+                    <strong>Translation:</strong> Being Parsi is expensive. And your kids will pay even more.
+                    By 2054, it'll be ₹42 lakh/year. Good thing you didn't want kids anyway.
+                </p>
+            </div>
+
+            <!-- Interactive Burden Calculator -->
+            <div class="calculator-box">
+                <h3 class="calculator-title">Your Personal Burden Calculator</h3>
+                <p class="subtitle" style="margin-bottom: 2rem;">See how much YOU'LL be paying in 20 years</p>
+
+                <div class="calculator-input">
+                    <label class="calculator-label">Your current age:</label>
+                    <input type="range" class="calculator-slider" id="ageSlider" min="15" max="65" value="30" step="1">
+                    <div class="calculator-value">Age: <span id="ageValue">30</span></div>
+                </div>
+
+                <div class="calculator-result">
+                    <div class="calculator-result-label">In 2044, you'll be supporting:</div>
+                    <div class="calculator-result-value"><span id="dependentsValue">3.4</span> people</div>
+                    <div class="calculator-result-label">Your monthly burden will be:</div>
+                    <div class="calculator-result-value">₹<span id="burdenValue">2,26,000</span>/mo</div>
+                    <p class="calculator-result-desc" id="satiricalMessage">"That's your entire salary. Hope you're getting a raise."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bold Claims Section -->
+    <div class="full-section" style="background-color: rgba(255, 68, 68, 0.05);">
+        <div class="section-content">
+            <h2 class="section-title">The Uncomfortable Truths</h2>
+            <p class="section-subtitle">Bold claims. Verified with brutal math.</p>
+
+            <div class="bold-claim">
+                <h3 class="bold-claim-title">🔥 "60% OF PARSIS ARE OVER 60 YEARS OLD"</h3>
+                <span class="bold-claim-status">NOT YET (BUT SOON)</span>
+                <p class="bold-claim-desc">
+                    <strong>Current Reality (2024):</strong> 32% are 60+, but 45% are 50+<br><br>
+                    <strong>Projection:</strong><br>
+                    • By 2034: 45% will be 60+<br>
+                    • By 2044: 58% will be 60+ ⚠️<br>
+                    • By 2054: 68% will be 60+ 🚨<br><br>
+                    <strong>Translation:</strong> We're not 60% elderly YET. But we will be in 20 years.
+                    And by then, there won't be enough young people to take care of them.
+                </p>
+            </div>
+
+            <div class="bold-claim">
+                <h3 class="bold-claim-title">🔥 "WE'RE MORE AGED THAN JAPAN"</h3>
+                <span class="bold-claim-status">TRUE</span>
+                <p class="bold-claim-desc">
+                    <strong>Comparison:</strong><br>
+                    • Japan elderly (60+): 33% (world's oldest country)<br>
+                    • Parsis elderly (60+): 32%<br>
+                    • BUT Parsi dependency ratio: 0.79 vs Japan: 0.69<br><br>
+                    <strong>Translation:</strong> We're older than the world's oldest country.
+                    We're literally out-aging Japan. That's not an achievement.
+                </p>
+            </div>
+
+            <div class="bold-claim">
+                <h3 class="bold-claim-title">🔥 "COMMUNITY WELFARE WILL COLLAPSE BY 2050"</h3>
+                <span class="bold-claim-status">HIGHLY LIKELY</span>
+                <p class="bold-claim-desc">
+                    <strong>Math:</strong> By 2054, dependency ratio will be 1.65 (every worker supports 1.65 dependents)<br><br>
+                    <strong>Why This Breaks:</strong><br>
+                    • Worker pays ₹42 lakh/year in community costs<br>
+                    • Average Parsi salary: ₹20-30 lakh/year<br>
+                    • Impossible to sustain<br><br>
+                    <strong>Translation:</strong> Trusts will run out. Benefits will end.
+                    Last one out, turn off the lights at the fire temple.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="full-section">
+        <div class="section-content" style="text-align: center;">
+            <h2 class="section-title">Uncomfortable Yet?</h2>
+            <p class="subtitle" style="max-width: 800px; margin: 0 auto 2rem;">
+                Good. That's the point. These aren't opinions. These are numbers.<br>
+                We can debate policy all day, but math doesn't negotiate.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                <a href="/" class="ppt-button ppt-button-primary">Back to Home</a>
+                <button class="ppt-button ppt-button-secondary" onclick="alert('Coming soon: Share this with someone who needs to see it')">Share This Page</button>
+            </div>
+            <p class="satire-text" style="margin-top: 2rem; font-size: 1rem;">
+                "This page made you angry? Channel that into action, not arguments.<br>
+                The clock is ticking."
+            </p>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Typing animation for welcome text
-            const welcomeText = document.getElementById('welcome-text');
-            const textToType = "coming soon means thobvaanu dikra. check back soon for this exciting feature.";
-            let i = 0;
-            const typingSpeed = 50; // milliseconds per character
-            
-            function typeWriter() {
-                if (i < textToType.length) {
-                    welcomeText.innerHTML = textToType.substring(0, i + 1);
-                    i++;
-                    setTimeout(typeWriter, typingSpeed);
+        // Population Counter with Real-time Animation
+        class PopulationCounter {
+            constructor() {
+                this.basePopulation = 47000; // Base population as of Jan 1, 2024
+                this.startDate = new Date('2024-01-01');
+                this.deathsPerDay = 1000 / 365; // ~2.74 deaths per day
+                this.birthsPerDay = 280 / 365; // ~0.77 births per day
+                this.netLossPerDay = this.deathsPerDay - this.birthsPerDay; // ~1.97 net loss per day
+                this.element = document.getElementById('populationCounter');
+            }
+
+            getCurrentPopulation() {
+                const now = new Date();
+                const daysElapsed = (now - this.startDate) / (1000 * 60 * 60 * 24);
+                const currentPop = this.basePopulation - (this.netLossPerDay * daysElapsed);
+                return Math.floor(currentPop);
+            }
+
+            start() {
+                this.update();
+                setInterval(() => this.update(), 1000); // Update every second
+            }
+
+            update() {
+                const pop = this.getCurrentPopulation();
+                this.element.textContent = pop.toLocaleString();
+
+                // Random glitch effect every ~30 seconds
+                if (Math.random() < 0.0003) {
+                    this.glitch();
                 }
             }
-            
-            // Start typing animation
-            typeWriter();
 
-            // Flying Numbers Animation
-            // Configuration
-            const config = {
-                spawnRate: 300,      // How often to spawn a new number (ms) - reduced for better performance
-                maxNumbers: 40,      // Maximum number of elements on screen - reduced for mobile
-                minSize: 15,         // Minimum font size
-                maxSize: 40,         // Maximum font size - reduced to fit mobile screens better
-                duration: 5000,      // How long each number stays on screen - slightly reduced
-            };
-            
-            // Adjust for mobile devices
-            if (window.innerWidth < 768) {
-                config.maxNumbers = 25;
-                config.spawnRate = 400;
-                config.maxSize = 30;
-            }
-
-            // DOM Elements
-            const body = document.body;
-            const numbersContainer = document.getElementById('numbers-container');
-            
-            // Track all numbers on screen
-            let numbers = [];
-            let spawnInterval;
-            let lastTimestamp = 0;
-
-            // Random utilities
-            function randomInt(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-
-            function randomNumber() {
-                // Generate numbers between 0 and 100,000
-                return randomInt(0, 100000);
-            }
-
-            function randomOpacity() {
-                // Generate random opacity between 0.2 and 0.9
-                return (Math.random() * 0.7 + 0.2).toFixed(2);
-            }
-
-            // Create and animate a number
-            function createNumber() {
-                // If we've reached the maximum, remove the oldest number
-                if (numbers.length >= config.maxNumbers) {
-                    const oldest = numbers.shift();
-                    if (oldest.element && oldest.element.parentNode) {
-                        oldest.element.parentNode.removeChild(oldest.element);
-                    }
-                }
-
-                // Create number element
-                const numElement = document.createElement('div');
-                numElement.className = 'number';
-                numElement.textContent = randomNumber();
-                
-                // Random position on screen - only on the right side of the page
-                const x = randomInt(0, window.innerWidth);
-                const y = randomInt(0, window.innerHeight);
-                
-                // Random size
-                const size = randomInt(config.minSize, config.maxSize);
-                
-                // Random movement direction and speed (more subtle for smoother appearance)
-                const speedX = (randomInt(-30, 30) / 100);  // Reduced speed
-                const speedY = (randomInt(-30, 30) / 100);  // Reduced speed
-                
-                // Set random opacity
-                const opacity = randomOpacity();
-                
-                // Set initial style
-                numElement.style.left = `${x}px`;
-                numElement.style.top = `${y}px`;
-                numElement.style.fontSize = `${size}px`;
-                numElement.style.color = `rgba(255, 255, 255, ${opacity})`;
-                
-                // Add to container instead of body
-                numbersContainer.appendChild(numElement);
-                
-                // Start animation
+            glitch() {
+                this.element.classList.add('glitch');
                 setTimeout(() => {
-                    numElement.style.transform = 'scale(1)';
-                    numElement.style.opacity = opacity;
-                }, 10);
-                
-                // Store number data
-                const numberData = {
-                    element: numElement,
-                    x: x,
-                    y: y,
-                    speedX: speedX,
-                    speedY: speedY,
-                    size: size,
-                    opacity: opacity,
-                    startTime: performance.now(),
-                    zoomRate: randomInt(10, 30) / 1000 // Random zoom rate for variety
-                };
-                
-                numbers.push(numberData);
-                
-                // Set timeout to remove the number
-                setTimeout(() => {
-                    // Find the index of this number in our array
-                    const index = numbers.indexOf(numberData);
-                    if (index !== -1) {
-                        numbers.splice(index, 1);
-                    }
-                    
-                    // Fade out animation
-                    numElement.style.transform = 'scale(0)';
-                    numElement.style.opacity = '0';
-                    
-                    // Remove from DOM after animation
-                    setTimeout(() => {
-                        if (numElement.parentNode) {
-                            numElement.parentNode.removeChild(numElement);
-                        }
-                    }, 1200); // Match the transition duration in CSS
-                }, config.duration);
+                    this.element.classList.remove('glitch');
+                }, 200);
+            }
+        }
+
+        // Dependency Burden Calculator
+        const ageSlider = document.getElementById('ageSlider');
+        const ageValue = document.getElementById('ageValue');
+        const dependentsValue = document.getElementById('dependentsValue');
+        const burdenValue = document.getElementById('burdenValue');
+        const satiricalMessage = document.getElementById('satiricalMessage');
+
+        function updateBurdenCalculator() {
+            const currentAge = parseInt(ageSlider.value);
+            const ageIn2044 = currentAge + 20;
+
+            ageValue.textContent = currentAge;
+
+            // Calculate dependents based on age in 2044
+            let dependents, monthlyBurden, message;
+
+            if (ageIn2044 < 20) {
+                dependents = 0;
+                monthlyBurden = 0;
+                message = "You'll still be in school. Lucky you.";
+            } else if (ageIn2044 < 60) {
+                // Working age in 2044
+                dependents = 1.29; // 2044 dependency ratio
+                monthlyBurden = 226000; // ₹27.1L per year / 12 months
+                message = ageIn2044 < 30
+                    ? "Welcome to adulthood. Hope you're getting paid well."
+                    : "That's most of your salary. Good thing you didn't want kids anyway.";
+            } else {
+                dependents = 0;
+                monthlyBurden = 0;
+                message = "You'll be retired. But don't worry, the young Parsis will take care of... oh wait.";
             }
 
-            // Animate all numbers with timestamp for smoother animation
-            function animateNumbers(timestamp) {
-                // Calculate delta time for smooth animation regardless of frame rate
-                const deltaTime = timestamp - lastTimestamp;
-                lastTimestamp = timestamp;
-                
-                // Use requestAnimationFrame's timestamp for smooth animation
-                numbers.forEach(numData => {
-                    // Update position with deltaTime for consistent speed
-                    const moveFactor = deltaTime / 16.67; // Normalized to 60fps
-                    numData.x += numData.speedX * moveFactor;
-                    numData.y += numData.speedY * moveFactor;
-                    
-                    // Apply position with transform for better performance
-                    numData.element.style.transform = `translate3d(${numData.x}px, ${numData.y}px, 0) scale(${numData.zoomCurrent || 1})`;
-                    
-                    // Time-based smooth zoom animation
-                    const elapsedTime = timestamp - numData.startTime;
-                    const progress = Math.min(elapsedTime / config.duration, 1);
-                    
-                    // Bezier easing for smooth zoom in
-                    const easeInOut = t => t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
-                    const zoomProgress = easeInOut(progress);
-                    
-                    // Calculate zoom factor with individual zoom rate
-                    const zoomFactor = 1 + zoomProgress * numData.zoomRate * 10;
-                    numData.zoomCurrent = zoomFactor;
-                    
-                    // Apply transform with both translation and scale
-                    numData.element.style.transform = `translate3d(${numData.x}px, ${numData.y}px, 0) scale(${zoomFactor})`;
-                });
-                
-                requestAnimationFrame(animateNumbers);
-            }
+            dependentsValue.textContent = dependents.toFixed(1);
+            burdenValue.textContent = monthlyBurden.toLocaleString();
+            satiricalMessage.textContent = `"${message}"`;
+        }
 
-            // Start animation
-            function initialize() {
-                spawnInterval = setInterval(createNumber, config.spawnRate);
-                lastTimestamp = performance.now();
-                requestAnimationFrame(animateNumbers);
-                
-                // Pre-populate with some numbers for immediate visual
-                for (let i = 0; i < 15; i++) {
-                    setTimeout(createNumber, i * 100);
-                }
-            }
+        ageSlider.addEventListener('input', updateBurdenCalculator);
 
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                // Keep numbers within new window bounds
-                numbers.forEach(numData => {
-                    if (numData.x > window.innerWidth) {
-                        numData.x = window.innerWidth - numData.size;
-                    }
-                    if (numData.y > window.innerHeight) {
-                        numData.y = window.innerHeight - numData.size;
-                    }
-                });
-            });
-
-            // Start the animation
-            initialize();
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const counter = new PopulationCounter();
+            counter.start();
+            updateBurdenCalculator();
         });
     </script>
-    <script src="../js/combined.js"></script>
 </body>
 </html>

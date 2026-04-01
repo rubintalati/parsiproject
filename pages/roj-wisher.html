@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6DT5E4V7SQ');
+  window.addEventListener('load', function() {
+    if(window.performance) {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      if(pageLoadTime > 0) {
+        gtag('event', 'timing_complete', {
+          'name': 'page_load',
+          'value': pageLoadTime,
+          'event_category': 'Page Timing'
+        });
+      }
+    }
+  });
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roj Wisher - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100vh; overflow: hidden !important; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+
+        .container { display: flex; height: 100vh; }
+        .main-content {
+            flex: 1; padding: 2rem;
+            max-width: none; margin: 0;
+            overflow-y: auto; overflow-x: hidden;
+        }
+
+        .header {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            margin-bottom: 1.5rem; margin-top: 2rem;
+            text-align: center; width: 100%;
+        }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: lowercase; }
+        .page-subtitle { color: #999; font-size: 0.9rem; text-transform: lowercase; }
+
+        /* Auth Section */
+        .auth-section {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 300px; gap: 1.5rem;
+        }
+        .auth-prompt { color: #999; font-size: 0.95rem; text-transform: lowercase; text-align: center; }
+        .google-login-btn {
+            display: flex; align-items: center; gap: 0.7rem;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent; color: #fff;
+            font-family: 'Manrope', sans-serif; font-size: 0.9rem;
+            cursor: pointer; transition: background 0.2s; text-transform: lowercase;
+        }
+        .google-login-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .google-login-btn svg { width: 20px; height: 20px; }
+        .auth-credits {
+            margin-top: 1rem; text-align: center;
+        }
+        .auth-credits p {
+            color: #888; font-size: 0.85rem; text-transform: lowercase; margin-bottom: 0.5rem;
+        }
+
+        /* App Section */
+        .app-section { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+
+        /* User Bar — name + settings + sign out side by side */
+        .user-bar {
+            display: flex; align-items: center; gap: 0.8rem;
+            margin-bottom: 1.5rem; padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .user-name { color: #ccc; font-size: 0.85rem; text-transform: lowercase; margin-right: auto; }
+        .user-bar-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #999; font-family: 'Manrope', sans-serif;
+            font-size: 0.75rem; padding: 0.4rem 0.8rem;
+            cursor: pointer; text-transform: lowercase; transition: color 0.2s;
+        }
+        .user-bar-btn:hover { color: #fff; }
+
+        /* Settings Panel (collapsible) */
+        .settings-panel { margin-bottom: 1.5rem; }
+        .settings-content {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.2rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .setting-row { display: flex; flex-direction: column; gap: 0.3rem; }
+        .setting-row label { color: #999; font-size: 0.8rem; text-transform: lowercase; }
+        .setting-row select {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem; padding: 0.5rem;
+            appearance: none; cursor: pointer;
+        }
+        .setting-row select option { background: #111; color: #fff; }
+        .checkbox-label {
+            display: flex; align-items: center; gap: 0.5rem;
+            cursor: pointer; padding-top: 1rem;
+        }
+        .checkbox-label input[type="checkbox"] { accent-color: #fff; width: 14px; height: 14px; }
+
+        /* Add Contact Button */
+        .add-contact-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.6rem 1.2rem;
+            cursor: pointer; text-transform: lowercase;
+            transition: background 0.2s; margin-bottom: 1.5rem;
+        }
+        .add-contact-btn:hover { background: rgba(255, 255, 255, 0.05); }
+
+        /* Desktop Table */
+        .contacts-table-wrapper { overflow-x: auto; }
+        .contacts-table { width: 100%; border-collapse: collapse; text-transform: lowercase; }
+        .contacts-table th {
+            color: #999; font-size: 0.75rem; font-weight: 500;
+            text-align: left; padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15); white-space: nowrap;
+        }
+        .contacts-table td {
+            color: #ccc; font-size: 0.8rem; padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06); vertical-align: middle;
+        }
+        .contacts-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+        .roj-name { color: #fff; font-weight: 500; }
+        .days-badge {
+            display: inline-block; font-size: 0.75rem;
+            padding: 0.15rem 0.5rem; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #ccc;
+        }
+        .days-badge.soon { background: rgba(255, 170, 50, 0.12); border-color: rgba(255, 170, 50, 0.3); color: #ffcc80; }
+        .days-badge.today { background: rgba(76, 217, 100, 0.12); border-color: rgba(76, 217, 100, 0.3); color: #81f09b; }
+        .action-btn {
+            background: none; border: none; color: #666;
+            cursor: pointer; font-size: 0.75rem; padding: 0.3rem;
+            font-family: 'Manrope', sans-serif; text-transform: lowercase; transition: color 0.2s;
+        }
+        .action-btn:hover { color: #fff; }
+        .action-btn.delete:hover { color: #ff6b6b; }
+        .actions-cell { display: flex; gap: 0.5rem; }
+
+        /* Empty State */
+        .empty-state { text-align: center; color: #666; font-size: 0.85rem; padding: 3rem 1rem; text-transform: lowercase; }
+
+        /* ─── Mobile Card View ─── */
+        .contacts-cards { display: none; }
+        .contact-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .card-top-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .card-left { flex: 1; min-width: 0; }
+        .card-right { text-align: right; flex-shrink: 0; margin-left: 1rem; }
+        .card-name { color: #fff; font-weight: 600; font-size: 1rem; text-transform: lowercase; }
+        .card-sub { color: #666; font-size: 0.75rem; margin-top: 0.2rem; text-transform: lowercase; }
+        .card-roj-info { margin-top: 0.5rem; font-size: 0.8rem; color: #aaa; }
+        .card-roj-info .card-roj-value { color: #fff; font-weight: 500; }
+        .card-date-line { font-size: 0.75rem; color: #888; margin-bottom: 0.3rem; }
+        .card-date-label { }
+        .card-date-val { color: #fff; font-weight: 500; }
+        .card-date-line.today .card-date-val { color: #81f09b; }
+        .card-actions {
+            display: flex; gap: 0.8rem; margin-top: 0.7rem;
+            padding-top: 0.6rem; border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ─── Calendar Subscribe Section (below table) ─── */
+        .calendar-section {
+            margin-top: 2rem; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+        .calendar-note {
+            color: #777; font-size: 0.8rem; text-transform: lowercase;
+            margin-bottom: 1rem; line-height: 1.5;
+        }
+        .calendar-buttons { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+        .calendar-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 1.3rem;
+            background: #fff; color: #000;
+            font-family: 'Manrope', sans-serif; font-size: 0.85rem; font-weight: 600;
+            border: none; border-radius: 6px;
+            cursor: pointer; text-decoration: none; text-transform: none;
+            transition: opacity 0.2s;
+        }
+        .calendar-btn:hover { opacity: 0.85; }
+        .calendar-btn svg { width: 18px; height: 18px; }
+        .calendar-subscribed-note {
+            color: #666; font-size: 0.75rem; margin-top: 0.8rem;
+            text-transform: lowercase;
+        }
+
+        /* ─── Credits ─── */
+        .credits {
+            margin-top: 3rem; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center; padding-bottom: 2rem;
+        }
+        .credits-text { color: #555; font-size: 0.7rem; text-transform: lowercase; margin-bottom: 0.4rem; }
+        .credits-links { display: flex; gap: 1rem; justify-content: center; }
+        .credits-links a {
+            color: #777; font-size: 0.7rem; text-decoration: none;
+            transition: color 0.2s; text-transform: lowercase;
+        }
+        .credits-links a:hover { color: #fff; }
+
+        /* ─── Modal ─── */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem; width: 90%; max-width: 420px;
+            position: relative; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            background: none; border: none; color: #666;
+            font-size: 1.3rem; cursor: pointer; line-height: 1;
+        }
+        .modal-close:hover { color: #fff; }
+        .modal-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem; text-transform: lowercase; }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block; color: #999; font-size: 0.8rem;
+            margin-bottom: 0.3rem; text-transform: lowercase;
+        }
+        .form-group input, .form-group select {
+            width: 100%; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.6rem;
+        }
+        .form-group select option { background: #111; color: #fff; }
+        .form-group .checkbox-inline {
+            display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;
+        }
+        .form-group .checkbox-inline input[type="checkbox"] { width: auto; accent-color: #fff; }
+        .form-group .checkbox-inline span { color: #999; font-size: 0.8rem; }
+
+        /* DOB dropdowns */
+        .dob-row { display: flex; gap: 0.5rem; }
+        .dob-row select {
+            flex: 1; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.6rem;
+            appearance: none; cursor: pointer;
+        }
+        .dob-row select option { background: #111; color: #fff; }
+
+        /* Mobile number with country code */
+        .mobile-row { display: flex; gap: 0.5rem; }
+        .mobile-row select {
+            width: 100px; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.6rem;
+            appearance: none; cursor: pointer;
+        }
+        .mobile-row select option { background: #111; color: #fff; }
+        .mobile-row input { flex: 1; }
+        .form-hint {
+            color: #666; font-size: 0.72rem; margin-top: 0.4rem;
+            text-transform: lowercase; font-style: italic;
+        }
+
+        .submit-btn {
+            width: 100%; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.7rem;
+            cursor: pointer; text-transform: lowercase;
+            transition: background 0.2s; margin-top: 0.5rem;
+        }
+        .submit-btn:hover { background: rgba(255, 255, 255, 0.05); }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            background: #111; border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ccc; font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem; padding: 0.7rem 1.5rem;
+            z-index: 3000; text-transform: lowercase;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .toast.show { opacity: 1; }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; padding-top: 4rem; }
+            .page-title { font-size: 1.8rem; }
+            .settings-content { grid-template-columns: 1fr; }
+            .contacts-table-wrapper { display: none; }
+            .contacts-cards { display: block; }
+            .modal-content { width: 95%; padding: 1.5rem; }
+            .calendar-buttons { flex-direction: column; align-items: center; }
+        }
+        @media (max-width: 380px) {
+            .page-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">roj wisher</h1>
+                <p class="page-subtitle">we remind you on birthdays & anniversaries so you don't have to. now go, the ravo isn't going to stir itself.</p>
+            </div>
+
+            <!-- Auth Section (logged out) -->
+            <div id="auth-section" class="auth-section">
+                <p class="auth-prompt">sign in, add birthdays, add anniversaries & voila.</p>
+                <button id="google-login-btn" class="google-login-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    sign in with google
+                </button>
+                <div class="auth-credits">
+                    <p>made in collaboration by</p>
+                    <div class="credits-links">
+                        <a href="https://www.linkedin.com/in/armanarethna" target="_blank">arman arethna</a>
+                        <a href="https://www.linkedin.com/in/rubintalati" target="_blank">rubin talati</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- App Section (logged in, hidden by default) -->
+            <div id="app-section" class="app-section" style="display: none;">
+                <!-- User Bar: name + settings + sign out -->
+                <div class="user-bar">
+                    <span class="user-name" id="user-name"></span>
+                    <button class="user-bar-btn" id="settings-toggle">settings</button>
+                    <button class="user-bar-btn" id="sign-out-btn">sign out</button>
+                </div>
+
+                <!-- Settings Panel (collapsible, hidden by default) -->
+                <div class="settings-panel">
+                    <div class="settings-content" id="settings-content" style="display: none;">
+                        <div class="setting-row">
+                            <label>which calendar do you follow?</label>
+                            <select id="calendar-type-select">
+                                <option value="S">shahenshahi</option>
+                                <option value="K">kadmi (kassai)</option>
+                                <option value="F">fasili</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="remind-roj" checked>
+                                remind me on roj birthday
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="remind-actual" checked>
+                                remind me on actual birthday
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <label>when do you want to be reminded?</label>
+                            <select id="reminder-timing-select">
+                                <option value="day_of">on the same day (9 a.m.)</option>
+                                <option value="day_before">1 day before (so you can buy a gift)</option>
+                                <option value="both">both</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Contact Button -->
+                <button class="add-contact-btn" id="add-contact-btn">+ add contact</button>
+
+                <!-- Desktop Table View -->
+                <div class="contacts-table-wrapper">
+                    <table class="contacts-table" id="contacts-table">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>date</th>
+                                <th>type</th>
+                                <th>roj birthday</th>
+                                <th>days to roj</th>
+                                <th>days to date</th>
+                                <th>mobile</th>
+                                <th>actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contacts-tbody"></tbody>
+                    </table>
+                    <div id="empty-state" class="empty-state">
+                        no contacts yet. add your first contact above.
+                    </div>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="contacts-cards" id="contacts-cards"></div>
+
+                <!-- Calendar Subscribe Section (below table) -->
+                <div class="calendar-section" id="calendar-section" style="display: none;">
+                    <p class="calendar-note">once you've added all your birthdays & anniversaries, add them to your calendar</p>
+                    <div class="calendar-buttons" id="calendar-buttons">
+                        <a href="#" class="calendar-btn" id="apple-subscribe" target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                            Add to Apple Calendar
+                        </a>
+                        <a href="#" class="calendar-btn" id="google-subscribe" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            Add to Google Calendar
+                        </a>
+                    </div>
+                    <p class="calendar-subscribed-note" id="calendar-subscribed-note" style="display: none;">
+                        calendar subscribed — new contacts will sync automatically
+                    </p>
+                </div>
+
+                <!-- Credits -->
+                <div class="credits">
+                    <p class="credits-text">roj wisher is a collaboration by</p>
+                    <div class="credits-links">
+                        <a href="https://www.linkedin.com/in/armanarethna" target="_blank">arman arethna</a>
+                        <a href="https://www.linkedin.com/in/rubintalati" target="_blank">rubin talati</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First-Time Settings Modal -->
+            <div id="onboarding-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <h2 class="modal-title">welcome to roj wisher</h2>
+                    <p style="color: #999; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: lowercase;">
+                        let's set up your preferences
+                    </p>
+                    <div class="form-group">
+                        <label>which calendar do you follow?</label>
+                        <select id="onboard-calendar-type">
+                            <option value="S">shahenshahi</option>
+                            <option value="K">kadmi (kassai)</option>
+                            <option value="F">fasili</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-inline">
+                            <input type="checkbox" id="onboard-remind-roj" checked>
+                            <span>remind me on roj birthday</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-inline">
+                            <input type="checkbox" id="onboard-remind-actual" checked>
+                            <span>remind me on actual birthday</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>when do you want to be reminded?</label>
+                        <select id="onboard-reminder-timing">
+                            <option value="both">both</option>
+                            <option value="day_of">on the same day (9 a.m.)</option>
+                            <option value="day_before">1 day before (so you can buy a gift)</option>
+                        </select>
+                    </div>
+                    <button class="submit-btn" id="onboard-save">let's go</button>
+                </div>
+            </div>
+
+            <!-- Add/Edit Contact Modal -->
+            <div id="contact-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <button class="modal-close" id="modal-close">&times;</button>
+                    <h2 class="modal-title" id="modal-title">add contact</h2>
+                    <form id="contact-form">
+                        <input type="hidden" id="contact-id">
+                        <div class="form-group">
+                            <label for="contact-name">name</label>
+                            <input type="text" id="contact-name" required placeholder="e.g. rohinton mistry">
+                        </div>
+                        <div class="form-group">
+                            <label>date of birth / anniversary</label>
+                            <div class="dob-row">
+                                <select id="dob-day"></select>
+                                <select id="dob-month"></select>
+                                <select id="dob-year"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-inline">
+                                <input type="checkbox" id="contact-before-sunrise">
+                                <span>born before 6am (adjusts roj calculation)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-event-type">what's the occasion?</label>
+                            <select id="contact-event-type">
+                                <option value="birthday">birthday</option>
+                                <option value="anniversary">anniversary</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>mobile number (optional)</label>
+                            <div class="mobile-row">
+                                <select id="contact-country-code">
+                                    <option value="+91">+91</option>
+                                    <option value="+1">+1</option>
+                                    <option value="+44">+44</option>
+                                    <option value="+971">+971</option>
+                                    <option value="+61">+61</option>
+                                    <option value="+65">+65</option>
+                                    <option value="+852">+852</option>
+                                    <option value="+64">+64</option>
+                                    <option value="+27">+27</option>
+                                    <option value="+254">+254</option>
+                                    <option value="+49">+49</option>
+                                    <option value="+33">+33</option>
+                                    <option value="+81">+81</option>
+                                    <option value="+86">+86</option>
+                                    <option value="+966">+966</option>
+                                    <option value="+974">+974</option>
+                                    <option value="+968">+968</option>
+                                    <option value="+973">+973</option>
+                                </select>
+                                <input type="tel" id="contact-mobile" placeholder="9876543210">
+                            </div>
+                            <p class="form-hint">we'll prefill a cute whatsapp message for you on the day (it's optional)</p>
+                        </div>
+                        <button type="submit" class="submit-btn">save</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Toast -->
+            <div id="toast" class="toast"></div>
+        </div>
+    </div>
+
+    <script src="../js/combined.js"></script>
+    <script src="../js/roj-wisher.js"></script>
+</body>
+</html>

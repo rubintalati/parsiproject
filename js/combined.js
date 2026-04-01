@@ -200,9 +200,135 @@ function EpochToSDate(zDate) {
     return 0;
 }
 
+function EpochToKDate(zDate) {
+    var tsec, tmin, tday;
+    var offset;
+    var tdays;
+    var daysinmon;
+    var m, r;
+    var year;
+    var rem;
+
+    zDate.sec = DoMod(zDate.epoch, 60);
+    tsec = DoInt(zDate.epoch, 60);
+    zDate.min = DoMod(tsec, 60);
+    tmin = DoInt(tsec, 60);
+    zDate.hour = DoMod(tmin, 24);
+    tday = DoInt(tmin, 24);
+
+    if (zDate.hour >= 6) {
+        offset = 287;
+    } else {
+        offset = 286;
+    }
+
+    year = EPOCH_YZ_BEGIN;
+    tdays = tday + offset;
+
+    while (1) {
+        rem = tdays - MAX_DAYS_IN_YR;
+        if (rem <= 0) {
+            break;
+        } else {
+            year++;
+            tdays = rem;
+        }
+    }
+
+    daysinmon = 30;
+    m = DoInt(tdays, daysinmon) + 1;
+    r = DoMod(tdays, daysinmon);
+
+    if (r == 0) {
+        r = daysinmon;
+        m--;
+    }
+
+    if (m == 13) {
+        m = 12;
+        r = daysinmon + r;
+    }
+
+    zDate.yz = year;
+    zDate.mah = m;
+    zDate.roj = r;
+    zDate.zday = tdays;
+
+    return 0;
+}
+
+function EpochToFDate(zDate) {
+    var tsec, tmin, tday;
+    var tdays;
+    var daysinmon;
+    var m, r;
+    var year;
+    var rem;
+    var daysInYear;
+
+    zDate.sec = DoMod(zDate.epoch, 60);
+    tsec = DoInt(zDate.epoch, 60);
+    zDate.min = DoMod(tsec, 60);
+    tmin = DoInt(tsec, 60);
+    zDate.hour = DoMod(tmin, 24);
+    tday = DoInt(tmin, 24);
+
+    // Fasili is aligned to the vernal equinox (March 21)
+    // Offset calculated from epoch to Fasili new year
+    var offset;
+    if (zDate.hour >= 6) {
+        offset = 288;
+    } else {
+        offset = 287;
+    }
+
+    year = EPOCH_YZ_BEGIN;
+    tdays = tday + offset;
+
+    while (1) {
+        // Fasili observes leap years: 366 days in a Fasili leap year
+        var gregYear = year + YZ_DIFF_YEAR;
+        daysInYear = IsLeapYear(gregYear) ? 366 : MAX_DAYS_IN_YR;
+        rem = tdays - daysInYear;
+        if (rem <= 0) {
+            break;
+        } else {
+            year++;
+            tdays = rem;
+        }
+    }
+
+    daysinmon = 30;
+    m = DoInt(tdays, daysinmon) + 1;
+    r = DoMod(tdays, daysinmon);
+
+    if (r == 0) {
+        r = daysinmon;
+        m--;
+    }
+
+    if (m == 13) {
+        m = 12;
+        r = daysinmon + r;
+    }
+
+    zDate.yz = year;
+    zDate.mah = m;
+    zDate.roj = r;
+    zDate.zday = tdays;
+
+    return 0;
+}
+
 function EpochToZDate(calType, zDate) {
     if (calType == "S") {
         return EpochToSDate(zDate);
+    }
+    if (calType == "K") {
+        return EpochToKDate(zDate);
+    }
+    if (calType == "F") {
+        return EpochToFDate(zDate);
     }
     return 0;
 }
@@ -241,6 +367,43 @@ function getTodaysParsiDate() {
         mah: zDate.mah,
         year: zDate.yz
     };
+}
+
+// Convert any Gregorian date to Zoroastrian date with specified calendar type
+function getParsiDateForGregorian(year, month, day, hour, calType) {
+    var gDate = { year: year, mon: month, date: day, hour: hour || 12, min: 0, sec: 0 };
+    var zDate = {};
+    if (GDateToZDate(gDate, calType, zDate)) return null;
+    return { roj: zDate.roj, mah: zDate.mah, year: zDate.yz };
+}
+
+// Find the next Gregorian date that matches a given Roj/Mah combination
+function findNextRojBirthday(targetRoj, targetMah, calType, fromDate) {
+    var from = fromDate || new Date();
+    for (var i = 0; i <= 366; i++) {
+        var d = new Date(from);
+        d.setDate(d.getDate() + i);
+        var result = getParsiDateForGregorian(d.getFullYear(), d.getMonth() + 1, d.getDate(), 12, calType);
+        if (result && result.roj === targetRoj && result.mah === targetMah) {
+            return d;
+        }
+    }
+    return null;
+}
+
+// Generate Roj birthday dates for the next N years
+function generateRojBirthdaysForYears(targetRoj, targetMah, calType, numYears) {
+    var dates = [];
+    var searchFrom = new Date();
+    for (var i = 0; i < numYears; i++) {
+        var nextDate = findNextRojBirthday(targetRoj, targetMah, calType, searchFrom);
+        if (nextDate) {
+            dates.push(new Date(nextDate));
+            searchFrom = new Date(nextDate);
+            searchFrom.setDate(searchFrom.getDate() + 1);
+        }
+    }
+    return dates;
 }
 
 // Function to update Parsi date on the page - exposed globally for use by sidebar code
