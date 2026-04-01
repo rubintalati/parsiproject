@@ -267,7 +267,7 @@ function updateCalendarFeedUI() {
     var webcalUrl = feedUrl.replace('https://', 'webcal://');
 
     appleSubscribeLink.href = webcalUrl;
-    googleSubscribeLink.href = 'https://calendar.google.com/calendar/r/settings/addbyurl?url=' + encodeURIComponent(feedUrl);
+    googleSubscribeLink.href = 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(webcalUrl);
 
     // On mobile, show only the relevant calendar button
     if (isMobile()) {
