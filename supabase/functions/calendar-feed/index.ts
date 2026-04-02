@@ -332,7 +332,9 @@ function buildCalendarIcs(
 
     // ── Gregorian recurring event ──
     if (settings.remind_on_actual_birthday) {
-      const waMsg = `Dear ${c.name}, Wishing you a very Happy ${typeLabel}!`;
+      const waMsg = c.event_type === "birthday"
+        ? `Happy Birthday, ${c.name}! Ek saal aur nikal gaya — but you? Still fresh like morning brun-maska.`
+        : `Happy Anniversary, ${c.name}! Itna saal saath ma dhansak khaya, that itself is true love. Kem chho? Kem rehsho? Always together!`;
       const waUrl = buildWhatsAppUrl(phone, waMsg);
       let desc = `${typeEmoji} ${c.name}'s ${typeLabel}`;
       if (waUrl) desc += `\\n\\nSend WhatsApp wishes:\\n${waUrl}`;
@@ -365,7 +367,9 @@ function buildCalendarIcs(
         const mahName = MAHNAME[rojDate.mah - 1];
         const rojDates = generateRojBirthdaysForYears(rojDate.roj, rojDate.mah, calType, 15);
 
-        const waMsg = `Dear ${c.name}, Wishing you a very Happy Roj ${typeLabel}! (${rojName}, mah ${mahName})`;
+        const waMsg = c.event_type === "birthday"
+          ? `${c.name}, your roj birthday, dikra! Do a loban, eat a ravo, thank Dadaji. Simple.`
+          : `${c.name}, Roj anniversary mubarak! Still together because nobody else would tolerate either of you. God is great.`;
         const waUrl = buildWhatsAppUrl(phone, waMsg);
 
         for (let i = 0; i < rojDates.length; i++) {

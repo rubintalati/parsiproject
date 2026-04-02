@@ -320,7 +320,6 @@ async function addContact(data) {
 
     if (result.error) {
         console.error('addContact error:', result.error);
-        alert('Error: ' + result.error.message + '\nCode: ' + result.error.code + '\nDetails: ' + result.error.details);
         showToast('failed to add contact: ' + result.error.message);
         return;
     }
@@ -532,6 +531,7 @@ function openAddModal() {
     dobMonth.value = '';
     dobYear.value = '';
     contactCountryCode.value = '+91';
+    isSaving = false; // reset in case it got stuck
     contactModal.style.display = 'flex';
 }
 
@@ -546,6 +546,7 @@ function openEditModal(id) {
     contactBeforeSunrise.checked = contact.before_sunrise;
     contactEventType.value = contact.event_type;
     setMobileNumber(contact.mobile_number);
+    isSaving = false; // reset in case it got stuck
     contactModal.style.display = 'flex';
 }
 
@@ -591,47 +592,47 @@ function handleContactSave() {
     if (isSaving) return;
     isSaving = true;
 
-    var dobValue = getDobValue();
-    if (!contactNameInput.value.trim() || !dobValue) {
-        showToast('name and date are required');
-        isSaving = false;
-        return;
-    }
+    try {
+        var dobValue = getDobValue();
+        if (!contactNameInput.value.trim() || !dobValue) {
+            showToast('name and date are required');
+            isSaving = false;
+            return;
+        }
 
-    var data = {
-        name: contactNameInput.value.trim(),
-        date_of_birth: dobValue,
-        before_sunrise: contactBeforeSunrise.checked,
-        event_type: contactEventType.value,
-        mobile_number: getMobileNumber()
-    };
+        var data = {
+            name: contactNameInput.value.trim(),
+            date_of_birth: dobValue,
+            before_sunrise: contactBeforeSunrise.checked,
+            event_type: contactEventType.value,
+            mobile_number: getMobileNumber()
+        };
 
-    var editId = contactIdInput.value;
-    var savePromise;
-    if (editId) {
-        savePromise = updateContact(editId, data);
-    } else {
-        savePromise = addContact(data);
-    }
+        var editId = contactIdInput.value;
+        var savePromise;
+        if (editId) {
+            savePromise = updateContact(editId, data);
+        } else {
+            savePromise = addContact(data);
+        }
 
-    savePromise.then(function () {
-        closeModal();
-    }).catch(function (err) {
-        console.error('Save error:', err);
+        savePromise.then(function () {
+            closeModal();
+        }).catch(function (err) {
+            console.error('Save error:', err);
+            showToast('something went wrong');
+        }).finally(function () {
+            isSaving = false;
+        });
+    } catch (err) {
+        console.error('handleContactSave error:', err);
         showToast('something went wrong');
-    }).finally(function () {
         isSaving = false;
-    });
+    }
 }
-
-// Prevent default form submit, use button click only
-contactForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-});
 
 document.querySelector('#contact-form .submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    e.stopPropagation();
     handleContactSave();
 });
 
