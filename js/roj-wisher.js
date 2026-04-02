@@ -150,13 +150,17 @@ function signInWithGoogle() {
     });
 }
 
-async function signOut() {
-    await supabaseClient.auth.signOut();
-    currentUser = null;
-    userSettings = null;
-    contacts = [];
-    showAuthSection();
-    showToast('signed out');
+function signOut() {
+    supabaseClient.auth.signOut().then(function () {
+        currentUser = null;
+        userSettings = null;
+        contacts = [];
+        showAuthSection();
+        showToast('signed out');
+    }).catch(function (err) {
+        console.error('Sign out error:', err);
+        showToast('sign out failed');
+    });
 }
 
 function showAuthSection() {
@@ -651,6 +655,67 @@ googleSubscribeLink.addEventListener('click', function (e) {
         markCalendarSubscribed();
     }
 });
+
+// ─── Pull to Refresh ────────────────────────────────────────────
+(function () {
+    var scrollEl = document.getElementById('main-content');
+    var pullIndicator = document.getElementById('pull-indicator');
+    var pullText = pullIndicator.querySelector('.pull-text');
+    var startY = 0;
+    var currentY = 0;
+    var pulling = false;
+    var refreshing = false;
+    var threshold = 80;
+
+    scrollEl.addEventListener('touchstart', function (e) {
+        if (refreshing) return;
+        if (scrollEl.scrollTop <= 0) {
+            startY = e.touches[0].clientY;
+            pulling = true;
+        }
+    }, { passive: true });
+
+    scrollEl.addEventListener('touchmove', function (e) {
+        if (!pulling || refreshing) return;
+        currentY = e.touches[0].clientY;
+        var dy = currentY - startY;
+        if (dy > 0 && scrollEl.scrollTop <= 0) {
+            pullIndicator.classList.add('pulling');
+            pullText.textContent = dy > threshold ? 'release to refresh' : 'pull to refresh';
+        } else {
+            pullIndicator.classList.remove('pulling');
+        }
+    }, { passive: true });
+
+    scrollEl.addEventListener('touchend', function () {
+        if (!pulling || refreshing) return;
+        var dy = currentY - startY;
+        pulling = false;
+        currentY = 0;
+
+        if (dy > threshold && pullIndicator.classList.contains('pulling')) {
+            pullIndicator.classList.remove('pulling');
+            pullIndicator.classList.add('refreshing');
+            pullText.textContent = 'refreshing...';
+            refreshing = true;
+
+            if (currentUser) {
+                loadContacts().then(function () {
+                    pullIndicator.classList.remove('refreshing');
+                    refreshing = false;
+                    showToast('refreshed');
+                }).catch(function () {
+                    pullIndicator.classList.remove('refreshing');
+                    refreshing = false;
+                });
+            } else {
+                window.location.reload();
+            }
+        } else {
+            pullIndicator.classList.remove('pulling');
+        }
+    });
+})();
 
 // ─── Init ────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async function () {
