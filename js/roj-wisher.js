@@ -138,15 +138,16 @@ function showToast(message, duration) {
 }
 
 // ─── Auth ────────────────────────────────────────────────────────
-async function signInWithGoogle() {
+function signInWithGoogle() {
     var redirectUrl = window.location.origin + window.location.pathname;
-    var result = await supabaseClient.auth.signInWithOAuth({
+    supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: redirectUrl }
+    }).then(function (result) {
+        if (result.error) {
+            showToast('sign in failed: ' + result.error.message);
+        }
     });
-    if (result.error) {
-        showToast('sign in failed: ' + result.error.message);
-    }
 }
 
 async function signOut() {
@@ -555,7 +556,10 @@ function closeModal() {
 }
 
 // ─── Event Listeners ─────────────────────────────────────────────
-googleLoginBtn.addEventListener('click', signInWithGoogle);
+googleLoginBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    signInWithGoogle();
+});
 signOutBtn.addEventListener('click', signOut);
 
 settingsToggle.addEventListener('click', function () {
@@ -574,9 +578,6 @@ modalClose.addEventListener('click', closeModal);
 contactModal.addEventListener('click', function (e) {
     if (e.target === contactModal) closeModal();
 });
-contactModal.addEventListener('touchend', function (e) {
-    if (e.target === contactModal) closeModal();
-});
 
 onboardSaveBtn.addEventListener('click', saveOnboardingSettings);
 
@@ -586,7 +587,7 @@ contactMobile.addEventListener('input', function () {
 });
 
 var isSaving = false;
-async function handleContactSave() {
+function handleContactSave() {
     if (isSaving) return;
     isSaving = true;
 
@@ -605,36 +606,49 @@ async function handleContactSave() {
         mobile_number: getMobileNumber()
     };
 
-    console.log('Saving contact:', JSON.stringify(data));
-
     var editId = contactIdInput.value;
+    var savePromise;
     if (editId) {
-        await updateContact(editId, data);
+        savePromise = updateContact(editId, data);
     } else {
-        await addContact(data);
+        savePromise = addContact(data);
     }
 
-    closeModal();
-    isSaving = false;
+    savePromise.then(function () {
+        closeModal();
+    }).catch(function (err) {
+        console.error('Save error:', err);
+        showToast('something went wrong');
+    }).finally(function () {
+        isSaving = false;
+    });
 }
 
+// Prevent default form submit, use button click only
 contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    handleContactSave();
 });
 
-// Fallback: direct click on save button for iOS Safari
 document.querySelector('#contact-form .submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
+    e.stopPropagation();
     handleContactSave();
 });
 
-// Mark calendar as subscribed when user clicks a subscribe button
-appleSubscribeLink.addEventListener('click', function () {
-    markCalendarSubscribed();
+// Calendar subscribe — handle navigation manually for iOS compatibility
+appleSubscribeLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (appleSubscribeLink.href && appleSubscribeLink.href !== '#') {
+        window.location.href = appleSubscribeLink.href;
+        markCalendarSubscribed();
+    }
 });
-googleSubscribeLink.addEventListener('click', function () {
-    markCalendarSubscribed();
+googleSubscribeLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (googleSubscribeLink.href && googleSubscribeLink.href !== '#') {
+        window.open(googleSubscribeLink.href, '_blank');
+        markCalendarSubscribed();
+    }
 });
 
 // ─── Init ────────────────────────────────────────────────────────
