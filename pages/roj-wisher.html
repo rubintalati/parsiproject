@@ -117,28 +117,60 @@
         .settings-panel { margin-bottom: 1.5rem; }
         .settings-content {
             border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.2rem;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            border-radius: 8px;
+            padding: 1.2rem 1.4rem;
+            display: flex; flex-direction: column; gap: 0;
             margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
         }
-        .setting-row { display: flex; flex-direction: column; gap: 0.3rem; }
-        .setting-row label { color: #999; font-size: 0.8rem; text-transform: lowercase; }
+        .setting-row {
+            display: flex; flex-direction: column; gap: 0.4rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-row label:not(.toggle-label) { color: #777; font-size: 0.75rem; text-transform: lowercase; letter-spacing: 0.02em; }
         .setting-row select {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #fff; font-family: 'Manrope', sans-serif;
-            font-size: 16px; padding: 0.5rem;
-            cursor: pointer; border-radius: 0;
+            font-size: 16px; padding: 0.5rem 0.6rem;
+            cursor: pointer; border-radius: 6px;
         }
-        .setting-row select option { background: #111; color: #fff; }
-        .checkbox-label {
-            display: flex; align-items: center; gap: 0.6rem;
-            cursor: pointer; padding-top: 1rem;
-            min-height: 44px;
+        .setting-row select option { background: #1a1a1a; color: #fff; }
+
+        /* Toggle switch — works in settings panel, modals, and form-groups */
+        .toggle-label {
+            display: flex !important; align-items: center; justify-content: space-between;
+            cursor: pointer; min-height: 44px; gap: 1rem;
         }
-        .checkbox-label input[type="checkbox"] {
-            accent-color: #000; width: 20px; height: 20px;
-            -webkit-appearance: checkbox; flex-shrink: 0; cursor: pointer;
+        .toggle-text { color: #ccc; font-size: 0.85rem; text-transform: lowercase; }
+        .toggle-switch {
+            position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0;
+        }
+        .toggle-switch input[type="checkbox"] {
+            opacity: 0; width: 0 !important; height: 0 !important; position: absolute;
+        }
+        .toggle-track {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px; transition: background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+        }
+        .toggle-track::after {
+            content: ''; position: absolute;
+            width: 18px; height: 18px; border-radius: 50%;
+            left: 2px; top: 2px;
+            background: #555; transition: transform 0.2s, background 0.2s;
+        }
+        .toggle-switch input:checked + .toggle-track {
+            background: #fff;
+            border-color: #fff;
+        }
+        .toggle-switch input:checked + .toggle-track::after {
+            transform: translateX(20px);
+            background: #111;
         }
 
         /* Add Contact Button */
@@ -416,15 +448,21 @@
                             </select>
                         </div>
                         <div class="setting-row">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="remind-roj" checked>
-                                remind me on roj birthday
+                            <label class="toggle-label" for="remind-roj">
+                                <span class="toggle-text">remind me on roj birthday</span>
+                                <span class="toggle-switch">
+                                    <input type="checkbox" id="remind-roj" checked>
+                                    <span class="toggle-track"></span>
+                                </span>
                             </label>
                         </div>
                         <div class="setting-row">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="remind-actual" checked>
-                                remind me on actual birthday
+                            <label class="toggle-label" for="remind-actual">
+                                <span class="toggle-text">remind me on actual birthday</span>
+                                <span class="toggle-switch">
+                                    <input type="checkbox" id="remind-actual" checked>
+                                    <span class="toggle-track"></span>
+                                </span>
                             </label>
                         </div>
                         <div class="setting-row">
@@ -510,15 +548,21 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="checkbox-inline" for="onboard-remind-roj">
-                            <input type="checkbox" id="onboard-remind-roj" checked>
-                            <span>remind me on roj birthday</span>
+                        <label class="toggle-label" for="onboard-remind-roj">
+                            <span class="toggle-text">remind me on roj birthday</span>
+                            <span class="toggle-switch">
+                                <input type="checkbox" id="onboard-remind-roj" checked>
+                                <span class="toggle-track"></span>
+                            </span>
                         </label>
                     </div>
                     <div class="form-group">
-                        <label class="checkbox-inline" for="onboard-remind-actual">
-                            <input type="checkbox" id="onboard-remind-actual" checked>
-                            <span>remind me on actual birthday</span>
+                        <label class="toggle-label" for="onboard-remind-actual">
+                            <span class="toggle-text">remind me on actual birthday</span>
+                            <span class="toggle-switch">
+                                <input type="checkbox" id="onboard-remind-actual" checked>
+                                <span class="toggle-track"></span>
+                            </span>
                         </label>
                     </div>
                     <div class="form-group">
