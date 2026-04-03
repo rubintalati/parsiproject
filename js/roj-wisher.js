@@ -649,43 +649,40 @@ googleSubscribeLink.addEventListener('click', function (e) {
     }
 });
 
-// ─── Import from Phone Contacts ─────────────────────────────────
-var importContactBtn = document.getElementById('import-contact-btn');
+// ─── Pick from Phone Contacts (in-modal) ────────────────────────
+var contactPickerBtn = document.getElementById('contact-picker-btn');
 
-// Show button only if Contact Picker API is supported (Android Chrome, some iOS Safari 14.5+)
+// Show picker button only if Contact Picker API is supported (Android Chrome)
 if ('contacts' in navigator && 'ContactsManager' in window) {
-    importContactBtn.style.display = 'inline-block';
+    contactPickerBtn.classList.add('visible');
 }
 
-importContactBtn.addEventListener('click', function () {
+contactPickerBtn.addEventListener('click', function () {
     if (!('contacts' in navigator)) {
-        showToast('your browser does not support contact import');
+        showToast('not supported on this device');
         return;
     }
 
-    var props = ['name', 'tel'];
-    var opts = { multiple: false };
+    navigator.contacts.select(['name', 'tel'], { multiple: false }).then(function (selected) {
+        if (!selected || selected.length === 0) return;
 
-    navigator.contacts.select(props, opts).then(function (selectedContacts) {
-        if (!selectedContacts || selectedContacts.length === 0) return;
+        var c = selected[0];
+        var name = (c.name && c.name.length > 0) ? c.name[0] : '';
+        var phone = (c.tel && c.tel.length > 0) ? c.tel[0] : '';
 
-        var contact = selectedContacts[0];
-        var name = (contact.name && contact.name.length > 0) ? contact.name[0] : '';
-        var phone = (contact.tel && contact.tel.length > 0) ? contact.tel[0] : '';
+        // Prefill name if empty
+        if (name && !contactNameInput.value.trim()) {
+            contactNameInput.value = name;
+        }
 
-        // Open the add modal and prefill
-        openAddModal();
-        contactNameInput.value = name;
-
+        // Prefill phone number
         if (phone) {
-            // Try to separate country code
             var cleaned = phone.replace(/[\s\-()]/g, '');
             setMobileNumber(cleaned);
         }
 
-        showToast('contact imported — add their date & save');
+        showToast('contact picked — now add their date');
     }).catch(function (err) {
-        // User cancelled — that's fine
         if (err.name !== 'TypeError') {
             console.error('Contact picker error:', err);
         }
