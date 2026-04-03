@@ -772,4 +772,24 @@ document.addEventListener('DOMContentLoaded', async function () {
             showAuthSection();
         }
     });
+
+    // Re-check session and reload data when user returns to the page
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState !== 'visible') return;
+
+        supabaseClient.auth.getSession().then(function (result) {
+            var session = result.data && result.data.session;
+            if (session && session.user) {
+                currentUser = session.user;
+                loadContacts();
+            } else if (currentUser) {
+                // Session expired while away
+                currentUser = null;
+                userSettings = null;
+                contacts = [];
+                showAuthSection();
+                showToast('session expired — please sign in again');
+            }
+        });
+    });
 });
