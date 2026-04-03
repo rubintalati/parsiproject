@@ -300,6 +300,42 @@
             text-transform: lowercase;
         }
 
+        /* ─── FAQ ─── */
+        .faq-section {
+            margin-top: 3rem; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .faq-title {
+            color: #fff; font-size: 1.1rem; font-weight: 600;
+            text-transform: lowercase; margin-bottom: 1rem;
+        }
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 0; cursor: pointer; gap: 1rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .faq-question span {
+            color: #ccc; font-size: 0.85rem; text-transform: lowercase;
+            font-weight: 500;
+        }
+        .faq-arrow {
+            color: #555; font-size: 0.75rem; transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+        }
+        .faq-answer p {
+            color: #888; font-size: 0.8rem; line-height: 1.6;
+            text-transform: lowercase; padding: 0 0 1rem 0; margin: 0;
+        }
+        .faq-item.open .faq-answer { max-height: 300px; }
+
         /* ─── Credits ─── */
         .credits {
             margin-top: 3rem; padding-top: 1.5rem;
@@ -569,6 +605,111 @@
                     <p class="calendar-subscribed-note" id="calendar-subscribed-note" style="display: none;">
                         calendar subscribed — new contacts will sync automatically
                     </p>
+                </div>
+
+                <!-- FAQ -->
+                <div class="faq-section" id="faq-section">
+                    <h2 class="faq-title">frequently asked questions</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>will it send whatsapp messages on my behalf?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>no, dikra. we're not that forward. on the day of the birthday/anniversary, your calendar event will have a whatsapp link with a pre-written message. you tap it, review it, send it yourself. we write the jokes, you take the credit.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>how does the calendar reminder work?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>once you subscribe, birthdays & roj birthdays show up as events in your apple or google calendar. you'll get a notification — just like any other calendar reminder. no extra app needed.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>google calendar is not showing my events?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>google calendar syncs external calendars every 12–24 hours. so if you just added a contact, give it a day. apple calendar is faster — usually within an hour. google runs on indian stretchable time, apparently.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>what is a roj birthday?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>in the zoroastrian calendar, every day has a name (roj) and every month has a name (mah). the day & month you were born on is your roj birthday — and it falls on a different gregorian date each year. we calculate it so you don't have to.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>which calendar type should i pick?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>if you're unsure, go with shahenshahi — that's what most parsis in india follow. kadmi is used by a smaller group, and fasili aligns with the iranian/fasili calendar. when in doubt, ask your mummy.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>is my data safe?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>yes. we use google sign-in and supabase for storage. we don't see your google password. your contacts are private to your account. we're parsis — we value trust more than tareli macchi.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>can i pick contacts from my phone?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>on android chrome, yes — there's a picker icon next to the phone number field. on iphones, apple doesn't allow websites to access your contacts (privacy reasons). you'll need to type the number manually. blame apple, not us.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>does it work for anniversaries too?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>absolutely. when adding a contact, just pick "anniversary" as the occasion. you'll get both the actual anniversary and the roj anniversary reminders. because forgetting an anniversary is worse than burning the dhansak.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>what time will i get the reminder?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>9 a.m. your local time. whether you're in mumbai, london, or toronto — it's always your 9 a.m. enough time to send a wish before the birthday person finishes their chai.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>is this free?</span>
+                            <span class="faq-arrow">&#9660;</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>100%. no ads, no subscriptions, no "premium roj upgrade." this is a community project by two bawas who wanted to solve a problem. kem chho? bas, free chhe.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Credits -->
