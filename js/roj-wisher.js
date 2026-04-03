@@ -274,16 +274,9 @@ function updateCalendarFeedUI() {
     appleSubscribeLink.href = webcalUrl;
     googleSubscribeLink.href = 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(webcalUrl);
 
-    // On mobile, show only the relevant calendar button
-    if (isMobile()) {
-        if (isAppleDevice()) {
-            googleSubscribeLink.style.display = 'none';
-            appleSubscribeLink.style.display = 'inline-flex';
-        } else {
-            appleSubscribeLink.style.display = 'none';
-            googleSubscribeLink.style.display = 'inline-flex';
-        }
-    }
+    // Show both calendar options on all devices
+    appleSubscribeLink.style.display = 'inline-flex';
+    googleSubscribeLink.style.display = 'inline-flex';
 
     // Check if user has already subscribed (stored in localStorage)
     var subscribed = localStorage.getItem('rojWisherCalSubscribed_' + currentUser.id);
@@ -298,72 +291,72 @@ function markCalendarSubscribed() {
 }
 
 // ─── Contacts CRUD ───────────────────────────────────────────────
-async function loadContacts() {
-    var result = await supabaseClient
+function loadContacts() {
+    return supabaseClient
         .from('contacts')
         .select('*')
         .eq('user_id', currentUser.id)
-        .order('name');
-
-    if (result.error) {
-        showToast('failed to load contacts');
-        return;
-    }
-
-    contacts = result.data || [];
-    renderContacts();
+        .order('name')
+        .then(function (result) {
+            if (result.error) {
+                showToast('failed to load contacts');
+                return;
+            }
+            contacts = result.data || [];
+            renderContacts();
+        });
 }
 
-async function addContact(data) {
+function addContact(data) {
     data.user_id = currentUser.id;
-    var result = await supabaseClient
+    return supabaseClient
         .from('contacts')
         .insert(data)
         .select()
-        .single();
-
-    if (result.error) {
-        console.error('addContact error:', result.error);
-        showToast('failed to add contact: ' + result.error.message);
-        return;
-    }
-
-    showToast(data.name + ' added');
-    await loadContacts();
+        .single()
+        .then(function (result) {
+            if (result.error) {
+                console.error('addContact error:', result.error);
+                showToast('failed to add contact: ' + result.error.message);
+                throw new Error(result.error.message);
+            }
+            showToast(data.name + ' added');
+            return loadContacts();
+        });
 }
 
-async function updateContact(id, data) {
-    var result = await supabaseClient
+function updateContact(id, data) {
+    return supabaseClient
         .from('contacts')
         .update(data)
         .eq('id', id)
-        .eq('user_id', currentUser.id);
-
-    if (result.error) {
-        showToast('failed to update contact');
-        return;
-    }
-
-    showToast('contact updated');
-    await loadContacts();
+        .eq('user_id', currentUser.id)
+        .then(function (result) {
+            if (result.error) {
+                showToast('failed to update contact');
+                throw new Error(result.error.message);
+            }
+            showToast('contact updated');
+            return loadContacts();
+        });
 }
 
-async function deleteContact(id, name) {
+function deleteContact(id, name) {
     if (!confirm('delete ' + name + '?')) return;
 
-    var result = await supabaseClient
+    supabaseClient
         .from('contacts')
         .delete()
         .eq('id', id)
-        .eq('user_id', currentUser.id);
-
-    if (result.error) {
-        showToast('failed to delete contact');
-        return;
-    }
-
-    showToast(name + ' deleted');
-    await loadContacts();
+        .eq('user_id', currentUser.id)
+        .then(function (result) {
+            if (result.error) {
+                showToast('failed to delete contact');
+                return;
+            }
+            showToast(name + ' deleted');
+            return loadContacts();
+        });
 }
 
 // ─── Roj Calculation ─────────────────────────────────────────────
@@ -654,6 +647,49 @@ googleSubscribeLink.addEventListener('click', function (e) {
         window.open(googleSubscribeLink.href, '_blank');
         markCalendarSubscribed();
     }
+});
+
+// ─── Import from Phone Contacts ─────────────────────────────────
+var importContactBtn = document.getElementById('import-contact-btn');
+
+// Show button only if Contact Picker API is supported (Android Chrome, some iOS Safari 14.5+)
+if ('contacts' in navigator && 'ContactsManager' in window) {
+    importContactBtn.style.display = 'inline-block';
+}
+
+importContactBtn.addEventListener('click', function () {
+    if (!('contacts' in navigator)) {
+        showToast('your browser does not support contact import');
+        return;
+    }
+
+    var props = ['name', 'tel'];
+    var opts = { multiple: false };
+
+    navigator.contacts.select(props, opts).then(function (selectedContacts) {
+        if (!selectedContacts || selectedContacts.length === 0) return;
+
+        var contact = selectedContacts[0];
+        var name = (contact.name && contact.name.length > 0) ? contact.name[0] : '';
+        var phone = (contact.tel && contact.tel.length > 0) ? contact.tel[0] : '';
+
+        // Open the add modal and prefill
+        openAddModal();
+        contactNameInput.value = name;
+
+        if (phone) {
+            // Try to separate country code
+            var cleaned = phone.replace(/[\s\-()]/g, '');
+            setMobileNumber(cleaned);
+        }
+
+        showToast('contact imported — add their date & save');
+    }).catch(function (err) {
+        // User cancelled — that's fine
+        if (err.name !== 'TypeError') {
+            console.error('Contact picker error:', err);
+        }
+    });
 });
 
 // ─── Pull to Refresh ────────────────────────────────────────────

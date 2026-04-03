@@ -195,16 +195,22 @@
             background: #111;
         }
 
-        /* Add Contact Button */
-        .add-contact-btn {
+        /* Add Contact Buttons */
+        .contact-actions-row {
+            display: flex; gap: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .add-contact-btn, .import-contact-btn {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff; font-family: 'Manrope', sans-serif;
             font-size: 0.85rem; padding: 0.6rem 1.2rem;
             cursor: pointer; text-transform: lowercase;
-            transition: background 0.2s; margin-bottom: 1.5rem;
+            transition: background 0.2s;
+            min-height: 44px; touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
-        .add-contact-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .add-contact-btn:hover, .import-contact-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .import-contact-btn { display: none; } /* shown via JS if supported */
 
         /* Desktop Table */
         .contacts-table-wrapper { overflow-x: auto; }
@@ -509,7 +515,10 @@
                 </div>
 
                 <!-- Add Contact Button -->
-                <button class="add-contact-btn" id="add-contact-btn">+ add contact</button>
+                <div class="contact-actions-row">
+                    <button type="button" class="add-contact-btn" id="add-contact-btn">+ add contact</button>
+                    <button type="button" class="import-contact-btn" id="import-contact-btn">📱 pick from contacts</button>
+                </div>
 
                 <!-- Desktop Table View -->
                 <div class="contacts-table-wrapper">
@@ -644,7 +653,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>mobile number (optional)</label>
+                            <label>their mobile number (optional)</label>
                             <div class="mobile-row">
                                 <select id="contact-country-code">
                                     <option value="+91">+91</option>
@@ -668,7 +677,7 @@
                                 </select>
                                 <input type="tel" id="contact-mobile" placeholder="9876543210">
                             </div>
-                            <p class="form-hint">we'll prefill a cute whatsapp message for you on the day (it's optional)</p>
+                            <p class="form-hint">enter the birthday person's number — we'll prefill a cute whatsapp message for you on the day</p>
                         </div>
                         <button type="button" class="submit-btn">save</button>
                     </form>
