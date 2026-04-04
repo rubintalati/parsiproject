@@ -908,10 +908,39 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    // Re-check session and reload data when user returns to the page
-    document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState !== 'visible') return;
+    // ─── Stale Page Recovery (iOS Safari) ─────────────────────────
+    // iOS suspends tabs and restores them from bfcache — connections die,
+    // buttons stop working. We track when the page was last active and
+    // force a full reload if it's been dormant too long.
 
+    var lastActiveTime = Date.now();
+
+    // pageshow fires on bfcache restore (visibilitychange does not on iOS)
+    window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+            // Page was restored from bfcache — force full reload
+            window.location.reload();
+            return;
+        }
+    });
+
+    // Track when the page goes hidden
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+            lastActiveTime = Date.now();
+            return;
+        }
+
+        // Page became visible again
+        var elapsed = Date.now() - lastActiveTime;
+
+        // If dormant for more than 2 minutes, force reload — connections are dead
+        if (elapsed > 2 * 60 * 1000) {
+            window.location.reload();
+            return;
+        }
+
+        // Short absence — just re-check the session
         supabaseClient.auth.getSession().then(function (result) {
             var session = result.data && result.data.session;
             if (session && session.user) {
@@ -926,5 +955,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                 showToast('session expired — please sign in again');
             }
         });
+    });
+
+    // Extra safety net: window focus (catches some iOS edge cases)
+    window.addEventListener('focus', function () {
+        var elapsed = Date.now() - lastActiveTime;
+        if (elapsed > 2 * 60 * 1000) {
+            window.location.reload();
+        }
     });
 });
