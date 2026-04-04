@@ -408,6 +408,56 @@
         }
         .dob-row select option { background: #111; color: #fff; }
 
+        /* Birth Year Checker (inside add contact modal) */
+        .byc-section {
+            padding: 0.8rem; margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+        }
+        .byc-section label {
+            color: #999; font-size: 0.8rem; text-transform: lowercase;
+            margin-bottom: 0.4rem; display: block;
+        }
+        .byc-date-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .byc-date-row select {
+            flex: 1; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 16px; padding: 0.6rem;
+            cursor: pointer; border-radius: 0;
+        }
+        .byc-date-row select option { background: #111; color: #fff; }
+        .byc-check-btn {
+            width: 100%; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem; padding: 0.6rem;
+            cursor: pointer; text-transform: lowercase;
+            transition: background 0.2s;
+            touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+            min-height: 44px; border-radius: 0;
+        }
+        .byc-check-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .byc-result { margin-top: 0.8rem; }
+        .byc-result-text { color: #888; font-size: 0.8rem; text-transform: lowercase; margin-bottom: 0.5rem; }
+        .byc-years { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .byc-year-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem; padding: 0.5rem 1rem;
+            cursor: pointer; border-radius: 4px;
+            transition: background 0.2s, border-color 0.2s;
+            touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+            min-height: 44px; display: flex; align-items: center;
+        }
+        .byc-year-option:hover, .byc-year-option:active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+        }
+        .byc-error { color: #f66; font-size: 0.8rem; text-transform: lowercase; }
+
         /* Mobile number with country code */
         .mobile-row { display: flex; gap: 0.5rem; align-items: center; }
         .mobile-row select {
@@ -657,7 +707,7 @@
                             <span class="faq-arrow">+</span>
                         </div>
                         <div class="faq-answer">
-                            <p>because the roj day depends on the exact date — day, month, and year. the zoroastrian calendar doesn't line up neatly with the gregorian one, so even one year off means a completely different roj. we know you might need to call your mummy for this one, but trust us — it matters.</p>
+                            <p>because the roj day depends on the exact date — day, month, and year. the zoroastrian calendar doesn't line up neatly with the gregorian one, so even one year off means a completely different roj. if you don't know the year, check the "don't know the birth year?" option in the add contact form — we'll help you figure it out from the last roj birthday date.</p>
                         </div>
                     </div>
 
@@ -795,6 +845,23 @@
                                 <select id="dob-day"></select>
                                 <select id="dob-month"></select>
                                 <select id="dob-year"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-inline" for="dont-know-year">
+                                <input type="checkbox" id="dont-know-year">
+                                <span>don't know the birth year?</span>
+                            </label>
+                            <div class="byc-section" id="byc-section" style="display: none;">
+                                <label>when was their last roj birthday celebrated?</label>
+                                <div class="byc-date-row">
+                                    <select id="byc-roj-day"></select>
+                                    <select id="byc-roj-month"></select>
+                                    <select id="byc-roj-year"></select>
+                                </div>
+                                <button type="button" class="byc-check-btn" id="byc-check-btn">check birth year</button>
+                                <div id="byc-result" class="byc-result"></div>
+                                <p class="form-hint" style="margin-top: 0.5rem;">if born before sunrise, results may differ by one roj</p>
                             </div>
                         </div>
                         <div class="form-group">

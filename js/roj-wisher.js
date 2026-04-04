@@ -61,6 +61,13 @@ var calendarSubscribedNote = document.getElementById('calendar-subscribed-note')
 var onboardingModal = document.getElementById('onboarding-modal');
 var onboardSaveBtn = document.getElementById('onboard-save');
 var toastEl = document.getElementById('toast');
+var dontKnowYearCheckbox = document.getElementById('dont-know-year');
+var bycSection = document.getElementById('byc-section');
+var bycRojDay = document.getElementById('byc-roj-day');
+var bycRojMonth = document.getElementById('byc-roj-month');
+var bycRojYear = document.getElementById('byc-roj-year');
+var bycCheckBtn = document.getElementById('byc-check-btn');
+var bycResult = document.getElementById('byc-result');
 
 // ─── DOB Dropdown Setup ──────────────────────────────────────────
 function populateDobDropdowns() {
@@ -83,6 +90,27 @@ function populateDobDropdowns() {
     dobYear.innerHTML = '<option value="" disabled selected>year</option>';
     for (var y = currentYear; y >= currentYear - 100; y--) {
         dobYear.innerHTML += '<option value="' + y + '">' + y + '</option>';
+    }
+}
+
+function populateBycDropdowns() {
+    var monthNames = ['january', 'february', 'march', 'april', 'may', 'june',
+                      'july', 'august', 'september', 'october', 'november', 'december'];
+
+    bycRojDay.innerHTML = '<option value="" disabled selected>day</option>';
+    for (var d = 1; d <= 31; d++) {
+        bycRojDay.innerHTML += '<option value="' + d + '">' + d + '</option>';
+    }
+
+    bycRojMonth.innerHTML = '<option value="" disabled selected>month</option>';
+    for (var m = 0; m < 12; m++) {
+        bycRojMonth.innerHTML += '<option value="' + (m + 1) + '">' + monthNames[m] + '</option>';
+    }
+
+    var currentYear = new Date().getFullYear();
+    bycRojYear.innerHTML = '<option value="" disabled selected>year</option>';
+    for (var y = currentYear; y >= currentYear - 5; y--) {
+        bycRojYear.innerHTML += '<option value="' + y + '">' + y + '</option>';
     }
 }
 
@@ -528,7 +556,11 @@ function openAddModal() {
     dobMonth.value = '';
     dobYear.value = '';
     contactCountryCode.value = '+91';
-    isSaving = false; // reset in case it got stuck
+    isSaving = false;
+    // Reset birth year checker
+    dontKnowYearCheckbox.checked = false;
+    bycSection.style.display = 'none';
+    bycResult.innerHTML = '';
     contactModal.style.display = 'flex';
 }
 
@@ -551,6 +583,10 @@ function closeModal() {
     contactModal.style.display = 'none';
     contactForm.reset();
     contactIdInput.value = '';
+    // Reset birth year checker
+    dontKnowYearCheckbox.checked = false;
+    bycSection.style.display = 'none';
+    bycResult.innerHTML = '';
 }
 
 // ─── Event Listeners ─────────────────────────────────────────────
@@ -689,6 +725,89 @@ contactPickerBtn.addEventListener('click', function () {
     });
 });
 
+// ─── Birth Year Checker ─────────────────────────────────────────
+dontKnowYearCheckbox.addEventListener('change', function () {
+    bycSection.style.display = this.checked ? 'block' : 'none';
+    if (!this.checked) {
+        bycResult.innerHTML = '';
+    }
+});
+
+bycCheckBtn.addEventListener('click', function () {
+    // Validate: actual birthday day + month must be selected
+    var bdayDay = parseInt(dobDay.value);
+    var bdayMonth = parseInt(dobMonth.value);
+    if (!bdayDay || !bdayMonth) {
+        showToast('select the birthday day & month first');
+        return;
+    }
+
+    // Validate: roj date must be filled
+    var rojDay = parseInt(bycRojDay.value);
+    var rojMonth = parseInt(bycRojMonth.value);
+    var rojYear = parseInt(bycRojYear.value);
+    if (!rojDay || !rojMonth || !rojYear) {
+        showToast('fill in the last roj birthday date');
+        return;
+    }
+
+    // Get calendar type from user settings
+    var calType = userSettings ? userSettings.calendar_type : 'S';
+
+    // Step 1: Convert the roj date to Zoroastrian to get target roj + mah
+    var targetParsi = getParsiDateForGregorian(rojYear, rojMonth, rojDay, 12, calType);
+    if (!targetParsi) {
+        bycResult.innerHTML = '<p class="byc-error">could not calculate roj for that date</p>';
+        return;
+    }
+
+    var targetRoj = targetParsi.roj;
+    var targetMah = targetParsi.mah;
+    var rojName = RojToText(targetRoj);
+    var mahName = MonthToText(targetMah);
+
+    // Step 2: Scan birth years 1930 to current year
+    var currentYear = new Date().getFullYear();
+    var matches = [];
+
+    for (var y = 1930; y <= currentYear; y++) {
+        // Skip Feb 29 in non-leap years
+        if (bdayMonth === 2 && bdayDay === 29 && !isLeapYearCheck(y)) continue;
+
+        var result = getParsiDateForGregorian(y, bdayMonth, bdayDay, 12, calType);
+        if (result && result.roj === targetRoj && result.mah === targetMah) {
+            matches.push(y);
+        }
+    }
+
+    // Step 3: Display results
+    if (matches.length === 0) {
+        bycResult.innerHTML = '<p class="byc-error">no matching birth year found — double-check the dates and calendar type</p>';
+        return;
+    }
+
+    var html = '<p class="byc-result-text">roj ' + rojName + ', mah ' + mahName + ' — pick the birth year:</p>';
+    html += '<div class="byc-years">';
+    for (var i = 0; i < matches.length; i++) {
+        html += '<div class="byc-year-option" data-year="' + matches[i] + '">' + matches[i] + '</div>';
+    }
+    html += '</div>';
+    bycResult.innerHTML = html;
+});
+
+// Event delegation: clicking a year option fills the DOB year and closes the section
+bycResult.addEventListener('click', function (e) {
+    var target = e.target;
+    if (target.classList.contains('byc-year-option')) {
+        var year = target.dataset.year;
+        dobYear.value = year;
+        dontKnowYearCheckbox.checked = false;
+        bycSection.style.display = 'none';
+        bycResult.innerHTML = '';
+        showToast('birth year set to ' + year);
+    }
+});
+
 // ─── Pull to Refresh ────────────────────────────────────────────
 (function () {
     var scrollEl = document.getElementById('main-content');
@@ -753,6 +872,7 @@ contactPickerBtn.addEventListener('click', function () {
 // ─── Init ────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async function () {
     populateDobDropdowns();
+    populateBycDropdowns();
 
     var sessionResult = await supabaseClient.auth.getSession();
     var session = sessionResult.data && sessionResult.data.session;
