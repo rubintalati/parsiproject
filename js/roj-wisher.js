@@ -102,9 +102,9 @@ function populateDobDropdowns() {
 }
 
 function populateRojMahDropdowns() {
-    // Roj dropdown (1-30 standard days) — name only, value is the number
+    // Roj dropdown (1-36 including gatha days) — name only, value is the number
     rojOnlyRoj.innerHTML = '<option value="" disabled selected>select roj</option>';
-    for (var r = 1; r <= 30; r++) {
+    for (var r = 1; r <= 36; r++) {
         rojOnlyRoj.innerHTML += '<option value="' + r + '">' + RojToText(r).toLowerCase() + '</option>';
     }
     // Mah dropdown (1-12) — name only
