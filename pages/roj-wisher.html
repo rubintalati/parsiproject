@@ -836,44 +836,64 @@
                             <input type="text" id="contact-name" required placeholder="e.g. rohinton mistry">
                         </div>
                         <div class="form-group">
-                            <label>date of birth / anniversary</label>
-                            <div class="dob-row">
-                                <select id="dob-day"></select>
-                                <select id="dob-month"></select>
-                                <select id="dob-year"></select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="checkbox-inline" for="dont-know-year">
-                                <input type="checkbox" id="dont-know-year">
-                                <span>don't know the birth year?</span>
-                            </label>
-                            <div class="byc-section" id="byc-section" style="display: none;">
-                                <label>when was their most recent roj birthday?</label>
-                                <div class="byc-date-row">
-                                    <select id="byc-roj-day"></select>
-                                    <select id="byc-roj-month"></select>
-                                    <select id="byc-roj-year"></select>
-                                </div>
-                                <button type="button" class="byc-check-btn" id="byc-check-btn">check birth year</button>
-                                <div class="byc-result" id="byc-result">
-                                    <p class="byc-result-text" id="byc-result-text"></p>
-                                </div>
-                                <p class="byc-error" id="byc-error"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="checkbox-inline" for="contact-before-sunrise">
-                                <input type="checkbox" id="contact-before-sunrise">
-                                <span>born before 6am (adjusts roj calculation)</span>
+                            <label class="checkbox-inline" for="roj-only-checkbox">
+                                <input type="checkbox" id="roj-only-checkbox">
+                                <span>i only know the roj birthday</span>
                             </label>
                         </div>
-                        <div class="form-group">
-                            <label for="contact-event-type">what's the occasion?</label>
-                            <select id="contact-event-type">
-                                <option value="birthday">birthday</option>
-                                <option value="anniversary">anniversary</option>
-                            </select>
+                        <div id="dob-section">
+                            <div class="form-group">
+                                <label>date of birth / anniversary</label>
+                                <div class="dob-row">
+                                    <select id="dob-day"></select>
+                                    <select id="dob-month"></select>
+                                    <select id="dob-year"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="roj-only-section" style="display: none;">
+                            <div class="form-group">
+                                <label>roj (day)</label>
+                                <select id="roj-only-roj"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>mah (month)</label>
+                                <select id="roj-only-mah"></select>
+                            </div>
+                        </div>
+                        <div id="dob-extras">
+                            <div class="form-group">
+                                <label class="checkbox-inline" for="dont-know-year">
+                                    <input type="checkbox" id="dont-know-year">
+                                    <span>don't know the birth year?</span>
+                                </label>
+                                <div class="byc-section" id="byc-section" style="display: none;">
+                                    <label>when was their most recent roj birthday?</label>
+                                    <div class="byc-date-row">
+                                        <select id="byc-roj-day"></select>
+                                        <select id="byc-roj-month"></select>
+                                        <select id="byc-roj-year"></select>
+                                    </div>
+                                    <button type="button" class="byc-check-btn" id="byc-check-btn">check birth year</button>
+                                    <div class="byc-result" id="byc-result">
+                                        <p class="byc-result-text" id="byc-result-text"></p>
+                                    </div>
+                                    <p class="byc-error" id="byc-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-inline" for="contact-before-sunrise">
+                                    <input type="checkbox" id="contact-before-sunrise">
+                                    <span>born before 6am (adjusts roj calculation)</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-event-type">what's the occasion?</label>
+                                <select id="contact-event-type">
+                                    <option value="birthday">birthday</option>
+                                    <option value="anniversary">anniversary</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>their mobile number (optional)</label>

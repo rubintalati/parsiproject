@@ -70,6 +70,12 @@ var bycCheckBtn = document.getElementById('byc-check-btn');
 var bycResult = document.getElementById('byc-result');
 var bycResultText = document.getElementById('byc-result-text');
 var bycError = document.getElementById('byc-error');
+var rojOnlyCheckbox = document.getElementById('roj-only-checkbox');
+var rojOnlySection = document.getElementById('roj-only-section');
+var rojOnlyRoj = document.getElementById('roj-only-roj');
+var rojOnlyMah = document.getElementById('roj-only-mah');
+var dobSection = document.getElementById('dob-section');
+var dobExtras = document.getElementById('dob-extras');
 
 // ─── DOB Dropdown Setup ──────────────────────────────────────────
 function populateDobDropdowns() {
@@ -92,6 +98,31 @@ function populateDobDropdowns() {
     dobYear.innerHTML = '<option value="" disabled selected>year</option>';
     for (var y = currentYear; y >= currentYear - 100; y--) {
         dobYear.innerHTML += '<option value="' + y + '">' + y + '</option>';
+    }
+}
+
+function populateRojMahDropdowns() {
+    // Roj dropdown (1-30 standard days) — name only, value is the number
+    rojOnlyRoj.innerHTML = '<option value="" disabled selected>select roj</option>';
+    for (var r = 1; r <= 30; r++) {
+        rojOnlyRoj.innerHTML += '<option value="' + r + '">' + RojToText(r).toLowerCase() + '</option>';
+    }
+    // Mah dropdown (1-12) — name only
+    rojOnlyMah.innerHTML = '<option value="" disabled selected>select mah</option>';
+    for (var m = 1; m <= 12; m++) {
+        rojOnlyMah.innerHTML += '<option value="' + m + '">' + MonthToText(m).toLowerCase() + '</option>';
+    }
+}
+
+function toggleRojOnlyMode(isRojOnly) {
+    if (isRojOnly) {
+        dobSection.style.display = 'none';
+        dobExtras.style.display = 'none';
+        rojOnlySection.style.display = 'block';
+    } else {
+        dobSection.style.display = 'block';
+        dobExtras.style.display = 'block';
+        rojOnlySection.style.display = 'none';
     }
 }
 
@@ -392,6 +423,23 @@ function deleteContact(id, name) {
 // ─── Roj Calculation ─────────────────────────────────────────────
 function calculateContactRojInfo(contact) {
     var calType = userSettings ? userSettings.calendar_type : 'S';
+
+    // Roj-only contact: use stored roj/mah directly
+    if (!contact.date_of_birth && contact.roj && contact.mah) {
+        var rojName = RojToText(contact.roj);
+        var mahName = MonthToText(contact.mah);
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var nextRojDate = findNextRojBirthday(contact.roj, contact.mah, calType, today);
+        var daysToRoj = null;
+        if (nextRojDate) {
+            nextRojDate.setHours(0, 0, 0, 0);
+            daysToRoj = Math.round((nextRojDate - today) / (1000 * 60 * 60 * 24));
+        }
+        return { rojName: rojName, mahName: mahName, daysToRoj: daysToRoj, daysToActual: null, nextRojDate: nextRojDate, nextActualDate: null, isRojOnly: true };
+    }
+
+    // Regular contact: derive roj/mah from Gregorian DOB
     var dob = new Date(contact.date_of_birth + 'T12:00:00');
     var hour = contact.before_sunrise ? 5 : 12;
 
@@ -400,7 +448,7 @@ function calculateContactRojInfo(contact) {
     );
 
     if (!rojDate) {
-        return { rojName: '—', mahName: '—', daysToRoj: null, daysToActual: null };
+        return { rojName: '—', mahName: '—', daysToRoj: null, daysToActual: null, isRojOnly: false };
     }
 
     var rojName = RojToText(rojDate.roj);
@@ -429,7 +477,7 @@ function calculateContactRojInfo(contact) {
     nextActual.setHours(0, 0, 0, 0);
     var daysToActual = Math.round((nextActual - today) / (1000 * 60 * 60 * 24));
 
-    return { rojName: rojName, mahName: mahName, daysToRoj: daysToRoj, daysToActual: daysToActual, nextRojDate: nextRojDate, nextActualDate: nextActual };
+    return { rojName: rojName, mahName: mahName, daysToRoj: daysToRoj, daysToActual: daysToActual, nextRojDate: nextRojDate, nextActualDate: nextActual, isRojOnly: false };
 }
 
 function isLeapYearCheck(year) {
@@ -493,11 +541,11 @@ function renderTable(enriched) {
         var info = enriched[i].info;
         html += '<tr>';
         html += '<td style="color:#fff; font-weight:500;">' + escapeHtml(c.name) + '</td>';
-        html += '<td>' + formatDate(c.date_of_birth) + '</td>';
+        html += '<td>' + (c.date_of_birth ? formatDate(c.date_of_birth) : '<span style="color:#555;">roj only</span>') + '</td>';
         html += '<td>' + c.event_type + '</td>';
         html += '<td><span class="roj-name">' + info.rojName + '</span>, mah ' + info.mahName + '</td>';
         html += '<td>' + daysBadgeHtml(info.daysToRoj) + '</td>';
-        html += '<td>' + daysBadgeHtml(info.daysToActual) + '</td>';
+        html += '<td>' + (info.isRojOnly ? '<span class="days-badge">—</span>' : daysBadgeHtml(info.daysToActual)) + '</td>';
         html += '<td>' + (c.mobile_number ? escapeHtml(c.mobile_number) : '—') + '</td>';
         html += '<td><div class="actions-cell">';
         html += '<button class="action-btn" onclick="openEditModal(\'' + c.id + '\')">edit</button>';
@@ -520,7 +568,7 @@ function renderCards(enriched) {
         html += '<div class="card-top-row">';
         html += '<div class="card-left">';
         html += '<div class="card-name">' + escapeHtml(c.name) + '</div>';
-        html += '<div class="card-sub">' + formatDate(c.date_of_birth) + ' · ' + c.event_type + '</div>';
+        html += '<div class="card-sub">' + (c.date_of_birth ? formatDate(c.date_of_birth) + ' · ' : 'roj only · ') + c.event_type + '</div>';
         html += '<div class="card-roj-info">roj <span class="card-roj-value">' + info.rojName + ', mah ' + info.mahName + '</span></div>';
         html += '</div>';
         html += '<div class="card-right">';
@@ -528,8 +576,10 @@ function renderCards(enriched) {
             var rojToday = info.daysToRoj === 0;
             html += '<div class="card-date-line' + (rojToday ? ' today' : '') + '"><span class="card-date-label">roj</span> <span class="card-date-val">' + (rojToday ? 'today!' : formatDateObj(info.nextRojDate)) + '</span></div>';
         }
-        var actualToday = info.daysToActual === 0;
-        html += '<div class="card-date-line' + (actualToday ? ' today' : '') + '"><span class="card-date-label">' + c.event_type + '</span> <span class="card-date-val">' + (actualToday ? 'today!' : formatDateObj(info.nextActualDate)) + '</span></div>';
+        if (!info.isRojOnly) {
+            var actualToday = info.daysToActual === 0;
+            html += '<div class="card-date-line' + (actualToday ? ' today' : '') + '"><span class="card-date-label">' + c.event_type + '</span> <span class="card-date-val">' + (actualToday ? 'today!' : formatDateObj(info.nextActualDate)) + '</span></div>';
+        }
         html += '</div>';
         html += '</div>';
 
@@ -559,6 +609,11 @@ function openAddModal() {
     dobYear.value = '';
     contactCountryCode.value = '+91';
     isSaving = false;
+    // Reset roj-only toggle
+    rojOnlyCheckbox.checked = false;
+    toggleRojOnlyMode(false);
+    rojOnlyRoj.value = '';
+    rojOnlyMah.value = '';
     // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
@@ -577,11 +632,23 @@ function openEditModal(id) {
     modalTitle.textContent = 'edit contact';
     contactIdInput.value = contact.id;
     contactNameInput.value = contact.name;
-    setDobValue(contact.date_of_birth);
-    contactBeforeSunrise.checked = contact.before_sunrise;
-    contactEventType.value = contact.event_type;
+
+    // Detect roj-only contact
+    if (!contact.date_of_birth && contact.roj && contact.mah) {
+        rojOnlyCheckbox.checked = true;
+        toggleRojOnlyMode(true);
+        rojOnlyRoj.value = contact.roj;
+        rojOnlyMah.value = contact.mah;
+    } else {
+        rojOnlyCheckbox.checked = false;
+        toggleRojOnlyMode(false);
+        setDobValue(contact.date_of_birth);
+        contactBeforeSunrise.checked = contact.before_sunrise;
+        contactEventType.value = contact.event_type;
+    }
+
     setMobileNumber(contact.mobile_number);
-    isSaving = false; // reset in case it got stuck
+    isSaving = false;
     contactModal.style.display = 'flex';
 }
 
@@ -589,6 +656,11 @@ function closeModal() {
     contactModal.style.display = 'none';
     contactForm.reset();
     contactIdInput.value = '';
+    // Reset roj-only toggle
+    rojOnlyCheckbox.checked = false;
+    toggleRojOnlyMode(false);
+    rojOnlyRoj.value = '';
+    rojOnlyMah.value = '';
     // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
@@ -600,6 +672,10 @@ function closeModal() {
 }
 
 // ─── Event Listeners ─────────────────────────────────────────────
+rojOnlyCheckbox.addEventListener('change', function () {
+    toggleRojOnlyMode(this.checked);
+});
+
 googleLoginBtn.addEventListener('click', function (e) {
     e.preventDefault();
     signInWithGoogle();
@@ -636,20 +712,42 @@ function handleContactSave() {
     isSaving = true;
 
     try {
-        var dobValue = getDobValue();
-        if (!contactNameInput.value.trim() || !dobValue) {
-            showToast('name and date are required');
+        var isRojOnly = rojOnlyCheckbox.checked;
+
+        if (!contactNameInput.value.trim()) {
+            showToast('name is required');
             isSaving = false;
             return;
         }
 
-        var data = {
-            name: contactNameInput.value.trim(),
-            date_of_birth: dobValue,
-            before_sunrise: contactBeforeSunrise.checked,
-            event_type: contactEventType.value,
-            mobile_number: getMobileNumber()
-        };
+        var data = { name: contactNameInput.value.trim(), mobile_number: getMobileNumber() };
+
+        if (isRojOnly) {
+            var rojVal = parseInt(rojOnlyRoj.value);
+            var mahVal = parseInt(rojOnlyMah.value);
+            if (!rojVal || !mahVal) {
+                showToast('roj and mah are required');
+                isSaving = false;
+                return;
+            }
+            data.roj = rojVal;
+            data.mah = mahVal;
+            data.date_of_birth = null;
+            data.before_sunrise = false;
+            data.event_type = 'birthday';
+        } else {
+            var dobValue = getDobValue();
+            if (!dobValue) {
+                showToast('date is required');
+                isSaving = false;
+                return;
+            }
+            data.date_of_birth = dobValue;
+            data.roj = null;
+            data.mah = null;
+            data.before_sunrise = contactBeforeSunrise.checked;
+            data.event_type = contactEventType.value;
+        }
 
         var editId = contactIdInput.value;
         var savePromise;
@@ -888,6 +986,7 @@ bycCheckBtn.addEventListener('click', function () {
 // ─── Init ────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async function () {
     populateDobDropdowns();
+    populateRojMahDropdowns();
     populateBycDropdowns();
 
     var sessionResult = await supabaseClient.auth.getSession();

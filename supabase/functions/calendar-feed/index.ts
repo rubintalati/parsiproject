@@ -301,10 +301,12 @@ function buildWhatsAppUrl(phone: string, message: string): string {
 interface Contact {
   id: string;
   name: string;
-  date_of_birth: string;
+  date_of_birth: string | null;
   before_sunrise: boolean;
   event_type: string;
   mobile_number: string | null;
+  roj: number | null;
+  mah: number | null;
 }
 
 interface UserSettings {
@@ -339,14 +341,14 @@ function buildCalendarIcs(
   ];
 
   for (const c of contacts) {
-    const dob = new Date(c.date_of_birth + "T12:00:00");
-    const hour = c.before_sunrise ? 5 : 12;
+    const isRojOnly = !c.date_of_birth;
     const phone = c.mobile_number || "";
     const typeLabel = c.event_type === "birthday" ? "Birthday" : "Anniversary";
     const typeEmoji = c.event_type === "birthday" ? "🎂" : "💍";
 
-    // ── Gregorian recurring event ──
-    if (settings.remind_on_actual_birthday) {
+    // ── Gregorian recurring event (skip for roj-only contacts) ──
+    if (!isRojOnly && settings.remind_on_actual_birthday) {
+      const dob = new Date(c.date_of_birth + "T12:00:00");
       const waMsg = c.event_type === "birthday"
         ? `Happy Birthday, ${c.name}! Ek saal aur nikal gaya — but you? Still fresh like morning brun-maska.`
         : `Happy Anniversary, ${c.name}! Itna saal saath ma dhansak khaya, that itself is true love. Kem chho? Kem rehsho? Always together!`;
@@ -371,14 +373,30 @@ function buildCalendarIcs(
 
     // ── Roj birthday events (15 years) ──
     if (settings.remind_on_roj_birthday) {
-      const rojDate = getParsiDate(
-        dob.getFullYear(), dob.getMonth() + 1, dob.getDate(), hour, calType
-      );
+      let rojNum: number | null = null;
+      let mahNum: number | null = null;
 
-      if (rojDate) {
-        const rojName = ROJNAME[rojDate.roj - 1];
-        const mahName = MAHNAME[rojDate.mah - 1];
-        const rojDates = generateRojBirthdaysForYears(rojDate.roj, rojDate.mah, calType, 15);
+      if (isRojOnly) {
+        // Roj-only contact: use stored roj/mah directly
+        rojNum = c.roj;
+        mahNum = c.mah;
+      } else {
+        // Regular contact: derive roj/mah from Gregorian DOB
+        const dob = new Date(c.date_of_birth + "T12:00:00");
+        const hour = c.before_sunrise ? 5 : 12;
+        const rojDate = getParsiDate(
+          dob.getFullYear(), dob.getMonth() + 1, dob.getDate(), hour, calType
+        );
+        if (rojDate) {
+          rojNum = rojDate.roj;
+          mahNum = rojDate.mah;
+        }
+      }
+
+      if (rojNum && mahNum) {
+        const rojName = ROJNAME[rojNum - 1];
+        const mahName = MAHNAME[mahNum - 1];
+        const rojDates = generateRojBirthdaysForYears(rojNum, mahNum, calType, 15);
 
         const waMsg = c.event_type === "birthday"
           ? `${c.name}, your roj birthday, dikra! Do a loban, eat a ravo, thank Dadaji. Simple.`
