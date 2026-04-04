@@ -258,6 +258,21 @@ function formatIcsDate(d: Date): string {
   return `${y}${m}${day}`;
 }
 
+// Floating time (no timezone = user's local time)
+function formatIcsDateAt9AM(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}${m}${day}T090000`;
+}
+
+function formatIcsDateAt10AM(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}${m}${day}T100000`;
+}
+
 function formatIcsDateTime(): string {
   const now = new Date();
   return (
@@ -344,10 +359,8 @@ function buildCalendarIcs(
       ics.push("BEGIN:VEVENT");
       ics.push(`UID:gregorian-${c.id}@roj-wisher`);
       ics.push(`DTSTAMP:${dtstamp}`);
-      ics.push(`DTSTART;VALUE=DATE:${formatIcsDate(dob)}`);
-      const dobEnd = new Date(dob);
-      dobEnd.setDate(dobEnd.getDate() + 1);
-      ics.push(`DTEND;VALUE=DATE:${formatIcsDate(dobEnd)}`);
+      ics.push(`DTSTART:${formatIcsDateAt9AM(dob)}`);
+      ics.push(`DTEND:${formatIcsDateAt10AM(dob)}`);
       ics.push(`SUMMARY:${typeEmoji} ${escapeIcs(c.name)} – ${typeLabel}`);
       ics.push(`DESCRIPTION:${desc}`);
       ics.push("RRULE:FREQ=YEARLY");
@@ -382,10 +395,8 @@ function buildCalendarIcs(
           ics.push("BEGIN:VEVENT");
           ics.push(`UID:roj-${c.id}-${i}@roj-wisher`);
           ics.push(`DTSTAMP:${dtstamp}`);
-          ics.push(`DTSTART;VALUE=DATE:${formatIcsDate(rd)}`);
-          const rdEnd = new Date(rd);
-          rdEnd.setDate(rdEnd.getDate() + 1);
-          ics.push(`DTEND;VALUE=DATE:${formatIcsDate(rdEnd)}`);
+          ics.push(`DTSTART:${formatIcsDateAt9AM(rd)}`);
+          ics.push(`DTEND:${formatIcsDateAt10AM(rd)}`);
           ics.push(`SUMMARY:🔥 ${escapeIcs(c.name)} – Roj ${typeLabel} (${rojName})`);
           ics.push(`DESCRIPTION:${desc}`);
           ics.push("TRANSP:TRANSPARENT");
@@ -416,7 +427,7 @@ function buildAlarms(
   if (timing === "day_of" || timing === "both") {
     alarms.push("BEGIN:VALARM");
     alarms.push("ACTION:DISPLAY");
-    alarms.push("TRIGGER:PT9H");
+    alarms.push("TRIGGER:-PT0M");
     alarms.push(`DESCRIPTION:Today is ${name}'s ${typeLabel}! ${emoji}`);
     alarms.push("END:VALARM");
   }
