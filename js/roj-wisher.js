@@ -68,6 +68,8 @@ var bycRojMonth = document.getElementById('byc-roj-month');
 var bycRojYear = document.getElementById('byc-roj-year');
 var bycCheckBtn = document.getElementById('byc-check-btn');
 var bycResult = document.getElementById('byc-result');
+var bycResultText = document.getElementById('byc-result-text');
+var bycError = document.getElementById('byc-error');
 
 // ─── DOB Dropdown Setup ──────────────────────────────────────────
 function populateDobDropdowns() {
@@ -94,19 +96,19 @@ function populateDobDropdowns() {
 }
 
 function populateBycDropdowns() {
-    var monthNames = ['january', 'february', 'march', 'april', 'may', 'june',
-                      'july', 'august', 'september', 'october', 'november', 'december'];
-
+    // Days
     bycRojDay.innerHTML = '<option value="" disabled selected>day</option>';
     for (var d = 1; d <= 31; d++) {
         bycRojDay.innerHTML += '<option value="' + d + '">' + d + '</option>';
     }
-
+    // Months
+    var monthNames = ['january', 'february', 'march', 'april', 'may', 'june',
+                      'july', 'august', 'september', 'october', 'november', 'december'];
     bycRojMonth.innerHTML = '<option value="" disabled selected>month</option>';
     for (var m = 0; m < 12; m++) {
         bycRojMonth.innerHTML += '<option value="' + (m + 1) + '">' + monthNames[m] + '</option>';
     }
-
+    // Years (last 5 years)
     var currentYear = new Date().getFullYear();
     bycRojYear.innerHTML = '<option value="" disabled selected>year</option>';
     for (var y = currentYear; y >= currentYear - 5; y--) {
@@ -557,10 +559,14 @@ function openAddModal() {
     dobYear.value = '';
     contactCountryCode.value = '+91';
     isSaving = false;
-    // Reset birth year checker
+    // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
-    bycResult.innerHTML = '';
+    bycRojDay.value = '';
+    bycRojMonth.value = '';
+    bycRojYear.value = '';
+    bycResult.style.display = 'none';
+    bycError.style.display = 'none';
     contactModal.style.display = 'flex';
 }
 
@@ -583,11 +589,14 @@ function closeModal() {
     contactModal.style.display = 'none';
     contactForm.reset();
     contactIdInput.value = '';
-    // Reset birth year checker
+    // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
-    bycResult.innerHTML = '';
-}
+    bycRojDay.value = '';
+    bycRojMonth.value = '';
+    bycRojYear.value = '';
+    bycResult.style.display = 'none';
+    bycError.style.display = 'none';
 
 // ─── Event Listeners ─────────────────────────────────────────────
 googleLoginBtn.addEventListener('click', function (e) {
@@ -725,87 +734,93 @@ contactPickerBtn.addEventListener('click', function () {
     });
 });
 
-// ─── Birth Year Checker ─────────────────────────────────────────
+// ─── Birth Year Helper ──────────────────────────────────────────
 dontKnowYearCheckbox.addEventListener('change', function () {
     bycSection.style.display = this.checked ? 'block' : 'none';
     if (!this.checked) {
-        bycResult.innerHTML = '';
+        bycRojDay.value = '';
+        bycRojMonth.value = '';
+        bycRojYear.value = '';
+        bycResult.style.display = 'none';
+        bycError.style.display = 'none';
     }
 });
 
+function isLeapYearCheck(y) {
+    return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);
+}
+
 bycCheckBtn.addEventListener('click', function () {
-    // Validate: actual birthday day + month must be selected
     var bdayDay = parseInt(dobDay.value);
     var bdayMonth = parseInt(dobMonth.value);
-    if (!bdayDay || !bdayMonth) {
-        showToast('select the birthday day & month first');
-        return;
-    }
-
-    // Validate: roj date must be filled
     var rojDay = parseInt(bycRojDay.value);
     var rojMonth = parseInt(bycRojMonth.value);
     var rojYear = parseInt(bycRojYear.value);
-    if (!rojDay || !rojMonth || !rojYear) {
-        showToast('fill in the last roj birthday date');
+
+    // Validate birthday day + month are set
+    if (!bdayDay || !bdayMonth) {
+        bycError.textContent = 'please fill in the birthday day and month first';
+        bycError.style.display = 'block';
+        bycResult.style.display = 'none';
         return;
     }
 
-    // Get calendar type from user settings
-    var calType = userSettings ? userSettings.calendar_type : 'S';
+    // Validate roj date fields
+    if (!rojDay || !rojMonth || !rojYear) {
+        bycError.textContent = 'please fill in all three roj birthday fields';
+        bycError.style.display = 'block';
+        bycResult.style.display = 'none';
+        return;
+    }
 
-    // Step 1: Convert the roj date to Zoroastrian to get target roj + mah
+    bycError.style.display = 'none';
+
+    var calType = userSettings ? userSettings.calendar_type : 'S';
+    var currentYear = new Date().getFullYear();
+
+    // Get the target roj/mah from the roj celebration date
     var targetParsi = getParsiDateForGregorian(rojYear, rojMonth, rojDay, 12, calType);
     if (!targetParsi) {
-        bycResult.innerHTML = '<p class="byc-error">could not calculate roj for that date</p>';
+        bycError.textContent = 'could not calculate parsi date for the given roj birthday';
+        bycError.style.display = 'block';
+        bycResult.style.display = 'none';
         return;
     }
 
     var targetRoj = targetParsi.roj;
     var targetMah = targetParsi.mah;
-    var rojName = RojToText(targetRoj);
-    var mahName = MonthToText(targetMah);
-
-    // Step 2: Scan birth years 1930 to current year
-    var currentYear = new Date().getFullYear();
     var matches = [];
 
+    // Backtrack: check every year from 1930 to current year
     for (var y = 1930; y <= currentYear; y++) {
-        // Skip Feb 29 in non-leap years
+        // Skip feb 29 for non-leap years
         if (bdayMonth === 2 && bdayDay === 29 && !isLeapYearCheck(y)) continue;
-
         var result = getParsiDateForGregorian(y, bdayMonth, bdayDay, 12, calType);
         if (result && result.roj === targetRoj && result.mah === targetMah) {
             matches.push(y);
         }
     }
 
-    // Step 3: Display results
     if (matches.length === 0) {
-        bycResult.innerHTML = '<p class="byc-error">no matching birth year found — double-check the dates and calendar type</p>';
+        bycError.textContent = 'no matching birth years found — double-check the dates';
+        bycError.style.display = 'block';
+        bycResult.style.display = 'none';
         return;
     }
 
-    var html = '<p class="byc-result-text">roj ' + rojName + ', mah ' + mahName + ' — pick the birth year:</p>';
-    html += '<div class="byc-years">';
-    for (var i = 0; i < matches.length; i++) {
-        html += '<div class="byc-year-option" data-year="' + matches[i] + '">' + matches[i] + '</div>';
-    }
-    html += '</div>';
-    bycResult.innerHTML = html;
-});
+    // Auto-select the highest (youngest) year
+    var youngest = matches[matches.length - 1];
+    var oldest = matches[0];
+    dobYear.value = youngest;
 
-// Event delegation: clicking a year option fills the DOB year and closes the section
-bycResult.addEventListener('click', function (e) {
-    var target = e.target;
-    if (target.classList.contains('byc-year-option')) {
-        var year = target.dataset.year;
-        dobYear.value = year;
-        dontKnowYearCheckbox.checked = false;
-        bycSection.style.display = 'none';
-        bycResult.innerHTML = '';
-        showToast('birth year set to ' + year);
+    // Show result
+    if (matches.length === 1) {
+        bycResultText.innerHTML = 'birth year: <strong>' + youngest + '</strong>';
+    } else {
+        bycResultText.innerHTML = 'could be born between <strong>' + oldest + '</strong> and <strong>' + youngest + '</strong> — we\'ve picked <strong>' + youngest + '</strong><br><span style="color:#999; font-size:0.75rem; font-style:italic;">kaanse amthi age nai vadhaarvaani 😄</span>';
     }
+    bycResult.style.display = 'block';
+    showToast('birth year set to ' + youngest);
 });
 
 // ─── Pull to Refresh ────────────────────────────────────────────
