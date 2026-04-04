@@ -597,6 +597,7 @@ function closeModal() {
     bycRojYear.value = '';
     bycResult.style.display = 'none';
     bycError.style.display = 'none';
+}
 
 // ─── Event Listeners ─────────────────────────────────────────────
 googleLoginBtn.addEventListener('click', function (e) {
