@@ -102,9 +102,9 @@ function populateDobDropdowns() {
 }
 
 function populateRojMahDropdowns() {
-    // Roj dropdown (1-36 including gatha days) — name only, value is the number
+    // Roj dropdown (1-35, excluding leap-year-only avardad-saal) — name only
     rojOnlyRoj.innerHTML = '<option value="" disabled selected>select roj</option>';
-    for (var r = 1; r <= 36; r++) {
+    for (var r = 1; r <= 35; r++) {
         rojOnlyRoj.innerHTML += '<option value="' + r + '">' + RojToText(r).toLowerCase() + '</option>';
     }
     // Mah dropdown (1-12) — name only
@@ -112,6 +112,18 @@ function populateRojMahDropdowns() {
     for (var m = 1; m <= 12; m++) {
         rojOnlyMah.innerHTML += '<option value="' + m + '">' + MonthToText(m).toLowerCase() + '</option>';
     }
+
+    // Gatha days (roj 31-36) always fall in mah 12 (aspandard)
+    // Auto-select mah and lock it when a gatha roj is picked
+    rojOnlyRoj.addEventListener('change', function () {
+        var rojVal = parseInt(rojOnlyRoj.value);
+        if (rojVal > 30) {
+            rojOnlyMah.value = '12';
+            rojOnlyMah.disabled = true;
+        } else {
+            rojOnlyMah.disabled = false;
+        }
+    });
 }
 
 function toggleRojOnlyMode(isRojOnly) {
@@ -614,6 +626,7 @@ function openAddModal() {
     toggleRojOnlyMode(false);
     rojOnlyRoj.value = '';
     rojOnlyMah.value = '';
+    rojOnlyMah.disabled = false;
     // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
@@ -639,6 +652,7 @@ function openEditModal(id) {
         toggleRojOnlyMode(true);
         rojOnlyRoj.value = contact.roj;
         rojOnlyMah.value = contact.mah;
+        rojOnlyMah.disabled = contact.roj > 30;
     } else {
         rojOnlyCheckbox.checked = false;
         toggleRojOnlyMode(false);
@@ -661,6 +675,7 @@ function closeModal() {
     toggleRojOnlyMode(false);
     rojOnlyRoj.value = '';
     rojOnlyMah.value = '';
+    rojOnlyMah.disabled = false;
     // Reset birth year helper
     dontKnowYearCheckbox.checked = false;
     bycSection.style.display = 'none';
