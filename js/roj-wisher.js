@@ -245,7 +245,8 @@ function requestGoogleCalendarAccess() {
         provider: 'google',
         options: {
             redirectTo: redirectUrl,
-            scopes: 'https://www.googleapis.com/auth/calendar',
+            scopes: 'profile email https://www.googleapis.com/auth/calendar',
+            skipBrowserRedirect: true,
             queryParams: {
                 access_type: 'offline',
                 prompt: 'consent'
@@ -254,7 +255,13 @@ function requestGoogleCalendarAccess() {
     }).then(function (result) {
         if (result.error) {
             showToast('calendar access failed: ' + result.error.message);
+            return;
         }
+        // Debug: log the URL Supabase generated
+        console.log('OAuth URL:', result.data.url);
+        alert('Check console for OAuth URL — does it contain calendar scope?');
+        // Now redirect manually
+        window.location.href = result.data.url;
     });
 }
 
