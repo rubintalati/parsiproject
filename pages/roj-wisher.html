@@ -299,6 +299,10 @@
             color: #666; font-size: 0.75rem; margin-top: 0.8rem;
             text-transform: lowercase;
         }
+        .calendar-synced-note {
+            color: #34A853; font-size: 0.75rem; margin-top: 0.8rem;
+            text-transform: lowercase;
+        }
 
         /* ─── FAQ ─── */
         .faq-section {
@@ -647,7 +651,10 @@
                             Add to Google Calendar
                         </a>
                     </div>
-                    <p class="calendar-google-note">google calendar updates can take up to 24 hrs to reflect</p>
+                    <p class="calendar-google-note" id="calendar-google-note">apple calendar updates can take up to 24 hrs to reflect</p>
+                    <p class="calendar-synced-note" id="google-synced-note" style="display: none;">
+                        google calendar synced — events update automatically when you add or edit contacts
+                    </p>
                     <p class="calendar-subscribed-note" id="calendar-subscribed-note" style="display: none;">
                         calendar subscribed — new contacts will sync automatically
                     </p>

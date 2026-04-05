@@ -58,6 +58,8 @@ var googleSubscribeLink = document.getElementById('google-subscribe');
 var calendarSection = document.getElementById('calendar-section');
 var calendarButtons = document.getElementById('calendar-buttons');
 var calendarSubscribedNote = document.getElementById('calendar-subscribed-note');
+var calendarGoogleNote = document.getElementById('calendar-google-note');
+var googleSyncedNote = document.getElementById('google-synced-note');
 var onboardingModal = document.getElementById('onboarding-modal');
 var onboardSaveBtn = document.getElementById('onboard-save');
 var toastEl = document.getElementById('toast');
@@ -236,6 +238,91 @@ function signOut() {
     });
 }
 
+// ─── Google Calendar Sync ───────────────────────────────────────
+function requestGoogleCalendarAccess() {
+    var redirectUrl = window.location.origin + window.location.pathname;
+    supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: redirectUrl,
+            scopes: 'https://www.googleapis.com/auth/calendar',
+            queryParams: {
+                access_type: 'offline',
+                prompt: 'consent'
+            }
+        }
+    }).then(function (result) {
+        if (result.error) {
+            showToast('calendar access failed: ' + result.error.message);
+        }
+    });
+}
+
+function initGoogleCalendarSync(accessToken, refreshToken) {
+    showToast('syncing to google calendar...');
+    supabaseClient.auth.getSession().then(function (result) {
+        var jwt = result.data.session.access_token;
+        return fetch(SUPABASE_URL + '/functions/v1/google-calendar-sync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwt
+            },
+            body: JSON.stringify({
+                action: 'init',
+                google_access_token: accessToken,
+                google_refresh_token: refreshToken
+            })
+        });
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        if (data.error) {
+            showToast('sync failed: ' + data.error);
+            return;
+        }
+        if (userSettings) {
+            userSettings.google_sync_enabled = true;
+            userSettings.google_calendar_id = data.calendar_id;
+        }
+        updateCalendarFeedUI();
+        showToast('google calendar synced!');
+    }).catch(function (err) {
+        console.error('Google Calendar sync error:', err);
+        showToast('sync failed — try again');
+    });
+}
+
+function syncContactToGoogle(contactId, action) {
+    if (!userSettings || !userSettings.google_sync_enabled) return;
+    supabaseClient.auth.getSession().then(function (result) {
+        var jwt = result.data.session.access_token;
+        return fetch(SUPABASE_URL + '/functions/v1/google-calendar-sync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwt
+            },
+            body: JSON.stringify({
+                action: action,
+                contact_id: contactId
+            })
+        });
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        if (data.error === 'token_revoked') {
+            if (userSettings) userSettings.google_sync_enabled = false;
+            updateCalendarFeedUI();
+            showToast('google calendar access expired — please re-sync');
+        } else if (data.error) {
+            console.error('Google sync failed:', data.error);
+        }
+    }).catch(function (err) {
+        console.error('Google sync error:', err);
+    });
+}
+
 function showAuthSection() {
     authSection.style.display = 'flex';
     appSection.style.display = 'none';
@@ -332,9 +419,16 @@ async function saveUserSettings() {
         return;
     }
 
+    var oldCalType = userSettings.calendar_type;
+    var oldTiming = userSettings.reminder_timing;
     Object.assign(userSettings, updates);
     showToast('settings saved');
     renderContacts();
+
+    // Resync Google Calendar if calendar type or reminder timing changed
+    if (updates.calendar_type !== oldCalType || updates.reminder_timing !== oldTiming) {
+        syncContactToGoogle(null, 'resync');
+    }
 }
 
 function updateCalendarFeedUI() {
@@ -344,12 +438,21 @@ function updateCalendarFeedUI() {
     var feedUrl = feedBase + '?token=' + userSettings.calendar_token;
     var webcalUrl = feedUrl.replace('https://', 'webcal://');
 
+    // Apple Calendar — always .ics subscription
     appleSubscribeLink.href = webcalUrl;
-    googleSubscribeLink.href = 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(webcalUrl);
-
-    // Show both calendar options on all devices
     appleSubscribeLink.style.display = 'inline-flex';
-    googleSubscribeLink.style.display = 'inline-flex';
+
+    // Google Calendar — sync via API if enabled, else show sync button
+    if (userSettings.google_sync_enabled) {
+        googleSubscribeLink.style.display = 'none';
+        googleSyncedNote.style.display = 'block';
+        calendarGoogleNote.style.display = 'none';
+    } else {
+        googleSubscribeLink.style.display = 'inline-flex';
+        googleSubscribeLink.href = '#';
+        googleSyncedNote.style.display = 'none';
+        calendarGoogleNote.style.display = 'block';
+    }
 
     // Check if user has already subscribed (stored in localStorage)
     var subscribed = localStorage.getItem('rojWisherCalSubscribed_' + currentUser.id);
@@ -394,6 +497,7 @@ function addContact(data) {
                 throw new Error(result.error.message);
             }
             showToast(data.name + ' added');
+            syncContactToGoogle(result.data.id, 'upsert');
             return loadContacts();
         });
 }
@@ -410,12 +514,16 @@ function updateContact(id, data) {
                 throw new Error(result.error.message);
             }
             showToast('contact updated');
+            syncContactToGoogle(id, 'upsert');
             return loadContacts();
         });
 }
 
 function deleteContact(id, name) {
     if (!confirm('delete ' + name + '?')) return;
+
+    // Delete from Google Calendar BEFORE removing from DB (cascade deletes mapping rows)
+    syncContactToGoogle(id, 'delete');
 
     supabaseClient
         .from('contacts')
@@ -802,10 +910,11 @@ appleSubscribeLink.addEventListener('click', function (e) {
 });
 googleSubscribeLink.addEventListener('click', function (e) {
     e.preventDefault();
-    if (googleSubscribeLink.href && googleSubscribeLink.href !== '#') {
-        window.open(googleSubscribeLink.href, '_blank');
-        markCalendarSubscribed();
+    if (userSettings && userSettings.google_sync_enabled) {
+        showToast('google calendar is already synced');
+        return;
     }
+    requestGoogleCalendarAccess();
 });
 
 // ─── Pick from Phone Contacts (in-modal) ────────────────────────
@@ -1018,6 +1127,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             showAppSection(session.user);
             await loadUserSettings();
             if (!isFirstLogin) await loadContacts();
+
+            // Check if user just completed Google Calendar OAuth (has refresh token)
+            if (session.provider_refresh_token && session.provider_token) {
+                // Only init if not already synced
+                if (userSettings && !userSettings.google_sync_enabled) {
+                    initGoogleCalendarSync(session.provider_token, session.provider_refresh_token);
+                }
+            }
         } else if (event === 'SIGNED_OUT') {
             showAuthSection();
         }
