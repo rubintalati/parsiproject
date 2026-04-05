@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/onboarding-modal.css">
+    <link rel="stylesheet" href="../css/logo.css">
+    <link rel="stylesheet" href="../css/user-profile.css">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TPP" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        .container { display: flex; min-height: 100vh; }
+        .mobile-nav-overlay { display: none; }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-y: auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .last-updated {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .legal-content h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+        .legal-content p, .legal-content li {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        .legal-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .legal-content a {
+            color: #D4A843;
+            text-decoration: none;
+        }
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #D4A843;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; }
+            .page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-nav-overlay"></div>
+        <div class="main-content">
+            <a href="home.html" class="back-link">← back to home</a>
+            <div class="header">
+                <h1 class="page-title">privacy policy</h1>
+                <p class="last-updated">last updated: 5 april 2026</p>
+            </div>
+
+            <div class="legal-content">
+                <p>the parsi project ("we", "us", "our") operates theparsiproject.com. this policy explains what data we collect, why, and how we protect it.</p>
+
+                <h2>1. information we collect</h2>
+                <p><strong>account information:</strong> when you sign in with google, we receive your name, email address, and profile picture from google. we do not receive or store your google password.</p>
+                <p><strong>contacts you add:</strong> if you use roj wisher, you may add contacts with names, dates of birth, and/or zoroastrian roj and mah birthdays. this data is stored securely and only visible to you.</p>
+                <p><strong>calendar data:</strong> if you choose to sync with google calendar, we request access to create and manage a dedicated "roj wisher" calendar in your google account. we only read and write events in this specific calendar — we never access your other calendars, events, or personal schedule.</p>
+                <p><strong>usage analytics:</strong> we use google analytics to collect anonymous usage data (pages visited, load times). this does not identify you personally.</p>
+
+                <h2>2. how we use your information</h2>
+                <ul>
+                    <li>to provide and maintain the parsi project services</li>
+                    <li>to manage your roj wisher contacts and birthday reminders</li>
+                    <li>to create calendar events for your contact birthdays (only if you opt in to google calendar sync)</li>
+                    <li>to improve the site based on anonymous usage patterns</li>
+                </ul>
+
+                <h2>3. google calendar access</h2>
+                <p>google calendar sync is entirely optional. when you click "sync to google calendar" in roj wisher, you will be asked to grant the parsi project permission to manage your google calendar. specifically, we request the <code>https://www.googleapis.com/auth/calendar</code> scope.</p>
+                <p><strong>what we do with calendar access:</strong></p>
+                <ul>
+                    <li>create a single dedicated calendar called "roj wisher" in your google account</li>
+                    <li>add birthday and roj birthday reminder events for your saved contacts to that calendar only</li>
+                    <li>update or remove events when you edit or delete contacts</li>
+                    <li>store an encrypted refresh token to keep events up to date without requiring you to re-authorize</li>
+                </ul>
+                <p><strong>what we do NOT do:</strong></p>
+                <ul>
+                    <li>we never read, modify, or delete any of your existing calendars or events</li>
+                    <li>we never access your calendar data for advertising, analytics, or any purpose other than creating roj wisher reminders</li>
+                    <li>we never share your calendar data with any third party</li>
+                    <li>we never transfer your google calendar data to any other service or person</li>
+                </ul>
+                <p>you can revoke calendar access at any time from your <a href="https://myaccount.google.com/permissions">google account permissions</a>. revoking access will stop future event syncing but will not delete events already created in your calendar.</p>
+
+                <h2>4. google api services — limited use disclosure</h2>
+                <p>the parsi project's use and transfer of information received from google apis adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">google api services user data policy</a>, including the limited use requirements. specifically:</p>
+                <ul>
+                    <li>we only use google calendar data to provide and improve the roj wisher birthday reminder feature</li>
+                    <li>we do not transfer google calendar data to third parties unless necessary to provide the service, required by law, or part of a merger/acquisition with equal privacy protections</li>
+                    <li>we do not use google calendar data for advertising or to serve ads</li>
+                    <li>a human may read your calendar data only with your explicit consent, for security purposes, to comply with law, or when aggregated and anonymized for internal operations</li>
+                </ul>
+
+                <h2>5. data storage and security</h2>
+                <p>your data is stored on supabase (hosted on aws). all data is encrypted in transit (tls) and at rest. row-level security ensures that only you can access your own contacts and settings. google refresh tokens are stored encrypted and are never exposed to the client-side application.</p>
+
+                <h2>6. data sharing</h2>
+                <p>we do not sell, rent, or share your personal data with third parties. your data is only processed by:</p>
+                <ul>
+                    <li><strong>google:</strong> your name and email (for authentication), and calendar events (only if you opt in to google calendar sync)</li>
+                    <li><strong>supabase:</strong> our database and authentication provider (data stored on aws infrastructure)</li>
+                    <li><strong>google analytics:</strong> anonymous, non-identifying usage statistics only</li>
+                </ul>
+
+                <h2>7. data retention and deletion</h2>
+                <p>your data is retained as long as your account is active. you can delete individual contacts at any time, which also removes their associated calendar events. to delete your account and all associated data (including stored tokens), email us at the address below and we will process your request within 30 days.</p>
+
+                <h2>8. cookies</h2>
+                <p>we use essential cookies for authentication (keeping you signed in) and google analytics cookies for anonymous usage tracking. we do not use advertising or tracking cookies.</p>
+
+                <h2>9. children's privacy</h2>
+                <p>the parsi project is not directed at children under 13. we do not knowingly collect data from children.</p>
+
+                <h2>10. changes to this policy</h2>
+                <p>we may update this policy from time to time. changes will be posted on this page with an updated date.</p>
+
+                <h2>11. contact</h2>
+                <p>if you have questions about this privacy policy or want to request data deletion, email us at <a href="mailto:talati15@gmail.com">talati15@gmail.com</a>.</p>
+            </div>
+        </div>
+    </div>
+    <script src="../js/combined.js"></script>
+</body>
+</html>
