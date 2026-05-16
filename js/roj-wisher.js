@@ -1134,21 +1134,29 @@ document.addEventListener('DOMContentLoaded', async function () {
             providerTokenLen: session && session.provider_token ? session.provider_token.length : 0,
             refreshTokenLen: session && session.provider_refresh_token ? session.provider_refresh_token.length : 0
         });
-        if (event === 'SIGNED_IN' && session) {
-            showAppSection(session.user);
-            await loadUserSettings();
-            if (!isFirstLogin) await loadContacts();
+
+        // Handle both SIGNED_IN (fresh login) and INITIAL_SESSION (page reload after OAuth redirect)
+        if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+            // For INITIAL_SESSION, only run setup if we haven't already (avoid double-load)
+            if (event === 'SIGNED_IN') {
+                showAppSection(session.user);
+                await loadUserSettings();
+                if (!isFirstLogin) await loadContacts();
+            }
 
             // Check if user just completed Google Calendar OAuth (has refresh token)
             if (session.provider_refresh_token && session.provider_token) {
+                // Wait briefly to ensure userSettings has loaded
+                if (!userSettings) {
+                    await loadUserSettings();
+                }
                 console.log('[GCAL-DEBUG] Triggering initGoogleCalendarSync. userSettings:', userSettings);
-                // Only init if not already synced
                 if (userSettings && !userSettings.google_sync_enabled) {
                     initGoogleCalendarSync(session.provider_token, session.provider_refresh_token);
                 } else {
                     console.log('[GCAL-DEBUG] Skipped init — already enabled or no userSettings');
                 }
-            } else {
+            } else if (event === 'SIGNED_IN') {
                 console.log('[GCAL-DEBUG] No provider tokens in session — OAuth flow may not have included calendar scope');
             }
         } else if (event === 'SIGNED_OUT') {
