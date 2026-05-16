@@ -45,8 +45,8 @@ interface UserSettings {
 interface GoogleEvent {
   summary: string;
   description: string;
-  start: { date: string };
-  end: { date: string };
+  start: { dateTime: string; timeZone: string };
+  end: { dateTime: string; timeZone: string };
   recurrence?: string[];
   reminders: {
     useDefault: boolean;
@@ -113,13 +113,16 @@ async function googleApi(
 
 // ─── Reminder Builder ───────────────────────────────────────────
 
+// Events start at 9 AM. So:
+// - "day_of" = popup at the event start (0 min before 9 AM)
+// - "day_before" = popup at 9 AM the previous day (24 hours = 1440 min before)
 function buildReminders(timing: string): { method: string; minutes: number }[] {
   const overrides: { method: string; minutes: number }[] = [];
   if (timing === "day_before" || timing === "both") {
-    overrides.push({ method: "popup", minutes: 1440 }); // 1 day
+    overrides.push({ method: "popup", minutes: 1440 }); // 9 AM previous day
   }
   if (timing === "day_of" || timing === "both") {
-    overrides.push({ method: "popup", minutes: 30 });
+    overrides.push({ method: "popup", minutes: 0 }); // 9 AM on the day
   }
   return overrides;
 }
@@ -133,10 +136,12 @@ function formatDate(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
-function nextDay(dateStr: string): string {
-  const d = new Date(dateStr + "T12:00:00");
-  d.setDate(d.getDate() + 1);
-  return formatDate(d);
+function startAt9AM(dateStr: string): string {
+  return `${dateStr}T09:00:00`;
+}
+
+function endAt10AM(dateStr: string): string {
+  return `${dateStr}T10:00:00`;
 }
 
 function buildEventsForContact(
@@ -165,8 +170,8 @@ function buildEventsForContact(
       event: {
         summary: `${typeEmoji} ${contact.name} \u2013 ${typeLabel}`,
         description: desc,
-        start: { date: contact.date_of_birth! },
-        end: { date: nextDay(contact.date_of_birth!) },
+        start: { dateTime: startAt9AM(contact.date_of_birth!), timeZone: "Asia/Kolkata" },
+        end: { dateTime: endAt10AM(contact.date_of_birth!), timeZone: "Asia/Kolkata" },
         recurrence: ["RRULE:FREQ=YEARLY"],
         reminders: { useDefault: false, overrides: reminders },
         transparency: "transparent",
@@ -217,8 +222,8 @@ function buildEventsForContact(
           event: {
             summary: `\u{1F525} ${contact.name} \u2013 Roj ${typeLabel} (${rojName})`,
             description: desc,
-            start: { date: dateStr },
-            end: { date: nextDay(dateStr) },
+            start: { dateTime: startAt9AM(dateStr), timeZone: "Asia/Kolkata" },
+            end: { dateTime: endAt10AM(dateStr), timeZone: "Asia/Kolkata" },
             reminders: { useDefault: false, overrides: reminders },
             transparency: "transparent",
           },
@@ -241,23 +246,66 @@ async function handleInit(
   googleAccessToken: string,
   googleRefreshToken: string
 ): Promise<{ calendar_id: string }> {
-  // 1. Create "Roj Wisher" calendar
-  const calendar = await googleApi(googleAccessToken, "POST", "/calendars", {
-    summary: "Roj Wisher",
-    description: "Birthdays & anniversaries with Roj reminders",
-    timeZone: "Asia/Kolkata",
-  }) as { id: string };
+  // 0. Check existing settings — reuse calendar if still valid
+  const { data: existingSettings } = await supabase
+    .from("user_settings")
+    .select("google_calendar_id")
+    .eq("user_id", userId)
+    .single();
 
-  const calendarId = calendar.id;
+  let calendarId: string | null = null;
 
-  // 2. Store tokens and calendar ID
+  // If we have a stored calendar ID, verify it still exists in Google
+  if (existingSettings?.google_calendar_id) {
+    try {
+      await googleApi(
+        googleAccessToken, "GET",
+        `/calendars/${encodeURIComponent(existingSettings.google_calendar_id)}`
+      );
+      calendarId = existingSettings.google_calendar_id;
+      // Wipe out old events on the existing calendar so we start fresh
+      const { data: oldEvents } = await supabase
+        .from("google_calendar_events")
+        .select("google_event_id")
+        .eq("user_id", userId);
+      if (oldEvents) {
+        for (const ev of oldEvents) {
+          try {
+            await googleApi(
+              googleAccessToken, "DELETE",
+              `/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(ev.google_event_id)}`
+            );
+          } catch (_) { /* ignore — event may already be gone */ }
+        }
+        await supabase
+          .from("google_calendar_events")
+          .delete()
+          .eq("user_id", userId);
+      }
+    } catch (_) {
+      // Stored calendar was deleted by user — create a fresh one below
+      calendarId = null;
+    }
+  }
+
+  // Create a new calendar if we don't have one
+  if (!calendarId) {
+    const calendar = await googleApi(googleAccessToken, "POST", "/calendars", {
+      summary: "Roj Wisher",
+      description: "Birthdays & anniversaries with Roj reminders",
+      timeZone: "Asia/Kolkata",
+    }) as { id: string };
+    calendarId = calendar.id;
+  }
+
+  // Store tokens and calendar ID
   await supabase.from("user_settings").update({
     google_refresh_token: googleRefreshToken,
     google_calendar_id: calendarId,
     google_sync_enabled: true,
   }).eq("user_id", userId);
 
-  // 3. Fetch user settings and contacts
+  // Fetch user settings and contacts
   const { data: settings } = await supabase
     .from("user_settings")
     .select("*")
@@ -273,7 +321,7 @@ async function handleInit(
     return { calendar_id: calendarId };
   }
 
-  // 4. Push events for all contacts
+  // Push events for all contacts
   for (const contact of contacts as Contact[]) {
     const eventDefs = buildEventsForContact(contact, settings as UserSettings);
     for (const def of eventDefs) {
