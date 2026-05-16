@@ -259,9 +259,11 @@ function requestGoogleCalendarAccess() {
 }
 
 function initGoogleCalendarSync(accessToken, refreshToken) {
+    console.log('[GCAL-DEBUG] initGoogleCalendarSync called');
     showToast('syncing to google calendar...');
     supabaseClient.auth.getSession().then(function (result) {
         var jwt = result.data.session.access_token;
+        console.log('[GCAL-DEBUG] Calling edge function...');
         return fetch(SUPABASE_URL + '/functions/v1/google-calendar-sync', {
             method: 'POST',
             headers: {
@@ -275,8 +277,10 @@ function initGoogleCalendarSync(accessToken, refreshToken) {
             })
         });
     }).then(function (res) {
+        console.log('[GCAL-DEBUG] Edge function status:', res.status);
         return res.json();
     }).then(function (data) {
+        console.log('[GCAL-DEBUG] Edge function response:', data);
         if (data.error) {
             showToast('sync failed: ' + data.error);
             return;
@@ -288,7 +292,7 @@ function initGoogleCalendarSync(accessToken, refreshToken) {
         updateCalendarFeedUI();
         showToast('google calendar synced!');
     }).catch(function (err) {
-        console.error('Google Calendar sync error:', err);
+        console.error('[GCAL-DEBUG] Google Calendar sync error:', err);
         showToast('sync failed — try again');
     });
 }
@@ -1123,6 +1127,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     supabaseClient.auth.onAuthStateChange(async function (event, session) {
+        console.log('[GCAL-DEBUG] auth event:', event, {
+            hasSession: !!session,
+            hasProviderToken: session ? !!session.provider_token : false,
+            hasProviderRefreshToken: session ? !!session.provider_refresh_token : false,
+            providerTokenLen: session && session.provider_token ? session.provider_token.length : 0,
+            refreshTokenLen: session && session.provider_refresh_token ? session.provider_refresh_token.length : 0
+        });
         if (event === 'SIGNED_IN' && session) {
             showAppSection(session.user);
             await loadUserSettings();
@@ -1130,10 +1141,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Check if user just completed Google Calendar OAuth (has refresh token)
             if (session.provider_refresh_token && session.provider_token) {
+                console.log('[GCAL-DEBUG] Triggering initGoogleCalendarSync. userSettings:', userSettings);
                 // Only init if not already synced
                 if (userSettings && !userSettings.google_sync_enabled) {
                     initGoogleCalendarSync(session.provider_token, session.provider_refresh_token);
+                } else {
+                    console.log('[GCAL-DEBUG] Skipped init — already enabled or no userSettings');
                 }
+            } else {
+                console.log('[GCAL-DEBUG] No provider tokens in session — OAuth flow may not have included calendar scope');
             }
         } else if (event === 'SIGNED_OUT') {
             showAuthSection();
