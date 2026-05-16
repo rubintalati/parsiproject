@@ -1146,15 +1146,25 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Check if user just completed Google Calendar OAuth (has refresh token)
             if (session.provider_refresh_token && session.provider_token) {
-                // Wait briefly to ensure userSettings has loaded
+                // Only re-init if URL hash actually contains provider_token (means fresh OAuth callback)
+                // This prevents re-init on every page reload while still allowing re-sync when user explicitly clicks
+                var isOauthCallback = window.location.hash.indexOf('provider_token') !== -1;
+                console.log('[GCAL-DEBUG] Provider tokens present. isOauthCallback:', isOauthCallback);
+
                 if (!userSettings) {
                     await loadUserSettings();
                 }
-                console.log('[GCAL-DEBUG] Triggering initGoogleCalendarSync. userSettings:', userSettings);
-                if (userSettings && !userSettings.google_sync_enabled) {
+
+                // Re-init if: not yet synced, OR this is a fresh OAuth callback (user clicked Sync explicitly)
+                if (userSettings && (!userSettings.google_sync_enabled || isOauthCallback)) {
+                    console.log('[GCAL-DEBUG] Triggering initGoogleCalendarSync');
                     initGoogleCalendarSync(session.provider_token, session.provider_refresh_token);
+                    // Clean the URL hash so a refresh doesn't re-trigger
+                    if (isOauthCallback && window.history.replaceState) {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
                 } else {
-                    console.log('[GCAL-DEBUG] Skipped init — already enabled or no userSettings');
+                    console.log('[GCAL-DEBUG] Already synced and not a fresh OAuth callback — skipping');
                 }
             } else if (event === 'SIGNED_IN') {
                 console.log('[GCAL-DEBUG] No provider tokens in session — OAuth flow may not have included calendar scope');
