@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6DT5E4V7SQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6DT5E4V7SQ');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invites - The Parsi Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100vh; overflow: hidden !important; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #000;
+            color: #fff;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.18;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noiseFilter)"/></svg>');
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+
+        .hidden { display: none !important; }
+        .container { display: flex; height: 100vh; }
+        .main-content {
+            flex: 1; padding: 2rem;
+            overflow-y: auto; overflow-x: hidden;
+        }
+
+        .header {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            margin-bottom: 1.5rem; margin-top: 2rem;
+            text-align: center; width: 100%;
+        }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: lowercase; }
+        .page-subtitle { color: #999; font-size: 0.9rem; text-transform: lowercase; max-width: 560px; }
+
+        /* Auth */
+        .auth-section {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 300px; gap: 1.5rem;
+        }
+        .auth-prompt { color: #999; font-size: 0.95rem; text-transform: lowercase; text-align: center; }
+        .google-login-btn {
+            display: flex; align-items: center; gap: 0.7rem;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent; color: #fff;
+            font-family: 'Manrope', sans-serif; font-size: 0.9rem;
+            cursor: pointer; transition: background 0.2s; text-transform: lowercase;
+        }
+        .google-login-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .google-login-btn svg { width: 20px; height: 20px; }
+
+        /* App shell */
+        .app-section { max-width: 1000px; margin: 0 auto; padding: 0 1rem 4rem; }
+        .user-bar {
+            display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+            margin-bottom: 1rem; padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .user-name { color: #ccc; font-size: 0.85rem; text-transform: lowercase; margin-right: auto; }
+        .wedding-select {
+            background: #000; color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-family: 'Manrope', sans-serif; font-size: 0.85rem;
+            padding: 0.5rem; min-height: 44px; max-width: 60%;
+            text-transform: lowercase;
+        }
+
+        .btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ccc; font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem; padding: 0.55rem 1rem;
+            min-height: 44px;
+            cursor: pointer; text-transform: lowercase; transition: color 0.2s, background 0.2s, border-color 0.2s;
+            touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+        }
+        .btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+        .btn:disabled { opacity: 0.4; cursor: default; }
+        .btn-primary { background: #fff; color: #000; border-color: #fff; font-weight: 600; }
+        .btn-primary:hover { background: #ddd; color: #000; }
+        .btn-whatsapp { background: #25D366; color: #000; border-color: #25D366; font-weight: 600; }
+        .btn-whatsapp:hover { background: #1fb658; color: #000; }
+        .btn-danger { color: #ff6b6b; border-color: rgba(255, 107, 107, 0.4); }
+        .btn-danger:hover { color: #ff8f8f; border-color: #ff8f8f; }
+        .btn-small { min-height: 36px; padding: 0.35rem 0.75rem; font-size: 0.75rem; }
+
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 0.25rem; margin-bottom: 1.5rem;
+            overflow-x: auto; scrollbar-width: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab {
+            background: none; border: none; border-bottom: 2px solid transparent;
+            color: #777; font-family: 'Manrope', sans-serif; font-size: 0.9rem;
+            padding: 0.75rem 0.9rem; min-height: 44px;
+            cursor: pointer; text-transform: lowercase; white-space: nowrap;
+        }
+        .tab:hover { color: #ccc; }
+        .tab.active { color: #fff; border-bottom-color: #fff; }
+
+        .section-title { font-size: 1.1rem; font-weight: 600; text-transform: lowercase; margin: 1.5rem 0 0.75rem; }
+        .section-title:first-child { margin-top: 0; }
+        .hint { color: #777; font-size: 0.78rem; text-transform: lowercase; line-height: 1.5; }
+        .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .toolbar .grow { flex: 1; min-width: 160px; }
+
+        /* Cards */
+        .card {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem; margin-bottom: 0.75rem;
+        }
+        .card-title { font-size: 1rem; font-weight: 600; text-transform: lowercase; }
+        .card-sub { color: #888; font-size: 0.78rem; margin-top: 0.25rem; text-transform: lowercase; line-height: 1.5; }
+        .card-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem; }
+        .card-head { display: flex; justify-content: space-between; gap: 0.75rem; align-items: flex-start; }
+
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
+        .stat { border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.9rem; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; }
+        .stat-label { color: #888; font-size: 0.72rem; text-transform: lowercase; margin-top: 0.15rem; }
+
+        .event-numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+        .num { font-size: 1.25rem; font-weight: 700; }
+        .num-label { color: #888; font-size: 0.7rem; text-transform: lowercase; }
+        .num.yes { color: #7bd88f; }
+        .num.no { color: #ff8f8f; }
+        .num.pending { color: #f0c36d; }
+
+        .chips { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .chip {
+            font-size: 0.7rem; padding: 0.2rem 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.12); color: #aaa;
+            text-transform: lowercase; white-space: nowrap;
+        }
+        .chip.yes { border-color: rgba(123, 216, 143, 0.5); color: #7bd88f; }
+        .chip.no { border-color: rgba(255, 143, 143, 0.4); color: #ff8f8f; }
+        .chip.maybe { border-color: rgba(160, 160, 255, 0.5); color: #b0b0ff; }
+        .chip.pending { border-color: rgba(240, 195, 109, 0.4); color: #f0c36d; }
+        .chip.preset { background: none; font-family: inherit; cursor: pointer; font-size: 0.8rem; padding: 0.4rem 0.7rem; min-height: 36px; display: inline-flex; align-items: center; }
+        .chip.preset:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+
+        table.breakdown { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        table.breakdown th, table.breakdown td {
+            text-align: left; padding: 0.5rem 0.4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            text-transform: lowercase;
+        }
+        table.breakdown th { color: #777; font-weight: 500; }
+        table.breakdown td.n, table.breakdown th.n { text-align: right; }
+
+        /* Forms */
+        .form-row { margin-bottom: 0.9rem; }
+        .form-row label { display: block; color: #999; font-size: 0.78rem; margin-bottom: 0.35rem; text-transform: lowercase; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.75rem; }
+        input[type=text], input[type=tel], input[type=number], input[type=date], input[type=datetime-local], input[type=search], select, textarea {
+            width: 100%;
+            background: #0b0b0b; color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-family: 'Manrope', sans-serif; font-size: 16px;
+            padding: 0.6rem 0.7rem; min-height: 44px;
+            border-radius: 0;
+            color-scheme: dark;
+        }
+        textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: rgba(255, 255, 255, 0.5); }
+        .check-row { display: flex; align-items: center; gap: 0.5rem; color: #ccc; font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: lowercase; cursor: pointer; }
+        .check-row input { width: 18px; height: 18px; accent-color: #fff; }
+
+        .segmented { display: flex; border: 1px solid rgba(255, 255, 255, 0.15); }
+        .segmented button {
+            flex: 1; background: none; border: none; border-right: 1px solid rgba(255, 255, 255, 0.15);
+            color: #888; font-family: 'Manrope', sans-serif; font-size: 0.8rem;
+            padding: 0.5rem 0.25rem; min-height: 40px; cursor: pointer; text-transform: lowercase;
+        }
+        .segmented button:last-child { border-right: none; }
+        .segmented button.active { background: #fff; color: #000; font-weight: 600; }
+
+        .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.6rem; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+            display: flex; align-items: flex-start; justify-content: center;
+            z-index: 1000; overflow-y: auto; padding: 2rem 1rem;
+        }
+        .modal {
+            background: #0a0a0a; border: 1px solid rgba(255, 255, 255, 0.12);
+            width: 100%; max-width: 560px; padding: 1.5rem;
+            position: relative;
+        }
+        .modal-title { font-size: 1.2rem; font-weight: 600; text-transform: lowercase; margin-bottom: 1rem; padding-right: 2rem; }
+        .modal-close {
+            position: absolute; top: 0.75rem; right: 0.75rem;
+            background: none; border: none; color: #888; font-size: 1.5rem;
+            width: 44px; height: 44px; cursor: pointer;
+        }
+        .modal-footer { display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1.25rem; }
+        .modal-footer .left { margin-right: auto; }
+
+        /* Import preview */
+        .import-list { max-height: 320px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.08); margin-top: 0.75rem; }
+        .import-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.82rem; }
+        .import-row input[type=checkbox] { width: 18px; height: 18px; accent-color: #fff; flex-shrink: 0; }
+        .import-row .name { flex: 1; text-transform: lowercase; }
+        .import-row .phone { color: #888; font-size: 0.75rem; }
+        .import-row .warn { color: #f0c36d; font-size: 0.7rem; }
+
+        /* Send queue */
+        .queue-card { border: 1px solid rgba(255, 255, 255, 0.2); padding: 1.25rem; margin-bottom: 1rem; }
+        .queue-name { font-size: 1.4rem; font-weight: 700; text-transform: lowercase; }
+        .queue-preview {
+            white-space: pre-wrap; background: #0b0b0b; border-left: 2px solid #25D366;
+            padding: 0.75rem; margin: 0.9rem 0; font-size: 0.82rem; color: #ddd; line-height: 1.5;
+            max-height: 260px; overflow-y: auto;
+        }
+        .queue-progress { color: #888; font-size: 0.78rem; text-transform: lowercase; margin-bottom: 0.6rem; }
+        .queue-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .queue-actions .btn-whatsapp { flex: 1; min-width: 200px; }
+        .queue-list .row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.8rem; color: #aaa; text-transform: lowercase; }
+
+        .details summary { cursor: pointer; color: #aaa; font-size: 0.85rem; text-transform: lowercase; padding: 0.6rem 0; min-height: 44px; display: flex; align-items: center; }
+        .code-box { font-family: ui-monospace, monospace; font-size: 1.3rem; letter-spacing: 0.15em; padding: 0.6rem 0.9rem; border: 1px dashed rgba(255, 255, 255, 0.3); display: inline-block; }
+
+        .empty { text-align: center; color: #777; padding: 2.5rem 1rem; font-size: 0.9rem; text-transform: lowercase; border: 1px dashed rgba(255, 255, 255, 0.1); }
+
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(150%);
+            background: #fff; color: #000; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; text-transform: lowercase; z-index: 2000;
+            transition: transform 0.3s; max-width: 90vw; text-align: center;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; padding-top: 4.5rem; }
+            .page-title { font-size: 1.9rem; }
+            .app-section { padding: 0 0 4rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .modal { padding: 1.25rem; }
+            .modal-overlay { padding: 1rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content" id="main-content">
+            <div class="header">
+                <h1 class="page-title">wedding invites</h1>
+                <p class="page-subtitle">send the invites on whatsapp, we keep count of who's coming. you get back to fighting over the menu.</p>
+            </div>
+
+            <div id="loading-section" class="auth-section">
+                <p class="auth-prompt">loading…</p>
+            </div>
+
+            <!-- Signed out -->
+            <div id="auth-section" class="auth-section hidden">
+                <p class="auth-prompt">sign in to make your guest list. guests don't need to sign in, ever.</p>
+                <button id="google-login-btn" class="google-login-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    sign in with google
+                </button>
+            </div>
+
+            <!-- Signed in, no wedding yet -->
+            <div id="setup-section" class="app-section hidden">
+                <div class="user-bar">
+                    <span class="user-name js-user-name"></span>
+                    <button class="btn js-sign-out">sign out</button>
+                </div>
+                <div class="card">
+                    <h2 class="section-title">start a guest list</h2>
+                    <form id="create-wedding-form">
+                        <div class="form-row">
+                            <label for="cw-couple">couple's names (as they'll appear in the invite)</label>
+                            <input type="text" id="cw-couple" placeholder="zarine & kaizad" required maxlength="120">
+                        </div>
+                        <div class="form-row">
+                            <label for="cw-title">what's the occasion?</label>
+                            <input type="text" id="cw-title" placeholder="zarine & kaizad's lagan" required maxlength="120">
+                        </div>
+                        <button type="submit" class="btn btn-primary">create</button>
+                    </form>
+                    <p class="hint" style="margin-top:0.75rem">works for navjotes too. call it whatever you like.</p>
+                </div>
+                <div class="card">
+                    <h2 class="section-title">helping someone else plan?</h2>
+                    <p class="hint" style="margin-bottom:0.75rem">ask them for the co-host code from their settings tab.</p>
+                    <form id="join-wedding-form" class="toolbar">
+                        <input type="text" id="join-code" class="grow" placeholder="co-host code" required maxlength="20" autocomplete="off">
+                        <button type="submit" class="btn">join</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Signed in, managing a wedding -->
+            <div id="app-section" class="app-section hidden">
+                <div class="user-bar">
+                    <select id="wedding-select" class="wedding-select" aria-label="choose wedding"></select>
+                    <span class="user-name js-user-name"></span>
+                    <button class="btn js-sign-out">sign out</button>
+                </div>
+
+                <nav class="tabs" role="tablist">
+                    <button class="tab active" data-tab="overview">overview</button>
+                    <button class="tab" data-tab="families">families</button>
+                    <button class="tab" data-tab="events">events</button>
+                    <button class="tab" data-tab="send">send</button>
+                    <button class="tab" data-tab="settings">settings</button>
+                </nav>
+
+                <!-- Overview -->
+                <section id="tab-overview" class="tab-panel"></section>
+
+                <!-- Families -->
+                <section id="tab-families" class="tab-panel hidden">
+                    <div class="toolbar">
+                        <button id="add-household-btn" class="btn btn-primary">+ add family</button>
+                        <button id="import-btn" class="btn">import contacts</button>
+                    </div>
+                    <div class="toolbar">
+                        <input type="search" id="household-search" class="grow" placeholder="search names or numbers">
+                        <select id="household-filter" style="width:auto">
+                            <option value="all">everyone</option>
+                            <option value="not_sent">invite not sent</option>
+                            <option value="pending">waiting for reply</option>
+                            <option value="yes">coming to something</option>
+                            <option value="no">declined everything</option>
+                            <option value="no_phone">no phone number</option>
+                        </select>
+                    </div>
+                    <p class="hint js-household-count" style="margin-bottom:0.75rem"></p>
+                    <div id="household-list"></div>
+                </section>
+
+                <!-- Events -->
+                <section id="tab-events" class="tab-panel hidden">
+                    <div class="toolbar">
+                        <button id="add-event-btn" class="btn btn-primary">+ add event</button>
+                    </div>
+                    <div id="event-list"></div>
+                </section>
+
+                <!-- Send -->
+                <section id="tab-send" class="tab-panel hidden">
+                    <div class="segmented" id="send-mode" style="margin-bottom:1rem">
+                        <button data-mode="invite" class="active">first invites</button>
+                        <button data-mode="reminder">reminders</button>
+                    </div>
+                    <p class="hint js-send-hint" style="margin-bottom:1rem"></p>
+                    <div id="send-queue"></div>
+                    <details class="details" id="templates-details">
+                        <summary>edit message wording</summary>
+                        <p class="hint" style="margin-bottom:0.75rem">
+                            {name} = family name · {couple} = your names · {events} = the events they're invited to · {link} = their personal reply link
+                        </p>
+                        <div class="form-row">
+                            <label for="tpl-invite">invite message</label>
+                            <textarea id="tpl-invite" rows="10"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label for="tpl-reminder">reminder message</label>
+                            <textarea id="tpl-reminder" rows="6"></textarea>
+                        </div>
+                        <div class="toolbar">
+                            <button id="save-templates-btn" class="btn btn-primary">save wording</button>
+                            <button id="reset-templates-btn" class="btn">reset to default</button>
+                        </div>
+                    </details>
+                </section>
+
+                <!-- Settings -->
+                <section id="tab-settings" class="tab-panel hidden">
+                    <h2 class="section-title">details</h2>
+                    <form id="wedding-details-form">
+                        <div class="form-row">
+                            <label for="wd-couple">couple's names</label>
+                            <input type="text" id="wd-couple" required maxlength="120">
+                        </div>
+                        <div class="form-row">
+                            <label for="wd-title">occasion</label>
+                            <input type="text" id="wd-title" required maxlength="120">
+                        </div>
+                        <button type="submit" class="btn btn-primary">save</button>
+                    </form>
+
+                    <h2 class="section-title">co-hosts</h2>
+                    <p class="hint" style="margin-bottom:0.75rem">your partner, parents or planner can manage this list with you. send them this link (they sign in with google):</p>
+                    <div class="code-box js-join-code"></div>
+                    <div class="toolbar" style="margin-top:0.75rem">
+                        <button id="copy-join-link-btn" class="btn">copy co-host link</button>
+                    </div>
+                    <div id="member-list" style="margin-top:0.75rem"></div>
+
+                    <h2 class="section-title">guest privacy</h2>
+                    <p class="hint">guests' names and numbers are only visible to you and your co-hosts. guests only ever see their own family's invite. when the wedding's done, delete it here and everything goes with it.</p>
+
+                    <h2 class="section-title">danger zone</h2>
+                    <div class="toolbar">
+                        <button id="leave-wedding-btn" class="btn btn-danger">leave this list</button>
+                        <button id="delete-wedding-btn" class="btn btn-danger">delete wedding & all guest data</button>
+                        <button id="new-wedding-btn" class="btn">start another list</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Household modal -->
+    <div id="household-modal" class="modal-overlay hidden">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="household-modal-title">
+            <button class="modal-close" data-close aria-label="close">&times;</button>
+            <h2 class="modal-title" id="household-modal-title">add family</h2>
+            <form id="household-form">
+                <input type="hidden" id="hh-id">
+                <div class="form-row">
+                    <label for="hh-name">how should we address them?</label>
+                    <input type="text" id="hh-name" placeholder="mr & mrs daruwalla & family" required maxlength="120">
+                </div>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="hh-phone">whatsapp number</label>
+                        <input type="tel" id="hh-phone" placeholder="98200 12345 or +44 7700 900123" maxlength="25">
+                    </div>
+                    <div class="form-row">
+                        <label for="hh-max">up to how many people?</label>
+                        <input type="number" id="hh-max" min="1" max="50" value="2" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="hh-side">side</label>
+                        <select id="hh-side">
+                            <option value="bride">bride's side</option>
+                            <option value="groom">groom's side</option>
+                            <option value="both">both / common</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="hh-invited-by">whose list? (optional)</label>
+                        <input type="text" id="hh-invited-by" list="invited-by-options" placeholder="mum, dad, us…" maxlength="60">
+                    </div>
+                    <div class="form-row">
+                        <label for="hh-locality">where are they coming from?</label>
+                        <select id="hh-locality">
+                            <option value="local">same city</option>
+                            <option value="outstation">another city</option>
+                            <option value="overseas">abroad</option>
+                        </select>
+                    </div>
+                    <div class="form-row" style="display:flex;align-items:flex-end">
+                        <label class="check-row" style="margin-bottom:0.75rem"><input type="checkbox" id="hh-card"> printed card delivered</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>invited to</label>
+                    <div id="hh-events"></div>
+                </div>
+                <div class="form-row">
+                    <label for="hh-notes">notes (only you see these)</label>
+                    <textarea id="hh-notes" rows="2" style="min-height:60px" maxlength="500" placeholder="aunty prefers a call, wheelchair, gherwalla…"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="hh-delete" class="btn btn-danger left hidden">remove</button>
+                    <button type="button" class="btn" data-close>cancel</button>
+                    <button type="submit" class="btn btn-primary">save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <datalist id="invited-by-options"></datalist>
+
+    <!-- Record reply modal -->
+    <div id="reply-modal" class="modal-overlay hidden">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reply-modal-title">
+            <button class="modal-close" data-close aria-label="close">&times;</button>
+            <h2 class="modal-title" id="reply-modal-title">record reply</h2>
+            <p class="hint js-reply-sub" style="margin-bottom:1rem"></p>
+            <div id="reply-events"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-close>cancel</button>
+                <button type="button" id="reply-save" class="btn btn-primary">save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event modal -->
+    <div id="event-modal" class="modal-overlay hidden">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="event-modal-title">
+            <button class="modal-close" data-close aria-label="close">&times;</button>
+            <h2 class="modal-title" id="event-modal-title">add event</h2>
+            <form id="event-form">
+                <input type="hidden" id="ev-id">
+                <input type="hidden" id="ev-kind" value="custom">
+                <div class="chips js-presets" style="margin-bottom:1rem"></div>
+                <div class="form-row">
+                    <label for="ev-name">name</label>
+                    <input type="text" id="ev-name" required maxlength="80" placeholder="lagan">
+                </div>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="ev-start">date & time</label>
+                        <input type="datetime-local" id="ev-start">
+                    </div>
+                    <div class="form-row">
+                        <label for="ev-side">hosted by</label>
+                        <select id="ev-side">
+                            <option value="both">both families</option>
+                            <option value="bride">bride's family</option>
+                            <option value="groom">groom's family</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="ev-venue">venue</label>
+                    <input type="text" id="ev-venue" maxlength="160" placeholder="cama baug, grant road">
+                </div>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="ev-deadline">reply by (optional)</label>
+                        <input type="date" id="ev-deadline">
+                    </div>
+                    <div class="form-row">
+                        <label for="ev-panth">seats per panth (baug dinners)</label>
+                        <input type="number" id="ev-panth" min="1" max="2000" placeholder="e.g. 250">
+                    </div>
+                </div>
+                <label class="check-row js-invite-all-row"><input type="checkbox" id="ev-invite-all" checked> invite everyone already on the list</label>
+                <div class="modal-footer">
+                    <button type="button" id="ev-delete" class="btn btn-danger left hidden">delete</button>
+                    <button type="button" class="btn" data-close>cancel</button>
+                    <button type="submit" class="btn btn-primary">save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import modal -->
+    <div id="import-modal" class="modal-overlay hidden">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+            <button class="modal-close" data-close aria-label="close">&times;</button>
+            <h2 class="modal-title" id="import-modal-title">import contacts</h2>
+            <div class="toolbar">
+                <button type="button" id="pick-contacts-btn" class="btn btn-primary hidden">pick from phone contacts</button>
+                <label class="btn" for="import-file">upload .csv / .vcf</label>
+                <input type="file" id="import-file" accept=".csv,.vcf,.txt,text/csv,text/vcard,text/x-vcard" class="hidden">
+            </div>
+            <p class="hint js-import-help" style="margin-bottom:0.75rem"></p>
+            <div class="form-row">
+                <label for="import-paste">or paste, one family per line (name, number)</label>
+                <textarea id="import-paste" rows="4" style="min-height:90px" placeholder="Daruwalla family, 98200 12345&#10;Kaizad Mistry, +44 7700 900123"></textarea>
+            </div>
+            <button type="button" id="import-parse-btn" class="btn">read list</button>
+
+            <div id="import-preview" class="hidden" style="margin-top:1.5rem">
+                <h3 class="section-title">apply to everyone below</h3>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="imp-side">side</label>
+                        <select id="imp-side">
+                            <option value="bride">bride's side</option>
+                            <option value="groom">groom's side</option>
+                            <option value="both">both / common</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="imp-max">up to how many people each?</label>
+                        <input type="number" id="imp-max" min="1" max="50" value="2">
+                    </div>
+                    <div class="form-row">
+                        <label for="imp-invited-by">whose list?</label>
+                        <input type="text" id="imp-invited-by" list="invited-by-options" maxlength="60">
+                    </div>
+                    <div class="form-row">
+                        <label for="imp-locality">coming from</label>
+                        <select id="imp-locality">
+                            <option value="local">same city</option>
+                            <option value="outstation">another city</option>
+                            <option value="overseas">abroad</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>invited to</label>
+                    <div id="imp-events"></div>
+                </div>
+                <p class="hint js-import-summary"></p>
+                <div id="import-list" class="import-list"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-close>cancel</button>
+                    <button type="button" id="import-save" class="btn btn-primary">add families</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="../js/combined.js"></script>
+    <script src="../js/wedding-invites.js"></script>
+</body>
+</html>

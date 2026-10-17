@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Guest RSVP page. Deliberately no analytics or third-party scripts:
+         the personal token lives in the URL fragment and must not leak. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>You're invited - The Parsi Project</title>
+    <meta property="og:title" content="You're invited 💌">
+    <meta property="og:description" content="Tap to let the family know who's coming.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: #000; color: #fff;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrap { max-width: 520px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+        .hidden { display: none !important; }
+
+        .eyebrow { color: #999; font-size: 0.85rem; text-transform: lowercase; letter-spacing: 0.04em; text-align: center; }
+        .couple { font-size: 2.2rem; font-weight: 700; text-align: center; margin: 0.4rem 0 0.25rem; line-height: 1.15; }
+        .title { color: #bbb; font-size: 1rem; text-align: center; margin-bottom: 2rem; }
+        .greeting { font-size: 1.15rem; margin-bottom: 0.4rem; }
+        .sub { color: #999; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem; }
+
+        .event {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 1.1rem; margin-bottom: 1rem;
+        }
+        .event-name { font-size: 1.3rem; font-weight: 700; }
+        .event-when { color: #ddd; font-size: 1rem; margin-top: 0.35rem; }
+        .event-meta { color: #999; font-size: 0.9rem; margin-top: 0.2rem; line-height: 1.45; }
+        .event-meta a { color: #bbb; }
+        .closed-note { color: #f0c36d; font-size: 0.85rem; margin-top: 0.75rem; }
+
+        .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+        .choice {
+            background: none; border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff; font-family: inherit; font-size: 1.05rem; font-weight: 600;
+            min-height: 54px; cursor: pointer;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+        }
+        .choice.active.yes { background: #7bd88f; border-color: #7bd88f; color: #000; }
+        .choice.active.no { background: #ff8f8f; border-color: #ff8f8f; color: #000; }
+        .maybe-link {
+            background: none; border: none; color: #888; font-family: inherit; font-size: 0.9rem;
+            text-decoration: underline; margin-top: 0.6rem; cursor: pointer; min-height: 36px;
+        }
+        .maybe-link.active { color: #b0b0ff; }
+
+        .counts { margin-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; }
+        .stepper-row { display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; }
+        .stepper-label { font-size: 1rem; }
+        .stepper-label small { display: block; color: #888; font-size: 0.8rem; }
+        .stepper { display: flex; align-items: center; gap: 0.25rem; }
+        .stepper button {
+            width: 48px; height: 48px; background: none;
+            border: 1px solid rgba(255, 255, 255, 0.25); color: #fff;
+            font-size: 1.4rem; cursor: pointer; font-family: inherit;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+        }
+        .stepper button:disabled { opacity: 0.25; cursor: default; }
+        .stepper output { min-width: 2.5rem; text-align: center; font-size: 1.3rem; font-weight: 700; }
+
+        .all-yes {
+            width: 100%; background: none; border: 1px dashed rgba(255, 255, 255, 0.3);
+            color: #ddd; font-family: inherit; font-size: 1rem;
+            min-height: 52px; margin-bottom: 1rem; cursor: pointer;
+        }
+
+        label.note-label { display: block; color: #999; font-size: 0.9rem; margin: 1.5rem 0 0.4rem; }
+        textarea {
+            width: 100%; min-height: 90px; resize: vertical;
+            background: #0b0b0b; color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: inherit; font-size: 16px; padding: 0.75rem; line-height: 1.45;
+        }
+
+        .submit {
+            width: 100%; background: #fff; color: #000; border: none;
+            font-family: inherit; font-size: 1.15rem; font-weight: 700;
+            min-height: 58px; margin-top: 1.25rem; cursor: pointer;
+        }
+        .submit:disabled { opacity: 0.5; }
+        .error { color: #ff8f8f; font-size: 0.95rem; margin-top: 0.75rem; text-align: center; }
+
+        .done-box { border: 1px solid rgba(255, 255, 255, 0.14); padding: 1.25rem; margin-bottom: 1rem; }
+        .done-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .summary-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-size: 1rem; }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-row .ans { color: #bbb; text-align: right; }
+        .summary-row .ans.yes { color: #7bd88f; }
+        .summary-row .ans.no { color: #ff8f8f; }
+        .secondary {
+            width: 100%; background: none; color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            font-family: inherit; font-size: 1rem; min-height: 52px;
+            margin-top: 0.6rem; cursor: pointer; text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .center-msg { text-align: center; color: #999; padding: 4rem 0; font-size: 1rem; line-height: 1.6; }
+        .footer { color: #666; font-size: 0.78rem; line-height: 1.5; margin-top: 2.5rem; text-align: center; }
+        .footer a { color: #888; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <div id="loading" class="center-msg">opening your invite…</div>
+
+        <div id="invalid" class="center-msg hidden">
+            this invite link doesn't work any more.<br>
+            please ask the family to send it again.
+        </div>
+
+        <div id="invite" class="hidden">
+            <p class="eyebrow">you're invited</p>
+            <h1 class="couple" id="couple"></h1>
+            <p class="title" id="occasion"></p>
+
+            <!-- Answer form -->
+            <section id="form-view">
+                <p class="greeting" id="greeting"></p>
+                <p class="sub" id="form-sub"></p>
+                <button type="button" class="all-yes hidden" id="all-yes">we'll be there for everything 🎉</button>
+                <div id="events"></div>
+                <label class="note-label" for="note">anything the family should know? (optional)</label>
+                <textarea id="note" maxlength="500" placeholder="e.g. granny needs a wheelchair, we land on the 12th…"></textarea>
+                <button type="button" class="submit" id="submit">send my reply</button>
+                <p class="error hidden" id="error"></p>
+            </section>
+
+            <!-- Saved / already answered -->
+            <section id="done-view" class="hidden">
+                <div class="done-box">
+                    <p class="done-title" id="done-title">thank you!</p>
+                    <p class="sub" id="done-sub" style="margin-bottom:0.75rem"></p>
+                    <div id="summary"></div>
+                </div>
+                <a class="secondary hidden" id="calendar-link" download="invite.ics">add to my calendar</a>
+                <button type="button" class="secondary" id="change">change my reply</button>
+            </section>
+        </div>
+
+        <p class="footer">
+            your reply goes only to the family who invited you, through
+            <a href="../index.html" target="_blank" rel="noopener">the parsi project</a>.
+            we don't use your details for anything else. <a href="privacy.html" target="_blank" rel="noopener">privacy</a>
+        </p>
+    </main>
+
+    <script>
+    (function () {
+        var SUPABASE_URL = 'https://ihsbndryziohroodkwjn.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imloc2JuZHJ5emlvaHJvb2Rrd2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjA0NTEsImV4cCI6MjA5MDYzNjQ1MX0.BNW9mTWgRDG5yJ8rjjZ-g8v8C2dbfAOapZCDq0aKFgk';
+        // Meal counts only matter where food is served, not at home rituals.
+        var NO_MEAL_KINDS = ['madhavsaro', 'adarni', 'supra'];
+
+        var token = (window.location.hash.match(/[#&]t=([0-9a-f]{32})/) || [])[1];
+        var data = null;
+        var answers = {};   // event_id -> { status, adults, kids, veg }
+
+        function $(id) { return document.getElementById(id); }
+        function esc(v) {
+            return String(v === null || v === undefined ? '' : v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function rpc(fn, body) {
+            return fetch(SUPABASE_URL + '/rest/v1/rpc/' + fn, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then(function (res) {
+                if (!res.ok) throw new Error('request failed: ' + res.status);
+                return res.json();
+            });
+        }
+
+        function formatWhen(ev) {
+            if (!ev.starts_at) return '';
+            var opts = { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' };
+            try {
+                return new Intl.DateTimeFormat('en-IN', Object.assign({ timeZone: ev.tz || undefined }, opts)).format(new Date(ev.starts_at));
+            } catch (e) {
+                return new Intl.DateTimeFormat('en-IN', opts).format(new Date(ev.starts_at));
+            }
+        }
+
+        function formatDeadline(d) {
+            return new Date(d + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+        }
+
+        function show(id) {
+            ['loading', 'invalid', 'invite'].forEach(function (x) { $(x).classList.toggle('hidden', x !== id); });
+        }
+
+        function maxGuests() { return data.household.max_guests; }
+        function openEvents() { return data.events.filter(function (ev) { return !ev.closed; }); }
+        function hasAnswered() { return data.events.some(function (ev) { return ev.status !== 'pending'; }); }
+
+        // ── Form ────────────────────────────────────────────────
+        function renderForm() {
+            var max = maxGuests();
+            $('greeting').textContent = 'Dear ' + data.household.name + ',';
+            $('form-sub').textContent = data.events.length > 1
+                ? 'please tell us for each one. ' + (max > 1 ? 'there are places for up to ' + max + ' of you.' : 'this invitation is for you.')
+                : (max > 1 ? 'there are places for up to ' + max + ' of you.' : 'this invitation is for you.');
+            $('all-yes').classList.toggle('hidden', openEvents().length < 2);
+            $('note').value = data.household.guest_note || '';
+
+            $('events').innerHTML = data.events.map(function (ev) {
+                var a = answers[ev.event_id];
+                var meta = [];
+                if (ev.parsi_date) meta.push(esc(ev.parsi_date));
+                if (ev.venue) meta.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ev.venue) + '" target="_blank" rel="noopener noreferrer">' + esc(ev.venue) + '</a>');
+                if (ev.rsvp_deadline && !ev.closed) meta.push('please reply by ' + esc(formatDeadline(ev.rsvp_deadline)));
+
+                var html = '<div class="event"><div class="event-name">' + esc(ev.name) + '</div>' +
+                    (ev.starts_at ? '<div class="event-when">' + esc(formatWhen(ev)) + '</div>' : '') +
+                    (meta.length ? '<div class="event-meta">' + meta.join('<br>') + '</div>' : '');
+
+                if (ev.closed) {
+                    html += '<p class="closed-note">replies for this have closed' +
+                        (ev.status !== 'pending' ? ' — you said: ' + esc(describe(ev)) : '') +
+                        '. to change it, please call the family.</p></div>';
+                    return html;
+                }
+
+                html += '<div class="choices">' +
+                    '<button type="button" class="choice yes' + (a.status === 'yes' ? ' active' : '') + '" data-ev="' + ev.event_id + '" data-status="yes">coming</button>' +
+                    '<button type="button" class="choice no' + (a.status === 'no' ? ' active' : '') + '" data-ev="' + ev.event_id + '" data-status="no">can\'t make it</button>' +
+                    '</div>' +
+                    '<button type="button" class="maybe-link' + (a.status === 'maybe' ? ' active' : '') + '" data-ev="' + ev.event_id + '" data-status="maybe">' +
+                    (a.status === 'maybe' ? '✓ not sure yet' : 'not sure yet') + '</button>';
+
+                if (a.status === 'yes') {
+                    var total = a.adults + a.kids;
+                    html += '<div class="counts">' +
+                        (max > 1 ? stepper(ev.event_id, 'adults', 'adults', '', a.adults, total >= max, a.adults <= (a.kids ? 0 : 1)) +
+                            stepper(ev.event_id, 'kids', 'children', 'under 12', a.kids, total >= max, a.kids <= 0) : '') +
+                        (NO_MEAL_KINDS.indexOf(ev.kind) === -1
+                            ? stepper(ev.event_id, 'veg', 'vegetarian', 'how many of you eat veg', a.veg, a.veg >= total, a.veg <= 0)
+                            : '') +
+                        '</div>';
+                }
+                return html + '</div>';
+            }).join('');
+        }
+
+        function stepper(evId, field, label, hint, value, plusDisabled, minusDisabled) {
+            return '<div class="stepper-row"><div class="stepper-label">' + esc(label) + (hint ? '<small>' + esc(hint) + '</small>' : '') + '</div>' +
+                '<div class="stepper">' +
+                '<button type="button" aria-label="fewer ' + esc(label) + '" data-step="-1" data-ev="' + evId + '" data-field="' + field + '"' + (minusDisabled ? ' disabled' : '') + '>−</button>' +
+                '<output>' + value + '</output>' +
+                '<button type="button" aria-label="more ' + esc(label) + '" data-step="1" data-ev="' + evId + '" data-field="' + field + '"' + (plusDisabled ? ' disabled' : '') + '>+</button>' +
+                '</div></div>';
+        }
+
+        function setStatus(evId, status) {
+            var a = answers[evId];
+            a.status = status;
+            if (status === 'yes' && a.adults + a.kids === 0) {
+                a.adults = rememberedAdults() || Math.min(2, maxGuests());
+                a.kids = rememberedKids();
+            }
+        }
+
+        // Reuse the headcount from the first "yes" so families don't re-enter it per event.
+        function rememberedAdults() {
+            for (var k in answers) if (answers[k].status === 'yes' && answers[k].adults) return answers[k].adults;
+            return 0;
+        }
+        function rememberedKids() {
+            for (var k in answers) if (answers[k].status === 'yes' && answers[k].adults) return answers[k].kids;
+            return 0;
+        }
+
+        function onEventsClick(e) {
+            var btn = e.target.closest('button');
+            if (!btn || !btn.dataset.ev) return;
+            var a = answers[btn.dataset.ev];
+            if (btn.dataset.status) {
+                setStatus(btn.dataset.ev, a.status === btn.dataset.status && btn.dataset.status === 'maybe' ? 'pending' : btn.dataset.status);
+            } else if (btn.dataset.step) {
+                var f = btn.dataset.field;
+                a[f] = Math.max(0, a[f] + Number(btn.dataset.step));
+                var total = a.adults + a.kids;
+                if (total > maxGuests()) a[f] -= total - maxGuests();
+                if (a.adults + a.kids === 0) a.adults = 1;
+                a.veg = Math.min(a.veg, a.adults + a.kids);
+            }
+            $('error').classList.add('hidden');
+            renderForm();
+        }
+
+        function allYes() {
+            openEvents().forEach(function (ev) { setStatus(ev.event_id, 'yes'); });
+            renderForm();
+        }
+
+        function submit() {
+            var open = openEvents();
+            var unanswered = open.filter(function (ev) { return answers[ev.event_id].status === 'pending'; });
+            if (unanswered.length === open.length) {
+                showError('please choose coming or can\'t make it' + (open.length > 1 ? ' for at least one event.' : '.'));
+                return;
+            }
+            var responses = open
+                .filter(function (ev) { return answers[ev.event_id].status !== 'pending'; })
+                .map(function (ev) {
+                    var a = answers[ev.event_id];
+                    return { event_id: ev.event_id, status: a.status, adults: a.adults, kids: a.kids, veg: a.veg };
+                });
+            $('submit').disabled = true;
+            $('submit').textContent = 'sending…';
+            rpc('submit_rsvp', { p_token: token, p_responses: responses, p_note: $('note').value })
+                .then(function (res) {
+                    if (!res || !res.ok) {
+                        var msg = {
+                            closed: 'replies have closed for one of these. please call the family.',
+                            over_limit: 'that\'s more people than this invitation has room for (' + (res && res.max_guests) + ').',
+                            invalid: 'this link doesn\'t work any more. please ask the family to resend it.'
+                        }[res && res.error] || 'something went wrong. please try again.';
+                        showError(msg);
+                        return;
+                    }
+                    return load(true);
+                })
+                .catch(function () { showError('couldn\'t send — check your internet and try again.'); })
+                .then(function () {
+                    $('submit').disabled = false;
+                    $('submit').textContent = 'send my reply';
+                });
+        }
+
+        function showError(msg) {
+            $('error').textContent = msg;
+            $('error').classList.remove('hidden');
+        }
+
+        // ── Done view ───────────────────────────────────────────
+        function describe(ev) {
+            if (ev.status === 'yes') {
+                var parts = [ev.adults + (ev.adults === 1 ? ' adult' : ' adults')];
+                if (ev.kids) parts.push(ev.kids + (ev.kids === 1 ? ' child' : ' children'));
+                return 'coming · ' + parts.join(', ') + (ev.veg ? ' (' + ev.veg + ' veg)' : '');
+            }
+            return { no: 'not coming', maybe: 'not sure yet', pending: 'no reply yet' }[ev.status];
+        }
+
+        function renderDone(justSaved) {
+            var anyYes = data.events.some(function (ev) { return ev.status === 'yes'; });
+            $('done-title').textContent = justSaved ? (anyYes ? 'see you there! 🎉' : 'thank you for letting us know') : 'your reply';
+            $('done-sub').textContent = justSaved
+                ? 'the family has your reply. you can change it any time from this link.'
+                : 'here\'s what you told the family.';
+            $('summary').innerHTML = data.events.map(function (ev) {
+                var text = ev.closed && ev.status === 'pending' ? 'replies closed' : describe(ev);
+                return '<div class="summary-row"><span>' + esc(ev.name) + '</span><span class="ans ' + ev.status + '">' + esc(text) + '</span></div>';
+            }).join('');
+
+            var ics = buildIcs();
+            var cal = $('calendar-link');
+            cal.classList.toggle('hidden', !ics);
+            if (ics) cal.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+            $('change').classList.toggle('hidden', !openEvents().length);
+        }
+
+        function icsDate(d) {
+            return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        }
+        function icsText(s) {
+            return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+        }
+
+        function buildIcs() {
+            var yes = data.events.filter(function (ev) { return ev.status === 'yes' && ev.starts_at; });
+            if (!yes.length) return null;
+            var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Parsi Project//Wedding Invites//EN', 'CALSCALE:GREGORIAN'];
+            yes.forEach(function (ev) {
+                var start = new Date(ev.starts_at);
+                var end = new Date(start.getTime() + 3 * 3600 * 1000);
+                lines.push('BEGIN:VEVENT',
+                    'UID:' + ev.event_id + '@theparsiproject.com',
+                    'DTSTAMP:' + icsDate(new Date()),
+                    'DTSTART:' + icsDate(start),
+                    'DTEND:' + icsDate(end),
+                    'SUMMARY:' + icsText(ev.name + ' — ' + data.wedding.couple_names),
+                    ev.venue ? 'LOCATION:' + icsText(ev.venue) : null,
+                    ev.parsi_date ? 'DESCRIPTION:' + icsText(ev.parsi_date) : null,
+                    'END:VEVENT');
+            });
+            lines.push('END:VCALENDAR');
+            return lines.filter(Boolean).join('\r\n');
+        }
+
+        // ── Load ────────────────────────────────────────────────
+        function load(justSaved) {
+            return rpc('get_rsvp', { p_token: token }).then(function (res) {
+                if (!res) { show('invalid'); return; }
+                data = res;
+                answers = {};
+                data.events.forEach(function (ev) {
+                    answers[ev.event_id] = { status: ev.status, adults: ev.adults, kids: ev.kids, veg: ev.veg };
+                });
+                $('couple').textContent = data.wedding.couple_names;
+                $('occasion').textContent = data.wedding.title;
+                document.title = data.wedding.couple_names + ' — you\'re invited';
+                show('invite');
+
+                if (!data.events.length) {
+                    $('form-view').classList.add('hidden');
+                    $('done-view').classList.remove('hidden');
+                    $('done-title').textContent = 'details coming soon';
+                    $('done-sub').textContent = 'the family is still finalising things. check back on this link.';
+                    $('summary').innerHTML = '';
+                    $('change').classList.add('hidden');
+                    return;
+                }
+                var answered = justSaved || hasAnswered();
+                $('form-view').classList.toggle('hidden', answered);
+                $('done-view').classList.toggle('hidden', !answered);
+                if (answered) renderDone(justSaved);
+                else renderForm();
+                window.scrollTo(0, 0);
+            });
+        }
+
+        $('events').addEventListener('click', onEventsClick);
+        $('all-yes').addEventListener('click', allYes);
+        $('submit').addEventListener('click', submit);
+        $('change').addEventListener('click', function () {
+            $('done-view').classList.add('hidden');
+            $('form-view').classList.remove('hidden');
+            renderForm();
+            window.scrollTo(0, 0);
+        });
+
+        if (!token) {
+            show('invalid');
+        } else {
+            load(false).catch(function () {
+                $('invalid').innerHTML = 'couldn\'t open your invite — check your internet and refresh.';
+                show('invalid');
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
