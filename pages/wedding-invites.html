@@ -12,7 +12,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invites - The Parsi Project</title>
+    <title>Lagan ni Chitthi - The Parsi Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -226,6 +226,50 @@
         .modal-footer { display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1.25rem; }
         .modal-footer .left { margin-right: auto; }
 
+        /* Invite grid */
+        .grid-wrap { overflow-x: auto; border: 1px solid rgba(255, 255, 255, 0.08); }
+        table.grid { border-collapse: separate; border-spacing: 0; min-width: 100%; font-size: 0.8rem; }
+        table.grid th, table.grid td { border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 0.55rem 0.5rem; vertical-align: middle; background: #000; }
+        table.grid th { color: #888; font-weight: 500; text-transform: lowercase; text-align: center; white-space: nowrap; position: sticky; top: 0; z-index: 1; }
+        table.grid .name-col { position: sticky; left: 0; z-index: 2; text-align: left; min-width: 170px; max-width: 240px; border-right: 1px solid rgba(255, 255, 255, 0.08); }
+        table.grid th.name-col { z-index: 3; }
+        table.grid td.cell { text-align: center; min-width: 64px; }
+        table.grid tfoot td { color: #777; text-align: center; font-size: 0.72rem; text-transform: lowercase; }
+        .row-name { background: none; border: none; color: #fff; font-family: inherit; font-size: 0.9rem; font-weight: 600; text-align: left; cursor: pointer; padding: 0; text-transform: lowercase; }
+        .row-meta { color: #777; font-size: 0.72rem; margin-top: 0.15rem; text-transform: lowercase; line-height: 1.4; }
+        .row-note { color: #bbb; font-size: 0.72rem; margin-top: 0.15rem; }
+        .row-actions { display: flex; gap: 0.6rem; margin-top: 0.3rem; flex-wrap: wrap; }
+        .row-actions a, .row-actions button { background: none; border: none; color: #aaa; font-family: inherit; font-size: 0.72rem; text-decoration: underline; cursor: pointer; padding: 0.15rem 0; text-transform: lowercase; }
+        .row-actions a.wa { color: #25D366; }
+        .col-all { display: block; margin: 0.3rem auto 0; background: none; border: 1px solid rgba(255, 255, 255, 0.15); color: #888; font-family: inherit; font-size: 0.65rem; padding: 0.15rem 0.4rem; cursor: pointer; }
+        .col-all:hover { color: #fff; }
+        .tick {
+            width: 40px; height: 40px; background: none; cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.25); color: #000;
+            font-family: inherit; font-size: 0.85rem; font-weight: 700;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+        }
+        .tick:hover { border-color: rgba(255, 255, 255, 0.6); }
+        .tick.pending { background: #fff; }
+        .tick.yes { background: #7bd88f; border-color: #7bd88f; }
+        .tick.no { background: #ff8f8f; border-color: #ff8f8f; }
+        .tick.maybe { background: #b0b0ff; border-color: #b0b0ff; }
+        .tick.card-on { background: #f0c36d; border-color: #f0c36d; }
+        .tick.over { box-shadow: 0 0 0 2px #000, 0 0 0 4px #f0c36d; }
+        table.grid tr.group-row td { background: #111; color: #ccc; font-weight: 600; text-transform: lowercase; font-size: 0.78rem; padding: 0.6rem 0.5rem; }
+        table.grid tr.group-row td span { color: #777; font-weight: 400; margin-left: 0.5rem; }
+        .legend { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 0.6rem; color: #777; font-size: 0.72rem; text-transform: lowercase; }
+        .legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 0.35rem; vertical-align: -1px; border: 1px solid rgba(255, 255, 255, 0.3); }
+        .legend .l-pending::before { background: #fff; }
+        .legend .l-yes::before { background: #7bd88f; }
+        .legend .l-no::before { background: #ff8f8f; }
+        .legend .l-maybe::before { background: #b0b0ff; }
+        .legend .l-over::before { background: #7bd88f; box-shadow: 0 0 0 2px #f0c36d; }
+
+        .image-field { display: flex; flex-direction: column; gap: 0.5rem; }
+        .image-preview { max-width: 100%; max-height: 220px; object-fit: contain; align-self: flex-start; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .event-thumb { width: 56px; height: 56px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0; }
+
         /* Import preview */
         .import-list { max-height: 320px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.08); margin-top: 0.75rem; }
         .import-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.82rem; }
@@ -274,8 +318,8 @@
     <div class="container">
         <div class="main-content" id="main-content">
             <div class="header">
-                <h1 class="page-title">wedding invites</h1>
-                <p class="page-subtitle">send the invites on whatsapp, we keep count of who's coming. you get back to fighting over the menu.</p>
+                <h1 class="page-title">lagan ni chitthi</h1>
+                <p class="page-subtitle">send the chitthi on whatsapp, we keep count of who's coming. you get back to fighting over the menu.</p>
             </div>
 
             <div id="loading-section" class="auth-section">
@@ -350,10 +394,19 @@
                 <section id="tab-families" class="tab-panel hidden">
                     <div class="toolbar">
                         <button id="add-household-btn" class="btn btn-primary">+ add family</button>
-                        <button id="import-btn" class="btn">import contacts</button>
+                        <button id="import-btn" class="btn">import list</button>
+                        <button id="template-btn" class="btn">download excel template</button>
                     </div>
                     <div class="toolbar">
                         <input type="search" id="household-search" class="grow" placeholder="search names or numbers">
+                        <select id="household-list-filter" style="width:auto" aria-label="filter by list">
+                            <option value="">all lists</option>
+                        </select>
+                        <select id="household-group" style="width:auto" aria-label="arrange by">
+                            <option value="none">a–z</option>
+                            <option value="list">arrange by list</option>
+                            <option value="side">arrange by side</option>
+                        </select>
                         <select id="household-filter" style="width:auto">
                             <option value="all">everyone</option>
                             <option value="not_sent">invite not sent</option>
@@ -361,9 +414,11 @@
                             <option value="yes">coming to something</option>
                             <option value="no">declined everything</option>
                             <option value="no_phone">no phone number</option>
+                            <option value="no_card">printed card not delivered</option>
                         </select>
                     </div>
-                    <p class="hint js-household-count" style="margin-bottom:0.75rem"></p>
+                    <p class="hint js-household-count" style="margin-bottom:0.4rem"></p>
+                    <p class="hint" style="margin-bottom:0.75rem">tick the events each line is invited to. if someone in a family is invited to something extra, add them as their own line. replied on a call or on whatsapp? tap <b>reply</b> under their name.</p>
                     <div id="household-list"></div>
                 </section>
 
@@ -448,7 +503,7 @@
             <form id="household-form">
                 <input type="hidden" id="hh-id">
                 <div class="form-row">
-                    <label for="hh-name">how should we address them?</label>
+                    <label for="hh-name">name (how the chitthi should address them)</label>
                     <input type="text" id="hh-name" placeholder="mr & mrs daruwalla & family" required maxlength="120">
                 </div>
                 <div class="form-grid">
@@ -457,7 +512,7 @@
                         <input type="tel" id="hh-phone" placeholder="98200 12345 or +44 7700 900123" maxlength="25">
                     </div>
                     <div class="form-row">
-                        <label for="hh-max">up to how many people?</label>
+                        <label for="hh-max">people you expect (guests don't see this)</label>
                         <input type="number" id="hh-max" min="1" max="50" value="2" required>
                     </div>
                     <div class="form-row">
@@ -469,7 +524,7 @@
                         </select>
                     </div>
                     <div class="form-row">
-                        <label for="hh-invited-by">whose list? (optional)</label>
+                        <label for="hh-invited-by">whose list? (anything you like)</label>
                         <input type="text" id="hh-invited-by" list="invited-by-options" placeholder="mum, dad, us…" maxlength="60">
                     </div>
                     <div class="form-row">
@@ -480,13 +535,6 @@
                             <option value="overseas">abroad</option>
                         </select>
                     </div>
-                    <div class="form-row" style="display:flex;align-items:flex-end">
-                        <label class="check-row" style="margin-bottom:0.75rem"><input type="checkbox" id="hh-card"> printed card delivered</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label>invited to</label>
-                    <div id="hh-events"></div>
                 </div>
                 <div class="form-row">
                     <label for="hh-notes">notes (only you see these)</label>
@@ -495,6 +543,7 @@
                 <div class="modal-footer">
                     <button type="button" id="hh-delete" class="btn btn-danger left hidden">remove</button>
                     <button type="button" class="btn" data-close>cancel</button>
+                    <button type="submit" id="hh-save-another" class="btn" data-again="1">save & add another</button>
                     <button type="submit" class="btn btn-primary">save</button>
                 </div>
             </form>
@@ -508,6 +557,15 @@
             <button class="modal-close" data-close aria-label="close">&times;</button>
             <h2 class="modal-title" id="reply-modal-title">record reply</h2>
             <p class="hint js-reply-sub" style="margin-bottom:1rem"></p>
+            <div class="form-row">
+                <label for="reply-via">how did they reply?</label>
+                <select id="reply-via">
+                    <option value="call">on a phone call</option>
+                    <option value="whatsapp">on whatsapp</option>
+                    <option value="in_person">in person</option>
+                    <option value="other">someone told us</option>
+                </select>
+            </div>
             <div id="reply-events"></div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-close>cancel</button>
@@ -557,7 +615,20 @@
                         <input type="number" id="ev-panth" min="1" max="2000" placeholder="e.g. 250">
                     </div>
                 </div>
-                <label class="check-row js-invite-all-row"><input type="checkbox" id="ev-invite-all" checked> invite everyone already on the list</label>
+                <div class="form-row">
+                    <label>chitthi image for this event (optional)</label>
+                    <div class="image-field">
+                        <img id="ev-image-preview" class="image-preview hidden" alt="">
+                        <div class="toolbar" style="margin:0">
+                            <label class="btn btn-small" for="ev-image">choose image</label>
+                            <button type="button" id="ev-image-remove" class="btn btn-small hidden">remove image</button>
+                        </div>
+                        <input type="file" id="ev-image" accept="image/*" class="hidden">
+                    </div>
+                    <p class="hint" style="margin-top:0.35rem">guests see it on their reply page.</p>
+                </div>
+                <label class="check-row"><input type="checkbox" id="ev-ask-diet"> ask guests how many are veg / non-veg</label>
+                <label class="check-row js-invite-all-row"><input type="checkbox" id="ev-invite-all"> tick everyone already on the list</label>
                 <div class="modal-footer">
                     <button type="button" id="ev-delete" class="btn btn-danger left hidden">delete</button>
                     <button type="button" class="btn" data-close>cancel</button>
@@ -571,10 +642,10 @@
     <div id="import-modal" class="modal-overlay hidden">
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
             <button class="modal-close" data-close aria-label="close">&times;</button>
-            <h2 class="modal-title" id="import-modal-title">import contacts</h2>
+            <h2 class="modal-title" id="import-modal-title">import list</h2>
             <div class="toolbar">
                 <button type="button" id="pick-contacts-btn" class="btn btn-primary hidden">pick from phone contacts</button>
-                <label class="btn" for="import-file">upload .csv / .vcf</label>
+                <label class="btn" for="import-file">upload excel (.csv) / .vcf</label>
                 <input type="file" id="import-file" accept=".csv,.vcf,.txt,text/csv,text/vcard,text/x-vcard" class="hidden">
             </div>
             <p class="hint js-import-help" style="margin-bottom:0.75rem"></p>
@@ -585,7 +656,7 @@
             <button type="button" id="import-parse-btn" class="btn">read list</button>
 
             <div id="import-preview" class="hidden" style="margin-top:1.5rem">
-                <h3 class="section-title">apply to everyone below</h3>
+                <h3 class="section-title">for anyone the file doesn't say</h3>
                 <div class="form-grid">
                     <div class="form-row">
                         <label for="imp-side">side</label>
@@ -596,12 +667,12 @@
                         </select>
                     </div>
                     <div class="form-row">
-                        <label for="imp-max">up to how many people each?</label>
+                        <label for="imp-max">people expected each</label>
                         <input type="number" id="imp-max" min="1" max="50" value="2">
                     </div>
                     <div class="form-row">
-                        <label for="imp-invited-by">whose list?</label>
-                        <input type="text" id="imp-invited-by" list="invited-by-options" maxlength="60">
+                        <label for="imp-invited-by">whose list is this? (anything — mum, dad, kaizad…)</label>
+                        <input type="text" id="imp-invited-by" list="invited-by-options" maxlength="60" placeholder="type or pick a list">
                     </div>
                     <div class="form-row">
                         <label for="imp-locality">coming from</label>
@@ -612,10 +683,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-row">
-                    <label>invited to</label>
-                    <div id="imp-events"></div>
-                </div>
+                <p class="hint" style="margin-bottom:0.5rem">anything filled in the file (people, side, events ticked…) wins over these.</p>
                 <p class="hint js-import-summary"></p>
                 <div id="import-list" class="import-list"></div>
                 <div class="modal-footer">

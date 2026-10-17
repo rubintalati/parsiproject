@@ -1,11 +1,12 @@
 /**
- * Wedding Invites — guest list, WhatsApp send queue and RSVP dashboard.
+ * Lagan ni Chitthi — guest list, WhatsApp send queue and RSVP dashboard.
  *
- * Couples sign in with Google and manage households (the invitation unit),
- * events and per-event invitations through Supabase under RLS. Each household
- * gets a personal link to pages/rsvp.html; the couple sends it from their own
- * WhatsApp via wa.me links, so nothing is sent on their behalf.
- * Uses combined.js for Parsi (roj/mah) dates.
+ * Couples sign in with Google and manage lines on their guest list
+ * (households: a family or a single person), events and per-event
+ * invitations through Supabase under RLS. Invitations are ticked in a
+ * line × event grid. Each line gets a personal link to pages/rsvp.html;
+ * the couple sends it from their own WhatsApp via wa.me, so nothing is
+ * sent on their behalf. Uses combined.js for Parsi (roj/mah) dates.
  */
 
 // ─── Supabase Config ─────────────────────────────────────────────
@@ -16,11 +17,15 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 
 // ─── Constants ───────────────────────────────────────────────────
 var DEFAULT_COUNTRY_CODE = '91';
+var IMAGE_BUCKET = 'chitthi';
+var IMAGE_MAX_PX = 1600;
 var STORAGE_WEDDING = 'wi_wedding_id';
 var STORAGE_TAB = 'wi_tab';
 var STORAGE_JOIN = 'wi_join_code';
+var STORAGE_GROUP = 'wi_group';
+var NO_LIST = '__none';
 
-// Share of a pending household's maximum we expect to turn up.
+// Share of a pending line's maximum we expect to turn up.
 var LIKELY_BY_LOCALITY = { local: 0.8, outstation: 0.55, overseas: 0.4 };
 var LIKELY_MAYBE = 0.5;
 var CONFIRMED_SHOW_RATE = 0.95;
@@ -30,15 +35,19 @@ var EVENT_PRESETS = [
     { kind: 'adarni', name: 'Adarni', side: 'bride' },
     { kind: 'supra', name: 'Supra nu Murat', side: 'both' },
     { kind: 'lagan', name: 'Lagan', side: 'both' },
-    { kind: 'dinner', name: 'Lagan Dinner', side: 'both', panth: 250 },
-    { kind: 'reception', name: 'Reception', side: 'both' },
-    { kind: 'navjote', name: 'Navjote', side: 'both' },
+    { kind: 'dinner', name: 'Lagan Dinner', side: 'both', panth: 250, askDiet: true },
+    { kind: 'reception', name: 'Reception', side: 'both', askDiet: true },
+    { kind: 'navjote', name: 'Navjote', side: 'both', askDiet: true },
     { kind: 'custom', name: '', side: 'both' }
 ];
 
 var SIDE_LABELS = { bride: "bride's side", groom: "groom's side", both: 'common' };
 var LOCALITY_LABELS = { local: 'same city', outstation: 'another city', overseas: 'abroad' };
 var STATUS_LABELS = { pending: 'waiting', yes: 'coming', no: 'not coming', maybe: 'maybe' };
+var VIA_LABELS = {
+    guest_link: 'via their link', host: 'recorded', call: 'on a call',
+    whatsapp: 'on whatsapp', in_person: 'in person', other: 'someone told us'
+};
 
 var DEFAULT_INVITE_TEMPLATE =
     'Dear {name},\n\n' +
@@ -71,6 +80,8 @@ var sendMode = 'invite';
 var skippedInQueue = [];
 var importRows = [];
 var replyDraft = null;
+var eventImageDraft = null;  // { blob, url } | { remove: true } | null
+var shareFileCache = {};     // image_path -> File
 
 // ─── DOM helpers ─────────────────────────────────────────────────
 function $(id) { return document.getElementById(id); }
@@ -129,6 +140,16 @@ function relTime(iso) {
     var hrs = Math.round(mins / 60);
     if (hrs < 24) return hrs + 'h ago';
     return Math.round(hrs / 24) + 'd ago';
+}
+
+function plural(n, word) {
+    return n + ' ' + word + (n === 1 ? '' : 's');
+}
+
+function randomId() {
+    var bytes = new Uint8Array(8);
+    crypto.getRandomValues(bytes);
+    return Array.prototype.map.call(bytes, function (b) { return b.toString(16).padStart(2, '0'); }).join('');
 }
 
 // ─── Phone numbers ───────────────────────────────────────────────
@@ -194,6 +215,45 @@ function sortEvents(list) {
     });
 }
 
+// Replies close after the deadline day ends in India time (matches submit_rsvp).
+function isClosed(ev) {
+    if (!ev || !ev.rsvp_deadline) return false;
+    var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+    return ev.rsvp_deadline < today;
+}
+
+// ─── Images ──────────────────────────────────────────────────────
+function imageUrl(path) {
+    return path ? supabaseClient.storage.from(IMAGE_BUCKET).getPublicUrl(path).data.publicUrl : '';
+}
+
+// Shrinks phone photos to a sensible JPEG before upload.
+function compressImage(file) {
+    return new Promise(function (resolve, reject) {
+        var img = new Image();
+        img.onload = function () {
+            var scale = Math.min(1, IMAGE_MAX_PX / Math.max(img.width, img.height));
+            var canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(img.src);
+            canvas.toBlob(function (blob) {
+                if (blob) resolve(blob); else reject(new Error('could not read that image'));
+            }, 'image/jpeg', 0.85);
+        };
+        img.onerror = function () { reject(new Error("that file isn't an image we can read")); };
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+async function removeImages(paths) {
+    paths = paths.filter(Boolean);
+    if (!paths.length) return;
+    var result = await supabaseClient.storage.from(IMAGE_BUCKET).remove(paths);
+    if (result.error) console.error(result.error);
+}
+
 // ─── Links & messages ────────────────────────────────────────────
 function rsvpBaseUrl() {
     return window.location.origin + window.location.pathname.replace(/wedding-invites\.html$/, 'rsvp.html');
@@ -208,19 +268,20 @@ function waUrl(phone, text) {
     return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(text);
 }
 
-function eventsTextFor(h) {
+function invitedEvents(h) {
     var invs = invByHousehold[h.id] || {};
-    return events
-        .filter(function (ev) { return invs[ev.id]; })
-        .map(function (ev) {
-            var line = '• ' + ev.name;
-            var when = formatEventDate(ev);
-            if (when) line += ' — ' + when;
-            if (ev.parsi_date) line += ' (' + ev.parsi_date + ')';
-            if (ev.venue) line += ' · ' + ev.venue;
-            return line;
-        })
-        .join('\n');
+    return events.filter(function (ev) { return invs[ev.id]; });
+}
+
+function eventsTextFor(h) {
+    return invitedEvents(h).map(function (ev) {
+        var line = '• ' + ev.name;
+        var when = formatEventDate(ev);
+        if (when) line += ' — ' + when;
+        if (ev.parsi_date) line += ' (' + ev.parsi_date + ')';
+        if (ev.venue) line += ' · ' + ev.venue;
+        return line;
+    }).join('\n');
 }
 
 function messageFor(h, mode) {
@@ -458,16 +519,10 @@ function eventStats(ev) {
         }
     });
     s.confirmed = s.adults + s.kids;
+    s.nonVeg = s.confirmed - s.veg;
     s.expected = Math.round(s.confirmed * CONFIRMED_SHOW_RATE + s.likely);
     s.panths = ev.seats_per_panth ? Math.max(1, Math.ceil(s.expected / ev.seats_per_panth)) : null;
     return s;
-}
-
-// Replies close after the deadline day ends in India time (matches submit_rsvp).
-function isClosed(ev) {
-    if (!ev || !ev.rsvp_deadline) return false;
-    var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
-    return ev.rsvp_deadline < today;
 }
 
 function householdSummary(h) {
@@ -484,15 +539,22 @@ function householdSummary(h) {
     };
 }
 
+function memberName(userId) {
+    if (!userId) return null;
+    if (currentUser && userId === currentUser.id) return 'you';
+    var m = members.find(function (x) { return x.user_id === userId; });
+    return m && m.display_name ? m.display_name.toLowerCase().split(' ')[0] : 'a co-host';
+}
+
 // ─── Rendering ───────────────────────────────────────────────────
 function renderAll() {
     switchTab(activeTab, true);
+    renderInvitedByOptions();
     renderOverview();
     renderHouseholds();
     renderEvents();
     renderSend();
     renderSettings();
-    renderInvitedByOptions();
 }
 
 function switchTab(tab, skipSave) {
@@ -508,12 +570,23 @@ function switchTab(tab, skipSave) {
     }
 }
 
-function renderInvitedByOptions() {
+function listNames() {
     var seen = {};
     households.forEach(function (h) { if (h.invited_by) seen[h.invited_by] = true; });
-    $('invited-by-options').innerHTML = Object.keys(seen).sort().map(function (v) {
+    return Object.keys(seen).sort(function (a, b) { return a.localeCompare(b); });
+}
+
+function renderInvitedByOptions() {
+    var names = listNames();
+    $('invited-by-options').innerHTML = names.map(function (v) {
         return '<option value="' + esc(v) + '">';
     }).join('');
+    var sel = $('household-list-filter');
+    var current = sel.value;
+    sel.innerHTML = '<option value="">all lists</option>' +
+        names.map(function (v) { return '<option value="' + esc(v) + '">' + esc(v.toLowerCase()) + '</option>'; }).join('') +
+        (households.some(function (h) { return !h.invited_by; }) ? '<option value="' + NO_LIST + '">no list</option>' : '');
+    sel.value = names.indexOf(current) !== -1 || current === NO_LIST ? current : '';
 }
 
 function emptyBlock(text, buttonLabel, action) {
@@ -541,7 +614,7 @@ function renderOverview() {
 
     var html = '<div class="stats">' +
         stat(households.length, 'families invited') +
-        stat(sent + ' / ' + households.length, 'invites sent') +
+        stat(sent + ' / ' + households.length, 'chitthis sent') +
         stat(opened, 'opened their link') +
         stat(replied + ' (' + pct + '%)', 'families replied') +
         '</div>';
@@ -556,7 +629,7 @@ function renderOverview() {
             '<button class="btn btn-small" data-action="event-csv" data-id="' + esc(ev.id) + '">download list</button></div>' +
             '<div class="event-numbers">' +
             num(s.confirmed, 'coming', 'yes', plural(s.adults, 'adult') + ' · ' + plural(s.kids, 'kid')) +
-            num(s.veg, 'veg') +
+            (ev.ask_diet ? num(s.veg, 'veg') + num(s.nonVeg, 'non-veg') : '') +
             num(s.pendingFam + s.maybeFam, 'families waiting', 'pending') +
             num(s.noFam, 'families declined', 'no') +
             num('~' + s.expected, 'expected') +
@@ -565,13 +638,11 @@ function renderOverview() {
     });
     html += '<p class="hint">expected = 95% of confirmed guests, plus a guess for families who haven\'t replied (80% of their max if local, 55% from another city, 40% from abroad, 50% for maybes). use it for the caterer, not the seating.</p>';
 
-    // Breakdown
     html += '<h2 class="section-title">by side & list</h2>' +
         '<div class="toolbar"><select id="breakdown-event" style="width:auto">' +
         events.map(function (ev) { return '<option value="' + esc(ev.id) + '">' + esc(ev.name.toLowerCase()) + '</option>'; }).join('') +
         '</select></div><div id="breakdown-table"></div>';
 
-    // Recent replies
     if (recentLog.length) {
         html += '<h2 class="section-title">latest replies</h2><div class="card">';
         recentLog.forEach(function (row) {
@@ -582,8 +653,10 @@ function renderOverview() {
             if (!h || !ev) return;
             var what = STATUS_LABELS[row.new_status] || row.new_status;
             if (row.new_status === 'yes') what += ' (' + row.new_count + ')';
+            var via = VIA_LABELS[row.source] || '';
+            var who = row.source !== 'guest_link' ? memberName(row.changed_by) : null;
             html += '<div class="queue-list"><div class="row"><span>' + esc(h.display_name) + ' · ' + esc(ev.name) + ' · ' + esc(what) + '</span>' +
-                '<span>' + (row.source === 'guest_link' ? 'via link · ' : '') + relTime(row.created_at) + '</span></div></div>';
+                '<span>' + esc([via, who ? 'by ' + who : null, relTime(row.created_at)].filter(Boolean).join(' · ')) + '</span></div></div>';
         });
         html += '</div>';
     }
@@ -593,17 +666,12 @@ function renderOverview() {
         '<button class="btn" data-action="refresh">refresh</button></div>';
 
     el.innerHTML = html;
-    // Default the breakdown to the event with the most families invited.
     var biggest = events.reduce(function (best, ev) {
         return eventStats(ev).invited >= eventStats(best).invited ? ev : best;
     }, events[0]);
     $('breakdown-event').value = biggest.id;
     $('breakdown-event').addEventListener('change', renderBreakdown);
     renderBreakdown();
-}
-
-function plural(n, word) {
-    return n + ' ' + word + (n === 1 ? '' : 's');
 }
 
 function stat(value, label) {
@@ -631,7 +699,7 @@ function renderBreakdown() {
         var h = householdById[inv.household_id];
         if (!h) return;
         add(SIDE_LABELS[h.side], inv);
-        if (h.invited_by) add(h.invited_by + "'s list", inv);
+        if (h.invited_by) add('list: ' + h.invited_by.toLowerCase(), inv);
     });
     var keys = Object.keys(groups);
     $('breakdown-table').innerHTML = keys.length ? '<table class="breakdown"><thead><tr><th></th><th class="n">families</th><th class="n">people coming</th><th class="n">waiting</th><th class="n">declined</th></tr></thead><tbody>' +
@@ -641,12 +709,15 @@ function renderBreakdown() {
         }).join('') + '</tbody></table>' : '<p class="hint">nobody invited to this one yet.</p>';
 }
 
-// Families
+// Families grid
 function filteredHouseholds() {
     var q = $('household-search').value.trim().toLowerCase();
     var qDigits = q.replace(/\D/g, '');
     var filter = $('household-filter').value;
+    var listFilter = $('household-list-filter').value;
     return households.filter(function (h) {
+        if (listFilter === NO_LIST && h.invited_by) return false;
+        if (listFilter && listFilter !== NO_LIST && h.invited_by !== listFilter) return false;
         if (q) {
             var hit = h.display_name.toLowerCase().indexOf(q) !== -1 ||
                 (h.invited_by || '').toLowerCase().indexOf(q) !== -1 ||
@@ -660,9 +731,32 @@ function filteredHouseholds() {
             case 'yes': return s.anyYes;
             case 'no': return s.allNo;
             case 'no_phone': return !h.phone_e164;
+            case 'no_card': return !h.card_delivered;
             default: return true;
         }
     });
+}
+
+function tickCell(h, ev) {
+    var inv = (invByHousehold[h.id] || {})[ev.id];
+    var label, cls, title;
+    if (!inv) {
+        cls = ''; label = ''; title = 'not invited to ' + ev.name + ' — tap to invite';
+    } else if (inv.status === 'yes') {
+        var over = inv.adults + inv.kids > h.max_guests;
+        cls = 'yes' + (over ? ' over' : ''); label = inv.adults + inv.kids;
+        title = 'coming: ' + plural(inv.adults, 'adult') + ', ' + plural(inv.kids, 'kid') +
+            (over ? ' — more than the ' + h.max_guests + ' you expected' : '') +
+            (inv.responded_via ? ' (' + VIA_LABELS[inv.responded_via] + ')' : '');
+    } else if (inv.status === 'no') {
+        cls = 'no'; label = '✗'; title = 'not coming' + (inv.responded_via ? ' (' + VIA_LABELS[inv.responded_via] + ')' : '');
+    } else if (inv.status === 'maybe') {
+        cls = 'maybe'; label = '?'; title = 'maybe';
+    } else {
+        cls = 'pending'; label = '✓'; title = 'invited, waiting for reply — tap to un-invite';
+    }
+    return '<td class="cell"><button class="tick ' + cls + '" title="' + esc(title) + '" aria-label="' + esc(ev.name + ': ' + title) + '" ' +
+        'data-action="toggle-invite" data-id="' + esc(h.id) + '" data-event="' + esc(ev.id) + '">' + esc(label) + '</button></td>';
 }
 
 function renderHouseholds() {
@@ -670,11 +764,11 @@ function renderHouseholds() {
     var countEl = document.querySelector('.js-household-count');
     var totalMax = households.reduce(function (sum, h) { return sum + h.max_guests; }, 0);
     countEl.textContent = households.length
-        ? 'showing ' + list.length + ' of ' + households.length + ' families (up to ' + totalMax + ' people)'
+        ? 'showing ' + list.length + ' of ' + households.length + ' lines (expecting about ' + totalMax + ' people)'
         : '';
 
     if (!households.length) {
-        $('household-list').innerHTML = emptyBlock('no families yet. import from your phone or add them one by one.');
+        $('household-list').innerHTML = emptyBlock('no families yet. import your excel sheet or add them one by one.');
         return;
     }
     if (!list.length) {
@@ -682,40 +776,153 @@ function renderHouseholds() {
         return;
     }
 
-    $('household-list').innerHTML = list.map(function (h) {
-        var invs = invByHousehold[h.id] || {};
-        var chips = events.filter(function (ev) { return invs[ev.id]; }).map(function (ev) {
-            var inv = invs[ev.id];
-            var mark = inv.status === 'yes' ? ' ✓ ' + (inv.adults + inv.kids)
-                : inv.status === 'no' ? ' ✗' : inv.status === 'maybe' ? ' ?' : ' …';
-            return '<span class="chip ' + inv.status + '">' + esc(ev.name) + mark + '</span>';
-        }).join('');
+    var head = '<thead><tr><th class="name-col">' + esc(plural(list.length, 'line')) + '</th>' +
+        events.map(function (ev) {
+            return '<th>' + esc(ev.name.toLowerCase()) +
+                '<button class="col-all" data-action="tick-column" data-event="' + esc(ev.id) + '">tick all</button></th>';
+        }).join('') +
+        '<th>printed card<button class="col-all" data-action="tick-cards">tick all</button></th></tr></thead>';
+
+    var groupBy = $('household-group').value;
+    var groupKey = function (h) {
+        if (groupBy === 'list') return h.invited_by ? 'list: ' + h.invited_by.toLowerCase() : 'no list';
+        if (groupBy === 'side') return SIDE_LABELS[h.side];
+        return '';
+    };
+    if (groupBy !== 'none') {
+        list = list.slice().sort(function (a, b) {
+            var ka = groupKey(a), kb = groupKey(b);
+            if (ka !== kb) {
+                if (ka === 'no list') return 1;
+                if (kb === 'no list') return -1;
+                return ka.localeCompare(kb);
+            }
+            return a.display_name.localeCompare(b.display_name);
+        });
+    }
+    var groupCounts = {};
+    list.forEach(function (h) {
+        var k = groupKey(h);
+        if (!groupCounts[k]) groupCounts[k] = { lines: 0, people: 0 };
+        groupCounts[k].lines++;
+        groupCounts[k].people += h.max_guests;
+    });
+    var lastGroup = null;
+
+    var body = '<tbody>' + list.map(function (h) {
+        var groupHeader = '';
+        if (groupBy !== 'none' && groupKey(h) !== lastGroup) {
+            lastGroup = groupKey(h);
+            var gc = groupCounts[lastGroup];
+            groupHeader = '<tr class="group-row"><td class="name-col">' + esc(lastGroup) +
+                '<span>' + esc(plural(gc.lines, 'line') + ' · ~' + gc.people + ' people') + '</span></td>' +
+                '<td colspan="' + (events.length + 1) + '"></td></tr>';
+        }
         var meta = [
             h.phone_e164 ? formatPhone(h.phone_e164) : 'no number',
+            'expecting ' + h.max_guests,
             SIDE_LABELS[h.side],
-            h.invited_by ? h.invited_by + "'s list" : null,
-            'up to ' + h.max_guests,
-            h.locality !== 'local' ? LOCALITY_LABELS[h.locality] : null
-        ].filter(Boolean).join(' · ');
-        var flags = [
-            h.wa_sent_at ? 'invite sent' : 'not sent yet',
-            h.link_opened_at ? 'opened link' : null,
-            h.card_delivered ? 'card delivered' : null
+            h.invited_by ? 'list: ' + h.invited_by : null,
+            h.locality !== 'local' ? LOCALITY_LABELS[h.locality] : null,
+            h.wa_sent_at ? 'sent' : null,
+            h.link_opened_at ? 'opened' : null
         ].filter(Boolean).join(' · ');
         var mode = h.wa_sent_at ? 'reminder' : 'invite';
-        return '<div class="card">' +
-            '<div class="card-title">' + esc(h.display_name) + '</div>' +
-            '<div class="card-sub">' + esc(meta) + '<br>' + esc(flags) + '</div>' +
-            (h.guest_note ? '<div class="card-sub" style="color:#ccc">“' + esc(h.guest_note) + '”</div>' : '') +
-            (h.notes ? '<div class="card-sub">note: ' + esc(h.notes) + '</div>' : '') +
-            '<div class="chips">' + (chips || '<span class="chip">not invited to any event</span>') + '</div>' +
-            '<div class="card-actions">' +
-            (h.phone_e164 ? '<a class="btn btn-small btn-whatsapp" target="_blank" rel="noopener" href="' + esc(waUrl(h.phone_e164, messageFor(h, mode))) + '" data-action="wa-sent" data-id="' + esc(h.id) + '" data-mode="' + mode + '">' + (mode === 'invite' ? 'send invite' : 'send reminder') + '</a>' : '') +
-            '<button class="btn btn-small" data-action="record-reply" data-id="' + esc(h.id) + '">record reply</button>' +
-            '<button class="btn btn-small" data-action="edit-household" data-id="' + esc(h.id) + '">edit</button>' +
-            '<button class="btn btn-small" data-action="copy-link" data-id="' + esc(h.id) + '">copy link</button>' +
-            '</div></div>';
-    }).join('');
+        var hasEvents = invitedEvents(h).length > 0;
+        return groupHeader + '<tr><td class="name-col">' +
+            '<button class="row-name" data-action="edit-household" data-id="' + esc(h.id) + '">' + esc(h.display_name) + '</button>' +
+            '<div class="row-meta">' + esc(meta) + '</div>' +
+            (h.guest_note ? '<div class="row-note">“' + esc(h.guest_note) + '”</div>' : '') +
+            (h.notes ? '<div class="row-meta">note: ' + esc(h.notes) + '</div>' : '') +
+            '<div class="row-actions">' +
+            (h.phone_e164 && hasEvents ? '<a class="wa" target="_blank" rel="noopener" href="' + esc(waUrl(h.phone_e164, messageFor(h, mode))) + '" data-action="wa-sent" data-id="' + esc(h.id) + '" data-mode="' + mode + '">' + (mode === 'invite' ? 'send' : 'remind') + '</a>' : '') +
+            (hasEvents ? '<button data-action="record-reply" data-id="' + esc(h.id) + '">reply</button>' : '') +
+            (hasEvents ? '<button data-action="copy-link" data-id="' + esc(h.id) + '">copy link</button>' : '') +
+            '</div></td>' +
+            events.map(function (ev) { return tickCell(h, ev); }).join('') +
+            '<td class="cell"><button class="tick ' + (h.card_delivered ? 'card-on' : '') + '" data-action="toggle-card" data-id="' + esc(h.id) + '" ' +
+            'title="' + (h.card_delivered ? 'printed card delivered' : 'printed card not delivered yet') + '" aria-label="printed card">' + (h.card_delivered ? '✓' : '') + '</button></td>' +
+            '</tr>';
+    }).join('') + '</tbody>';
+
+    var foot = '<tfoot><tr><td class="name-col">invited</td>' +
+        events.map(function (ev) { return '<td>' + eventStats(ev).invited + '</td>'; }).join('') +
+        '<td>' + households.filter(function (h) { return h.card_delivered; }).length + '</td></tr></tfoot>';
+
+    $('household-list').innerHTML = (events.length ? '' : '<p class="hint" style="margin-bottom:0.75rem">add events in the events tab to start ticking.</p>') +
+        '<div class="grid-wrap"><table class="grid">' + head + body + foot + '</table></div>' +
+        '<div class="legend"><span>not invited</span><span class="l-pending">invited, waiting</span><span class="l-yes">coming (number = people)</span><span class="l-no">not coming</span><span class="l-maybe">maybe</span><span class="l-over">more than you expected</span></div>';
+}
+
+async function toggleInvite(hid, evId) {
+    var h = householdById[hid];
+    var ev = eventById[evId];
+    var inv = (invByHousehold[hid] || {})[evId];
+    if (inv) {
+        if (inv.status !== 'pending' && !confirm(h.display_name + ' already replied "' + STATUS_LABELS[inv.status] + '" for ' + ev.name + '. remove them from it anyway?')) return;
+        invitations = invitations.filter(function (i) { return i.id !== inv.id; });
+        indexData();
+        renderAfterInviteChange();
+        var del = await supabaseClient.from('wedding_invitations').delete().eq('id', inv.id);
+        if (del.error) { console.error(del.error); showToast('could not save — reloading'); await loadWeddingData(); }
+    } else {
+        var ins = await supabaseClient.from('wedding_invitations')
+            .insert({ wedding_id: wedding.id, household_id: hid, event_id: evId }).select('*').single();
+        if (ins.error) { console.error(ins.error); showToast('could not save'); return; }
+        invitations.push(ins.data);
+        indexData();
+        renderAfterInviteChange();
+    }
+}
+
+async function tickColumn(evId) {
+    var ev = eventById[evId];
+    var list = filteredHouseholds();
+    var missing = list.filter(function (h) { return !(invByHousehold[h.id] || {})[evId]; });
+    if (missing.length) {
+        if (!confirm('invite all ' + plural(missing.length, 'line') + ' shown to ' + ev.name + '?')) return;
+        var rows = missing.map(function (h) { return { wedding_id: wedding.id, household_id: h.id, event_id: evId }; });
+        for (var c of chunk(rows, 500)) {
+            var r = await supabaseClient.from('wedding_invitations').insert(c);
+            if (r.error) { console.error(r.error); showToast('could not invite everyone'); break; }
+        }
+    } else {
+        var invs = list.map(function (h) { return invByHousehold[h.id][evId]; });
+        var answered = invs.filter(function (i) { return i.status !== 'pending'; }).length;
+        if (!confirm('un-invite all ' + plural(invs.length, 'line') + ' shown from ' + ev.name + '?' +
+            (answered ? ' ' + answered + ' have already replied and their replies will be lost.' : ''))) return;
+        for (var d of chunk(invs.map(function (i) { return i.id; }), 200)) {
+            var del = await supabaseClient.from('wedding_invitations').delete().in('id', d);
+            if (del.error) { console.error(del.error); showToast('could not un-invite everyone'); break; }
+        }
+    }
+    await loadWeddingData();
+}
+
+async function toggleCard(hid) {
+    var h = householdById[hid];
+    h.card_delivered = !h.card_delivered;
+    renderHouseholds();
+    var r = await supabaseClient.from('wedding_households').update({ card_delivered: h.card_delivered }).eq('id', hid);
+    if (r.error) { console.error(r.error); showToast('could not save'); await loadWeddingData(); }
+}
+
+async function tickAllCards() {
+    var list = filteredHouseholds().filter(function (h) { return !h.card_delivered; });
+    if (!list.length) { showToast('everyone shown already has their card'); return; }
+    if (!confirm('mark printed card delivered for ' + plural(list.length, 'line') + '?')) return;
+    for (var c of chunk(list.map(function (h) { return h.id; }), 200)) {
+        var r = await supabaseClient.from('wedding_households').update({ card_delivered: true }).in('id', c);
+        if (r.error) { console.error(r.error); showToast('could not save'); break; }
+    }
+    await loadWeddingData();
+}
+
+function renderAfterInviteChange() {
+    renderHouseholds();
+    renderOverview();
+    renderEvents();
+    renderSend();
 }
 
 // Events
@@ -731,12 +938,14 @@ function renderEvents() {
             ev.parsi_date,
             ev.venue,
             ev.host_side !== 'both' ? 'hosted by ' + SIDE_LABELS[ev.host_side].replace("'s side", "'s family") : null,
-            ev.rsvp_deadline ? 'reply by ' + new Date(ev.rsvp_deadline + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : null
+            ev.rsvp_deadline ? 'reply by ' + new Date(ev.rsvp_deadline + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : null,
+            ev.ask_diet ? 'asks veg / non-veg' : null
         ].filter(Boolean).join(' · ');
-        return '<div class="card"><div class="card-head"><div>' +
-            '<div class="card-title">' + esc(ev.name) + '</div>' +
+        return '<div class="card"><div class="card-head" style="justify-content:flex-start">' +
+            (ev.image_path ? '<img class="event-thumb" src="' + esc(imageUrl(ev.image_path)) + '" alt="">' : '') +
+            '<div style="flex:1"><div class="card-title">' + esc(ev.name) + '</div>' +
             '<div class="card-sub">' + esc(sub) + '</div>' +
-            '<div class="card-sub">' + s.invited + ' families invited</div></div>' +
+            '<div class="card-sub">' + plural(s.invited, 'line') + ' invited</div></div>' +
             '<button class="btn btn-small" data-action="edit-event" data-id="' + esc(ev.id) + '">edit</button>' +
             '</div></div>';
     }).join('');
@@ -760,6 +969,43 @@ function queueFor(mode) {
     return list;
 }
 
+function canShareFiles() {
+    try {
+        return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'x.jpg', { type: 'image/jpeg' })] }));
+    } catch (e) {
+        return false;
+    }
+}
+
+// Fetch card images ahead of time so the share sheet opens straight from the tap.
+function prefetchShareFiles(h) {
+    invitedEvents(h).forEach(function (ev) {
+        if (!ev.image_path || shareFileCache[ev.image_path]) return;
+        shareFileCache[ev.image_path] = 'loading';
+        fetch(imageUrl(ev.image_path)).then(function (r) { return r.blob(); }).then(function (b) {
+            shareFileCache[ev.image_path] = new File([b], slug(ev.name) + '.jpg', { type: b.type || 'image/jpeg' });
+        }).catch(function () { delete shareFileCache[ev.image_path]; });
+    });
+}
+
+async function shareWithCard(id, mode) {
+    var h = householdById[id];
+    var files = invitedEvents(h)
+        .map(function (ev) { return shareFileCache[ev.image_path]; })
+        .filter(function (f) { return f instanceof File; });
+    if (!files.length) { showToast('images still loading, try again in a second'); return; }
+    var text = messageFor(h, mode);
+    try {
+        await navigator.share({ files: files, text: text });
+        await markSent(id, mode);
+    } catch (err) {
+        if (err && err.name !== 'AbortError') {
+            console.error(err);
+            showToast("couldn't share the image — use open whatsapp instead");
+        }
+    }
+}
+
 function renderSend() {
     document.querySelectorAll('#send-mode button').forEach(function (b) {
         b.classList.toggle('active', b.dataset.mode === sendMode);
@@ -777,23 +1023,25 @@ function renderSend() {
 
     var queue = queueFor(sendMode);
     hint.textContent = sendMode === 'invite'
-        ? 'tap send, whatsapp opens with the message ready, hit send there and come back. the next family will be waiting. messages go from your own number, so they land like a normal message from you.'
-        : 'families who got the invite but haven\'t replied to everything. anyone reminded in the last 2 days is skipped.';
+        ? 'tap send, whatsapp opens with the message ready, hit send there and come back. the next family will be waiting. messages go from your own number, so they land like a normal message from you. only lines ticked for at least one event show up here.'
+        : 'families who got the chitthi but haven\'t replied for every open event. anyone reminded in the last 2 days is skipped.';
 
     if (!queue.length) {
         el.innerHTML = '<div class="empty">' + (sendMode === 'invite'
-            ? 'all invites sent 🎉 switch to reminders when you want to nudge the slow ones.'
+            ? 'all chitthis sent 🎉 switch to reminders when you want to nudge the slow ones.'
             : 'nobody to remind right now.') + '</div>';
         return;
     }
 
     var h = queue[0];
     var msg = messageFor(h, sendMode);
-    var total = sendMode === 'invite' ? households.length : queue.length;
-    var done = sendMode === 'invite' ? households.length - queue.length : 0;
+    var total = sendMode === 'invite' ? households.filter(function (x) { return householdSummary(x).count; }).length : queue.length;
     var progress = sendMode === 'invite'
-        ? done + ' of ' + total + ' sent · ' + queue.length + ' to go'
+        ? (total - queue.length) + ' of ' + total + ' sent · ' + queue.length + ' to go'
         : queue.length + ' families to remind';
+    var hasCards = invitedEvents(h).some(function (ev) { return ev.image_path; });
+    var offerShare = hasCards && canShareFiles();
+    if (offerShare) prefetchShareFiles(h);
 
     var html = '<div class="queue-card">' +
         '<div class="queue-progress">' + esc(progress) + '</div>' +
@@ -804,10 +1052,14 @@ function renderSend() {
         (h.phone_e164
             ? '<a class="btn btn-whatsapp" target="_blank" rel="noopener" href="' + esc(waUrl(h.phone_e164, msg)) + '" data-action="wa-sent" data-id="' + esc(h.id) + '" data-mode="' + sendMode + '">open whatsapp ↗</a>'
             : '') +
+        (offerShare ? '<button class="btn" data-action="share-card" data-id="' + esc(h.id) + '">share with chitthi image</button>' : '') +
         '<button class="btn" data-action="copy-message" data-id="' + esc(h.id) + '">copy message</button>' +
         '<button class="btn" data-action="mark-sent" data-id="' + esc(h.id) + '">mark sent</button>' +
         '<button class="btn" data-action="skip" data-id="' + esc(h.id) + '">skip</button>' +
-        '</div></div>';
+        '</div>' +
+        (hasCards && !offerShare ? '<p class="hint" style="margin-top:0.75rem">the chitthi image shows on their reply page. on a phone you also get a button to send the image itself.</p>' : '') +
+        (offerShare ? '<p class="hint" style="margin-top:0.75rem">share with image opens your phone\'s share sheet — pick whatsapp, then ' + esc(h.display_name.toLowerCase()) + '.</p>' : '') +
+        '</div>';
 
     if (queue.length > 1) {
         html += '<h3 class="section-title">up next</h3><div class="queue-list">' +
@@ -906,8 +1158,12 @@ async function leaveWedding() {
 }
 
 async function deleteWedding() {
-    var typed = prompt('this deletes "' + wedding.title + '", every family, every reply. type delete to confirm.');
+    var typed = prompt('this deletes "' + wedding.title + '", every family, every reply and every chitthi image. type delete to confirm.');
     if (!typed || typed.trim().toLowerCase() !== 'delete') return;
+    var listing = await supabaseClient.storage.from(IMAGE_BUCKET).list(wedding.id, { limit: 1000 });
+    if (listing.data && listing.data.length) {
+        await removeImages(listing.data.map(function (f) { return wedding.id + '/' + f.name; }));
+    }
     var result = await supabaseClient.from('weddings').delete().eq('id', wedding.id);
     if (result.error) { showToast('could not delete'); return; }
     try { localStorage.removeItem(STORAGE_WEDDING); } catch (e) { /* ignore */ }
@@ -916,36 +1172,25 @@ async function deleteWedding() {
 }
 
 // ─── Household modal ─────────────────────────────────────────────
-function renderEventCheckboxes(containerId, checkedIds) {
-    $(containerId).innerHTML = events.length ? events.map(function (ev) {
-        var checked = checkedIds === null || checkedIds.indexOf(ev.id) !== -1;
-        return '<label class="check-row"><input type="checkbox" value="' + esc(ev.id) + '"' + (checked ? ' checked' : '') + '> ' + esc(ev.name) + '</label>';
-    }).join('') : '<p class="hint">add events first, then tick which ones this family is invited to.</p>';
-}
-
-function checkedEventIds(containerId) {
-    return Array.prototype.map.call($(containerId).querySelectorAll('input:checked'), function (i) { return i.value; });
-}
-
 function openHouseholdModal(h) {
-    $('household-modal-title').textContent = h ? 'edit family' : 'add family';
+    $('household-modal-title').textContent = h ? 'edit' : 'add family or person';
     $('hh-id').value = h ? h.id : '';
     $('hh-name').value = h ? h.display_name : '';
     $('hh-phone').value = h && h.phone_e164 ? formatPhone(h.phone_e164) : '';
     $('hh-max').value = h ? h.max_guests : 2;
-    $('hh-side').value = h ? h.side : 'bride';
-    $('hh-invited-by').value = h ? (h.invited_by || '') : '';
+    $('hh-side').value = h ? h.side : ($('hh-side').dataset.last || 'bride');
+    $('hh-invited-by').value = h ? (h.invited_by || '') : ($('hh-invited-by').dataset.last || '');
     $('hh-locality').value = h ? h.locality : 'local';
-    $('hh-card').checked = h ? h.card_delivered : false;
     $('hh-notes').value = h ? (h.notes || '') : '';
     $('hh-delete').classList.toggle('hidden', !h);
-    renderEventCheckboxes('hh-events', h ? Object.keys(invByHousehold[h.id] || {}) : null);
+    $('hh-save-another').classList.toggle('hidden', !!h);
     openModal('household-modal');
     setTimeout(function () { $('hh-name').focus(); }, 50);
 }
 
 async function saveHousehold(e) {
     e.preventDefault();
+    var again = e.submitter && e.submitter.dataset.again === '1';
     var id = $('hh-id').value;
     var rawPhone = $('hh-phone').value.trim();
     var phone = normalizePhone(rawPhone);
@@ -953,55 +1198,33 @@ async function saveHousehold(e) {
         showToast("that number doesn't look right — add the country code, like +44…");
         return;
     }
+    var name = $('hh-name').value.trim();
     if (phone) {
         var dupe = households.find(function (h) { return h.phone_e164 === phone && h.id !== id; });
-        if (dupe && !confirm('this number is already on the list as "' + dupe.display_name + '". families often share a phone — add anyway?')) return;
+        if (dupe && dupe.display_name.toLowerCase() === name.toLowerCase() &&
+            !confirm('"' + dupe.display_name + '" is already on the list with this number. add again?')) return;
     }
     var row = {
-        display_name: $('hh-name').value.trim(),
+        display_name: name,
         phone_e164: phone,
         max_guests: Math.max(1, Math.min(50, parseInt($('hh-max').value, 10) || 1)),
         side: $('hh-side').value,
         invited_by: $('hh-invited-by').value.trim() || null,
         locality: $('hh-locality').value,
-        card_delivered: $('hh-card').checked,
         notes: $('hh-notes').value.trim() || null
     };
-    var wanted = checkedEventIds('hh-events');
+    $('hh-side').dataset.last = row.side;
+    $('hh-invited-by').dataset.last = row.invited_by || '';
 
-    var householdId = id;
-    if (id) {
-        var upd = await supabaseClient.from('wedding_households').update(row).eq('id', id);
-        if (upd.error) { console.error(upd.error); showToast('could not save'); return; }
-    } else {
-        row.wedding_id = wedding.id;
-        var ins = await supabaseClient.from('wedding_households').insert(row).select('id').single();
-        if (ins.error) { console.error(ins.error); showToast('could not save'); return; }
-        householdId = ins.data.id;
-    }
+    var result = id
+        ? await supabaseClient.from('wedding_households').update(row).eq('id', id)
+        : await supabaseClient.from('wedding_households').insert(Object.assign({ wedding_id: wedding.id }, row));
+    if (result.error) { console.error(result.error); showToast('could not save'); return; }
 
-    var current = invByHousehold[householdId] || {};
-    var toAdd = wanted.filter(function (evId) { return !current[evId]; });
-    var toRemove = Object.keys(current).filter(function (evId) { return wanted.indexOf(evId) === -1; });
-    var answered = toRemove.filter(function (evId) { return current[evId].status !== 'pending'; });
-    if (answered.length && !confirm('they already replied for ' + answered.map(function (evId) { return eventById[evId].name; }).join(', ') + '. remove them from it anyway?')) {
-        toRemove = toRemove.filter(function (evId) { return answered.indexOf(evId) === -1; });
-    }
-    if (toAdd.length) {
-        var addRes = await supabaseClient.from('wedding_invitations').insert(toAdd.map(function (evId) {
-            return { wedding_id: wedding.id, household_id: householdId, event_id: evId };
-        }));
-        if (addRes.error) { console.error(addRes.error); showToast('saved, but could not update events'); }
-    }
-    if (toRemove.length) {
-        var delRes = await supabaseClient.from('wedding_invitations').delete()
-            .eq('household_id', householdId).in('event_id', toRemove);
-        if (delRes.error) { console.error(delRes.error); showToast('saved, but could not update events'); }
-    }
-
-    closeModal('household-modal');
-    showToast(id ? 'saved' : 'added');
+    showToast(id ? 'saved' : 'added — tick their events in the list');
     await loadWeddingData();
+    if (again) openHouseholdModal(null);
+    else closeModal('household-modal');
 }
 
 async function deleteHousehold() {
@@ -1017,21 +1240,19 @@ async function deleteHousehold() {
 
 // ─── Record reply modal ──────────────────────────────────────────
 function openReplyModal(h) {
-    var invs = invByHousehold[h.id] || {};
-    var evs = events.filter(function (ev) { return invs[ev.id]; });
+    var evs = invitedEvents(h);
     if (!evs.length) {
-        showToast('tick an event for this family first');
-        openHouseholdModal(h);
+        showToast('tick an event for them first');
         return;
     }
     replyDraft = { householdId: h.id, items: {} };
     evs.forEach(function (ev) {
-        var inv = invs[ev.id];
+        var inv = invByHousehold[h.id][ev.id];
         replyDraft.items[ev.id] = { id: inv.id, status: inv.status, adults: inv.adults, kids: inv.kids, veg: inv.veg };
     });
     $('reply-modal-title').textContent = h.display_name;
     document.querySelector('.js-reply-sub').textContent =
-        'for when they reply on a call or in person. up to ' + h.max_guests + ' people.' +
+        'for when they reply on a call, on whatsapp or in person. you expected ' + h.max_guests + '.' +
         (h.guest_note ? ' their note: “' + h.guest_note + '”' : '');
     renderReplyEvents();
     openModal('reply-modal');
@@ -1047,7 +1268,8 @@ function renderReplyEvents() {
                 return '<button type="button" data-reply-event="' + esc(evId) + '" data-status="' + s + '" class="' + (d.status === s ? 'active' : '') + '">' + STATUS_LABELS[s] + '</button>';
             }).join('') + '</div>' +
             (d.status === 'yes' ? '<div class="counts">' +
-                countInput(evId, 'adults', d.adults) + countInput(evId, 'kids', d.kids) + countInput(evId, 'veg', d.veg) +
+                countInput(evId, 'adults', d.adults) + countInput(evId, 'kids', d.kids) +
+                (ev.ask_diet ? countInput(evId, 'veg', d.veg) : '') +
                 '</div>' : '') +
             '</div>';
     }).join('');
@@ -1060,21 +1282,23 @@ function countInput(evId, field, value) {
 
 async function saveReply() {
     var h = householdById[replyDraft.householdId];
+    var via = $('reply-via').value;
     var now = new Date().toISOString();
     var updates = [];
     var over = false;
     Object.keys(replyDraft.items).forEach(function (evId) {
         var d = replyDraft.items[evId];
+        var ev = eventById[evId];
         var orig = invByHousehold[h.id][evId];
         var adults = d.status === 'yes' ? Math.max(0, d.adults | 0) : 0;
         var kids = d.status === 'yes' ? Math.max(0, d.kids | 0) : 0;
         if (d.status === 'yes' && adults + kids === 0) adults = 1;
-        var veg = d.status === 'yes' ? Math.min(Math.max(0, d.veg | 0), adults + kids) : 0;
+        var veg = d.status === 'yes' && ev.ask_diet ? Math.min(Math.max(0, d.veg | 0), adults + kids) : 0;
         if (adults + kids > h.max_guests) over = true;
         if (orig.status === d.status && orig.adults === adults && orig.kids === kids && orig.veg === veg) return;
         updates.push(supabaseClient.from('wedding_invitations').update({
             status: d.status, adults: adults, kids: kids, veg: veg,
-            responded_via: d.status === 'pending' ? null : 'host',
+            responded_via: d.status === 'pending' ? null : via,
             responded_at: d.status === 'pending' ? null : now
         }).eq('id', d.id));
     });
@@ -1082,13 +1306,20 @@ async function saveReply() {
     if (results.some(function (r) { return r.error; })) {
         showToast('some replies could not be saved');
     } else {
-        showToast(over ? 'saved — that\'s more than their limit, fyi' : 'saved');
+        showToast(over ? 'saved — that\'s more than you expected, fyi' : 'saved');
     }
     closeModal('reply-modal');
     await loadWeddingData();
 }
 
 // ─── Event modal ─────────────────────────────────────────────────
+function setEventImagePreview(url) {
+    var img = $('ev-image-preview');
+    img.classList.toggle('hidden', !url);
+    if (url) img.src = url; else img.removeAttribute('src');
+    $('ev-image-remove').classList.toggle('hidden', !url);
+}
+
 function openEventModal(ev) {
     $('event-modal-title').textContent = ev ? 'edit event' : 'add event';
     $('ev-id').value = ev ? ev.id : '';
@@ -1099,9 +1330,13 @@ function openEventModal(ev) {
     $('ev-venue').value = ev ? (ev.venue || '') : '';
     $('ev-deadline').value = ev ? (ev.rsvp_deadline || '') : '';
     $('ev-panth').value = ev && ev.seats_per_panth ? ev.seats_per_panth : '';
+    $('ev-ask-diet').checked = ev ? !!ev.ask_diet : false;
+    $('ev-image').value = '';
+    eventImageDraft = null;
+    setEventImagePreview(ev && ev.image_path ? imageUrl(ev.image_path) : null);
     $('ev-delete').classList.toggle('hidden', !ev);
     document.querySelector('.js-invite-all-row').classList.toggle('hidden', !!ev || !households.length);
-    $('ev-invite-all').checked = true;
+    $('ev-invite-all').checked = false;
 
     var presets = document.querySelector('.js-presets');
     presets.classList.toggle('hidden', !!ev);
@@ -1116,13 +1351,35 @@ function applyPreset(index) {
     $('ev-kind').value = p.kind;
     $('ev-name').value = p.name;
     $('ev-side').value = p.side;
+    $('ev-ask-diet').checked = !!p.askDiet;
     if (p.panth && !$('ev-panth').value) $('ev-panth').value = p.panth;
     $('ev-name').focus();
+}
+
+async function onEventImageChosen(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    try {
+        var blob = await compressImage(file);
+        if (eventImageDraft && eventImageDraft.url) URL.revokeObjectURL(eventImageDraft.url);
+        eventImageDraft = { blob: blob, url: URL.createObjectURL(blob) };
+        setEventImagePreview(eventImageDraft.url);
+    } catch (err) {
+        showToast(err.message);
+    }
+}
+
+function onEventImageRemove() {
+    if (eventImageDraft && eventImageDraft.url) URL.revokeObjectURL(eventImageDraft.url);
+    eventImageDraft = { remove: true };
+    $('ev-image').value = '';
+    setEventImagePreview(null);
 }
 
 async function saveEvent(e) {
     e.preventDefault();
     var id = $('ev-id').value;
+    var existing = id ? eventById[id] : null;
     var startVal = $('ev-start').value;
     var row = {
         name: $('ev-name').value.trim(),
@@ -1133,9 +1390,20 @@ async function saveEvent(e) {
         parsi_date: startVal ? parsiDateFor(startVal.slice(0, 10)) : null,
         venue: $('ev-venue').value.trim() || null,
         rsvp_deadline: $('ev-deadline').value || null,
-        seats_per_panth: parseInt($('ev-panth').value, 10) || null
+        seats_per_panth: parseInt($('ev-panth').value, 10) || null,
+        ask_diet: $('ev-ask-diet').checked
     };
     if (!row.name) return;
+
+    var oldImage = existing ? existing.image_path : null;
+    if (eventImageDraft && eventImageDraft.blob) {
+        var path = wedding.id + '/' + randomId() + '.jpg';
+        var up = await supabaseClient.storage.from(IMAGE_BUCKET).upload(path, eventImageDraft.blob, { contentType: 'image/jpeg', upsert: false });
+        if (up.error) { console.error(up.error); showToast('could not upload the image: ' + up.error.message); return; }
+        row.image_path = path;
+    } else if (eventImageDraft && eventImageDraft.remove) {
+        row.image_path = null;
+    }
 
     if (id) {
         var upd = await supabaseClient.from('wedding_events').update(row).eq('id', id);
@@ -1155,6 +1423,9 @@ async function saveEvent(e) {
             }
         }
     }
+    if (oldImage && 'image_path' in row && row.image_path !== oldImage) await removeImages([oldImage]);
+
+    eventImageDraft = null;
     closeModal('event-modal');
     showToast('saved');
     await loadWeddingData();
@@ -1166,6 +1437,7 @@ async function deleteEvent() {
     if (!ev || !confirm('delete ' + ev.name + '? all replies for it go too.')) return;
     var result = await supabaseClient.from('wedding_events').delete().eq('id', id);
     if (result.error) { showToast('could not delete'); return; }
+    await removeImages([ev.image_path]);
     closeModal('event-modal');
     await loadWeddingData();
 }
@@ -1181,13 +1453,26 @@ function openImportModal() {
     $('import-file').value = '';
     $('import-preview').classList.add('hidden');
     $('pick-contacts-btn').classList.toggle('hidden', !supportsContactPicker());
-    document.querySelector('.js-import-help').textContent = supportsContactPicker()
-        ? 'pick lots of people at once from your phone. you choose who — we never see the rest of your contacts.'
-        : /iPhone|iPad/.test(navigator.userAgent)
-            ? 'on iphone: open contacts, select people, share → save to files, then upload the .vcf here. or export your google contacts as csv.'
-            : 'export your contacts as .vcf or .csv (google contacts → export) and upload, or paste a list below.';
-    renderEventCheckboxes('imp-events', null);
+    document.querySelector('.js-import-help').textContent =
+        'best: download the excel template, fill it in (people, side, whose list, tick events) and upload it. ' +
+        (supportsContactPicker()
+            ? 'or pick people straight from your phone — you choose who, we never see the rest of your contacts.'
+            : /iPhone|iPad/.test(navigator.userAgent)
+                ? 'or on iphone: open contacts, select people, share → save to files, then upload the .vcf here.'
+                : 'google contacts exports (.csv) and .vcf files work too.');
     openModal('import-modal');
+}
+
+function downloadTemplate() {
+    var header = ['name', 'whatsapp number', 'people', 'side (bride/groom/both)', 'whose list', 'coming from (local/outstation/abroad)', 'notes']
+        .concat(events.map(function (ev) { return ev.name; }))
+        .concat(['printed card']);
+    var sample1 = ['Mr & Mrs Daruwalla & family', '98200 12345', 4, 'bride', 'mum', 'local', '']
+        .concat(events.map(function () { return 'yes'; })).concat(['']);
+    var sample2 = ['Shirin Daruwalla', '98200 54321', 1, 'bride', 'mum', 'local', 'invited separately to one extra event']
+        .concat(events.map(function (ev, i) { return i === 0 ? 'yes' : ''; })).concat(['']);
+    downloadCsv(slug(wedding ? wedding.title : 'lagan') + '-guest-template.csv', [header, sample1, sample2]);
+    if (!events.length) showToast('tip: add your events first so they show up as tick columns');
 }
 
 async function pickContacts() {
@@ -1253,6 +1538,26 @@ function looksLikePhone(s) {
     return /^[+\d][\d\s\-().]{6,}$/.test((s || '').trim());
 }
 
+function isTicked(v) {
+    return /^(y|yes|✓|✔|☑|x|1|true|invited|haan|ha)$/i.test(String(v || '').trim());
+}
+
+function parseSide(v) {
+    v = String(v || '').trim().toLowerCase();
+    if (!v) return null;
+    if (/bride|girl|^b$|ladki/.test(v)) return 'bride';
+    if (/groom|boy|^g$|ladka/.test(v)) return 'groom';
+    return 'both';
+}
+
+function parseLocality(v) {
+    v = String(v || '').trim().toLowerCase();
+    if (!v) return null;
+    if (/abroad|overseas|nri|foreign|international/.test(v)) return 'overseas';
+    if (/out|another|other city|outside/.test(v)) return 'outstation';
+    return 'local';
+}
+
 function parseCsv(text) {
     var lines = text.replace(/^﻿/, '').split(/\r?\n/).filter(function (l) { return l.trim(); });
     if (!lines.length) return [];
@@ -1268,19 +1573,46 @@ function parseCsv(text) {
         });
     }
 
-    function find(re) { for (var i = 0; i < head.length; i++) if (re.test(head[i])) return i; return -1; }
-    var nameCol = find(/^(full |display )?name$/);
+    // Columns named after an event are tick columns.
+    var eventCols = {};
+    head.forEach(function (h, i) {
+        var ev = events.find(function (e) { return e.name.trim().toLowerCase() === h.trim(); });
+        if (ev) eventCols[i] = ev.id;
+    });
+    function find(re) {
+        for (var i = 0; i < head.length; i++) if (!(i in eventCols) && re.test(head[i])) return i;
+        return -1;
+    }
+    var nameCol = find(/^(full |display |family )?name$/);
     var firstCol = find(/first name|given name/);
     var lastCol = find(/last name|family name|surname/);
     var phoneCol = find(/phone.*value/);
-    if (phoneCol === -1) phoneCol = find(/mobile|whatsapp|phone|number|tel/);
+    if (phoneCol === -1) phoneCol = find(/whatsapp|mobile|phone|number|tel/);
     if (nameCol === -1 && firstCol === -1) nameCol = find(/name/);
+    var peopleCol = find(/people|guests|count|seats|^max|pax|how many/);
+    var sideCol = find(/^side/);
+    var listCol = find(/whose|invited by|list/);
+    var fromCol = find(/coming from|locality|from|city/);
+    var notesCol = find(/note/);
+    var cardCol = find(/card|printed|physical/);
+    var hasEventCols = Object.keys(eventCols).length > 0;
 
     return lines.slice(1).map(function (l) {
         var cells = splitCsvLine(l, delim);
         var name = nameCol !== -1 ? cells[nameCol] : [cells[firstCol], lastCol !== -1 ? cells[lastCol] : ''].filter(Boolean).join(' ');
         var phone = phoneCol !== -1 ? (cells[phoneCol] || '').split(':::')[0] : '';
-        return { name: name || '', phone: phone.trim() };
+        var people = peopleCol !== -1 ? parseInt(cells[peopleCol], 10) : NaN;
+        return {
+            name: name || '',
+            phone: phone.trim(),
+            people: people > 0 ? Math.min(50, people) : null,
+            side: sideCol !== -1 ? parseSide(cells[sideCol]) : null,
+            invitedBy: listCol !== -1 ? (cells[listCol] || '').trim() || null : null,
+            locality: fromCol !== -1 ? parseLocality(cells[fromCol]) : null,
+            notes: notesCol !== -1 ? (cells[notesCol] || '').trim() || null : null,
+            card: cardCol !== -1 ? isTicked(cells[cardCol]) : false,
+            events: hasEventCols ? Object.keys(eventCols).filter(function (i) { return isTicked(cells[i]); }).map(function (i) { return eventCols[i]; }) : []
+        };
     });
 }
 
@@ -1298,13 +1630,24 @@ function addImportRows(rows) {
         var phone = normalizePhone(r.phone);
         var name = (r.name || '').trim() || (phone ? formatPhone(phone) : '');
         if (!name) return;
-        if (phone && importRows.some(function (x) { return x.phone === phone; })) return;
-        var existing = phone ? households.find(function (h) { return h.phone_e164 === phone; }) : null;
+        var lower = name.toLowerCase();
+        // Same name + number = same line. Same number alone is fine: separate lines often share a phone.
+        if (importRows.some(function (x) { return x.name.toLowerCase() === lower && x.phone === phone; })) return;
+        var existing = households.find(function (h) { return h.display_name.toLowerCase() === lower && (h.phone_e164 || null) === phone; });
+        var sharesWith = !existing && phone ? households.find(function (h) { return h.phone_e164 === phone; }) : null;
         importRows.push({
             name: name.slice(0, 120),
             phone: phone,
             rawPhone: r.phone,
+            people: r.people || null,
+            side: r.side || null,
+            invitedBy: r.invitedBy || null,
+            locality: r.locality || null,
+            notes: r.notes || null,
+            card: !!r.card,
+            events: r.events || [],
             existing: existing ? existing.display_name : null,
+            sharesWith: sharesWith ? sharesWith.display_name : null,
             include: !existing
         });
     });
@@ -1316,14 +1659,22 @@ function renderImportPreview() {
     var selected = importRows.filter(function (r) { return r.include; }).length;
     document.querySelector('.js-import-summary').textContent =
         importRows.length + ' found · ' + selected + ' selected. untick anyone you don\'t want.';
-    $('import-save').textContent = 'add ' + selected + ' ' + (selected === 1 ? 'family' : 'families');
+    $('import-save').textContent = 'add ' + plural(selected, 'line');
     $('import-save').disabled = !selected;
     $('import-list').innerHTML = importRows.map(function (r, i) {
-        var warn = r.existing ? 'already on the list as ' + r.existing
+        var warn = r.existing ? 'already on the list'
             : (!r.phone && r.rawPhone ? 'number not recognised, will be saved without it'
-                : (!r.phone ? 'no number' : ''));
+                : (!r.phone ? 'no number' : (r.sharesWith ? 'same number as ' + r.sharesWith : '')));
+        var details = [
+            r.phone ? formatPhone(r.phone) : null,
+            r.people ? 'expecting ' + r.people : null,
+            r.side ? SIDE_LABELS[r.side] : null,
+            r.invitedBy ? 'list: ' + r.invitedBy : null,
+            r.events.length ? r.events.map(function (id) { return eventById[id].name.toLowerCase(); }).join(', ') : null,
+            r.card ? 'card delivered' : null
+        ].filter(Boolean).join(' · ');
         return '<label class="import-row"><input type="checkbox" data-import-index="' + i + '"' + (r.include ? ' checked' : '') + '>' +
-            '<span class="name">' + esc(r.name) + '<br><span class="phone">' + esc(r.phone ? formatPhone(r.phone) : '') + '</span>' +
+            '<span class="name">' + esc(r.name) + '<br><span class="phone">' + esc(details) + '</span>' +
             (warn ? ' <span class="warn">' + esc(warn) + '</span>' : '') + '</span></label>';
     }).join('');
 }
@@ -1331,7 +1682,6 @@ function renderImportPreview() {
 async function saveImport() {
     var chosen = importRows.filter(function (r) { return r.include; });
     if (!chosen.length) return;
-    var eventIds = checkedEventIds('imp-events');
     var defaults = {
         side: $('imp-side').value,
         max_guests: Math.max(1, Math.min(50, parseInt($('imp-max').value, 10) || 2)),
@@ -1341,53 +1691,68 @@ async function saveImport() {
     $('import-save').disabled = true;
     $('import-save').textContent = 'adding…';
 
-    var newIds = [];
+    var invRows = [];
+    var added = 0;
     for (var c of chunk(chosen, 200)) {
         var res = await supabaseClient.from('wedding_households').insert(c.map(function (r) {
-            return Object.assign({ wedding_id: wedding.id, display_name: r.name, phone_e164: r.phone }, defaults);
+            return {
+                wedding_id: wedding.id,
+                display_name: r.name,
+                phone_e164: r.phone,
+                max_guests: r.people || defaults.max_guests,
+                side: r.side || defaults.side,
+                invited_by: r.invitedBy || defaults.invited_by,
+                locality: r.locality || defaults.locality,
+                notes: r.notes,
+                card_delivered: r.card
+            };
         })).select('id');
         if (res.error) {
             console.error(res.error);
             showToast('stopped partway: ' + res.error.message);
             break;
         }
-        newIds = newIds.concat(res.data.map(function (d) { return d.id; }));
-    }
-
-    var invRows = [];
-    newIds.forEach(function (hid) {
-        eventIds.forEach(function (evId) {
-            invRows.push({ wedding_id: wedding.id, household_id: hid, event_id: evId });
+        // Inserted rows come back in the order sent.
+        res.data.forEach(function (d, i) {
+            c[i].events.forEach(function (evId) {
+                invRows.push({ wedding_id: wedding.id, household_id: d.id, event_id: evId });
+            });
         });
-    });
+        added += res.data.length;
+    }
     for (var ic of chunk(invRows, 500)) {
         var ir = await supabaseClient.from('wedding_invitations').insert(ic);
-        if (ir.error) { console.error(ir.error); showToast('families added, but some events were not ticked'); break; }
+        if (ir.error) { console.error(ir.error); showToast('lines added, but some event ticks were not saved'); break; }
     }
 
     closeModal('import-modal');
-    showToast(newIds.length + ' families added');
+    showToast(plural(added, 'line') + ' added' + (invRows.length ? '' : ' — now tick their events'));
+    switchTab('families');
     await loadWeddingData();
 }
 
 // ─── Exports ─────────────────────────────────────────────────────
 function exportAll() {
-    var header = ['family', 'whatsapp', 'side', 'whose list', 'coming from', 'max people', 'invite sent', 'opened link', 'card delivered'];
+    var header = ['name', 'whatsapp', 'people', 'side', 'whose list', 'coming from', 'notes', 'printed card', 'chitthi sent', 'opened link'];
     events.forEach(function (ev) {
-        header.push(ev.name + ' – reply', ev.name + ' – adults', ev.name + ' – kids', ev.name + ' – veg');
+        header.push(ev.name, ev.name + ' – adults', ev.name + ' – kids');
+        if (ev.ask_diet) header.push(ev.name + ' – veg', ev.name + ' – non-veg');
+        header.push(ev.name + ' – replied');
     });
-    header.push('their note', 'your notes', 'rsvp link');
+    header.push('their note', 'rsvp link');
     var rows = [header];
     households.forEach(function (h) {
         var invs = invByHousehold[h.id] || {};
-        var row = [h.display_name, h.phone_e164 || '', SIDE_LABELS[h.side], h.invited_by || '', LOCALITY_LABELS[h.locality],
-            h.max_guests, h.wa_sent_at ? 'yes' : '', h.link_opened_at ? 'yes' : '', h.card_delivered ? 'yes' : ''];
+        var row = [h.display_name, h.phone_e164 || '', h.max_guests, SIDE_LABELS[h.side], h.invited_by || '', LOCALITY_LABELS[h.locality],
+            h.notes || '', h.card_delivered ? 'yes' : '', h.wa_sent_at ? 'yes' : '', h.link_opened_at ? 'yes' : ''];
         events.forEach(function (ev) {
             var inv = invs[ev.id];
-            if (!inv) row.push('not invited', '', '', '');
-            else row.push(STATUS_LABELS[inv.status], inv.status === 'yes' ? inv.adults : '', inv.status === 'yes' ? inv.kids : '', inv.status === 'yes' ? inv.veg : '');
+            var yes = inv && inv.status === 'yes';
+            row.push(inv ? STATUS_LABELS[inv.status] : 'not invited', yes ? inv.adults : '', yes ? inv.kids : '');
+            if (ev.ask_diet) row.push(yes ? inv.veg : '', yes ? inv.adults + inv.kids - inv.veg : '');
+            row.push(inv && inv.responded_via ? VIA_LABELS[inv.responded_via] : '');
         });
-        row.push(h.guest_note || '', h.notes || '', rsvpLink(h));
+        row.push(h.guest_note || '', rsvpLink(h));
         rows.push(row);
     });
     downloadCsv(slug(wedding.title) + '-guest-list.csv', rows);
@@ -1395,7 +1760,10 @@ function exportAll() {
 
 function exportEvent(evId) {
     var ev = eventById[evId];
-    var rows = [['family', 'reply', 'adults', 'kids', 'veg', 'side', 'whatsapp', 'notes']];
+    var header = ['name', 'reply', 'adults', 'kids'];
+    if (ev.ask_diet) header.push('veg', 'non-veg');
+    header.push('side', 'whatsapp', 'replied', 'notes');
+    var rows = [header];
     var order = { yes: 0, maybe: 1, pending: 2, no: 3 };
     invitations
         .filter(function (inv) { return inv.event_id === evId && householdById[inv.household_id]; })
@@ -1405,13 +1773,17 @@ function exportEvent(evId) {
         })
         .forEach(function (inv) {
             var h = householdById[inv.household_id];
-            rows.push([h.display_name, STATUS_LABELS[inv.status],
-                inv.status === 'yes' ? inv.adults : '', inv.status === 'yes' ? inv.kids : '', inv.status === 'yes' ? inv.veg : '',
-                SIDE_LABELS[h.side], h.phone_e164 || '', h.notes || '']);
+            var yes = inv.status === 'yes';
+            var row = [h.display_name, STATUS_LABELS[inv.status], yes ? inv.adults : '', yes ? inv.kids : ''];
+            if (ev.ask_diet) row.push(yes ? inv.veg : '', yes ? inv.adults + inv.kids - inv.veg : '');
+            row.push(SIDE_LABELS[h.side], h.phone_e164 || '', inv.responded_via ? VIA_LABELS[inv.responded_via] : '', h.notes || '');
+            rows.push(row);
         });
     var s = eventStats(ev);
     rows.push([]);
-    rows.push(['total coming', '', s.adults, s.kids, s.veg]);
+    var total = ['total coming', s.confirmed, s.adults, s.kids];
+    if (ev.ask_diet) total.push(s.veg, s.nonVeg);
+    rows.push(total);
     rows.push(['expected (estimate)', s.expected]);
     downloadCsv(slug(wedding.title) + '-' + slug(ev.name) + '.csv', rows);
 }
@@ -1451,8 +1823,13 @@ function onDocumentClick(e) {
         case 'edit-event': openEventModal(eventById[id]); break;
         case 'edit-household': openHouseholdModal(householdById[id]); break;
         case 'record-reply': openReplyModal(householdById[id]); break;
+        case 'toggle-invite': toggleInvite(id, el.dataset.event); break;
+        case 'tick-column': tickColumn(el.dataset.event); break;
+        case 'toggle-card': toggleCard(id); break;
+        case 'tick-cards': tickAllCards(); break;
         case 'copy-link': copyText(rsvpLink(householdById[id])); break;
         case 'copy-message': copyText(messageFor(householdById[id], sendMode)); break;
+        case 'share-card': shareWithCard(id, sendMode); break;
         case 'wa-sent':
             // Let the link open WhatsApp, then record the send.
             setTimeout(function () { markSent(id, el.dataset.mode); }, 300);
@@ -1495,8 +1872,14 @@ function wireUp() {
 
     $('add-household-btn').addEventListener('click', function () { openHouseholdModal(null); });
     $('import-btn').addEventListener('click', openImportModal);
+    $('template-btn').addEventListener('click', downloadTemplate);
     $('household-search').addEventListener('input', renderHouseholds);
     $('household-filter').addEventListener('change', renderHouseholds);
+    $('household-list-filter').addEventListener('change', renderHouseholds);
+    $('household-group').addEventListener('change', function () {
+        try { localStorage.setItem(STORAGE_GROUP, $('household-group').value); } catch (e) { /* ignore */ }
+        renderHouseholds();
+    });
     $('household-form').addEventListener('submit', saveHousehold);
     $('hh-delete').addEventListener('click', deleteHousehold);
 
@@ -1510,6 +1893,8 @@ function wireUp() {
     $('add-event-btn').addEventListener('click', function () { openEventModal(null); });
     $('event-form').addEventListener('submit', saveEvent);
     $('ev-delete').addEventListener('click', deleteEvent);
+    $('ev-image').addEventListener('change', onEventImageChosen);
+    $('ev-image-remove').addEventListener('click', onEventImageRemove);
 
     document.querySelectorAll('#send-mode button').forEach(function (b) {
         b.addEventListener('click', function () { sendMode = b.dataset.mode; renderSend(); });
@@ -1567,6 +1952,7 @@ function wireUp() {
         history.replaceState(null, '', window.location.pathname + window.location.hash);
     }
     try { activeTab = localStorage.getItem(STORAGE_TAB) || 'overview'; } catch (e) { /* ignore */ }
+    try { $('household-group').value = localStorage.getItem(STORAGE_GROUP) || 'none'; } catch (e) { /* ignore */ }
 
     var sessionResult = await supabaseClient.auth.getSession();
     var session = sessionResult.data && sessionResult.data.session;

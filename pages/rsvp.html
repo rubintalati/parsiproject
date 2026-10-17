@@ -35,6 +35,7 @@
             padding: 1.1rem; margin-bottom: 1rem;
         }
         .event-name { font-size: 1.3rem; font-weight: 700; }
+        .event-image { display: block; width: 100%; height: auto; margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.08); }
         .event-when { color: #ddd; font-size: 1rem; margin-top: 0.35rem; }
         .event-meta { color: #999; font-size: 0.9rem; margin-top: 0.2rem; line-height: 1.45; }
         .event-meta a { color: #bbb; }
@@ -159,8 +160,8 @@
     (function () {
         var SUPABASE_URL = 'https://ihsbndryziohroodkwjn.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imloc2JuZHJ5emlvaHJvb2Rrd2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjA0NTEsImV4cCI6MjA5MDYzNjQ1MX0.BNW9mTWgRDG5yJ8rjjZ-g8v8C2dbfAOapZCDq0aKFgk';
-        // Meal counts only matter where food is served, not at home rituals.
-        var NO_MEAL_KINDS = ['madhavsaro', 'adarni', 'supra'];
+        var IMAGE_BASE = SUPABASE_URL + '/storage/v1/object/public/chitthi/';
+        var MAX_PARTY = 30;
 
         var token = (window.location.hash.match(/[#&]t=([0-9a-f]{32})/) || [])[1];
         var data = null;
@@ -206,17 +207,15 @@
             ['loading', 'invalid', 'invite'].forEach(function (x) { $(x).classList.toggle('hidden', x !== id); });
         }
 
-        function maxGuests() { return data.household.max_guests; }
         function openEvents() { return data.events.filter(function (ev) { return !ev.closed; }); }
         function hasAnswered() { return data.events.some(function (ev) { return ev.status !== 'pending'; }); }
 
         // ── Form ────────────────────────────────────────────────
         function renderForm() {
-            var max = maxGuests();
             $('greeting').textContent = 'Dear ' + data.household.name + ',';
             $('form-sub').textContent = data.events.length > 1
-                ? 'please tell us for each one. ' + (max > 1 ? 'there are places for up to ' + max + ' of you.' : 'this invitation is for you.')
-                : (max > 1 ? 'there are places for up to ' + max + ' of you.' : 'this invitation is for you.');
+                ? 'please let us know for each one, and how many of you are coming.'
+                : 'please let us know if you can come, and how many of you.';
             $('all-yes').classList.toggle('hidden', openEvents().length < 2);
             $('note').value = data.household.guest_note || '';
 
@@ -227,7 +226,10 @@
                 if (ev.venue) meta.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ev.venue) + '" target="_blank" rel="noopener noreferrer">' + esc(ev.venue) + '</a>');
                 if (ev.rsvp_deadline && !ev.closed) meta.push('please reply by ' + esc(formatDeadline(ev.rsvp_deadline)));
 
-                var html = '<div class="event"><div class="event-name">' + esc(ev.name) + '</div>' +
+                var img = ev.image_path ? IMAGE_BASE + ev.image_path.split('/').map(encodeURIComponent).join('/') : null;
+                var html = '<div class="event">' +
+                    (img ? '<a href="' + esc(img) + '" target="_blank" rel="noopener"><img class="event-image" src="' + esc(img) + '" alt="' + esc(ev.name) + ' chitthi" loading="lazy"></a>' : '') +
+                    '<div class="event-name">' + esc(ev.name) + '</div>' +
                     (ev.starts_at ? '<div class="event-when">' + esc(formatWhen(ev)) + '</div>' : '') +
                     (meta.length ? '<div class="event-meta">' + meta.join('<br>') + '</div>' : '');
 
@@ -248,10 +250,10 @@
                 if (a.status === 'yes') {
                     var total = a.adults + a.kids;
                     html += '<div class="counts">' +
-                        (max > 1 ? stepper(ev.event_id, 'adults', 'adults', '', a.adults, total >= max, a.adults <= (a.kids ? 0 : 1)) +
-                            stepper(ev.event_id, 'kids', 'children', 'under 12', a.kids, total >= max, a.kids <= 0) : '') +
-                        (NO_MEAL_KINDS.indexOf(ev.kind) === -1
-                            ? stepper(ev.event_id, 'veg', 'vegetarian', 'how many of you eat veg', a.veg, a.veg >= total, a.veg <= 0)
+                        stepper(ev.event_id, 'adults', 'adults', '', a.adults, total >= MAX_PARTY, a.adults <= (a.kids ? 0 : 1)) +
+                        stepper(ev.event_id, 'kids', 'children', 'under 12', a.kids, total >= MAX_PARTY, a.kids <= 0) +
+                        (ev.ask_diet
+                            ? stepper(ev.event_id, 'veg', 'veg', 'how many of you eat veg? the rest count as non-veg', a.veg, a.veg >= total, a.veg <= 0)
                             : '') +
                         '</div>';
                 }
@@ -272,7 +274,7 @@
             var a = answers[evId];
             a.status = status;
             if (status === 'yes' && a.adults + a.kids === 0) {
-                a.adults = rememberedAdults() || Math.min(2, maxGuests());
+                a.adults = rememberedAdults() || 1;
                 a.kids = rememberedKids();
             }
         }
@@ -297,7 +299,7 @@
                 var f = btn.dataset.field;
                 a[f] = Math.max(0, a[f] + Number(btn.dataset.step));
                 var total = a.adults + a.kids;
-                if (total > maxGuests()) a[f] -= total - maxGuests();
+                if (total > MAX_PARTY) a[f] -= total - MAX_PARTY;
                 if (a.adults + a.kids === 0) a.adults = 1;
                 a.veg = Math.min(a.veg, a.adults + a.kids);
             }
@@ -330,7 +332,6 @@
                     if (!res || !res.ok) {
                         var msg = {
                             closed: 'replies have closed for one of these. please call the family.',
-                            over_limit: 'that\'s more people than this invitation has room for (' + (res && res.max_guests) + ').',
                             invalid: 'this link doesn\'t work any more. please ask the family to resend it.'
                         }[res && res.error] || 'something went wrong. please try again.';
                         showError(msg);
@@ -355,7 +356,8 @@
             if (ev.status === 'yes') {
                 var parts = [ev.adults + (ev.adults === 1 ? ' adult' : ' adults')];
                 if (ev.kids) parts.push(ev.kids + (ev.kids === 1 ? ' child' : ' children'));
-                return 'coming · ' + parts.join(', ') + (ev.veg ? ' (' + ev.veg + ' veg)' : '');
+                var diet = ev.ask_diet ? ' (' + ev.veg + ' veg, ' + (ev.adults + ev.kids - ev.veg) + ' non-veg)' : '';
+                return 'coming · ' + parts.join(', ') + diet;
             }
             return { no: 'not coming', maybe: 'not sure yet', pending: 'no reply yet' }[ev.status];
         }
